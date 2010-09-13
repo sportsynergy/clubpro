@@ -1,0 +1,45 @@
+/********* Demo ***************************************************/
+
+.ct2cl13    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #2E25CF
+}
+
+.ct7cl13    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #2E25CF
+}
+
+
+.preopencourtcl13 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl13 {
+	background-color : #EEEB7B;
+}
+
+.reservecourtcl13 {
+	background-color : #EEEB7B;
+}
+
+.clubid13th {
+   background-color : #2E25CF;
+}
+
+
+.reportedcourtcl13 { 
+	background-color : #EEEB7B;
+}
+
+.seekingmatchcl13 {
+	background-color : #EEEB7B;
+}

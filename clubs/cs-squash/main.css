@@ -1,0 +1,35 @@
+/*********Cleveland Skating Club ***********************************************************/
+
+.ct2cl20    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #568bd8
+}
+
+
+.preopencourtcl20 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl20 {
+	background-color : #ced8f3;
+}
+
+.reservecourtcl20 {
+	background-color : #ced8f3;
+}
+
+.reportedcourtcl20 { 
+	background-color : #ced8f3;
+}
+
+.seekingmatchcl20 {
+	background-color : #aacce0;
+}
+
+.clubid20th {
+	background-color : #568bd8;
+}

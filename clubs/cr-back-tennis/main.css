@@ -1,0 +1,34 @@
+/*********CR Outdoor Tennis **********************************************************/
+
+.ct7cl15    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #279234
+}
+
+.preopencourtcl15 {
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl15 {
+	background-color : #8ADB64;
+}
+
+.reservecourtcl15 {
+	background-color : #8ADB64;
+}
+
+.reportedcourtcl15 { 
+	background-color : #8ADB64;
+}
+
+.seekingmatchcl15 {
+	background-color : #8ADB64;
+}
+
+.clubid15th {
+	background-color : #279234;
+}

@@ -1,0 +1,47 @@
+/*********Commodore***************************************************/
+
+.ct2cl14    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #00679C
+}
+
+.ct6cl14   {
+
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #00679C
+
+}
+
+
+.preopencourtcl14 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl14 {
+	background-color : #09A6AE;
+}
+
+.reservecourtcl14 {
+	background-color : #8AF2F2;
+}
+
+.clubid14th {
+   background-color : #00679C;
+}
+
+
+.reportedcourtcl14 { 
+	background-color :   #09A6AE;
+}
+
+.seekingmatchcl14 {
+	background-color :   #8AF2F2;
+}

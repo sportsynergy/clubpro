@@ -1,0 +1,168 @@
+/*
+ * $LastChangedRevision: 162 $
+ * $LastChangedBy: Adam Preston $
+ * $LastChangedDate: 2006-11-07 21:18:09 -0600 (Tue, 07 Nov 2006) $
+
+*/
+/**********General***************************************************/
+.reportTitle {
+	font-family: Arial, sans-serif;
+	font-size: 22pt;
+	font-weight: bold;
+	color: Gray;
+}
+.whiteh1 { 
+	font-family: Arial, sans-serif; 
+	font-size: 14pt; 
+	font-weight: bold; 
+	color: #FFFFFF;
+ }
+.whitenorm { 
+	font-family: Arial, sans-serif; 
+	font-size: 10pt; 
+	font-weight: bold; 
+	color: #FFFFFF; 
+}
+h2      { 
+	font-family: Arial, sans-serif; 
+	font-size: 12pt; 
+	font-weight: bold; 
+}
+th      { 
+	font-family: Arial, sans-serif; 
+	font-size: 10pt; 
+	font-weight: bold; 
+	text-align: center;
+}
+.h1     { 
+	font-family: Arial, sans-serif; 
+	font-size: 14pt; 
+	font-weight: bold; 
+}
+.h2     { 
+	font-family: Arial, sans-serif; 
+	font-size: 12pt; 
+	font-weight: bold; 
+}
+.label  { 
+	font-family: Arial, sans-serif; 
+	font-size: 10pt; 
+	font-weight: bold; 
+}
+.labelbig  { 
+	font-family: Arial, sans-serif; 
+	font-size: 12pt; 
+	font-weight: normal; 
+	text-decoration: underline;
+}
+.lighttext  {
+	font-family: Arial, sans-serif;
+	font-size: 8pt;
+	
+	color : gray;
+}
+.bold  {
+	font-weight: bold; 
+}
+.normal { 
+	font-family: Arial, sans-serif; 
+	font-size: 10pt; 
+}
+.normalsm { 
+	font-family: Arial, sans-serif; 
+	font-size: 8pt; 
+}
+.whitenormalsm { 
+	font-family: Arial, sans-serif; 
+	font-size: 8pt; 
+	color: #FFFFFF; 
+}
+.italitcsm { 
+	font-family: Arial, sans-serif; 
+	font-size: 8pt;
+	font-style: italic;  
+	font-weight: normal;
+}
+.normalsm1 { 
+	font-family: Arial, sans-serif; 
+	font-size: 9pt; 
+}
+.notice { 
+	font-family: Arial, sans-serif; 
+	font-size: 14pt; color: #006699; 
+}
+.biglabel { 
+	font-family: Arial, sans-serif; 
+	font-size: 12pt; 
+	font-weight: bold; 
+}
+.bigbanner { 
+	font-family: Arial, sans-serif; 
+	font-size: 20pt; 
+	color: #000000; 
+	font-weight: bold; 
+	font-style: italic; 
+}
+.smallbold { 
+	font-family: Arial, sans-serif; 
+	font-size: 8pt; 
+	font-weight: bold; 
+}
+.medbold { 
+	font-family: Arial, sans-serif; 
+	font-size: 12pt; 
+	font-weight: bold; 
+}
+
+.bannertable { 
+	background-color : #DBDDDD; 
+}
+
+.generictable { 
+	background-color : #DBDDDD; 
+}
+
+.genericth {
+	background-color : #529650;
+}	
+
+.loginth {
+	background-color : Gray;
+}
+
+.eventcourt {
+	background-color : Silver;
+}
+
+.postopencourt { 
+	background-color : #C0C0C0;
+ }
+ 
+.blackBackGround A:LINK {
+	color: black;	
+	text-decoration: none;
+}
+
+.blackBackGround A:HOVER  {
+	color: gray;
+	text-decoration: none;	
+}
+.blackBackGround A:VISITED {
+	color: black;	
+	text-decoration: none;
+}
+
+.mainbody{
+	background-image: url(../images/image001.jpg);
+
+}
+
+/*********System*********************************************************/
+
+.clubid0th {
+	background-color : Gray;
+}
+
+
+
+

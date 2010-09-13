@@ -1,0 +1,43 @@
+/*********Lake Forest ***********************************************************/
+
+.ct2cl19    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #004e2a
+}
+
+.ct6cl19    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #004e2a
+}
+
+.preopencourtcl19 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl19 {
+	background-color : #62d19e;
+}
+
+.reservecourtcl19 {
+	background-color : #62d19e;
+}
+
+.reportedcourtcl19 {
+	background-color : #62d19e;
+}
+
+.seekingmatchcl19 {
+	background-color : #62d19e;
+}
+
+.clubid19th {
+	background-color : #004e2a;
+}

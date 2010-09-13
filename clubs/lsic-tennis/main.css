@@ -1,0 +1,49 @@
+/*********LSAC***********************************************************/
+
+.ct2cl5    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #36B0C1
+}
+.ct4cl5    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #36B0C1
+}
+.ct7cl5    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #36B0C1
+}
+.preopencourtcl5 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl5 {
+	background-color : #36B0C1;
+}
+
+.reservecourtcl5 {
+	background-color : #BBDADB;
+}
+
+.reportedcourtcl5 { 
+	background-color : #BBDADB;
+}
+
+.seekingmatchcl5 {
+	background-color : #BBDADB;
+}
+
+.clubid5th {
+	background-color : #36B0C1;
+}

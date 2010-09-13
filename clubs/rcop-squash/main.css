@@ -1,0 +1,35 @@
+/********* RCOP**********************************************************/
+
+
+}
+.ct2cl12    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #660202
+}
+.preopencourtcl12 {
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl12 {
+	background-color : #FC4343;
+}
+
+.reservecourtcl12 {
+	background-color : #FC4343;
+}
+
+.reportedcourtcl12 { 
+	background-color : #FC4343;
+}
+
+.seekingmatchcl12 {
+	background-color : #FC4343;
+}
+
+.clubid12th {
+	background-color : #660202;
+}

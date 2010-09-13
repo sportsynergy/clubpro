@@ -1,0 +1,34 @@
+/*********NWAC***********************************************************/
+
+.ct2cl8    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #689BF0
+}
+
+.preopencourtcl8 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl8 {
+	background-color : #2B73EA;
+}
+
+.reservecourtcl8 {
+	background-color : #AFCBF8;
+}
+
+.reportedcourtcl8 {
+	background-color : #AFCBF8;
+}
+
+.seekingmatchcl8 {
+	background-color : #AFCBF8;
+}
+
+.clubid8th {
+	background-color : #689BF0;
+}

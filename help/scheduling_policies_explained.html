@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Reservation Policies</title>
+	<LINK href="../main.css" rel=stylesheet type=text/css> 
+</head>
+
+<body>
+<h1>Scheduling Policies</h1><br>
+Scheduling policies are a convenient and flexible way to control how users of this system can make or cancel reservations.  Policies are cumulative, meaning that the most restrictive will apply.
+<br>
+<table>
+<tr>
+	<td valign="top"><div class="label">Name:</div></td>
+	<td>A meaningful name that will be used to identify the policy on the club preferences page.  If someone does try to make a reservation that violates
+	this policy, the name will be used in the message displayed to the user.  So, if you have someone come up to you saying that a policy  prevented them
+	from making a reservation, they should be able to tell you which exact policy it was.  This should help you out.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">Description:</div></td>
+	<td>A detailed description of this policy.  This is only used for you to write a little note about the policy.  Unlinke, the policy name the 
+	  description will not be dispayed in any error message to the user.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">Type:</div></td>
+	<td>Scheduling policies can be made as either as Reservation policies or cancellation policies.  
+	A reservation policy will control how many reservations can be made by a user whereas a cancellation policy 
+	will control how many cancellations can be made by a user.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">Schedule Limit:</div></td>
+	<td>This represents the daily limit imposed per court.  For a reservation policy, this is the number of reservations that can be made by a user per day.  For cancellation policy, this is the number of cancellations that can be made by a user per day.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">Court:</div></td>
+	<td>Scheduling policies can be applied selectively to individual courts or can be applied to all courts.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">Allow Looking for a Match:</div></td>
+	<td>This restricts people from signing up for a singles court and looking for a partner. By Default this is true.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">Allow Back to Back Reservations:</div></td>
+	<td>With this one, you just can't make back to back reservations, pretty much as you would expect. By Default this is true.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">Day of Week:</div></td>
+	<td>Scheduling polices can be applied selectively to specific days or can be applied to all days.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">Specify Window:</div></td>
+	<td>Optionally, scheduling windows can be specified.  A scheduling window can be created to block off a time range.  This can be used to specify.  When a scheduling window is not specified, the scheduling policy applies for the entire day.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">Start Time:</div></td>
+	<td>When the specify window checkbox is checked, the start time represents the time of day that the policy will be enfored.</td>
+</tr>
+<tr>
+	<td valign="top"><div class="label">End Time:</div></td>
+	<td>When the specify window checkbox is checked, the start time represents the time of day that policy is no longer enforced.</td>
+</tr>
+
+
+
+
+</table>
+<br><br>
+<div class="label">Example:</div>
+
+<br><br>
+2) To create a policy that will create a primetime window between 5pm-7pm everyday:<br><br>
+
+<table>
+	<tr>
+		<td><div class="italitcsm">Name:</div></td>
+		<td><div class="italitcsm">Primetime Policy</div></td>
+	</tr>
+	<tr>
+		<td><div class="italitcsm">Description:</div></td>
+		<td><div class="italitcsm">A reservation policy that restricts the number of reservations users to one daily reservation.</div></td>
+	</tr>
+	<tr>
+		<td><div class="italitcsm">Type</div></td>
+		<td><div class="italitcsm">Reservation</div></td>
+	</tr>
+	<tr>
+		<td><div class="italitcsm">Schedule Limit</div></td>
+		<td><div class="italitcsm">1</div></td>
+	</tr>
+	<tr>
+		<td><div class="italitcsm">Court:</div></td>
+		<td><div class="italitcsm">All Courts</div></td>
+	</tr>
+	<tr>
+		<td><div class="italitcsm">Day of Week</div></td>
+		<td><div class="italitcsm">All Days</div></td>
+	</tr>
+	<tr>
+		<td><div class="italitcsm">Specify Window</div></td>
+		<td><div class="italitcsm">< checked ></div></td>
+	</tr>
+	<tr>
+		<td><div class="italitcsm">Start Time:</div></td>
+		<td><div class="italitcsm">17:00</div></td>
+	</tr>
+	<tr>
+		<td><div class="italitcsm">End Time:</div></td>
+		<td><div class="italitcsm">19:00</div></td>
+	</tr>
+</table>
+
+</body>
+</html>
+
