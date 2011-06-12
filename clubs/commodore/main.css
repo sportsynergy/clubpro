@@ -1,0 +1,82 @@
+/*********Commodore***************************************************/
+
+.ct2cl1    {
+
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #00225d
+}
+
+.ct3cl1    {
+
+
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #00225d
+
+}
+
+.ct4cl1    {
+
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #00225d
+}
+
+.ct8cl1    {
+
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #00225d
+}
+
+.preopencourtcl1 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl1 {
+	background-color : #829bc6;
+}
+
+.reservecourtcl1 {
+	background-color : #aac1ea;
+}
+
+.clubid1th {
+   background-color : #00225d;
+}
+
+
+.reportedcourtcl1 { 
+	background-color :   #829bc6;
+}
+
+.seekingmatchcl1 {
+	background-color :   #aac1ea;
+}
+
+hr.hrline{
+background-color:  #00225d;
+height: 5px;	
+}
+
+/*  For Tabs */
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover {
+background:#00225d url(../../../../assets/skins/sam/sprite.png) repeat-x scroll left -1400px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav {
+border-color:#00225d;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
+border-color: #00225d;
+}

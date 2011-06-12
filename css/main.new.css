@@ -1,0 +1,304 @@
+/*
+ * $LastChangedRevision: 162 $
+ * $LastChangedBy: Adam Preston $
+ * $LastChangedDate: 2006-11-07 21:18:09 -0600 (Tue, 07 Nov 2006) $
+
+*/
+/**********General***************************************************/
+
+
+.mainbody{
+	background-image: url(../images/image001.jpg);
+}
+
+body{
+	margin-top: 15px;
+	margin-bottom: 15px;	
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.required{
+	color: red;	
+}
+
+.reportTitle {
+	font-size: 22pt;
+	font-weight: bold;
+	color: Gray;
+}
+.whiteh1 { 
+	font-size: 14pt; 
+	font-weight: bold; 
+	color: #FFFFFF;
+ }
+.whitenorm { 
+	font-size: 10pt; 
+	font-weight: bold; 
+	color: #FFFFFF; 
+	
+}
+
+h2{ 
+	font-size: 12pt; 
+	font-weight: bold; 
+}
+
+th{ 
+
+	font-size: 10pt; 
+	font-weight: bold; 
+	text-align: center;
+}
+.h1{ 
+	font-size: 14pt; 
+	font-weight: bold; 
+}
+
+.h2{ 
+	font-size: 12pt; 
+	font-weight: bold; 
+}
+
+.label  { 
+	font-size: 10pt; 
+	font-weight: bold; 
+}
+
+.labelbig  { 
+	font-size: 12pt; 
+	font-weight: normal; 
+	text-decoration: underline;
+}
+.lighttext  {
+	font-size: 8pt;
+	color : gray;
+}
+
+.bold  {
+	font-weight: bold; 
+}
+.normal { 
+	font-size: 10pt; 
+	color: black;
+}
+.normalsm { 
+	font-size: 8pt; 
+}
+
+.whitenormalsm { 
+	font-size: 8pt; 
+	color: #FFFFFF; 
+}
+
+.italitcsm { 
+	font-size: 8t;
+	font-style: italic;  
+	font-weight: normal;
+}
+
+.notice { 
+	font-size: 14pt; 
+	color: #006699; 
+}
+.problem {
+	font-size: 14pt; 
+	color: red;
+}
+
+.biglabel { 
+	font-size: 12pt; 
+	font-weight: bold; 
+}
+.bigbanner { 
+	font-size: 20pt; 
+	color: #000000; 
+	font-weight: bold; 
+	font-style: italic; 
+}
+.smallbold { 
+	font-size: 8pt; 
+	font-weight: bold; 
+}
+.medbold { 
+	font-size: 12pt; 
+	font-weight: bold; 
+}
+
+.warning {
+	color: red;	
+}
+
+.medwidth{
+	width: 165px;
+	}
+
+.genericth {
+	background-color : #529650;
+}	
+
+.loginth {
+	background-color : Gray;
+}
+
+.eventcourt {
+	background-color : Silver;
+}
+
+.postopencourt { 
+	background-color : #C0C0C0;
+ }
+ 
+.blackBackGround A:LINK {
+	color: black;	
+	text-decoration: none;
+}
+
+.blackBackGround A:HOVER  {
+	color: gray;
+	text-decoration: none;	
+}
+.blackBackGround A:VISITED {
+	color: black;	
+	text-decoration: none;
+}
+
+
+
+/********* For Tables *********************************************************/
+table.scheduletable {
+	border-collapse: collapse;
+	border: 1px solid #000000;
+}
+
+table.scheduletable th, table.scheduletable td  {
+	border-top:1px solid #000000;
+	border-bottom: 1px solid #000000;
+
+}
+
+table.leaguetable {
+	background-color : #DBDDDD; 
+	border:1px solid #000000;
+}
+
+tr.borderow{
+	border:1px solid #000000;
+}
+
+.borderless tr td {
+	border: none;
+}
+
+.bannertable { 
+	background-color : #DBDDDD; 
+}
+
+.generictable { 
+	background-color : #DBDDDD; 
+	border:1px solid #000000;
+}
+
+.generictable td{
+ padding: 5px;	
+}
+
+
+.bordertable {
+	border:1px solid #000000;
+	padding:0.25em;
+}
+
+.bordertable th{
+	border:1px solid #000000;
+	text-align: center;
+	padding: .25em;
+	
+}
+
+.borderbox {
+	border:1px solid #000000;
+	padding:0.25em;
+}
+
+tr.darkrow td{
+	background-color: #C0C0C0;
+	border:1px solid #000000;
+	padding:0.25em;
+}
+
+tr.lightrow td{
+	background-color: #DBDDDD;
+	border:1px solid #000000;	
+	padding:0.25em;
+}
+
+	
+/********* For Tabs*********************************************************/
+
+table.tabtable { 
+	background-color : #DBDDDD; 
+}
+
+table.tabtable td{
+ padding: 10px;	
+}
+
+table.skinnytable td{
+ padding: 0px;	
+}
+
+table.mediumbonedtable td{
+ padding: 5px;	
+}
+
+.spacer {
+	padding-bottom: 15px;	
+}
+
+.yui-skin-sam .yui-navset .yui-content {
+background:#DBDDDD none repeat scroll 0 0;
+}
+
+
+/********* For Unordered Lists *********************************************************/
+
+
+ul.clubevents li{
+	padding-bottom: 10px;
+}
+
+ul.recentavtivity li{
+padding-bottom: 10px;
+}
+
+ul.whoscoming li {
+padding-bottom: 0px;
+}
+
+/*********System*********************************************************/
+
+.clubid0th {
+	background-color : Gray;
+}
+
+hr.hrline {
+	background-color : Gray;
+	height: 5px;	
+}
+
+
+/*  For Tabs */
+
+
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover {
+background:Gray url(../../../../assets/skins/sam/sprite.png) repeat-x scroll left -1400px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav {
+border-color:Gray;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
+border-color: Gray;
+}
+

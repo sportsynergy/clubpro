@@ -1,0 +1,43 @@
+/*********Birmingham Squash ***********************************************************/
+
+.ct2cl25    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #003e66
+}
+
+.ct3cl25    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #003e66
+}
+
+.preopencourtcl25 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl25 {
+	background-color : #b2cfe2;
+}
+
+.reservecourtcl25 {
+	background-color : #b2cfe2;
+}
+
+.reportedcourtcl25 {
+	background-color : #b2cfe2;
+}
+
+.seekingmatchcl25 {
+	background-color : #b2cfe2;
+}
+
+.clubid25th {
+	background-color : #1e92dd;
+}

@@ -1,0 +1,358 @@
+/*
+ * GLOBAL AJAX CSS
+ */
+
+
+/* --- SITEWIDE CSS --- */
+
+
+
+a, a:visited {
+  color: #00f;
+}
+
+a:hover {
+  color: #f00;
+}
+
+#header {
+  background-color: #369;
+  padding: 5px;
+  color: #fff;
+  font-weight: bold;
+}
+
+#subheader {
+  font-weight: normal;
+  font-size: 8pt;
+  color: #900;
+  border-bottom: 1px solid #ccc;
+  padding: 1px 5px 2px 5px;
+}
+
+#subheader a, #subheader a:visited {
+  text-decoration: none;
+  color: #900;
+}
+
+#subheader a:hover {
+  text-decoration: underline;
+  color: #000;
+}
+
+#buildVersion {
+  font-weight: normal;
+  font-size: 8pt;
+  color: #999;
+  padding: 1px 5px 1px 5px;
+}
+
+#content { padding: 10px; }
+
+h1 { font-size: 1.2em }
+h2 { font-size: 1.1em }
+h3 { font-size: 1.0em }
+
+label {
+  font: bold 1em Verdana;
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+}
+
+fieldset {
+  width: 500px;
+  border: 1px solid #999;
+  padding: 10px;
+}
+
+legend {
+  padding: 1px 4px;
+  border-color: #999 #ccc #ccc #999;
+  border-style: solid;
+  border-width: 1px;
+  background: #eee;
+}
+
+label { font-size: 0.8em; }
+
+input [type="text"] {
+  background-color: #ffd;
+  border-width: 1px;
+}
+
+input [type="button"] {
+  border: 1px solid #999;
+  background-color: #eee;
+  cursor: pointer;
+  color: #000;
+}
+
+
+#homepageTable {
+  border: 1px solid #ccc;
+  width: 650px;
+}
+
+#homepageTable THEAD TR TH {
+  border-bottom: 2px solid #999;
+  background-color: #eee;
+}
+
+#homepageTable TBODY TR TD:first-child {
+  font-weight: bold;
+}
+
+#homepageTable TBODY TR.description TD {
+  font-size: 90%;
+  font-weight: normal;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+
+
+/* --- AUTOCOMPLETE CSS --- */
+
+.autocomplete {
+  position: absolute;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #666;
+  font-family: Arial;
+  overflow: hidden;
+}
+
+.autocomplete ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow: auto;
+}
+
+.autocomplete li {
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+  margin: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: 1px solid #fff;
+}
+
+.autocomplete li.selected {
+  background-color: #cef;
+  border-top: 1px solid #9bc;
+  border-bottom: 1px solid #9bc;
+}
+
+/* Animated throbber */
+
+input.form-autocomplete {
+  background: url('../images/throbber.gif') no-repeat 100% 2px;
+  background-color: white;
+}
+
+input.throbbing {
+  background-position: 100% -18px;
+}
+
+
+/* --- CALLOUT CSS --- */
+
+.calloutBox {
+  width: 250px;
+  background-color: #ddd;
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: #eee;
+  border-left-color: #eee;
+  border-right-color: #999;
+  border-bottom-color: #999;
+  padding: 0;
+  display: none;
+  filter:alpha(opacity=90);
+  -moz-opacity:0.9;
+  opacity: 0.9;
+}
+.calloutTitle {
+  background-color: #000;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid #666;
+  padding: 2px 4px;
+  color: #ccc;
+  font: bold 10pt Arial;
+}
+.calloutContent {
+  padding: 4px;
+  color: #000;
+  font: 10pt Arial;
+}
+.calloutClose {
+  float: right;
+  padding: 2px 4px;
+  margin-top: 1px;
+  color: #fff;
+  font: bold 8pt Arial;
+  cursor: pointer;
+}
+
+
+/* --- TOGGLE CSS --- */
+
+#watchedResponseContainer {
+  border: 1px solid #ccc;
+  width: 300px;
+  padding: 4px;
+  margin-top: 10px;
+  background-color: #eee;
+}
+
+#watchedResponse {
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin: 4px;
+  background-color: #fff;
+}
+
+
+/* --- HTML CONTENT CSS --- */
+
+#modelDescription {
+  position: absolute;
+  left: 300px;
+  width: 300px;
+  min-height: 100px;
+  background: #ffe;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #666 #ccc #ccc #666;
+  padding: 5px;
+}
+
+#htmlContentForm {
+  width: 350px;
+}
+
+#extmodelDescription {
+  position: absolute;
+  left: 400px;
+  width: 300px;
+  min-height: 100px;
+  background: #ffe;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #666 #ccc #ccc #666;
+  padding: 5px;
+}
+
+#exthtmlContentForm {
+  width: 350px;
+}
+
+
+/* --- TAB PANEL CSS --- */
+
+#tabPanelWrapper {
+  width: 600px;
+}
+
+#tabContent {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  clear: both;
+  margin: 0px;
+  padding: 15px;
+}
+
+#tabPanel {
+  border-bottom: 1px solid #ccc;
+  margin: 0;
+  padding-bottom: 19px;
+  padding-left: 10px;
+}
+
+#tabPanel ul, #tabPanel li {
+  display: inline;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#tabPanel a:link, #tabPanel a:visited {
+  background: #E8EBF0;
+  border: 1px solid #ccc;
+  color: #666;
+  float: left;
+  font-size: small;
+  font-weight: normal;
+  line-height: 14px;
+  margin-right: 8px;
+  padding: 2px 10px 2px 10px;
+  text-decoration: none;
+}
+
+#tabPanel a:link#ajaxCurrentTab, #tabPanel a:visited#ajaxCurrentTab {
+  background: #fff;
+  border-bottom: 1px solid #fff;
+  color: #000;
+}
+
+#tabPanel a:hover {
+  color: #f00;
+}
+
+
+/* --- PORTLET CSS --- */
+
+.portletBox {
+  width: 400px;
+  border: 1px solid #ccc;
+}
+
+.portletTitle {
+  background-color: #e8ebf0;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid #ccc;
+  padding: 2px 4px;
+  color: #666;
+  font: bold 10pt Arial;
+}
+
+.portletTools {
+  float: right;
+  padding: 2px 4px;
+  margin-top: 1px;
+  color: #666;
+  font: bold 8pt Arial;
+  cursor: pointer;
+}
+
+.portletTools img {
+  border-left: 1px solid #666;
+  padding: 0px 3px;
+  cursor: pointer;
+}
+
+.portletTools img:first-child {
+  border: none;
+}
+
+.portletContent {
+  min-height: 200px;
+  overflow: auto;
+  padding: 4px;
+}
+
+DIV.textArea {
+  background: #ffe;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #666 #ccc #ccc #666;
+  padding: 5px;
+
+} 

@@ -1,0 +1,64 @@
+/*********Missouri Athletic Club ***************************************************/
+
+.ct2cl17   {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #ed3e42;
+}
+
+.ct3cl17    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #ed3e42;
+}
+
+
+
+.preopencourtcl17 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl17 {
+	background-color : #C6BBC0;
+}
+
+.reservecourtcl17 {
+	background-color : #C6BBC0;
+}
+
+.clubid17th {
+	background-color : #ed3e42;
+}
+
+
+.reportedcourtcl17 {
+	background-color : #C6BBC0;
+}
+
+.seekingmatchcl17 {
+	background-color : #C6BBC0;
+}
+
+hr.hrline{
+background-color:  #ed3e42;
+height: 5px;	
+}
+
+/*  For Tabs */
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover {
+background:#ed3e42 url(../../../../assets/skins/sam/sprite.png) repeat-x scroll left -1400px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav {
+border-color:#ed3e42;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
+border-color: #ed3e42;
+}

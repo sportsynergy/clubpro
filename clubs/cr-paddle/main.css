@@ -1,0 +1,52 @@
+/*********CR **********************************************************/
+
+.ct9cl15    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #279234
+}
+
+.preopencourtcl15 {
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl15 {
+	background-color : #8ADB64;
+}
+
+.reservecourtcl15 {
+	background-color : #8ADB64;
+}
+
+.reportedcourtcl15 { 
+	background-color : #8ADB64;
+}
+
+.seekingmatchcl15 {
+	background-color : #8ADB64;
+}
+
+.clubid15th {
+	background-color : #279234;
+}
+
+hr.hrline{
+background-color:  #279234;
+height: 5px;	
+}
+
+/*  For Tabs */
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover {
+background:#279234 url(../../../../assets/skins/sam/sprite.png) repeat-x scroll left -1400px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav {
+border-color:#279234;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
+border-color: #279234;
+}
