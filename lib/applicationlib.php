@@ -2350,7 +2350,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 
 	}
 	
-	$description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a showdown 3-$score on $var->courtname $var->date at $var->hour";
+	$description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
 	logSiteActivity(get_siteid(), $description);
 
 }
@@ -2416,59 +2416,49 @@ function record_score(& $frm) {
 
 	if ($usertypeval == 1) {
 
-
-		//Adjust team rankings
-		$winneridquery = "SELECT tblUserRankings.ranking
-		                        FROM tblUserRankings
-		                        WHERE tblUserRankings.userid=$winner
-		                        AND tblUserRankings.courttypeid=$ctidarray[0]
-		                        AND tblUserRankings.usertype=1";
-
-		$winneridresult = db_query($winneridquery);
-		$winneridarray = db_fetch_array($winneridresult);
-
-		$loseridquery = "SELECT tblUserRankings.ranking
-		                            FROM tblUserRankings
-		                            WHERE tblUserRankings.userid=$loser
-		                            AND tblUserRankings.courttypeid=$ctidarray[0]
-		                            AND tblUserRankings.usertype=1";
-
-		$loseridresult = db_query($loseridquery);
-		$loseridarray = db_fetch_array($loseridresult);
+		// Look up the individuals ranking for members of winning team
+		// (this will be averaged to calculate
 		
-		$rankingArray = calculateRankings($winneridarray[0], $loseridarray[0]);
-		
-		// Update the winners ranking
+		$winnerResult = getUserIdsForTeamIdWithCourtType($winner, $ctidarray[0]);
+		$playerRow = mysql_fetch_array($winnerResult);
+        $winnerRanking = $playerRow['ranking'];
+        $playerRow = mysql_fetch_array($winnerResult);
+        $winnerRanking  += $playerRow['ranking'];
+        $winnerRanking = $winnerRanking/2; 
+         
+        if(isDebugEnabled(1) ) logMessage("applicationlib.record_scores: Team Id $winner has a ranking of $winnerRanking");
+	
 
-		$losersrankq = db_query("
-				           UPDATE tblUserRankings
-				           SET ranking = ".$rankingArray['winner']."
-				           WHERE userid = '$winner'
-				           AND courttypeid = '$ctidarray[0]'
-						   AND tblUserRankings.usertype = 1");
-
-		// Update the losers ranking
-		$winnrsrankq = db_query("
-				           UPDATE tblUserRankings
-				           SET ranking = ".$rankingArray['loser']."
-				           WHERE userid = '$loser'
-				           AND courttypeid = '$ctidarray[0]'
-				           AND tblUserRankings.usertype = 1");
-				           
-		//Adjust each individual ranking by the same margin as the team rankings
+         $loserResult = getUserIdsForTeamIdWithCourtType($loser, $ctidarray[0]);
+		 $playerRow = mysql_fetch_array($loserResult);
+         $loserRanking = $playerRow['ranking'];
+         $playerRow = mysql_fetch_array($loserResult);
+         $loserRanking  += $playerRow['ranking'];
+         $loserRanking = $loserRanking/2; 
 		
+         if(isDebugEnabled(1) ) logMessage("applicationlib.record_scores: Team Id $loser has a ranking of $loserRanking");
+	
+		 // Calculate the Rankings
+		 $rankingArray = calculateRankings($winnerRanking, $loserRanking);
+
+		//If the match type is a two (challenge match) count the match two times
+		if ($ctidarray[3] == 2) {
+			$rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
+		}
+
 		//For winner team
-		$winnersResult = getUserIdsForTeamId($winner);
+		mysql_data_seek($winnerResult,0);
+		mysql_data_seek($loserResult,0);
 		
-		$winners = array();
-                     		          		
-         $playerRow = mysql_fetch_array($winnersResult);
-         array_push($winners, $playerRow['userid']);
-         $playerRow = mysql_fetch_array($winnersResult);
-         array_push($winners, $playerRow['userid']);
+
+		$winners = array();          		          		
+        $playerRow = mysql_fetch_array($winnerResult);
+        array_push($winners, $playerRow['userid']);
+        $playerRow = mysql_fetch_array($winnerResult);
+        array_push($winners, $playerRow['userid']);
                      		
                      		
-		$winnerAdjustment = $rankingArray['winner'] - $winneridarray[0];
+		$winnerAdjustment = $rankingArray['winner'] - $winnerRanking;
 		
 		$playerOneRankQuery = "SELECT rankings.ranking 
 							   FROM tblUserRankings rankings 
@@ -2504,16 +2494,13 @@ function record_score(& $frm) {
 		
 		
 		//For loser team
-		$loserResult = getUserIdsForTeamId($loser);	
+		$losers = array();          		          		
+        $playerRow = mysql_fetch_array($loserResult);
+        array_push($losers, $playerRow['userid']);
+        $playerRow = mysql_fetch_array($loserResult);
+        array_push($losers, $playerRow['userid']);
 		
-		$losers = array();
-                     		          		
-         $playerRow = mysql_fetch_array($loserResult);
-         array_push($losers, $playerRow['userid']);
-         $playerRow = mysql_fetch_array($loserResult);
-         array_push($losers, $playerRow['userid']);
-		
-		$loserAdjustment = $loseridarray[0] - $rankingArray['loser'];	  
+		$loserAdjustment = $loserRanking - $rankingArray['loser'];	  
 		
 		$playerThreeRankQuery = "SELECT rankings.ranking 
 							   FROM tblUserRankings rankings 
@@ -2549,6 +2536,8 @@ function record_score(& $frm) {
 		         
 
 	}
+	
+	//Singles
 	elseif ($usertypeval == 0) {
 
 		$winneridquery = "SELECT rankings.ranking, users.firstname, users.lastname
@@ -2612,7 +2601,8 @@ function record_score(& $frm) {
 		$wteamnamequery = "SELECT users.firstname, users.lastname
 		                            FROM tblUsers users, tblkpTeams teamdetails
 		                            WHERE users.userid = teamdetails.userid
-		                            AND teamdetails.teamid=$winner";
+		                            AND teamdetails.teamid=$winner
+		                            ORDER BY users.userid";
 
 		$wteamnameresult = db_query($wteamnamequery);
 		$wteamnamearray = db_fetch_array($wteamnameresult);
@@ -2621,18 +2611,17 @@ function record_score(& $frm) {
 		$lteamnamequery = "SELECT users.firstname, users.lastname
 		                            FROM tblUsers users, tblkpTeams teamdetails
 		                            WHERE users.userid = teamdetails.userid
-		                            AND teamdetails.teamid=$loser";
+		                            AND teamdetails.teamid=$loser
+		                            ORDER BY users.userid";
 
 		$lteamnameresult = db_query($lteamnamequery);
 		$lteamnamearray = db_fetch_array($lteamnameresult);
-		echo "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"710\" align=\"center\">\n";
-		echo "\t<tr>\n";
-		echo "\t\t<td>\n";
-		echo "<font class=bigbanner> Congratulations $wteamnamearray[0] $wteamnamearray[1] and ";
+	
+		echo "<span class=bigbanner> Congratulations $wteamnamearray[0] $wteamnamearray[1] and ";
 
 		// And now get the next partner
 		$wteamnamearray = db_fetch_array($wteamnameresult);
-		echo "$wteamnamearray[0] $wteamnamearray[1] !!</font><br><br>";
+		echo "$wteamnamearray[0] $wteamnamearray[1]!</span><br><br>";
 
 		// Set the array pointer back to the front.
 		unset ($wteamnameresult);
@@ -2640,19 +2629,17 @@ function record_score(& $frm) {
 		$wteamnameresult = db_query($wteamnamequery);
 		$wteamnamearray = db_fetch_array($wteamnameresult);
 
-		echo "<div class=normal>The $wteamnamearray[1]/";
+		echo "<div class=normal>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by ". round($winnerAdjustment,4)." to ".round($playerOneNewRanking,4)."</div>";
 		$wteamnamearray = db_fetch_array($wteamnameresult);
-		echo "$wteamnamearray[1] team rating rose from $winneridarray[0] to ". $rankingArray['winner'] ." <br>";
-
-		echo "The $lteamnamearray[1]/";
+		echo "<div class=normal>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by ". round($winnerAdjustment,4)."  to ".round($playerTwoNewRanking,4)."</div>";
+		echo "<br>";
+		echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by ". round($winnerAdjustment,4)."  to ".round($playerThreeRanking,4)."</div>";
 		$lteamnamearray = db_fetch_array($lteamnameresult);
-		echo "$lteamnamearray[1] team rating fell from $loseridarray[0] to ".$rankingArray['loser']." </div><br>";
-		echo "\t\t<td>\n";
-		echo "\t<tr>\n";
-		echo "</table>";
+		echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by ". round($winnerAdjustment,4)."  to ".round($playerFourRanking,4)."</div>";
+	
 
 		//Send out the emails
-		report_scores_doubles($frm['reservationid'], $winneridarray[0], $rankingArray['winner'], $loseridarray[0], $rankingArray['loser'], $frm['score']);
+		report_scores_doubles($frm['reservationid'], $winnerRanking, $rankingArray['winner'], $loserRanking, $rankingArray['loser'], $frm['score']);
 
 	} else {  ?>
 
@@ -3916,7 +3903,8 @@ function getUserIdsForTeamId($teamid) {
 	$playersQuery = "SELECT teamdetails.userid, users.firstname, users.lastname
 	                   FROM tblkpTeams teamdetails, tblUsers users
 	                   WHERE teamdetails.teamid=$teamid
-	                   AND teamdetails.userid = users.userid";
+	                   AND teamdetails.userid = users.userid
+	                   ORDER BY users.userid";
 
 	$playersResult = db_query($playersQuery);
 
@@ -3924,6 +3912,31 @@ function getUserIdsForTeamId($teamid) {
 	return $playersResult;
 
 }
+
+
+/************************************************************************************************************************/
+/*
+     This function returns a the two userid for the team specified
+*/
+
+function getUserIdsForTeamIdWithCourtType($teamid, $courtTypeId) {
+
+	$playersQuery = "SELECT teamdetails.userid, users.firstname, users.lastname, rankings.ranking
+	                   FROM tblkpTeams teamdetails, tblUsers users, tblUserRankings rankings
+	                   WHERE teamdetails.teamid=$teamid
+	                   AND teamdetails.userid = users.userid
+					   AND rankings.userid = users.userid
+					   AND rankings.usertype = 0
+					   AND rankings.courttypeid = $courtTypeId
+					   ORDER BY users.userid";
+
+	$playersResult = db_query($playersQuery);
+
+	
+	return $playersResult;
+
+}
+
 
 /************************************************************************************************************************/
 /*
@@ -5566,7 +5579,6 @@ function formatDateString($dateString){
 	$month = $dates[1];
 	$year = $dates[0];
 	
-	logMessage("applicationlib.formatDateString as year $year month $month day $day");
 	$time = mktime(0,0,0,$month,$day,$year);
 	return date("l F j", $time);
 	
