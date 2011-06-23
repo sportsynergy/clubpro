@@ -4313,6 +4313,8 @@ function getCourtReservationsMadeToday($courtid, $starthour, $endhour, $time) {
 function countNumberOfAllResevationsMadeToday($time) {
 
 	
+	if( isDebugEnabled(1) ) logMessage("applicationlib.countNumberOfAllResevationsMadeToday: checking to see if reservations are made for time: $time");	
+	
 	//For each court in the site
 	$courtQuery = "Select courts.courtid from tblCourts courts where courts.siteid=".get_siteid();
 	$courtResult = db_query($courtQuery);
@@ -4376,7 +4378,8 @@ function countNumberOfAllResevationsMadeToday($time) {
 										AND courts.courtid=$courtid
 				                        AND reservations.time >= $starttime
 				                        AND reservations.time < $endtime
-				                        AND details.userid IN ($teamINClause)";
+				                        AND details.userid IN ($teamINClause)
+				                        AND reservations.enddate IS NULL";
 			
 				$doublesResult = db_query($doublesQuery);
 			
@@ -4465,6 +4468,8 @@ function countNumberOfCourtResevationsMadeToday($courtid, $time) {
 	$starttime = getOpenTimeToday($time, $courtid);
 	$endtime = getCloseTimeToday($time, $courtid);
 
+	if( isDebugEnabled(1) ) logMessage("applicationlib.countNumberOfCourtResevationsMadeToday: checking to see if reservations are made: $courtid and $time");	
+	
 	$singlesQuery = "SELECT count(reservations.time)
 	                      FROM tblReservations reservations, tblkpUserReservations details
 	                      WHERE reservations.reservationid = details.reservationid
@@ -4530,6 +4535,8 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 	$starttime = getTimeToday($starthour, $time);
 	$endtime = getTimeToday($endhour, $time);
 
+	if( isDebugEnabled(1) ) logMessage("applicationlib.countNumberOfCourtResevationsMadeTodayInWindow: checking to see if reservations are made: starthour: $starthour endhour: $endhour and time: $time");	
+	
 	$singlesQuery = "SELECT count(reservations.time)
 	                      FROM tblReservations reservations, tblkpUserReservations details
 	                      WHERE reservations.reservationid = details.reservationid
