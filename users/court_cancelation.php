@@ -41,11 +41,24 @@ if (isset($_POST['cancelall'])) {
             //For modifications send out the obligatory email.
 	        if($frm["cancelall"]==4){ 
 	        	confirm_singles($resid, false);
-	              header ("Location: $wwwroot/users/reservation_details.php?resid=$resid&time=$time");
+	        	
+	        	if(isSinglesReservationNeedPlayers($time, $courtid)){
+	        		header ("Location: $wwwroot/users/reservation_details.php?resid=$resid&time=$time");
+	        	}
+	        	else{
+	        		header ("Location: $wwwroot/clubs/".get_sitecode()."/index.php?daysahead=". gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ."");
+	        	}
+	             
 	        }
 	        elseif($frm["cancelall"]==8){ 
 	              confirm_doubles($resid, false );
-	              header ("Location: $wwwroot/users/reservation_details.php?resid=$resid&time=$time");
+	              
+	              if(isDoublesReservationNeedPlayers($time, $courtid)){
+	              	header ("Location: $wwwroot/users/reservation_details.php?resid=$resid&time=$time");
+	              }else{
+	              	 header ("Location: $wwwroot/clubs/".get_sitecode()."/index.php?daysahead=". gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ."");
+	              }
+	             
 	        }
 			else{
 	       		header ("Location: $wwwroot/clubs/".get_sitecode()."/index.php?daysahead=". gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ."");
