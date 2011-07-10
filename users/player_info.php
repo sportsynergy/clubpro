@@ -15,6 +15,12 @@ $userid = $_REQUEST["userid"];
 $searchname = $_REQUEST["searchname"];
 $extraParametersResult = load_site_parameters();
 
+// Player information can be pulled up from multiple places
+// in the application
+$origin = $_REQUEST["origin"];
+$courttypeid = $_REQUEST["courttypeid"];
+$sortoption = $_REQUEST["sortoption"];
+$displayoption = $_REQUEST["displayoption"];
 
 if(isset($userid)){
    $frm = load_user_profile($userid);

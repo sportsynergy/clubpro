@@ -1,4 +1,4 @@
-<?php
+<?
 /*
  * $LastChangedRevision: 857 $
  * $LastChangedBy: Adam Preston $
@@ -146,9 +146,27 @@
 
 <div style="height: 2em;"></div>
 <div style="text-align: left;">
-   <form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">
+
+<?
+
+// This page may be loaded from either the rankings page or the player lookup.  In either case, we should 
+// return the user from where they came from
+
+
+if($origin=="lookup"){ ?>
+	<form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">
 						<a href="javascript:submitForm('backtolistform');"><< Back to List</a>
 						<input type="hidden" name="searchname" value="<?=$searchname?>">
 	</form>
+<? } elseif($origin=="rankings"){ ?>
+   <form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">
+						<a href="javascript:submitForm('backtolistform');"><< Back to Rankings</a>
+						<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
+	                    <input type="hidden" name="sortoption" value="<?=$sortoption?>">
+	                    <input type="hidden" name="displayoption" value="<?=$displayoption?>">
+	                     <input type="hidden" name="origin" value="<?=$origin?>">
+	</form>
+   
+ <? } ?>
  </div> 
 

@@ -58,6 +58,12 @@ function validate_form($searchname) {
 
          }
 
+	   if( get_roleid()==1 && empty($searchname)){
+                $errors->searchname = true;
+                $msg .= "Wait...who are you looking for again?. ";
+
+         }
+         
         return $msg;
 }
 
@@ -121,6 +127,7 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
 	                       		<td><div align="center"><?=$playerarray[6]?></div> </td>
 	                       		<input type="hidden" name="userid" value="<?=$playerarray[0]?>">
 	                       		<input type="hidden" name="searchname" value="<?=$searchname?>">
+	                       		<input type="hidden" name="origin" value="lookup">
 	                        	<td><div align="center"><a href="javascript:submitForm('playerform<?=$rownum?>')">Info</a></td>
                         	</form>
                         </tr>

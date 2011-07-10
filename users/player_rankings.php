@@ -1,4 +1,4 @@
-<?php
+<?
 
 /*
  * $LastChangedRevision: 838 $
@@ -15,7 +15,7 @@ require_loginwq();
 
 /* form has been submitted, try to create the new role */
      
-if (match_referer() && ( isset($_POST['submit']) || isset($_POST['cmd']) ) ) {
+if ( isset($_POST['submit']) || isset($_POST['cmd']) || isset($_POST['origin'])   ) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
        
@@ -309,7 +309,8 @@ switch ($frm['displayoption']) {
 						users.firstname, 
 						users.lastname, 
 						rankings.ranking,  
-						rankings.hot
+						rankings.hot,
+						users.userid
                     FROM 
 						tblUsers users, 
 						tblUserRankings rankings,
@@ -408,8 +409,15 @@ switch ($frm['displayoption']) {
 		                                   <?=$counter?>
 	                                   
 	                                   </td>
-                                   <td><?= $rankrow[0] ?> <?=$rankrow[1]?> </td>
+                                   <td><a href="javascript:submitForm('playerform<?=$counter?>')"><?= $rankrow[0] ?> <?=$rankrow[1]?></a> </td>
                                    <td><div align="center"><?=$formrank?></div></td>
+                                   <form name="playerform<?=$counter?>" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php" >
+                                   	<input type="hidden" name="userid" value="<?=$rankrow[4]?>">
+	                       			<input type="hidden" name="courttypeid" value="<?=$frm["courttypeid"]?>">
+	                       			<input type="hidden" name="sortoption" value="<?=$frm['sortoption']?>">
+	                       			<input type="hidden" name="displayoption" value="<?=$frm['displayoption']?>">
+	                       			<input type="hidden" name="origin" value="rankings">
+                                   </form>
                                    </tr>
 								   <?
                                    $Numrows = $Numrows - 1;
