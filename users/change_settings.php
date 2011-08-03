@@ -79,7 +79,11 @@ function validate_form(&$frm, &$errors) {
                 $errors->email = true;
                 $msg .= "You did not specify your email address";
 
-        } elseif (!is_email_unique($frm["email"],$frm["userid"])) {
+        } 
+        
+        $otherClubUser = verifyEmailUnique($frm["email"],$frm["userid"]);
+        
+        if ( isset( $otherClubUser ) ) {
                 $errors->email = true;
                 $msg .= "The email address <b>" . ov($frm["email"]) ."</b> already exists";
 		} elseif (!is_email_valid($frm["email"])) {

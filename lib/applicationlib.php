@@ -3617,21 +3617,27 @@ function get_months() {
 
 /************************************************************************************************************************/
 /*
-     This function returns true if nobody has that email address
+     This function returns true if nobody has that email address.  
+     
+     @retun the clubuserid of the offending email address
 */
 
-function is_email_unique($email, $userid) {
-	$isUnique = true;
+function verifyEmailUnique($email, $userid ) {
 
-	$qid = db_query("SELECT userid FROM tblUsers WHERE email = '$email' AND enddate is NULL");
+	$qid = db_query("SELECT users.userid, clubuser.id 
+					FROM tblUsers users, tblClubUser clubuser 
+					WHERE users.email = '$email' 
+					AND users.enddate is NULL 
+					AND users.userid = clubuser.userid
+					AND clubuser.enddate IS NULL");
 
 	while ($row = mysql_fetch_array($qid)) {
 		if ($row['userid'] != $userid) {
-			$isUnique = false;
+			return $row['id'];
 		}
 	}
 
-	return $isUnique;
+	return;
 
 }
 

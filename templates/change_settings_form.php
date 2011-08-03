@@ -28,34 +28,34 @@
 
         <tr>
             <td class="label medwidth" ><font color="Red" class="normalsm">* </font>First Name:</td>
-            <td><input type="text" name="firstname" size=25 value="<? pv($frm["firstname"]) ?>">
+            <td><input type="text" name="firstname" size="35" value="<? pv($frm["firstname"]) ?>">
                 <?err($errors->firstname)?>
             </td>
         </tr>
         <tr>
             <td class="label medwidth" ><font color="Red" class=normalsm>* </font>Last Name:</td>
-            <td><input type="text" name="lastname" size=25 value="<? pv($frm["lastname"]) ?>">
+            <td><input type="text" name="lastname" size="35" value="<? pv($frm["lastname"]) ?>">
                 <?err($errors->lastname)?>
                 </td>
         </tr>
 
         <tr>
             <td class="label medwidth"><font color="Red" class=normalsm>* </font>Email:</td>
-            <td><input type="text" name="email" size=25 value="<? pv($frm["email"]) ?>">
+            <td><input type="text" name="email" size="35" value="<? pv($frm["email"]) ?>">
                 <?err($errors->email)?>
                 </td>
         </tr>
 
         <tr>
             <td class="label medwidth"><font color="Red" class=normalsm>* </font> Home Phone:</td>
-            <td><input type="text" name="homephone" size=25 value="<? pv($frm["homephone"]) ?>">
+            <td><input type="text" name="homephone" size="35" value="<? pv($frm["homephone"]) ?>">
                 <?err($errors->homephone)?>
                 </td>
         </tr>
 
         <tr>
             <td class="label medwidth"><font color="Red" class=normalsm>* </font>Work Phone:</td>
-            <td><input type="text" name="workphone" size=25 value="<? pv($frm["workphone"]) ?>">
+            <td><input type="text" name="workphone" size="35" value="<? pv($frm["workphone"]) ?>">
                 <?err($errors->workphone)?>
             </td>
         </tr>
@@ -67,14 +67,14 @@
         </tr>
          <tr>
             <td class="label medwidth">Pager:</td>
-            <td><input type="text" name="pager" size=25 value="<? pv($frm["pager"]) ?>">
+            <td><input type="text" name="pager" size="35" value="<? pv($frm["pager"]) ?>">
                 <?err($errors->pager)?>
             </td>
         </tr>
 
         <tr>
             <td class="label medwidth">Address:</td>
-            <td><textarea name="useraddress" cols=50 rows=5><? pv($frm["useraddress"]) ?></textarea>
+            <td><textarea name="useraddress" cols="50" rows="5"><? pv($frm["useraddress"]) ?></textarea>
                 <?err($errors->address)?>
             </td>
         </tr>

@@ -77,7 +77,18 @@ function validate_form(&$frm, &$errors) {
         } elseif ( !empty($frm["email"]) && !is_email_valid($frm["email"])) {
                 $errors->email = true;
                 $msg .= "Please enter a valid email address";
+        } elseif(!empty($frm["email"]) ){
+        	
+        	$otherClubUser = verifyEmailUnique($frm["email"],$frm["userid"]);
+	        if ( isset( $otherClubUser ) ) {
+	                $errors->email = true;
+	                $msg .= "The email address <b>" . ov($frm["email"]) ."</b> already exists";
+			}
         }
+        
+		
+        
+        
         
 
         return $msg;

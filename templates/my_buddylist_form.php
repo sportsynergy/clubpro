@@ -83,25 +83,35 @@ $bid = $_REQUEST["bid"];
       </td>
      </tr>
      
+      <?
+       //List out all of the players Buddies
+       $query = "SELECT buddies.bid, users.firstname, users.lastname, users.userid
+                 FROM tblUsers users, tblClubUser clubuser, tblBuddies buddies
+                 WHERE users.userid = buddies.buddyid
+				 AND clubuser.userid = users.userid
+                 AND  buddies.userid=".get_userid()."
+				 AND clubuser.enddate IS NULL
+                 AND clubuser.enable = 'y'
+                 AND clubuser.clubid = ".get_clubid();
+
+       // run the query on the database
+       $result = db_query($query); 
+       
+        if( isDebugEnabled(1) ) logMessage("my_buddylist_form: found ". mysql_num_rows($result). "buddies");
+        
+        
+        if( mysql_num_rows($result) == 0 ){ ?>
+        	<tr>
+        	<td colspan="2">
+        	You don't have any buddies.  Why don't add one now.
+        	</td>
+        	</tr>
+       <? }  else { ?>
+				       
      <tr>
          <td colspan="3">
                <table width="450" cellpadding="0" cellspacing="0">
-				     <?
-				       //List out all of the players Buddies
-				       $query = "SELECT buddies.bid, users.firstname, users.lastname, users.userid
-				                 FROM tblUsers users, tblClubUser clubuser, tblBuddies buddies
-				                 WHERE users.userid = buddies.buddyid
-								 AND clubuser.userid = users.userid
-				                 AND  buddies.userid=".get_userid()."
-								 AND clubuser.enddate IS NULL
-				                 AND clubuser.enable = 'y'";
-				
-				       // run the query on the database
-				       $result = db_query($query); 
-				       
-				        if( isDebugEnabled(1) ) logMessage("my_buddylist_form: found ". mysql_num_rows($result). "buddies");
-				        
-				       ?>
+				    
 				
 				       <tr>
 				       <td></td>
@@ -157,11 +167,16 @@ $bid = $_REQUEST["bid"];
 
 			   </td>
 			 </tr>
+			 
+		
 			  <tr>
 				<td colspan="3">
 					<span style="color: red;">*</span><span class=normalsm> <span style="font-weight: bold;">Key:</span> Matches I Have Won - Matches My Buddy Has Won (My Winning Percentage)</span>
 				</td>
 			</tr>
+			
+		 <? } ?>
+				 
 		</table>
 		
 
@@ -173,17 +188,18 @@ $bid = $_REQUEST["bid"];
 
 </form>
 
+<?   if( mysql_num_rows($result) > 0 ){  ?>
 <div style="height: 2em;"></div>
 <div>
 
       <?
-	     //Get the email addresses of the players to put into the mailto
+      //Get the email addresses of the players to put into the mailto
 	    $emailArray = getBuddyEmailAddresses(get_userid());
 	    $emailString = implode(",", $emailArray);
     
      ?>
 	<span> <a href="mailto:<?=$emailString?>">Send an email to these schmucks</a> </span>
 	</div>
-
+<? } ?>
 
       

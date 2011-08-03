@@ -91,7 +91,7 @@ function print_players($searchname, $playerresult,$DOC_TITLE, $ME) {
 	</form>
 	
 	
-	<div style="text-align: right; width: 680px">
+	<div style="text-align: right; width: 680px; padding-bottom: 2px">
 	<a href="javascript:submitForm('exportDataForm')">Export this list</a>
 	</div>
 					<table cellpadding="20" width="680" class="bordertable">

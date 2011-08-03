@@ -10,19 +10,19 @@
 ?>
 
 
-
-<h2>Club Events</h2>
-<hr class="hrline"/>
-
 <div>
 <ul class="clubevents">
 
 <?
 $clubEventsResult = getClubEvents( get_clubid() );
 
-if(mysql_num_rows($clubEventsResult)==0){ ?>
-	<li>No club events setup...yet</li>
-<?}else{
+if(mysql_num_rows($clubEventsResult) > 0){ ?>
+	
+	
+<h2>Club Events</h2>
+<hr class="hrline"/>
+
+<?
 	
 while($clubEvent = mysql_fetch_array($clubEventsResult)){ ?>
 	
