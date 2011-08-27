@@ -99,8 +99,10 @@ function delete_player(&$frm) {
 
              //Get all reservations where the persons team was playing
              $teamresidquery = "SELECT reservations.reservationid
-                              FROM tblReservations reservations, tblkpUserReservations reservationdetails
+                              FROM tblReservations reservations, tblkpUserReservations reservationdetails, tblCourts courts
 							  WHERE reservations.reservationid = reservationdetails.reservationid
+							  AND reservations.courtid = courts.courtid
+                              AND courts.clubid = ".get_clubid()."
                               AND reservations.usertype=1
 							  AND reservationdetails.usertype=1
                               AND reservationdetails.userid=$teamidrow[0]";
@@ -128,8 +130,10 @@ function delete_player(&$frm) {
        // the player as a single person looking for a partner.
 
        $userresidquery = "SELECT reservations.reservationid
-                          FROM tblReservations reservations, tblkpUserReservations reservationdetails
+                          FROM tblReservations reservations, tblkpUserReservations reservationdetails, tblCourts courts
                           WHERE reservations.reservationid = reservationdetails.reservationid
+                          AND reservations.courtid = courts.courtid
+                          AND courts.clubid = ".get_clubid()."
 						  AND reservationdetails.userid='$frm[userid]'
                           AND reservationdetails.usertype=0";
                           

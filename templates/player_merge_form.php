@@ -30,7 +30,7 @@
     <tr>
     	<td>
            		<input type="submit" name="cancel" value="Yes, please link these two accounts">
-           		<input type="button" value="No, go back" onClick="javascript:submitFormWithAction('changeSettingsForm','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/change_settings.php');">
+           		<input type="button" value="No, go back" onClick="javascript:submitForm('changeSettingsForm');">
            </td>
     </tr>
  </table>
@@ -38,12 +38,12 @@
 </table>
 
 
-<input type="hidden" name="userid" value="<?=$userid?>">
+<input type="hidden" name="userid" value="<?=$userid?>" action="<?=$ME?>">
 <input type="hidden" name="other_userid" value="<?=$otherClubUser?>">
 <input type="hidden" name="action" value="mergeaccounts">
 
 </form>
 
-<form name="changeSettingsForm" method="post">
+<form name="changeSettingsForm" method="post" action>
 	<input type="hidden" name="userid" value="<?=$userid?>">
 </form>

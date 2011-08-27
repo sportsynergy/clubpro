@@ -3622,13 +3622,16 @@ function get_months() {
      @retun the clubuserid of the offending email address
 */
 
-function verifyEmailUnique($email, $userid ) {
+function verifyEmailUniqueOutsideClub($email, $userid, $clubid ) {
 
+	if( isDebugEnabled(1) ) logMessage("applicationlib.verifyEmailUniqueOutsideClub: $email, $userid and $clubid");
+	
 	$qid = db_query("SELECT users.userid, clubuser.id 
 					FROM tblUsers users, tblClubUser clubuser 
 					WHERE users.email = '$email' 
 					AND users.enddate is NULL 
 					AND users.userid = clubuser.userid
+					and clubuser.clubid != $clubid
 					AND clubuser.enddate IS NULL");
 
 	while ($row = mysql_fetch_array($qid)) {
@@ -3639,6 +3642,63 @@ function verifyEmailUnique($email, $userid ) {
 
 	return;
 
+}
+
+/************************************************************************************************************************/
+/*
+     This function returns true if nobody has that email address.  
+     
+     @retun the clubuserid of the offending email address
+*/
+
+function verifyEmailUniqueAtClub($email, $userid, $clubid ) {
+
+	
+	if( isDebugEnabled(1) ) logMessage("applicationlib.verifyEmailUniqueAtClub: $email, $userid and $clubid");
+	
+	$qid = db_query("SELECT users.userid, clubuser.id 
+					FROM tblUsers users, tblClubUser clubuser 
+					WHERE users.email = '$email' 
+					AND users.enddate is NULL 
+					AND users.userid = clubuser.userid
+					AND clubuser.clubid = $clubid
+					AND clubuser.enddate IS NULL");
+
+	while ($row = mysql_fetch_array($qid)) {
+		if ($row['userid'] != $userid) {
+			return $row['id'];
+		}
+	}
+
+	return;
+
+}
+
+/**
+ * 
+ * @param $email
+ * @param $clubid
+ */
+function isEmailUniqueAtClub($email, $clubid){
+	
+	if( isDebugEnabled(1) ) logMessage("applicationlib.isEmailUniqueAtClub: $email and $clubid");
+	
+	$qid = db_query("SELECT users.userid, clubuser.id 
+					FROM tblUsers users, tblClubUser clubuser 
+					WHERE users.email = '$email' 
+					AND users.enddate is NULL 
+					AND users.userid = clubuser.userid
+					AND clubuser.clubid = $clubid
+					AND clubuser.enddate IS NULL");
+
+	if( mysql_num_rows($qid)>0){
+		return false;
+	}else{
+		return true;
+	}
+
+
+	
 }
 
 /************************************************************************************************************************/

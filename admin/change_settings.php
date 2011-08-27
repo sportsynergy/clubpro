@@ -56,10 +56,10 @@ if ( isset($_POST['submit']) || isset($_POST['action'])) {
           	$noticemsg = "Profile was merged.  Good Job!<br/><br/>";
           	
           }
-          // Just update the settings
+          // Save the user
           else{
           	
-          	$errormsg = validate_form($frm, $errors);
+          		$errormsg = validate_form($frm, $errors);
         
 				if (empty($errormsg)){
 	                update_settings($frm,$availableSites, $availbleSports, $extraParametersResult);
@@ -75,7 +75,8 @@ if ( isset($_POST['submit']) || isset($_POST['action'])) {
 	                
 				}
 				
-				$otherClubUser = validate_email($frm, $errors);
+				if( isDebugEnabled(1) ) logMessage("change_settings.submit: checking to see if email exists outside of club ". $frm["email"]);
+				$otherClubUser = validate_email($frm["email"], $frm["userid"]);
 				
 				if(  isset($otherClubUser ) ){
 					
@@ -155,6 +156,16 @@ function validate_form(&$frm, &$errors) {
         } elseif (empty($frm["lastname"])) {
                 $errors->lastname = true;
                 $msg .= "You did not specify a last name";
+                
+        } elseif ( !empty($frm["email"]) ) {
+                
+        	$otherUser = verifyEmailUniqueAtClub($frm["email"], $frm["userid"], get_clubid() );
+        	
+        	if( isset($otherUser) ){
+        		$errors->email = true;
+                $msg .= "The email address <b>" . ov($frm["email"]) ."</b> already exists";
+        	}
+        	
         } 
         
 
@@ -163,15 +174,15 @@ function validate_form(&$frm, &$errors) {
 
 /**
  * 
- * @param $frm
- * @param $errors
+ * @param $email
+ * @param $userid
  */
-function validate_email(&$frm, &$errors){
+function validate_email($email, $userid){
 	
-		if( isDebugEnabled(1) ) logMessage("change_settings.update_settings: validate_email ". $frm["email"]);
+		if( isDebugEnabled(1) ) logMessage("change_settings.update_settings: validate_email ". $email);
 
-		if (!empty($frm["email"]) ) {
-			 return verifyEmailUnique($frm["email"],$frm["userid"]);
+		if (!empty($email) ) {
+			 return verifyEmailUniqueOutsideClub($email,$userid, get_clubid());
 		} 
 		
 		return;
