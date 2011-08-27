@@ -20,9 +20,9 @@
 					<td>
 						<select name="allowselfcancel">
 							<option value="y"
-							<? if($frm["allowselfcancel"] =='y'){ echo "selected";} ?>>Yes</option>
+							<? if($generalPreferences["allowselfcancel"] =='y'){ echo "selected";} ?>>Yes</option>
 							<option value="n"
-							<? if($frm["allowselfcancel"] =='n'){ echo "selected";} ?>>No</option>
+							<? if($generalPreferences["allowselfcancel"] =='n'){ echo "selected";} ?>>No</option>
 						</select>
 					</td>
 				</tr>
@@ -43,7 +43,7 @@
 				
 						<?
 						//Default to the current daysahead setting.
-						if($frm["daysahead"] == $i){
+						if($generalPreferences["daysahead"] == $i){
 							$selected = "selected";
 						}
 						?>
@@ -66,12 +66,12 @@
 				<tr>
 					<td class="label">Player Inactivty Ranking Adjustment:</td>
 					<td><select name="inactivity">
-						<option value="0" <?=$frm["rankingadjustment"]==0?"selected":""?>>0%</option>
-						<option value="3" <?=$frm["rankingadjustment"]==3?"selected":""?>>3%</option>
-						<option value="5" <?=$frm["rankingadjustment"]==5?"selected":""?>>5%</option>
-						<option value="10" <?=$frm["rankingadjustment"]==10?"selected":""?>>10%</option>
-						<option value="20" <?=$frm["rankingadjustment"]==20?"selected":""?>>20%</option>
-						<option value="25" <?=$frm["rankingadjustment"]==25?"selected":""?>>25%</option>
+						<option value="0" <?=$generalPreferences["rankingadjustment"]==0?"selected":""?>>0%</option>
+						<option value="3" <?=$generalPreferences["rankingadjustment"]==3?"selected":""?>>3%</option>
+						<option value="5" <?=$generalPreferences["rankingadjustment"]==5?"selected":""?>>5%</option>
+						<option value="10" <?=$generalPreferences["rankingadjustment"]==10?"selected":""?>>10%</option>
+						<option value="20" <?=$generalPreferences["rankingadjustment"]==20?"selected":""?>>20%</option>
+						<option value="25" <?=$generalPreferences["rankingadjustment"]==25?"selected":""?>>25%</option>
 					</select></td>
 				</tr>
 				<tr>
@@ -93,9 +93,9 @@
 						<td class="label">Allow Players To Score Their Own Reservations:</td>
 						<td><select name="allowselfscore">
 							<option value="y"
-							<? if($frm["allowselfscore"] =='y'){ echo "selected";} ?>>Yes</option>
+							<? if($generalPreferences["allowselfscore"] =='y'){ echo "selected";} ?>>Yes</option>
 							<option value="n"
-							<? if($frm["allowselfscore"] =='n'){ echo "selected";} ?>>No</option>
+							<? if($generalPreferences["allowselfscore"] =='n'){ echo "selected";} ?>>No</option>
 						</select></td>
 					</tr>
 					<tr>

@@ -48,6 +48,7 @@ require_login();
 $reservationPolicies = load_reservation_policies(get_siteid());
 $skillRangePolicies = load_skill_range_policies(get_siteid());
 $siteMessages = load_site_messages(get_siteid());
+$generalPreferences = load_general_preferences(get_siteid());
 
 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
 include($_SESSION["CFG"]["templatedir"]."/policy_preferences_form.php");
@@ -204,18 +205,24 @@ function load_site_messages($siteid) {
 /* load up the user's details */
 
         //if userid exists then the club administrator is updating a users account
-
-
         $qid = db_query("SELECT messages.message, messages.enable
                          FROM tblMessages messages
                          WHERE messages.siteid = $siteid");
 
-
-
-
         return db_fetch_array($qid);
 
    }
+   
+ 
+ function load_general_preferences($siteid){
+ 	
+ 	 //if userid exists then the club administrator is updating a users account
+        $qid = db_query("SELECT clubsite.allowselfcancel, clubsite.daysahead, clubsite.rankingadjustment, clubsite.allowselfscore
+                         FROM tblClubSites clubsite
+                         WHERE clubsite.siteid = $siteid");
+
+        return db_fetch_array($qid);
+ }
    
 /**
  * 
