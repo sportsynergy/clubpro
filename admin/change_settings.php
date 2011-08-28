@@ -132,21 +132,6 @@ function validate_form(&$frm, &$errors) {
         return $msg;
 }
 
-/**
- * 
- * @param $email
- * @param $userid
- */
-function validate_email($email, $userid){
-	
-		if( isDebugEnabled(1) ) logMessage("change_settings.update_settings: validate_email ". $email);
-
-		if (!empty($email) ) {
-			 return verifyEmailUniqueOutsideClub($email,$userid, get_clubid());
-		} 
-		
-		return;
-}
 
 /**
  * 

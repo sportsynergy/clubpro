@@ -81,7 +81,7 @@ function validate_form(&$frm, &$errors) {
 
         } 
         
-        $otherClubUser = verifyEmailUnique($frm["email"],$frm["userid"]);
+        $otherClubUser = verifyEmailUniqueAtClub($frm["email"],$frm["userid"], get_clubid() );
         
         if ( isset( $otherClubUser ) ) {
                 $errors->email = true;
