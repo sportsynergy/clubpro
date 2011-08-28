@@ -56,7 +56,7 @@ function delete_player(&$frm) {
 		$qid1 = db_query("UPDATE tblUsers SET enddate = NOW() WHERE userid = '$frm[userid]'");
 		
 		if( isDebugEnabled(2) ) logMessage("player_delete.delete_player: Deleting club user: '$frm[userid]' from ".get_clubname()." by ".get_userfullname() );
-		$qid1 = db_query("UPDATE tblClubUser SET enddate = NOW() WHERE userid = '$frm[userid]' AND clubid = $row[clubid]");
+		$qid1 = db_query("UPDATE tblClubUser SET enddate = NOW() WHERE userid = '$frm[userid]' AND clubid = ".get_clubid());
 
 		
 
