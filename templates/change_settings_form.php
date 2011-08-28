@@ -1,4 +1,4 @@
-<?php
+<?
 /*
  * $LastChangedRevision: 857 $
  * $LastChangedBy: Adam Preston $
@@ -25,6 +25,11 @@
             <td class="label medwidth" >Username:</td>
             <td class="normal"><? pv($frm["username"]) ?></td>
         </tr>
+        
+        <tr>
+			<td class="label medwidth">Sportsynergy Id:</td>
+			<td class="normal"><? pv($frm["userid"]) ?></td>
+		</tr>
 
         <tr>
             <td class="label medwidth" ><font color="Red" class="normalsm">* </font>First Name:</td>

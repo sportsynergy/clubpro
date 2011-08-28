@@ -1,4 +1,4 @@
-<?php
+<?
 /*
  * $LastChangedRevision: 857 $
  * $LastChangedBy: Adam Preston $
@@ -24,6 +24,12 @@
        <form name="entryform" method="post" action="<?=$ME?>">
        <table cellspacing="5" cellpadding="1" width="600" >
        
+       <tr>
+			<td class="label medwidth">Sportsynergy Id:</td>
+			<td class="normal"><? pv($frm["userid"]) ?></td>
+		</tr>
+		
+		
   <?if(!isSiteAutoLogin()){ ?>
 
         <tr>
