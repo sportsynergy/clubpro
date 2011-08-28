@@ -75,9 +75,13 @@
 				<td class="label" valign=top>Address:</td>
 				<td class="normal"><textarea name="useraddress" cols="60" rows="5" disabled="disabled"><? pv($frm["useraddress"]) ?></textarea></td>
 			</tr>
+			
 			<tr>
-				<td colspan="2" height="20"><!-- Spacer --></td>
+				<td class="label" valign="top">Sportsynergy Id:</td>
+				<td class="normal"><? pv($frm["userid"]) ?></td>
 			</tr>
+			
+			
 			<tr>
 			
 			<?
