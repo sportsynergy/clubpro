@@ -22,6 +22,13 @@ if(!isset($userid)){
 
 $DOC_TITLE = "Player Administration";
 
+// Load up data for view
+$registeredSports = load_registered_sports($userid);
+$authSites = load_auth_sites($userid);
+$availbleSports = load_avail_sports();
+$availableSites = load_avail_sites();
+$extraParametersResult = load_site_parameters();
+
 
 
 /* form has been submitted, check if it the user login information is correct */
@@ -40,15 +47,24 @@ if ( isset($_POST['submit']) || isset($_POST['action'])) {
           		$errormsg = validate_form($frm, $errors);
         
 				if (empty($errormsg)){
-	                update_settings($frm,$availableSites, $availbleSports, $extraParametersResult);
+	                
+					update_settings($frm,$availableSites, $availbleSports, $extraParametersResult);
 					
+					//Refresh the data
 	                $registeredSports = load_registered_sports($userid);
 	                $authSites = load_auth_sites($userid);
-	                $availbleSports = load_avail_sports();
-	                $availableSites = load_avail_sites();
 	                
+	                // Reset these pointers
 	                if( mysql_num_rows($extraParametersResult) > 0 ){
 	                	mysql_data_seek($extraParametersResult, 0);
+	                }
+	                
+					if( mysql_num_rows($availbleSports) > 0 ){
+	                	mysql_data_seek($availbleSports, 0);
+	                }
+		                
+					if( mysql_num_rows($availableSites) > 0 ){
+	                	mysql_data_seek($availableSites, 0);
 	                }
 	                
 					//Save email address
@@ -65,12 +81,7 @@ if ( isset($_POST['submit']) || isset($_POST['action'])) {
 } 
 
 
-// Load up data for view
-$registeredSports = load_registered_sports($userid);
-$authSites = load_auth_sites($userid);
-$availbleSports = load_avail_sports();
-$availableSites = load_avail_sites();
-$extraParametersResult = load_site_parameters();
+
 
 $frm = load_user_profile($userid);
 
@@ -142,6 +153,8 @@ function validate_form(&$frm, &$errors) {
  */
 function update_settings(&$frm, $availableSites, $availbleSports, $extraParametersResult) {
 
+	if( isDebugEnabled(1) ) logMessage("Updating the account for: " .$frm['userid'] );
+	
 
          //If userid is not set this is being run by a player who is updating
          //their own accoutn information.  If this is the case we will get the userid
@@ -189,23 +202,33 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
 
                  //Now set the sites
                 for ($i=0; $i<mysql_num_rows($availableSites); ++$i){
-                      $siteArray = mysql_fetch_array($availableSites);
+				
+                	if( isDebugEnabled(1) ) logMessage("Going through the available sites");
+                	
+                	$siteArray = mysql_fetch_array($availableSites);
+                      
                       if($frm["clubsite$siteArray[siteid]"]){
 
-
-
-                          //If the site isn't in the list insert it
+                      	
+                      	if( isDebugEnabled(1) ) logMessage("Checking on Site ".$siteArray[siteid]);
+                          
+                      	//If the site isn't in the list insert it
                           if(!in_array($siteArray['siteid'],$mySites)){
-
-                          $addSiteQuery = "INSERT INTO `tblkupSiteAuth` ( `userid` , `siteid` ) VALUES ($userid, ".$siteArray['siteid'].")";
-                           db_query($addSiteQuery);
+							
+                          	if( isDebugEnabled(1) ) logMessage("Adding a new site autorization ". $siteArray['siteid']);
+                          	
+                          		$addSiteQuery = "INSERT INTO `tblkupSiteAuth` ( `userid` , `siteid` ) VALUES ($userid, ".$siteArray['siteid'].")";
+                           		db_query($addSiteQuery);
                           }
 
 
                       }
                       //if siteid post var is not set and it was set before we will delete it.
                       else{
-                        mysql_query("DELETE from `tblkupSiteAuth `WHERE userid=$userid AND siteid=".$siteArray['siteid']."");
+						if( isDebugEnabled(1) ) logMessage("Deleting a site autorization ". $siteArray['siteid']." and user: $userid");
+                      	$removeSiteQuery = "DELETE from tblkupSiteAuth WHERE userid=$userid AND siteid=".$siteArray['siteid'];
+                      	
+                      	db_query($removeSiteQuery);
                       }
 
                 }

@@ -246,7 +246,8 @@
 
 
         for ( $i=0; $i<mysql_num_rows($availbleSports); ++$i){
-             $availbleSportsArray = db_fetch_array($availbleSports);
+
+        	$availbleSportsArray = db_fetch_array($availbleSports);
 
                   //Match up the users ranking with the availbe court types
                  for ($j=0; $j<mysql_num_rows($registeredSports); ++$j){

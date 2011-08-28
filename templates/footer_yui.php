@@ -21,7 +21,7 @@
 	 
 					<div align="center">
 						<hr/>
-						<span class="bold">
+						<span>
 	          				<? if( ! empty($_SESSION["footermessage"]) ){ ?>
 	          					<?=$_SESSION["footermessage"]?>
 	          				<? } ?>
