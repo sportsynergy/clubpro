@@ -36,29 +36,7 @@ if ( isset($_POST['submit']) || isset($_POST['action'])) {
           $wwwroot = $_SESSION["CFG"]["wwwroot"];
           $backtopage = "$wwwroot/admin/change_settings.php$useridstring";
 
-          // Check to see if the user had tried to save a duplicate email address and chosen to 
-          // merge the accounts
-          if( $frm["action"] == "mergeaccounts" ){
-
-			
-			//Set the new userid
-			$query = "SELECT userid from tblClubUser WHERE id = ".$frm['other_userid'];
-			$result = db_query($query);
-			$otherUserId = mysql_result($result,0);
-			
-			//Merge these two accounts (create a club user for the current club, for that user)
-			mergeAccounts($userid, $otherUserId);
-			
-			
-			$userid = $otherUserId;
-                                   
-          	//Display the message
-          	$noticemsg = "Profile was merged.  Good Job!<br/><br/>";
-          	
-          }
-          // Save the user
-          else{
-          	
+ 
           		$errormsg = validate_form($frm, $errors);
         
 				if (empty($errormsg)){
@@ -73,24 +51,6 @@ if ( isset($_POST['submit']) || isset($_POST['action'])) {
 	                	mysql_data_seek($extraParametersResult, 0);
 	                }
 	                
-				}
-				
-				if( isDebugEnabled(1) ) logMessage("change_settings.submit: checking to see if email exists outside of club ". $frm["email"]);
-				$otherClubUser = validate_email($frm["email"], $frm["userid"]);
-				
-				if(  isset($otherClubUser ) ){
-					
-					$clubNameQuery = "SELECT clubs.clubname FROM tblClubs clubs, tblClubUser clubuser WHERE clubs.clubid = clubuser.clubid AND clubuser.id = $otherClubUser";
-					$otherClubResult = db_query($clubNameQuery);
-					$otherClub = mysql_result($otherClubResult,0);
-					
-					include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
-					include($_SESSION["CFG"]["templatedir"]."/player_merge_form.php");
-					include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
-					die;
-				}
-				else{
-					
 					//Save email address
 					$query = "UPDATE tblUsers set email = '".$frm['email']."' where userid = ".$frm['userid'];
 					db_query($query);
@@ -99,7 +59,7 @@ if ( isset($_POST['submit']) || isset($_POST['action'])) {
 					$noticemsg = "Your profile was saved.  Good Job!<br/><br/>";
 				}
 			
-          }
+          
 			
 
 } 
@@ -340,105 +300,5 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
    }
 
    
-   /**
-    * 
-    * This function does a replacement of one user with another user from another club
-    * 
-    * Steps:
-    * 	- End date the first user
-    * 	- Create a clubuser record for the second user
-    *  	- Copy the first users buddyes to the second user
-    *  	- Copy the first users authorizations to the second user
-    *  
-    *  
-    * @param $olderUserId
-    * @param $newUserId
-    */
-   function mergeAccounts($oldUserId, $newUserId){
-   	
-   			// end date the current club user account for this club
-          	if( isDebugEnabled(1) ) logMessage("change_settings.mergeaccounts:enddating: $oldUserId");
-          	
-          	$mergeClubUserQuery = "SELECT msince, roleid, memberid, userid FROM tblClubUser where userid = '$oldUserId' AND clubid = ".get_clubid()." and enddate is null";
-          	$mergeClubUserResult = db_query($mergeClubUserQuery);
-          	$mergeClubUserArray = mysql_fetch_array($mergeClubUserResult);
-          	
-          	$oldClubUserAcountQuery = "UPDATE tblClubUser set enddate = NOW() WHERE clubid = ".get_clubid()."
-          								AND userid = $oldUserId";
-          	db_query($oldClubUserAcountQuery);
-          	
-          	
-          	
-          	// create a club user entry for the other_user with the current club
-          	//Insert the Club User (for the new club)
-			 $clubUserQuery = "INSERT INTO tblClubUser (
-	                userid, clubid, msince, roleid, memberid
-	                ) VALUES (
-	                         $newUserId
-							  ,".get_clubid()."
-	                          ,'$mergeClubUserArray[msince]'
-	                          ,'$mergeClubUserArray[roleid]'
-	                          ,'$mergeClubUserArray[memberid]'
-	                          )";
-			
-			$clubUserResult = db_query($clubUserQuery);
-			
-			// Copy buddies
-			$buddyQuery = "SELECT buddyid FROM tblBuddies WHERE userid = $oldUserId";
-			$buddyResult = db_query($buddyQuery);
-			
-			// Go through all of the buddies and copy them over
-			while( $buddyArray = mysql_fetch_array($buddyResult) ){
-				
-				if( isDebugEnabled(1) ) logMessage("change_settings.merging buddy: ".$buddyArray[buddyid]);
-				
-			        $query = "INSERT INTO tblBuddies (
-			                userid, buddyid
-			                ) VALUES (
-			                          '$newUserId'
-			                          ,'$buddyArray[buddyid]')";
-			
-			        // run the query on the database
-			        $result = db_query($query);
-				
-			}
-			
-			//Add the new player as a buddy from others
-			if( isDebugEnabled(1) ) logMessage("change_settings.Add the new player as a buddy from others");
-			$buddyquery = "SELECT userid from tblBuddies WHERE buddyid = $oldUserId";
-			$buddyresult = db_query($buddyquery);
-			
-			while( $buddyUserArray = mysql_fetch_array($buddyresult) ){
-				if( isDebugEnabled(1) ) logMessage("change_settings.updating people who had $oldUserId as their buddy");
-				
-				  $query1 = "INSERT INTO tblBuddies (
-			                userid, buddyid
-			                ) VALUES (
-			                          '$buddyUserArray[userid]'
-			                          ,'$newUserId')";
-			
-			        // run the query on the database
-			        $result1 = db_query($query1);
-				
-			}
-			
-			
-			// Copy authorizations
-			$siteAuthorizationQuery = "SELECT siteid FROM tblkupSiteAuth WHERE userid = $oldUserId";
-			$siteAuthorizationResult = db_query($siteAuthorizationQuery);
-			
-			while($siteAuthArray = mysql_fetch_array($siteAuthorizationResult) ){
-				if( isDebugEnabled(1) ) logMessage("change_settings.merging siteauths: ".$siteAuthArray[siteid]);
-				 $query = "INSERT INTO tblkupSiteAuth (
-			                userid, siteid
-			                ) VALUES (
-			                          '$newUserId'
-			                          ,'$siteAuthArray[siteid]')";
-			
-			        // run the query on the database
-			        $result = db_query($query);
-			}
-			
-			
-   }
+  
 ?>

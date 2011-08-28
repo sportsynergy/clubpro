@@ -51,32 +51,13 @@ function delete_player(&$frm) {
 		
 		$clubUserQuery = "SELECT clubuser.clubid FROM tblClubUser clubuser WHERE clubuser.userid = '$frm[userid]'";
 		$clubUserResult = db_query($clubUserQuery);
+
+		if( isDebugEnabled(2) ) logMessage("player_delete.delete_player: Deleting user: '$frm[userid]' from ".get_clubname()." by ".get_userfullname() );
+		$qid1 = db_query("UPDATE tblUsers SET enddate = NOW() WHERE userid = '$frm[userid]'");
 		
-		//Only delete the user if there is only one club authorization
-		if( mysql_num_rows($clubUserResult) == 1){
-			
-			if( isDebugEnabled(2) ) logMessage("player_delete.delete_player: Deleting user: '$frm[userid]' from ".get_clubname()." by ".get_userfullname() );
-			
-			$qid1 = db_query("UPDATE tblUsers SET enddate = NOW() WHERE userid = '$frm[userid]'");
-			
-			
-			
-			
-		}
+		if( isDebugEnabled(2) ) logMessage("player_delete.delete_player: Deleting club user: '$frm[userid]' from ".get_clubname()." by ".get_userfullname() );
+		$qid1 = db_query("UPDATE tblClubUser SET enddate = NOW() WHERE userid = '$frm[userid]' AND clubid = $row[clubid]");
 
-		while( $row = mysql_fetch_array($clubUserResult)){
-
-			//Leave the user in tact (only remove the authorization as this user belongs to another club)
-			if($row['clubid']== get_clubid() ){
-				
-				if( isDebugEnabled(2) ) logMessage("player_delete.delete_player: Deleting club user: '$frm[userid]' from ".get_clubname()." by ".get_userfullname() );
-			
-				$qid1 = db_query("UPDATE tblClubUser SET enddate = NOW() WHERE userid = '$frm[userid]' AND clubid = $row[clubid]");
-				
-				
-			}
-			
-		}
 		
 
        // Now we need to get rid of all of the teams they were on
