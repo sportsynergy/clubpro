@@ -19,7 +19,7 @@
 
 <?
 	$rememberLast = $_COOKIE["remembercookie"];
-	
+	$checked = "";
 	if( isset($rememberLast) ){
 		$checked = "checked";
 	}
@@ -46,7 +46,7 @@
  <tr>
     <td>
         <? if (! empty($errormsg)) { ?>
-                <div class=warning align=center><? pv($errormsg) ?></div>
+                <div class=warning align=center ><? pv($errormsg) ?></div>
         <? } ?>
 
        
@@ -66,9 +66,9 @@
                 <td align="center"><input type="submit" value="Login">
                         <input type="button" value="Cancel" onClick="javascript: history.go(-1)">
                        <? if(!isSiteAutoLogin()){ ?>
-                        <p class="normal">
+                        <div class="normal" style="margin-top: 15px">
                         	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/forgot_password.php">Forgot my password</a>
-                        </p>
+                        </div>
                         <? } ?>
                 </td>
           </tr>

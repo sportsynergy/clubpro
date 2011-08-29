@@ -599,11 +599,14 @@ function atleastof_priv($roleid) {
 	return $_SESSION["user"]["roleid"] >= $roleid;
 }
 
-function generate_password() {
-	/* returns a randomly generated password of length $maxlen.  inspired by
+
+/* returns a randomly generated password of length $maxlen.  inspired by
 	 * http://www.phpbuilder.com/columns/jesus19990502.php3 */
+function generate_password() {
 
 	$maxlen = 10;
+	
+	if(isDebugEnabled(1) ) logMessage("applicationlib: generate_passowrd: ".$_SESSION["CFG"]["wordlist"]);
 	
 	$fillers = "1234567890!@#$%&*-_=+^";
 	$wordlist = file($_SESSION["CFG"]["wordlist"]);
@@ -673,24 +676,41 @@ function username_already_exists($username, $userid) {
 function email_exists($email) {
 	/* returns true the email address exists */
 	
-	$query = "SELECT 1 FROM tblUsers WHERE email = '$email' AND tblUsers.enddate IS NULL";
+	$query = "SELECT 1 FROM tblUsers users, tblClubUser clubuser
+				WHERE users.email = '$email' 
+				AND users.userid = clubuser.userid
+				AND clubuser.clubid = ".get_clubid()."
+				AND users.enddate IS NULL";
 	$qid = db_query($query);
 	
 	return db_num_rows($qid);
 }
 
-function reset_user_password($username) {
+
+/**
+ * Reset the users password
+ * 
+ * @param $userid
+ */
+function reset_user_password($userid) {
 	/* resets the password for the user with the username $username, and sends it
 	 * to him/her via email */
 
+	if(isDebugEnabled(1) ) logMessage("applicationlib: reset_user_password for userid: $userid");
+	
 
 	/* load up the user record */
-	$qid = db_query("SELECT username, firstname, lastname, email FROM tblUsers WHERE username = '$username' AND tblUsers.enddate IS NULL");
+	$qid = db_query("SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
+						FROM tblUsers users
+						WHERE users.userid = '$userid'");
 	$user = db_fetch_object($qid);
 
 	/* reset the password */
 	$newpassword = generate_password();
-	$qid = db_query("UPDATE tblUsers SET password = '" . md5($newpassword) . "' WHERE username = '$username' AND tblUsers.enddate IS NULL");
+	
+	if(isDebugEnabled(1) ) logMessage("applicationlib: reset_user_password the new password will be: $newpassword");
+	
+	$qid = db_query("UPDATE tblUsers SET password = '" . md5($newpassword) . "' WHERE userid = '$user->userid'");
 
 	/* email the user with the new account information */
 	$var = new Object;
@@ -700,70 +720,13 @@ function reset_user_password($username) {
 	$var->support = $_SESSION["CFG"]["support"];
 
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/reset_password.php", $var);
+	
+	if(isDebugEnabled(1) ) logMessage("applicationlib: sending this email $emailbody");
+	
 
 	mail("$var->fullname <$user->email>", "Sportsynergy Account Information", $emailbody, "From: $var->support", "-fPlayerMailer@sportsynergy.com");
 }
 
-function get_clubadmins_emailinfo() {
-	/* This function grabs the current users club administrator's email info. */
-
-	$clubadminquery = db_query("SELECT users.firstname, users.lastname, users.email
-	                                   FROM tblUsers users, tblClubUser clubuser
-	                                   WHERE clubuser.roleid=2
-									   AND users.userid = clubuser.userid
-									   AND tblUsers.enddate IS NULL
-	                                   AND clubuser.clubid=" . get_clubid() . "");
-
-	return db_fetch_array($clubadminquery);
-
-}
-
-
-//This function will takes a userid and determines if a team is setup.  The teamid is returned
-// if we already have the team set up.  0 is returned if we don't have the team set up.
-function weed_dups($partnerid) {
-
-	//Check to see if they are trying to add a team that alread exists
-	// First we are going to get all of the teams the person logged in
-	// is a member of
-
-	$teamquery = "SELECT teamdetails.teamid
-	                              FROM tblTeams teams, tblkpTeams teamdetails
-	                              WHERE teams.teamid = teamdetails.teamid
-	                              AND teamdetails.userid=" . get_userid();
-
-	// run the query on the database
-	$teamresult = db_query($teamquery);
-
-	while ($teamrow = db_fetch_row($teamresult)) {
-
-		$ismypidquery = "SELECT teamdetails.userid, teamdetails.teamid
-		                                        FROM tblUsers users, tblkpTeams teamdetails
-												WHERE users.userid = teamdetails.userid
-		                                        AND teamdetails.userid <> " . get_userid() . "
-												AND users.enddate IS NULL
-		                                        AND teamdetails.teamid=$teamrow[0]";
-
-		// run the query on the database
-		$ismypidresult = db_query($ismypidquery);
-
-		// Now we have to run through all the partners and see
-		// if what was submitted matches
-
-		while ($ismypidrow = db_fetch_row($ismypidresult)) {
-
-			if ($ismypidrow[0] == $partnerid) {
-
-				$imadup = $ismypidrow[1];
-			}
-
-		}
-
-	}
-
-	return $imadup;
-
-}
 
 /*
 *******************************************************************************************************

@@ -19,8 +19,8 @@ if (match_referer() && isset($_POST['submit'])) {
 
         if ( empty( $errormsg)) {
              
-                $username = get_username($_POST["email"]);
-                reset_user_password($username);
+                $userid = getUserIdFromEmail($_POST["email"]);
+                reset_user_password($userid);
                 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
                 include($_SESSION["CFG"]["includedir"]."/include_fogpwsuc.php");
                 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
@@ -54,13 +54,18 @@ function validate_form(&$frm, &$errors) {
         return $msg;
 }
 
-function get_username($email) {
+function getUserIdFromEmail($email) {
 /* get the username based on an email address */
 
-        $qid = db_query("SELECT username FROM tblUsers WHERE email = '$email'");
+        $qid = db_query("SELECT users.userid 
+        					FROM tblUsers users, tblClubUser clubuser
+        					WHERE users.email = '$email' 
+        					AND users.userid = clubuser.userid
+        					AND clubuser.clubid = ".get_clubid());
+        
         $user = db_fetch_object($qid);
 
-        return $user->username;
+        return $user->userid;
 }
 
 ?>

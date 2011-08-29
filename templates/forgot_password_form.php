@@ -11,24 +11,10 @@
 
 <table cellpadding="20" > 
 <tr valign="top">
-<td width="300">
-        
-        <span class="normal">
-        Enter in your email address to recover your password.  When you submit
-        this request, your password will be reset, and a new password will be sent
-        to you via email.
-        </span>
 
-
-</td>
 
 <td>
-        <? if (! empty($errormsg)) { ?>
-                <div class=warning align=center><? pv($errormsg) ?></div>
-        <? } ?>
-
         
-
 
         <table cellspacing="0" cellpadding="20" width="400" class="generictable">
 
@@ -45,10 +31,21 @@
           <td>
 
         <table>
+   
         <tr>
                 <td class=label>Email Address:</td>
                 <td><input type="text" name="email" size=25 value="<? pv($frm["email"]) ?>"></td>
         </tr>
+        
+        <tr>
+        
+        	<td colspan="2">
+        		 Enter in your email address to recover your password.  When you submit
+        this request, your password will be reset, and a new password will be sent
+        to you via email.
+        	</td>
+        </tr>
+        
         <tr>
                 <td></td>
                 <td><input type="submit" name="submit" value="Submit">

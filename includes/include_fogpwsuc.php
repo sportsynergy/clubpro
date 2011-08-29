@@ -1,4 +1,4 @@
-<?php
+<?
 /*
  * $LastChangedRevision: 482 $
  * $LastChangedBy: Adam Preston $
@@ -11,7 +11,7 @@
      <tr>
       <td class="normal">
           Your password has been sent to your email address, you should receive it
-shortly.  Thank you for using Sportsynergy.
+shortly.  Hey, next time try not to forget your password.
          </td>
       </tr>
 </table>
