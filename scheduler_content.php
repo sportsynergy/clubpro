@@ -612,7 +612,7 @@ if ($clubid){
                                                  <?=gmdate("g:i",$i)?><br>
                                                  <?=$guestarray['name']?><br>
                                                  <? if($residobj->matchtype != 5){ ?>
-	                                                 vs.<br>
+	                                                 <br>
 			                                         <?        $guestarray = mysql_fetch_array($guestresult); ?>
 			                                         <?=$guestarray['name']?><br>
                                            		<? } ?>
@@ -677,7 +677,7 @@ if ($clubid){
 	                                                                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>">
 	                                                                 <?=gmdate("g:i",$i)?><br>
 	                                                                 <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-	                                                                 vs.<br>
+	                                                                 
 	                                                                 <? //Get the next guy
 	                                                                    $useridarray = mysql_fetch_array($useridresult); ?>
 	                                                                     <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
@@ -740,7 +740,7 @@ if ($clubid){
 		                                                           <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>">
 		                                                           <?=gmdate("g:i",$i)?><br>
 		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?><br>
-																	 vs. <br>
+																	 
 		                                                           <?
 		
 		                                                   }
@@ -756,7 +756,7 @@ if ($clubid){
 		                                                        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&userid=<?=$teamidarray[0]?>">
 		                                                        <?=gmdate("g:i",$i)?><br>
 		                                                      	<?=printPlayer($userArray[0], $userArray[1], $teamidarray['userid'], $residobj->creator)?><br>
-		                                                        is looking for a partner<br> vs. <br>
+		                                                        is looking for a partner<br>
 		                                                        <?
 		                                                   }
 		
@@ -854,7 +854,7 @@ if ($clubid){
                                              <? } ?>
                                             <?=gmdate("g:i",$i)?><br>
                                             <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-                                            vs.<br>
+                                            
                                             <? $useridarray = db_fetch_array($useridresult) ?>
                                             <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>										
 
@@ -876,7 +876,7 @@ if ($clubid){
                                             
                                             <?=gmdate("g:i",$i)?><br>   
 											 <?= printTeam($teamidarray['userid'],  $residobj->creator) ?><br>
-                                             vs. <br>
+                                             
                                              <?  //Get Second Team
                                              $teamidarray = db_fetch_array($teamidresult) ?>
 											 <?= printTeam($teamidarray['userid'],  $residobj->creator) ?>
@@ -912,7 +912,7 @@ if ($clubid){
                                                      
                                                      <? //If its not a solo
                                                      if($residobj->matchtype != 5){ ?>
-                                                     	 vs.<br>
+                                                     	 
                                                      	<? $guestarray = mysql_fetch_array($guestresult); ?>
                                                      	<?=$guestarray['name']?><br>
                                                     <? } ?>
@@ -957,7 +957,7 @@ if ($clubid){
 		                                                  <? } ?>
                                                             <?=gmdate("g:i",$i)?><br>
                                                             <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-                                                             vs.<br>
+                                                            
                                                             <? $useridarray = db_fetch_array($useridresult); ?>
                                                             <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?>
                                                             
@@ -1021,7 +1021,7 @@ if ($clubid){
 		                                                           <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$residobj->reservationid?>">
 		                                                           <?=gmdate("g:i",$i)?><br>
 		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?><br>
-																	 vs. <br>
+																	 
 		                                                           <?
 		
 		                                                   }
@@ -1036,7 +1036,7 @@ if ($clubid){
 		                                                        <td align=center><font class=normalsm1>
 		                                                        <?=gmdate("g:i",$i)?><br>
 		                                                      	<?=printPlayer($userArray[0], $userArray[1], $teamidarray['userid'], $residobj->creator)?><br>
-		                                                        was looking for a partner<br> vs. <br>
+		                                                        was looking for a partner<br> 
 		                                                        <?
 		                                                   }
 		
