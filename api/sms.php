@@ -1,6 +1,9 @@
 <?
 /**
  * To: <?php echo $_REQUEST['To'] ?>-----From: <?php echo $_REQUEST['From'] ?> -----Body:<?php echo $_REQUEST['Body'] ?>
+ * 
+ * This can be tested with curl -d "Body=63 next" http://sportsynergy.net/clubpro/api/sms.php
+
  */
 include("../application.php");
 session_start();
@@ -64,6 +67,7 @@ if($command==$next){
 			
 			$resObj = db_fetch_object($result);
 				
+			
 			$query2 = "SELECT users.userid, users.firstname, users.lastname from tblkpUserReservations details, tblUsers users
 						 WHERE users.userid = details.userid
 						 AND reservationid = $resObj->reservationid
