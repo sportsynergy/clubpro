@@ -64,8 +64,7 @@ if($command==$next){
 			
 			$resObj = db_fetch_object($result);
 				
-			$query2 = "SELECT users.userid, users.firstname, users.lastname 
-						FROM tblkpUserReservations details, tblUsers users
+			$query2 = "SELECT users.userid, users.firstname, users.lastname from tblkpUserReservations details, tblUsers users
 						 WHERE users.userid = details.userid
 						 AND reservationid = $resObj->reservationid
 						 ORDER BY users.userid";
