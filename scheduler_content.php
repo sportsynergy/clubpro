@@ -184,6 +184,8 @@ $tzdelta = $clubobj->timezone*3600;
 $curtime =   mktime()+$tzdelta;
 $simtzdelta = $clubobj->timezone;
 
+if( isDebugEnabled(1) ) logMessage($curtime);
+
 //Allow Person to type in the date to load
 $month = $_REQUEST['month'];
 $date = $_REQUEST['date'];
