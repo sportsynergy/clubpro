@@ -15,6 +15,21 @@
 	<tr>
 		<td>
 			<table class="skinnytable">
+				
+				<tr>
+					<td class="label">Twitter Handle:</td>
+					<td>
+						<input type="text" name="twitterhandle" value="<?=$generalPreferences["twitterhandle"]?>"></input>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<span class="normal"> Plugin in your a twitter account and this will appear in a News section along with Club Events and Recent Activity.  If you 
+						don't have a twitter account, you can get one for free at <a target="_parent" href="http://www.twitter.com">twitter.com</a> </span>
+						<div class="spacer"/>
+					</td>
+				</tr>
+				
 				<tr>
 					<td class="label">Allow Players To Cancel Their Own Reservations:</td>
 					<td>

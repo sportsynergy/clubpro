@@ -39,6 +39,10 @@ require_login();
 		             update_general_clubprefs($frm);
 		             $noticemsg = "Preferences Saved.  Good Job!<br/><br/>";
 		        }
+		        
+		        //Refresh 
+		        $siteprefs = getSitePreferences( get_siteid() );
+				$_SESSION["siteprefs"] = $siteprefs;
 		}
 		
 	}
@@ -217,7 +221,7 @@ function load_site_messages($siteid) {
  function load_general_preferences($siteid){
  	
  	 //if userid exists then the club administrator is updating a users account
-        $qid = db_query("SELECT clubsite.allowselfcancel, clubsite.daysahead, clubsite.rankingadjustment, clubsite.allowselfscore
+        $qid = db_query("SELECT clubsite.allowselfcancel, clubsite.daysahead, clubsite.rankingadjustment, clubsite.allowselfscore, clubsite.twitterhandle
                          FROM tblClubSites clubsite
                          WHERE clubsite.siteid = $siteid");
 
@@ -581,6 +585,7 @@ function update_general_clubprefs(&$frm) {
                 ,allowselfcancel = '$frm[allowselfcancel]'
 				,daysahead = '$frm[daysahead]'
 				,allowselfscore = '$frm[allowselfscore]'
+				,twitterhandle = '$frm[twitterhandle]'
                 WHERE siteid = '".get_siteid()."'";
         
         // run the query on the database
