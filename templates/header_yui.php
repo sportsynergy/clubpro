@@ -181,6 +181,7 @@
 		                    <p> <? include($_SESSION["CFG"]["includedir"]."/include_admin_activity.php"); ?></p> 
 	 				  	
 	 				  <? } else{ ?>
+	 				  		<p> <? include($_SESSION["CFG"]["includedir"]."/include_news.php"); ?></p> 
 	 				  		<p> <? include($_SESSION["CFG"]["includedir"]."/include_events.php"); ?></p> 
 		                    <p> <? include($_SESSION["CFG"]["includedir"]."/include_recent_activity.php"); ?></p> 
 	 				  <? } ?>

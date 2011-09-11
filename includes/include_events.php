@@ -19,7 +19,7 @@ $clubEventsResult = getClubEvents( get_clubid() );
 if(mysql_num_rows($clubEventsResult) > 0){ ?>
 	
 	
-<h2>Club Events</h2>
+<h2 style="padding-top: 15px">Club Events</h2>
 <hr class="hrline"/>
 
 <?

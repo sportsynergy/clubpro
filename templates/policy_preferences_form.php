@@ -9,13 +9,15 @@
 
  <div id="policy" class="yui-navset">
     <ul class="yui-nav">
-        <li class="selected"><a href="#skill" onclick="clearMessage()"><em>Skill Range Policies</em></a></li>
+    	<li class="selected"><a href="#general" onclick="clearMessage()"><em>General Preferences</em></a></li>
+        <li ><a href="#skill" onclick="clearMessage()"><em>Skill Range Policies</em></a></li>
         <li><a href="#schedule" onclick="clearMessage()"><em>Scheduling Policies</em></a></li>
         <li><a href="#message" onclick="clearMessage()"><em>Messages</em></a></li>
-        <li><a href="#general" onclick="clearMessage()"><em>General Preferences</em></a></li>
-
     </ul>            
     <div class="yui-content">
+        <div id="general">
+			 <? include($_SESSION["CFG"]["includedir"]."/include_general_preferences.php");?>
+		</div>
         <div id="skill"> 
         	 <? include($_SESSION["CFG"]["includedir"]."/include_skillrange_policies.php");?>
         </div>
@@ -25,22 +27,19 @@
         <div id="message">
 			 <? include($_SESSION["CFG"]["includedir"]."/include_messages_policies.php");?>
 		</div>
-		<div id="general">
-			 <? include($_SESSION["CFG"]["includedir"]."/include_general_preferences.php");?>
-		</div>
     </div>
 </div>
 
 <?
 
 // Calculate current tab index
-if($_REQUEST["preferenceType"]=="schedule"){
+if($_REQUEST["preferenceType"]=="skill"){
 	$currentTabIndex = 1;
 }
-if($_REQUEST["preferenceType"]=="message"){
+if($_REQUEST["preferenceType"]=="schedule"){
 	$currentTabIndex = 2;
 }
-else if($_REQUEST["preferenceType"]=="general"  ) {
+else if($_REQUEST["preferenceType"]=="message"  ) {
 	$currentTabIndex = 3;
 }
 

@@ -449,6 +449,12 @@ function get_clubid() {
 
 }
 
+function get_twitterHandle() {
+	
+	return $_SESSION["siteprefs"]["twitterhandle"];
+	
+}
+
 function get_siteid() {
 	/* this function simply returns the siteid. */
 
@@ -4909,7 +4915,8 @@ function getSitePreferencesForCourt($courtid) {
 					sites.isliteversion,
 					sites.allowallsiteadvertising,
 					sites.enableguestreservation,
-					sites.displaysitenavigation
+					sites.displaysitenavigation,
+					sites.twitterhandle
 	        FROM tblClubSites sites, tblCourts courts
 			WHERE sites.siteid = courts.siteid
       AND courts.courtid = $courtid";
@@ -4941,7 +4948,8 @@ function getSitePreferences($siteid) {
 					sites.isliteversion,
 					sites.allowallsiteadvertising,
 					sites.enableguestreservation,
-					sites.displaysitenavigation
+					sites.displaysitenavigation,
+					sites.twitterhandle
 	        FROM tblClubSites sites
 			WHERE sites.siteid = '$siteid'";
 
@@ -5466,16 +5474,16 @@ function determineLastLoginText($theTimeTheyLastLoggedIn, $clubid){
 *   "\\1"  : to show only the domain name (slashdot-style).
 *   "blah" : Anything else inserts that text verbatim.
 */
-function getTwitterStatus($userNumber, $linkText) {
+function getTwitterStatus($userNumber, $linkText, $count) {
   $url = "http://twitter.com/statuses/user_timeline/" . $userNumber .
-      ".xml?count=1";
+      ".xml?count=$count";
   $feed = "";
 
   // Fetch feed, read it all into a string.
   // TODO(manas) Cache me if you can.
   $file = fopen($url, "r");
   if (!is_resource($file)) {
-    die ("Unable to connect to Twitter!");
+    return ("Unable to connect to Twitter!");
   }
 
   while (!feof($file)) {
