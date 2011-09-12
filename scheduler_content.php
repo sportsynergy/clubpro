@@ -614,7 +614,6 @@ if ($clubid){
                                                  <?=gmdate("g:i",$i)?><br>
                                                  <?=$guestarray['name']?><br>
                                                  <? if($residobj->matchtype != 5){ ?>
-	                                                 <br>
 			                                         <?        $guestarray = mysql_fetch_array($guestresult); ?>
 			                                         <?=$guestarray['name']?><br>
                                            		<? } ?>
