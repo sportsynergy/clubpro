@@ -449,11 +449,6 @@ function get_clubid() {
 
 }
 
-function get_twitterHandle() {
-	
-	return $_SESSION["siteprefs"]["twitterhandle"];
-	
-}
 
 function get_siteid() {
 	/* this function simply returns the siteid. */
@@ -468,6 +463,13 @@ function isSiteAutoLogin() {
 
 
 	return $_SESSION["siteprefs"]["enableautologin"]=='y'?true:false;
+}
+
+
+function isDisplayRecentActivity() {
+	/* this function simply returns whether or not the recent activity should be displayed */
+	return $_SESSION["siteprefs"]["displayrecentactivity"]=='y'?true:false;
+
 }
 
 function get_displaytime() {
@@ -4916,7 +4918,7 @@ function getSitePreferencesForCourt($courtid) {
 					sites.allowallsiteadvertising,
 					sites.enableguestreservation,
 					sites.displaysitenavigation,
-					sites.twitterhandle
+					sites.displayrecentactivity
 	        FROM tblClubSites sites, tblCourts courts
 			WHERE sites.siteid = courts.siteid
       AND courts.courtid = $courtid";
@@ -4949,7 +4951,7 @@ function getSitePreferences($siteid) {
 					sites.allowallsiteadvertising,
 					sites.enableguestreservation,
 					sites.displaysitenavigation,
-					sites.twitterhandle
+					sites.displayrecentactivity
 	        FROM tblClubSites sites
 			WHERE sites.siteid = '$siteid'";
 
@@ -5474,7 +5476,7 @@ function determineLastLoginText($theTimeTheyLastLoggedIn, $clubid){
 *   "\\1"  : to show only the domain name (slashdot-style).
 *   "blah" : Anything else inserts that text verbatim.
 */
-function getTwitterStatus($userNumber, $linkText, $count) {
+function getTwitterStatus($userNumber, $linkText) {
   $url = "http://twitter.com/statuses/user_timeline/" . $userNumber .
       ".xml?count=$count";
   $feed = "";
@@ -5559,6 +5561,20 @@ function getRecentSiteActivity($siteid){
 	$query = "SELECT activity.description from tblSiteActivity activity 
 				WHERE siteid = $siteid AND enddate is NULL
 				ORDER BY activity.activitydate DESC LIMIT 3";
+	
+	return db_query($query);
+	
+}
+
+/**
+ * Gets the Club news
+ * @param $siteid
+ */
+function getClubNews($siteid){
+	
+		$query = "SELECT message FROM tblMessages messages 
+				WHERE siteid = $siteid AND enable = 1 AND messagetypeid = 2
+				ORDER BY messages.lastmodified DESC LIMIT 3";
 	
 	return db_query($query);
 	

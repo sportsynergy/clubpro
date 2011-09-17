@@ -9,6 +9,8 @@
 include("../application.php");
 $DOC_TITLE = "Club Preferences";
 require_login();
+require_priv("2");
+
 
 	if (isset($_POST['skillpolicyid'])) {
 	
@@ -18,8 +20,12 @@ require_login();
 	
 	   removeSchedulePolicy($_POST['schedulepolicyid']);
 	}
+	elseif ( isset($_POST['action']) && $_POST['action']=="wipeOutClubMessages") {
+	
+	   wipeOutCurrentClubMessages();
+	}
 
-	if (match_referer() && isset($_POST['submit']) ){
+	else if (match_referer() && isset($_POST['submit']) ){
 		
 		//Save Messages
 		if(match_referer() && $_POST['preferenceType'] == "message"){
@@ -31,6 +37,7 @@ require_login();
 		             $noticemsg = "Preferences Saved.  Good Job!<br/><br/>";
 		        }
 		}
+		
 		//Save General Preferences
 		elseif(match_referer() && $_POST['preferenceType'] == "general"){
 				$frm = $_POST;
@@ -46,12 +53,15 @@ require_login();
 		}
 		
 	}
+	
+	
 
 
 
 $reservationPolicies = load_reservation_policies(get_siteid());
 $skillRangePolicies = load_skill_range_policies(get_siteid());
-$siteMessages = load_site_messages(get_siteid());
+$scrollingMessages = load_scrolling_messages(get_siteid());
+
 $generalPreferences = load_general_preferences(get_siteid());
 
 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
@@ -93,10 +103,11 @@ function validate_messages_form(&$frm, &$errors) {
 
         if ($frm["messagedisplay"]=="on" && empty($frm["Messagetextarea"])) {
                 $errors->Messagetextarea = true;
-                $msg .= "You are attempting to turn the message display on with no message.  Turn off the display message or type in a message.";
+                $msg .= "Turn off the display message or type in a message.";
          }
-        elseif(empty($frm["Messagetextarea"])){
+        elseif(empty($frm["Messagetextarea"]) && empty($frm["ClubNewsMessage"]) ){
                 $errors->Messagetextarea = true;
+                $errors->ClubNewsMessage = true;
                 $msg .= "You didn't specifiy a message.";
         }
 		elseif( eregi("'",$frm["Messagetextarea"])){
@@ -107,6 +118,12 @@ function validate_messages_form(&$frm, &$errors) {
 			 $errors->Messagetextarea = true;
                 $msg .= "This time don't put a return in the message";
 		}
+		
+		elseif( eregi("'",$frm["ClubNewsMessage"])){
+			 $errors->ClubNewsMessage = true;
+                $msg .= "Please don't use apostrophes, I beg of you.";
+		}
+		
 
 
         return $msg;
@@ -205,23 +222,28 @@ function get_dow_dropdown(){
  * 
  * @param $siteid
  */
-function load_site_messages($siteid) {
+function load_scrolling_messages($siteid) {
 /* load up the user's details */
 
         //if userid exists then the club administrator is updating a users account
         $qid = db_query("SELECT messages.message, messages.enable
                          FROM tblMessages messages
-                         WHERE messages.siteid = $siteid");
+                         WHERE messages.siteid = $siteid
+                         AND messages.messagetypeid = 1");
 
         return db_fetch_array($qid);
 
    }
-   
- 
+
+
+/** 
+ * 
+ * @param unknown_type $siteid
+ */
  function load_general_preferences($siteid){
  	
  	 //if userid exists then the club administrator is updating a users account
-        $qid = db_query("SELECT clubsite.allowselfcancel, clubsite.daysahead, clubsite.rankingadjustment, clubsite.allowselfscore, clubsite.twitterhandle
+        $qid = db_query("SELECT clubsite.allowselfcancel, clubsite.daysahead, clubsite.rankingadjustment, clubsite.allowselfscore, clubsite.displayrecentactivity
                          FROM tblClubSites clubsite
                          WHERE clubsite.siteid = $siteid");
 
@@ -512,25 +534,7 @@ if(!isset($frm['reservationwindow'])){
 
 }
 
-/**
- * 
- */
-function load_club_messages() {
-/* load up the user's details */
 
-        //if userid exists then the club administrator is updating a users account
-
-
-        $qid = db_query("SELECT messages.message, messages.enable
-                         FROM tblMessages messages
-                         WHERE messages.siteid = ".get_siteid()."");
-
-
-
-
-        return db_fetch_array($qid);
-
-   }
 
 /**
 * 
@@ -538,36 +542,60 @@ function load_club_messages() {
 */
 function update_message_clubprefs(&$frm) {
 /* add the new user into the database */
-         if($frm["messagedisplay"]=="on"){
+         
+	 if( ! empty( $frm['Messagetextarea'] )){
+	 	
+	 	if($frm["messagedisplay"]=="on"){
              $displaymessage = 1;
          }
          else{
              $displaymessage = 0;
          }
          //Check to see if club has a message
-         $qid = db_query("SELECT message, enable FROM tblMessages WHERE siteid = ".get_siteid()."");
+         $qid = db_query("SELECT message, enable FROM tblMessages WHERE siteid = ".get_siteid()." AND messagetypeid = 1");
          $numrows = mysql_num_rows($qid);
 
          if($numrows==0){
          $query = "INSERT INTO tblMessages (
-                   siteid, message, enable
+                   siteid, message, messagetypeid, enable
                    ) VALUES (
                    '".get_siteid()."'
                    ,'$frm[Messagetextarea]'
+                   ,1
                    ,'$displaymessage')";
          }
          elseif($numrows==1){
         $query = "Update tblMessages SET
                 message = '$frm[Messagetextarea]'
                 ,enable = '$displaymessage'
-                WHERE siteid = '".get_siteid()."'";
+                WHERE siteid = '".get_siteid()."'
+                AND messagetypeid = 1";
          }
-
-
+         
         // run the query on the database
         $result = db_query($query);
+	 	
+	 }
+	 
+	 
+	
 
 
+		// Now add the Club News Message
+        if( ! empty( $frm['ClubNewsMessage'] )){
+        	
+        	
+         $query = "INSERT INTO tblMessages (
+                   siteid, message, messagetypeid, enable
+                   ) VALUES (
+                   '".get_siteid()."'
+                   ,'$frm[ClubNewsMessage]'
+                   ,2
+                   ,1)";
+        
+         $result = db_query($query);
+        }
+        
 
 }
 
@@ -585,7 +613,7 @@ function update_general_clubprefs(&$frm) {
                 ,allowselfcancel = '$frm[allowselfcancel]'
 				,daysahead = '$frm[daysahead]'
 				,allowselfscore = '$frm[allowselfscore]'
-				,twitterhandle = '$frm[twitterhandle]'
+				,displayrecentactivity = '$frm[displayrecentactivity]'
                 WHERE siteid = '".get_siteid()."'";
         
         // run the query on the database
@@ -619,8 +647,20 @@ function update_general_clubprefs(&$frm) {
 		}else{
 			if(isDebugEnabled(1) ) logMessage("general_preferneces.update_clubprefs: The ranking adjustment hasnt' changed not doing anything.");
 		}
-	
 
 
 }
+
+/**
+ * Clears out the club messages.  this is available in absense of being able to individually edit/remove them.
+ */
+function wipeOutCurrentClubMessages(){
+	if(isDebugEnabled(1) ) logMessage("general_preferneces.wipeOutCurrentClubMessages: Getting rid of the club messages.");
+	
+	$query = "UPDATE tblMessages SET enable = 0 WHERE siteid = ".get_siteid()." AND messagetypeid = 2";
+	db_query($query);
+	
+}
+
+
 ?>

@@ -17,15 +17,19 @@
 			<table class="skinnytable">
 				
 				<tr>
-					<td class="label">Twitter Handle:</td>
+					<td class="label">Display Recent Activity:</td>
 					<td>
-						<input type="text" name="twitterhandle" value="<?=$generalPreferences["twitterhandle"]?>"></input>
+						<select name="displayrecentactivity">
+							<option value="y"
+							<? if($generalPreferences["displayrecentactivity"] =='y'){ echo "selected";} ?>>Yes</option>
+							<option value="n"
+							<? if($generalPreferences["displayrecentactivity"] =='n'){ echo "selected";} ?>>No</option>
+						</select>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<span class="normal"> Plugin in your a twitter account and this will appear in a News section along with Club Events and Recent Activity.  If you 
-						don't have a twitter account, you can get one for free at <a target="_parent" href="http://www.twitter.com">twitter.com</a> </span>
+						<span class="normal"> The Recent Activity panel will display the results of the matches that were recently recorded. </span>
 						<div class="spacer"/>
 					</td>
 				</tr>
