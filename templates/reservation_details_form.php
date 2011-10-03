@@ -78,6 +78,10 @@ return true;
         	 	
         	 <? } ?>	
         
+         <? 
+       //Only let admins do this
+       if( get_roleid()==4 || get_roleid()==2 || isNearRankingAdvertising() ){
+       ?>
         <tr>
             <td><div class="normal">Advertise this reservation to players within <? pv($rankdev)?> of my skill level:</div></td>
             <td>
@@ -85,11 +89,17 @@ return true;
                 <input type="radio" name="resdetails" value="1" <?=$matchType!=4 ? "checked":"" ?>>
                 </td>
        </tr>
+        <? } else {
+        	// Make sure this defaults the right way
+        	$advertBuddies = "checked";
+        
+       }?>
+       
         <tr>
          <td>
            <div class=normal>Advertise this reservation to my buddies:</div></td>
            <td>
-           <input type="radio" name="resdetails" value="2">
+           <input type="radio" name="resdetails" value="2" <?=$advertBuddies ?>>
          </td>
        </tr>
        
