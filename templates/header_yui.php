@@ -52,6 +52,7 @@
 		<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
 		<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/prototype-1.3.1.js" type="text/javascript"></script>
 		<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/ajaxtags-1.1.5.js" type="text/javascript"></script>
+	
 		
 		<!-- Standard reset, fonts and grids --> 
         <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css"> 
@@ -59,6 +60,8 @@
         <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
 		<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/ajaxtags.css" rel=stylesheet type=text/css>
 		<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/displaytag.css" rel=stylesheet type=text/css>
+		
+		<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/calendar.css" rel=stylesheet type=text/css>
 		
 		<? if(isset( $_SESSION["siteprefs"]["siteid"]) ){ ?>
 		<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/main.css" rel=stylesheet type=text/css>

@@ -217,6 +217,8 @@ else{
      $currDOW = getDOW(gmdate("l", $daysahead));
 
 }
+
+
 //Check to see if an hour policy is available.
 $hourspolicyQuery = "SELECT * from tblHoursPolicy WHERE siteid='$siteid'
                     AND year = $currYear
@@ -241,6 +243,15 @@ $hourPolicyResult = db_query($hourspolicyQuery);
 $todaystart = gmmktime (0,0,0,$currMonth,$currDay,$currYear);
 $todayend =  gmmktime (23,0,0,$currMonth,$currDay,$currYear);
 
+// Calculate days ahead
+$userdate = $curtime + (get_daysahead() * 86400);
+$oYear = gmdate("Y",$userdate);
+$oDay = gmdate("n",$userdate);
+$oMonth = gmdate("j",$userdate);
+
+//used in the date picker
+$jsdate = "$oDay/$oMonth/$oYear";						 		
+
 
 if ($clubid){
 
@@ -253,55 +264,11 @@ if ($clubid){
                           <tr>
        						
        						 <td align="left" valign="top">
-                              <font class=bigbanner><? echo gmdate("l F j",$todaystart) ?></font><br>
+                              <span class=bigbanner><? echo gmdate("l F j",$todaystart) ?></span>
+                              	<? include($_SESSION["CFG"]["includedir"]."/include_datepicker.php") ?>
                              </td>
 								
-							 <td colspan="3" align="center" valign="top">
-								<form name="entryform" method="post" action="<?=$MEWQ?>">
-
-			                              <select name="daysahead">
-			                              <?
-			
-			                                //set the todaycounter
-			                               $todaycounter = gmmktime (0,0,0,gmdate("n", $curtime),gmdate("j", $curtime),gmdate("Y", $curtime));
-			                               $todaycounter -= get_daysahead() * 86400;
-			                               
-			                                //Set the Days Behind
-			                               for ( $days = 0; $days < get_daysahead(); $days++){
-			                               echo "<option value=$todaycounter>". gmdate(" l F j",$todaycounter) . "</option>";	
-			                               $todaycounter = $todaycounter+86400;
-			                               }
-			                               
-			                               //This is today.
-			                              echo "<option value=$todaycounter selected>". gmdate(" l F j",$todaycounter) . "</option>";
-			                               $todaycounter = $todaycounter+86400;
-			                               $todaytime = $todaycounter;
-			                               
-			                               //Set the Days ahead. Oh, by the way, if the club administrator is logged in double the daysahead
-			                               if(get_roleid()==2 && get_clubid()==$clubobj->clubid){
-			
-			                                   // Set the Days Ahead
-			                                   for ( $days = 0; $days < 14; $days++){
-			                                   echo "<option value=$todaycounter >". gmdate(" l F j",$todaycounter) . "</option>";
-			                                   $todaycounter = $todaycounter+86400;
-			                                   }
-			                                }
-			                               else{
-			                                    for ( $days = 0; $days < get_daysahead(); $days++){
-			                                    echo "<option value=$todaycounter >". gmdate(" l F j",$todaycounter) . "</option>";
-			                                    $todaycounter = $todaycounter+86400;
-			
-			
-			                                    }
-			
-			                                }
-			
-			                              ?>
-			                              </select>
-			
-			                              <input type="submit" value="Submit">
-	                              </form>
-                      			</td>
+				
                            </tr>
 
                       <!-- Date and Drop Down Table end -->
