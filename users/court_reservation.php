@@ -132,7 +132,8 @@ if (match_referer() && isset($_POST['courttype'])) {
 	            			header ("Location: $wwwroot/users/reservation_details.php?resid=$resid&time=$time");
 	            }
 	            else{
-	                 header ("Location: $wwwroot/clubs/".get_sitecode()."/index.php?daysahead=". gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ."");
+	                $tzdelta = get_tzdelta(); 
+	            	header ("Location: $wwwroot/clubs/".get_sitecode()."/index.php?daysahead=". gmmktime (0,0,0,gmdate("n",$time+$tzdelta ),gmdate("j", $time+$tzdelta ),gmdate("Y", $time+$tzdelta )) ."");
 	            }
 
 	            

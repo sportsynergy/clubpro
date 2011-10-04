@@ -197,7 +197,8 @@ if(isset($month) && isset($date) && isset($year)){
 	 $currYear = $year;
      $currMonth = $month;
      $currDay = $date;
-     $specDate = mktime(0, 0, 0, $month, $date, $year)+$tzdelta;
+     $specDate = mktime(0, 0, 0, $month, $date, $year);
+					 		
      $currDOW = getDOW(gmdate("l", $specDate));
 }
 //Set Current data and time
@@ -359,8 +360,6 @@ if ($clubid){
 							 		
 							 		if( isDebugEnabled(1) ) logMessage("Here is courtgrouprow" . $courtGroupRow[1] ." and here is whats in session " . $_SESSION["courtGroup"][$siteid] );
 							 		
-							 	
-							 		
 							 		// Don't display a link for the group that is loaded
 							 		if($courtGroupRow[1] == $_SESSION["courtGroup"][$siteid] ){
 							 			print $courtGroupRow[0];
@@ -421,6 +420,10 @@ if ($clubid){
                   $hoursquery = "SELECT * from tblCourtHours WHERE courtid='$courtobj->courtid' AND dayid ='$currDOW' ";
                   $hoursresult = db_query($hoursquery);
                   $hoursobj = db_fetch_object($hoursresult);
+                  
+                   if( isDebugEnabled(1) ) logMessage("Court ". $hoursobj->courtid." is ".  $hoursobj->hourstart." currdow: ".$currDOW );
+							 		
+                 
 	                  
 	              if(mysql_num_rows($hourPolicyResult)==0){
 	                  $otimearray = explode (":", $hoursobj->opentime);

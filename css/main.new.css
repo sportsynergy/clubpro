@@ -109,6 +109,14 @@ th{
 	font-size: 12pt; 
 	font-weight: bold; 
 }
+
+.biglabelwinfo { 
+	font-size: 12pt; 
+	font-weight: bold; 
+	text-decoration: underline;
+}
+
+
 .bigbanner { 
 	font-size: 20pt; 
 	color: #000000; 
