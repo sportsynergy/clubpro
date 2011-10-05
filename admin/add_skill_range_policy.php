@@ -29,7 +29,7 @@ if (match_referer() && isset($_POST['submit'])) {
         if ( empty($errormsg) ) {
              insert_skill_range_policy($frm);
              $wwwroot = $_SESSION["CFG"]["wwwroot"];
-             header ("Location: $wwwroot/admin/policy_preferences.php");
+             header ("Location: $wwwroot/admin/policy_preferences.php#skill");
         	
         }
         
@@ -138,8 +138,16 @@ function get_dow_dropdown(){
 
 
 function insert_skill_range_policy(&$frm) {
-/* add the new user into the database */
 
+	
+	// Strip Slashes
+	if(get_magic_quotes_gpc()){
+		$description=stripslashes($frm['description']);
+	
+	}else{
+		$description=addslashes($frm['description']);
+	}
+	
    if($frm['courtid']=="all"){
        $courtid = "NULL";
    }else{
@@ -171,7 +179,7 @@ function insert_skill_range_policy(&$frm) {
 			
 			$query = "UPDATE tblSkillRangePolicy SET
 					policyname = '$frm[name]'
-	                ,description = '$frm[description]'
+	                ,description = '$description'
 	                ,skillrange = '$frm[skillrange]'
 	                ,dayid = $dayid
 	                ,courtid = $courtid
@@ -185,7 +193,7 @@ function insert_skill_range_policy(&$frm) {
 	                policyname, description, skillrange, dayid, courtid, siteid, starttime, endtime
 	                ) VALUES (
 	                           '$frm[name]'
-	                          ,'$frm[description]'
+	                          ,'$description'
 	                          ,'$frm[skillrange]'
 	                          ,$dayid
 	                          ,$courtid

@@ -57,3 +57,14 @@
 </form>
 
 <div style="height: 30px"></div>
+
+<script type="text/javascript">
+
+function defaultform(){
+	document.entryform.searchname.focus();
+}
+
+defaultform();
+
+
+</script>

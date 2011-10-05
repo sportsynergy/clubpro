@@ -62,9 +62,7 @@ function toggle()
         <tr>
             <td class="label">Description:</td>
             <td>
-            	<textarea cols="25" rows="4" name="description" >
-            		<?=$skillRangePolicy['description']?>
-            	</textarea><?err($errors->description)?>
+            	<textarea cols="25" rows="4" name="description" ><?=$skillRangePolicy['description']?></textarea><?err($errors->description)?>
             </td>
         </tr>
         <tr>
