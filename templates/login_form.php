@@ -30,7 +30,10 @@
 ?>
 
 
-<body style="margin-left: 1.5em">
+<body style="margin-left: 1.5em"  OnLoad="document.entryform.username.focus();">
+
+
+
 
  <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/login.php" autocomplete="off">
 
@@ -53,8 +56,8 @@
         
         <table>
         <tr>
-                <td class=label>Username:</td>
-                <td><input type="text" name="username" size=20 value="<?=$_COOKIE["username"]; ?>">  </td>
+                <td class="label">Username:</td>
+                <td><input id="username" type="text" name="username" size=20 value="<?=$_COOKIE["username"]; ?>">  </td>
         </tr>
         <tr>
                 <td class=label>Password:</td>
