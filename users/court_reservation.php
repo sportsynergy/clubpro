@@ -598,7 +598,8 @@ function validate_form(&$frm, &$errors) {
 				}
 				else{
 					
-					if( !$guestReservation 
+					if( get_roleid()==1
+					    && !$guestReservation 
 						&& !isAtLeastTwoPlayerSpecifiedForDoubles( $frm['playeroneid'], $frm['playertwoid'], $frm['playerthreeid'], $frm['playerfourid'])  ) {
 						$msg .= "For doubles, please specify at least two people";
 					}
