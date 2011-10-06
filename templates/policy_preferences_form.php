@@ -13,6 +13,7 @@
         <li ><a href="#skill" onclick="clearMessage()"><em>Skill Range Policies</em></a></li>
         <li><a href="#schedule" onclick="clearMessage()"><em>Scheduling Policies</em></a></li>
         <li><a href="#message" onclick="clearMessage()"><em>Messages</em></a></li>
+       <li><a href="#court_events" onclick="clearMessage()"><em>Court Events</em></a></li>
     </ul>            
     <div class="yui-content">
         <div id="general">
@@ -26,6 +27,9 @@
 		</div>
         <div id="message">
 			 <? include($_SESSION["CFG"]["includedir"]."/include_messages_policies.php");?>
+		</div>
+		 <div id="court_events">
+			 <? include($_SESSION["CFG"]["includedir"]."/include_court_events.php");?>
 		</div>
     </div>
 </div>
@@ -41,6 +45,9 @@ if($_REQUEST["preferenceType"]=="schedule"){
 }
 else if($_REQUEST["preferenceType"]=="message"  ) {
 	$currentTabIndex = 3;
+}
+else if($_REQUEST["preferenceType"]=="court_events"  ) {
+	$currentTabIndex = 4;
 }
 
 

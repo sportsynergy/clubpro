@@ -4818,6 +4818,43 @@ function load_skill_policies($siteid) {
 
 }
 
+/**
+ * 
+ * @param $eventid
+ */
+function load_court_event($eventid){
+	
+	$query = "SELECT events.eventname,
+	                          events.playerlimit
+	                   FROM tblEvents events
+	                   WHERE events.eventid = $eventid";
+
+	$result = db_query($query);
+	return mysql_fetch_array($result);
+}
+
+/**
+ * 
+ * @param $eventid
+ */
+function load_court_events($siteid){
+	
+	$query = "SELECT events.eventid, events.eventname,
+	                          events.playerlimit
+	                   FROM tblEvents events
+	                   WHERE events.siteid = $siteid";
+	
+	
+	
+	$result = db_query($query);
+	
+	if( isDebugEnabled(1) ) logMessage("applicationlib.load_court_events: loading court events for site $siteid. Found ". mysql_num_rows($result) . " in all");	
+	
+	return db_query($query);
+	
+	
+}
+
 /*****************************************************************/
 /*
      Will load the windows

@@ -54,6 +54,18 @@ require_priv("2");
 		
 	}
 	
+	else if( isset($_POST['action']) && $_POST['action']=="removeCourtEvent" ){
+		
+		// Remove the court event
+		$eventid = $_POST['eventid'];
+		$query = "UPDATE tblReservations SET enddate = NOW() WHERE eventid = $eventid";
+		db_query($query);
+		
+		$eventid = $_POST['eventid'];
+		$query = "DELETE FROM tblEvents where eventid = $eventid";
+		db_query($query);
+	}
+	
 	
 
 
@@ -63,6 +75,8 @@ $skillRangePolicies = load_skill_range_policies(get_siteid());
 $scrollingMessages = load_scrolling_messages(get_siteid());
 
 $generalPreferences = load_general_preferences(get_siteid());
+$courtEvents = load_court_events(get_siteid());
+
 
 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
 include($_SESSION["CFG"]["templatedir"]."/policy_preferences_form.php");

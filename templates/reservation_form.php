@@ -32,7 +32,7 @@
         <li <?=$reservationType=="2"?"class=\"selected\"":""?>><a href="#doubles"><em>Doubles</em></a></li>
         <? } ?>
         <? if(get_roleid()==2) { ?>
-        <li><a href="#events"><em>Special Events</em></a></li>
+        <li><a href="#events"><em>Court Events</em></a></li>
 		<? } ?>
     </ul>            
    
