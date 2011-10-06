@@ -22,7 +22,6 @@ function removeCourtEvent(eventid)
 <form name="court_events_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
 
 
-<div style="height: 25px;"></div>
 
 <table width="550" class="tabtable">
 	<tr>
