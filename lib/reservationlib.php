@@ -489,5 +489,192 @@ function isDoublesReservationNeedPlayers($time, $courtid){
 	}
 }
 
+/**
+ * 
+ * @param $clubEventParticipantsResult
+ */
+function isCourtEventParticipant(&$courtEventParticipantsResult){
+	
+	$isSignedup = false;
+	
+	logMessage("reservationlib.isCourtEventParticipant: Checking to see if ". get_userid(). " is signed up");
+	
+	$numrows = mysql_num_rows($courtEventParticipantsResult);
+	
+	 while($participant = mysql_fetch_array($courtEventParticipantsResult)){
+	 	
+	 	if( $participant['userid']==get_userid()){
+	 		$isSignedup = true;
+	 	}
+	 	
+	 }
+	
+	 // Reset the results
+	 if( mysql_num_rows($courtEventParticipantsResult) > 0){
+	 	mysql_data_seek($courtEventParticipantsResult,0);
+	 }
+	 
+	 
+	 return $isSignedup;
+	 
+	
+}
+
+/**
+ * 
+ * @param unknown_type $userid
+ * @param unknown_type $clubeventid
+ */
+function addToCourtEvent($userid, $reservationid){
+	
+	logMessage("clubadminlib.addToCourtEvent: User $userid Reservationid: $reservationid");
+	
+	
+	$query = "INSERT INTO tblCourtEventParticipants (
+                userid, reservationid
+                ) VALUES (
+                          '$userid'
+					  	  ,'$reservationid'
+                          )";
+	
+	$result = db_query($query);
+	
+}
+
+/**
+ * 
+ * @param unknown_type $userid
+ * @param unknown_type $clubeventid
+ */
+function removeFromCourtEvent($userid, $reservationid){
+	
+	logMessage("reservationlib.removeFromCourtEvent: User $userid reservationid: $reservationid");
+	
+	
+	$query = "UPDATE tblCourtEventParticipants SET enddate=NOW() 
+				WHERE userid='$userid'
+				AND reservationid = '$reservationid'";
+	
+	$result = db_query($query);
+	
+}
+
+/**
+ * 
+ * @param unknown_type $clubeventid
+ */
+function getCourtEventParticipants($reservationid){
+	
+	
+	logMessage("reservationlib.getCourtEventParticipants: Reservationid: $reservationid");
+	
+	$query = "SELECT users.userid, users.firstname, users.lastname, users.email
+			   FROM tblCourtEventParticipants participant, tblUsers users
+				WHERE users.userid = participant.userid
+				AND participant.enddate IS NULL
+				AND participant.reservationid = $reservationid";
+	
+	return db_query($query);
+}
+
+//Send out an email to the player who signed up for this event, the creator of the event and the list
+// and anyone that might have been signed up as well
+
+
+function confirmCourtEvent($userid, $reservationid, $action){
+	
+	if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: confirming reservation $reservationid for userid $userid with an action $action");
+	
+	// from the reservation get, court name, time, event name
+	//Obtain the court and matchtype information
+	$timeQuery = "SELECT courts.courtname, reservations.time, events.eventname, reservations.creator
+				FROM tblMatchType matchtype, tblCourts courts, tblReservations reservations, tblEvents events
+				WHERE reservations.reservationid=$reservationid
+				AND reservations.courtid = courts.courtid
+				AND matchtype.id = reservations.matchtype
+				AND events.eventid = reservations.eventid";
+	
+	$timeResult = db_query($timeQuery);
+	$timeObject = mysql_fetch_object($timeResult);
+	
+	$var = new Object;
+	$var->courtname = $timeObject->courtname;
+	$var->time = gmdate("l F j g:i a", $timeObject->time);
+	$var->eventname = $timeObject->eventname;
+	$var->creator = $timeObject->creator;
+	
+	$userQuery = "SELECT users.firstname, users.lastname, users.email FROM tblUsers users WHERE users.userid = $userid";
+	$userResult = db_query($userQuery);
+	$userArray = mysql_fetch_array($userResult);
+	
+	
+	$var->firstname = $userArray['firstname'];
+	$var->lastname = $userArray['lastname'];
+	$var->fullname = "$var->firstname $var->lastname";
+	$var->email = $userArray['email'];
+	
+	$clubfullname = get_clubname();
+	$var->clubfullname = $clubfullname;
+	
+	if($action=="add"){
+		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_court_event.php", $var);
+	}else{
+		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_court_event.php", $var);
+	}
+	$message = "Hello $var->firstname,\n";
+	$message .= "$emailbody";
+
+	//send email to the person who signed up
+	if( isDebugEnabled(1) ) logMessage($message);
+	mail("$var->firstname $var->lastname <$var->email>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+	
+
+	
+	//send email to the person who created the reservation
+	$creatorQuery = "SELECT users.firstname, users.lastname, users.email FROM tblUsers users WHERE users.userid = $var->creator";
+	$creatorResult = db_query($userQuery);
+	$creatorArray = mysql_fetch_array($creatorResult);
+	
+	$var->adminfirstname = $creatorArray['firstname'];
+	$var->adminlastname = $creatorArray['lastname'];
+	$var->adminfullname = "$var->adminfirstname $var->adminlastname";
+	$var->adminemail = $creatorArray['email'];
+	
+	if($action=="add"){
+		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_others_court_event.php", $var);
+	}else{
+		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_others_court_event.php", $var);
+	}
+	$message = "Hello $var->adminfirstname,\n";
+	$message .= "$emailbody";
+	
+	if( isDebugEnabled(1) ) logMessage($message);
+	
+	//Dont' send this email if the creator has put themselves in the reservaiton, its kind of redundatn
+	if($userid != $var->creator){
+		mail("$var->adminfirstname $var->adminlastname <$var->adminemail>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+	}
+	
+	$rresult = getCourtEventParticipants($reservationid);
+	while ($player = mysql_fetch_array($rresult)) {
+
+	if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: this is the user: $userid and this is the current ".$player['userid']);
+		
+		if (!empty ($player['email']) && $player['userid']!=$userid ) {
+			//Prepare the message
+			$message = "Hello $player[firstname],\n";
+			$message .= "$emailbody";
+			
+			if( isDebugEnabled(1) ) logMessage($message);
+			mail("$player[firstname] $player[lastname] <$player[email]>", $subject, $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+
+		}
+	}
+	
+	
+	
+	
+	
+}
 
 ?>

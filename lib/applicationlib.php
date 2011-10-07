@@ -1570,9 +1570,9 @@ function confirm_singles($resid, $isNewReservation) {
 
 	// Set the Subject
 	if ($isNewReservation) {
-		$subject = " !! Court Reservation Notice !!";
+		$subject = "Court Reservation Notice";
 	} else {
-		$subject = " !! UPDATED Court Reservation Notice !!";
+		$subject = "Updated Court Reservation Notice";
 	}
 
 	//Reset the result pointer to the begining
@@ -1662,7 +1662,7 @@ function cancel_singles($resid) {
 		$message .= "$emailbody";
 
 		if (!empty ($emailidrow[4])) {
-			mail("$emailidrow[2] $emailidrow[3] <$emailidrow[4]>", "!! Court Cancellation Notice !!", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+			mail("$emailidrow[2] $emailidrow[3] <$emailidrow[4]>", "Court Cancellation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 		}
 
 	}
@@ -1746,9 +1746,9 @@ function confirm_doubles($resid, $isNewReservation) {
 
 	// Set the Subject
 	if ($isNewReservation) {
-		$subject = " !! Court Reservation Notice !!";
+		$subject = "Court Reservation Notice";
 	} else {
-		$subject = " !! UPDATED Court Reservation Notice !!";
+		$subject = "Updated Court Reservation Notice";
 	}
 
 	//Check to see if there is a single wanting to play
@@ -1929,7 +1929,7 @@ function cancel_doubles($resid) {
 		$message = "Hello $emailidrow[2],\n";
 		$message .= "$emailbody";
 
-		mail("$emailidrow[2] $emailidrow[3] <$emailidrow[4]>", "!! Court Cancellation Notice !!", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+		mail("$emailidrow[2] $emailidrow[3] <$emailidrow[4]>", "Court Cancellation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 
 	}
 	

@@ -13,10 +13,32 @@
  * 		$courtid
  * 		$reservation
  */
+
+
+  $eventQuery = "SELECT events.eventid, events.playerlimit from tblReservations reservations, tblEvents events
+									WHERE reservations.time=$time AND reservations.courtid=$courtid
+									AND events.eventid = reservations.eventid";
+                 
+                 $eventIdResult = db_query($eventQuery);
+                 $eventArray = mysql_fetch_array($eventIdResult);
+                 
 ?>
 
 <script>
 
+function addMeToReservation()
+{
+
+      document.manageform.action.value = 'add';
+      document.manageform.submit();
+}
+
+function removeMeFromReservation()
+{
+
+      document.manageform.action.value = 'remove';
+      document.manageform.submit();
+}
 
 function enableEvent()
 {
@@ -30,6 +52,15 @@ function disableevent(disableIt)
 }
 </script>
 
+
+<form name="manageform" method="post" action="<?=$ME?>">
+<input type="hidden" name="action"/>
+<input type="hidden" name="courtid" value="<?=$courtTypeArray['courtid']?>"/>
+<input type="hidden" name="time" value="<?=$courtTypeArray['time']?>"/>
+<input type="hidden" name="userid" value="<?=get_userid()?>"/>
+<input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>"/>
+<input type="hidden" name="cmd" value="managecourtevent"/>
+</form>
 
 <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" onSubmit="SubDisable(this);" autocomplete="off">
 
@@ -47,10 +78,94 @@ function disableevent(disableIt)
     <td>
     
 		<table>
-		 <tr>
-		 <td>
-
-       		<? if(isReoccuringReservation($time, $courtid)){ ?>
+		 <? 
+		 
+		 $enableupdate = "";
+		 
+		 if(  $eventArray['playerlimit'] > 0  ){ 
+		 
+		 	$eventplayerResult = getCourtEventParticipants($courtTypeArray['reservationid']);
+		 	$amISignedup = isCourtEventParticipant($eventplayerResult);
+		 	
+		 	?>
+				 <?
+				 if(isInPast( $courtTypeArray['time'])){
+				 ?>
+				 <tr>
+				 	<td>
+				 		<span class="label">Here is who signed up for this: </span>
+				 		
+				 	</td> 
+				  </tr>
+				 
+				 <? } else { ?>
+				 <tr>
+				 	<td>
+				 		<span class="label">Here is who is coming to this: </span>
+				 		<? if($eventArray['playerlimit'] != mysql_num_rows($eventplayerResult )
+				 		|| $amISignedup 
+				 		) { ?>
+				 		<span class="normalsm">
+				 		<?if($amISignedup){ ?>
+				 			<a href="javascript:removeMeFromReservation();">Take me out</a></span>
+				 		<? }else{ ?>
+				 			<a href="javascript:addMeToReservation();">Put me down, I will be there!</a></span>
+				 		<? } ?>
+				 		</span>
+				 		
+				 		<? } ?>
+				 	</td> 
+				  </tr>
+						  
+				 <?
+				 }
+				 
+				 	if( mysql_num_rows($eventplayerResult) > 0 ){ 
+				 		
+				 		//If anyone has signed up, don't let the administrator change the event
+				 		$enableupdate = "disabled";
+				 		
+						while($player = mysql_fetch_array($eventplayerResult)){ ?>
+							<tr>
+								<td style="padding: 1px"><?=$player['firstname']?> 
+								<?=$player['lastname']?></td>
+							</tr>
+						
+		
+				 	<? } ?>
+				 
+				
+				 <? }  else{ ?>
+				 	
+				 	<tr>
+						 	<td>
+						 		<span class="normal">
+						 		<?=isInPast( $courtTypeArray['time'])?"There were no takers":"Noone has signed up yet "?>
+						 		
+						 		
+						 		</span>
+						 	</td> 
+						  </tr>
+				 	 
+				 	  <?	}?>
+				 	 
+				 	  
+				 
+				 <?	}   ?>
+		
+		 
+			
+       		<? 
+       		//Only display this to administrators
+       		if( get_roleid()==2 || get_roleid==4){  ?>
+       		<tr>
+		 		<td><hr/></td>
+		 	</tr> 
+		 	<tr>
+		       <td>
+       		<?
+       		
+       			if(isReoccuringReservation($time, $courtid)){ ?>
        		This is a reoccuring event.  What do you want to do?<br><br>
        		<input type="radio" name="cancelall" value="3" onclick="disableevent(this.checked)" checked>&nbsp; Cancel just this occurrence <br>	
        		<input type="radio" name="cancelall" value="9" onclick="disableevent(this.checked)" >&nbsp; Cancel all occurrences <br>
@@ -60,7 +175,7 @@ function disableevent(disableIt)
        		<? } ?>
        	 
        	 
-	   	 <input type="radio" name="cancelall" value="10" onclick="javascript:enableEvent()">&nbsp;Update the event
+	   	 <input type="radio" name="cancelall" value="10" onclick="javascript:enableEvent()" disabled="<?=$enableupdate?>">&nbsp;Update the event
 			<select name="events" disabled>
                
 
@@ -68,17 +183,13 @@ function disableevent(disableIt)
                 //Get Club Players
                  $eventDrpDown = get_site_events(get_siteid());
                  
-                 $eventQuery = "SELECT eventid from tblReservations 
-									WHERE time=$time AND courtid=$courtid";
-                 
-                 $eventIdResult = db_query($eventQuery);
-                 $eventId = mysql_result($eventIdResult,0);
+               
                  
                  while($row = mysql_fetch_row($eventDrpDown)) {
 
 					$selected = "";
                       
-				 	if($row[0] == $eventId){
+				 	if($row[0] == $eventArray['eventid']){
 	                    $selected = "selected";
 	                 }
 					 
@@ -90,12 +201,7 @@ function disableevent(disableIt)
        </select>
          </td>
        </tr>
-                
-	</table>
-	
-	</td>
-	</tr>
-	<tr>
+        <tr>
        <td>
 	       <br>
 	       <input type="submit" name="submit" value="Submit">
@@ -105,6 +211,25 @@ function disableevent(disableIt)
 	       <input type="hidden" name="time" value="<?=$time?>">
        </td>
       </tr> 
+      <? } else{ ?>
+       <tr style="height: 30px">
+       	<td></td>
+       </tr>
+       <tr>
+       	<td>
+       		<input type="button" value="Back to Court Reservations" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
+	   </td>
+       </tr>
+         
+      	
+     <?  }?>       
+	</table>
+	
+	</td>
+	</tr>
+	
+      
+  
 </table>	
 
 

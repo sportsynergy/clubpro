@@ -67,6 +67,23 @@ if (isset($_POST['cancelall'])) {
 
 }
 
+//This little part handles adding and removing players from events
+else if(isset($_POST['cmd']) && $_POST['cmd']=="managecourtevent"){
+	
+ if( isDebugEnabled(1) ) logMessage("court_cancelation.canIcancel: site doesn't allow self cancel");
+	
+	if($_POST['action']=='add'){
+		
+		addToCourtEvent($_POST['userid'],$_POST['reservationid']);
+		confirmCourtEvent($_POST['userid'],$_POST['reservationid'],$_POST['action']);
+	}
+	else if($_POST['action']=='remove'){
+		removeFromCourtEvent($_POST['userid'],$_POST['reservationid']);
+		confirmCourtEvent($_POST['userid'],$_POST['reservationid'],$_POST['action']);
+	}
+}
+
+
 
 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
 
@@ -343,6 +360,7 @@ Club administrator */
   * 8=Modify Doubles Reservation players
   * 9= Cancel Reoccuring Event
   * 10= Update an event
+  * 
   *
   *
 */
