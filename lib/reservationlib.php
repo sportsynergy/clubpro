@@ -271,7 +271,7 @@ function printTeam($teamId, $creator){
     	echo "*";
     }
 	
-	echo "-";
+	echo "<br/>";
 	$teamnamearray = db_fetch_array($teamnameresult);
 	
 	echo "$teamnamearray[0] $teamnamearray[1]"; 
@@ -279,7 +279,7 @@ function printTeam($teamId, $creator){
 	if($creator == $teamnamearray[2]){
     	echo "*";
     }
-   
+   echo "<br/>";
 }
  
 /**
