@@ -697,7 +697,7 @@ if ($clubid){
 		                                                           <td align=center><font class="normalsm1">
 		                                                           <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>">
 		                                                           <?=gmdate("g:i",$i)?><br>
-		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?><br>
+		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
 																	 
 		                                                           <?
 		
@@ -833,7 +833,7 @@ if ($clubid){
                                             ?> 
                                             
                                             <?=gmdate("g:i",$i)?><br>   
-											 <?= printTeam($teamidarray['userid'],  $residobj->creator) ?><br>
+											 <?= printTeam($teamidarray['userid'],  $residobj->creator) ?>
                                              
                                              <?  //Get Second Team
                                              $teamidarray = db_fetch_array($teamidresult) ?>
@@ -945,9 +945,9 @@ if ($clubid){
 
                                                         	?>
 	                                                        <tr class=reportedcourtcl<?=$clubid?>>
-	                                                        <td align=center><font class=normalsm1>
+	                                                        <td align=center><font class="normalsm1">
 	                                                        <?=gmdate("g:i",$i)?><br>
-	                                                        <?=printPlayer($userArray[0],  $userArray[1], $teamidarray['userid'], $residobj->creator)?><br>
+	                                                        <?=printPlayer($userArray[0],  $userArray[1], $teamidarray['userid'], $residobj->creator)?>
 	                                                        was up for some doubles</a>
                                                         	<?
                                                         }
@@ -970,7 +970,7 @@ if ($clubid){
 		                                                           <td align="center"><font class="normalsm1">
 		                                                           <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$residobj->reservationid?>">
 		                                                           <?=gmdate("g:i",$i)?><br>
-		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?><br>
+		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
 																	 
 		                                                           <?
 		
