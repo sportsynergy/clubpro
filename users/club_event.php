@@ -16,7 +16,13 @@ $DOC_TITLE = "Club Event";
 //Load in Date
 $eventid = $_REQUEST["clubeventid"];
 
+//put this in session
+if( isset($eventid)){
+	$_SESSION["clubeventid"] = $eventid;
+}
 
+
+if( isDebugEnabled(1) ) logMessage("calling club event");
 
 
 if (match_referer() &&  isset($_POST['cmd']) )  {
@@ -42,8 +48,8 @@ if (match_referer() &&  isset($_POST['cmd']) )  {
 }
 
 
-$clubEventResult = loadClubEvent($eventid);
-$clubEventParticipants = getClubEventParticipants($eventid);
+$clubEventResult = loadClubEvent($_SESSION["clubeventid"]);
+$clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);
 $alreadySignedUp = isClubEventParticipant($clubEventParticipants);
 
 include ($_SESSION["CFG"]["templatedir"]."/header_yui.php");

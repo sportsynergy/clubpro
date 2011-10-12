@@ -50,15 +50,26 @@ function addToClubEvent($userid, $clubeventid){
 	
 	logMessage("clubadminlib.addToClubEvent: User $userid ClubEventId: $clubeventid");
 	
+	$check = "SELECT count(*) FROM tblClubEventParticipants participants WHERE participants.userid = $userid AND participants.clubeventid = $clubeventid";
+	$checkResult = db_query($check);
+	$num = mysql_result($checkResult,0);
 	
-	$query = "INSERT INTO tblClubEventParticipants (
+	if($num == 0){
+		
+		$query = "INSERT INTO tblClubEventParticipants (
                 userid, clubeventid
                 ) VALUES (
                           '$userid'
 					  	  ,'$clubeventid'
                           )";
 	
-	$result = db_query($query);
+	   $result = db_query($query);
+		
+	} else {
+		logMessage("clubadminlib.addToClubEvent: User $userid is already in  $clubeventid not doing anything.");
+	}
+	
+	
 	
 }
 

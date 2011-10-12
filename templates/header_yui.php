@@ -29,15 +29,18 @@
         <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/container-min.js"></script>
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/dragdrop/dragdrop-min.js"></script> 
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/calendar-min.js"></script>
+		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/connection/connection-min.js"></script>
+		
 
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/tabview/tabview-min.js"></script>
-	
+		
 		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
 		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/tabview/assets/skins/sam/tabview.css" />
 		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/assets/skins/sam/container.css" /> 
-		 <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/assets/skins/sam/calendar.css" />
-		
+		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/assets/skins/sam/calendar.css" />
+		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" /> 
+	
 		
  		 <!-- CSS for Menu --> 
         <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/menu/assets/skins/sam/menu.css"> 

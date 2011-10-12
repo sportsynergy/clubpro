@@ -285,7 +285,10 @@ padding-bottom: 2px;
 
 ul.whoscoming li {
 padding-bottom: 0px;
+list-style-type: disc;
 }
+
+
 
 
 
