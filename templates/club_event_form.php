@@ -40,7 +40,7 @@ YAHOO.util.Event.onDOMReady(function () {
 							  modal: true,
 							  visible : false, 
 							  constraintoviewport : true,
-							  buttons : [ { text:"Submit", handler:handleSubmit, isDefault:true } ]
+							  buttons : [ { text:"Add Player", handler:handleSubmit, isDefault:true } ]
 							});
 
 	YAHOO.clubevent.container.dialog1.setHeader('Pick A Player');
@@ -74,6 +74,17 @@ function removeFromEvent(userid){
 	
 }
 
+document.onkeypress = function (aEvent)
+{
+    if(!aEvent) aEvent=window.event;
+  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+    if( key == 13 ) // enter key
+    {
+        return false; // this will prevent bubbling ( sending it to children ) the event!
+    }
+  	
+}
+
 </script>
 
 <form name="removemefromeventform" method="post" action="<?=$ME?>">
@@ -96,7 +107,7 @@ function removeFromEvent(userid){
 
 <span class="biglabel"><?=$clubEvent['name']?></span><br/>
 <span class="italitcsm"><?=formatDateString($clubEvent['eventdate'])?></span>
-<div style="background-color: #DBDDDD;">
+<div style="background-color: #DBDDDD; padding: 5px;">
 <span class="normal">
 	<?=$clubEvent['description']?>
 </span>
