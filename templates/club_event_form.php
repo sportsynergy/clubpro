@@ -83,7 +83,7 @@ document.onkeypress = function (aEvent)
         return false; // this will prevent bubbling ( sending it to children ) the event!
     }
   	
-}
+};
 
 </script>
 
@@ -117,8 +117,8 @@ document.onkeypress = function (aEvent)
 </div>
 
 
-<div id="rightPanel" style="float: left;">
-<span class="biglabel" >Who is coming </span> 
+<div id="rightPanel" style="float: left">
+<span class="biglabel">Who is coming </span> 
 <? if( is_logged_in() ){
 
 	 if( get_roleid()==2 || get_roleid()==4){ ?>
@@ -167,7 +167,7 @@ document.onkeypress = function (aEvent)
 </div>
 </div>
 
-<div id="peoplelistpanel" style="padding-left: 2em;">
+<div id="peoplelistpanel" style="padding-left: 1em; padding-top: 10px;">
 <ul id="peoplelist" class="whoscoming" >
 
 <? 
@@ -186,7 +186,10 @@ if( mysql_num_rows($clubEventParticipants)==0){ ?>
 	<li><?=$participant['firstname']?> <?=$participant['lastname']?> 
 	
 	<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
-	  <span class="normalsm"><a href="javascript:removeFromEvent(<?=$participant['userid']?>);">x</a></span>
+	  <span class="normalsm">
+	  <a href="javascript:removeFromEvent(<?=$participant['userid']?>);">
+	 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
+	</a></span>
 	<? }?>
 	</li>
 	<? } }?>

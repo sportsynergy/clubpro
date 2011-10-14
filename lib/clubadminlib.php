@@ -50,7 +50,10 @@ function addToClubEvent($userid, $clubeventid){
 	
 	logMessage("clubadminlib.addToClubEvent: User $userid ClubEventId: $clubeventid");
 	
-	$check = "SELECT count(*) FROM tblClubEventParticipants participants WHERE participants.userid = $userid AND participants.clubeventid = $clubeventid";
+	$check = "SELECT count(*) FROM tblClubEventParticipants participants 
+					WHERE participants.userid = $userid 
+					AND participants.clubeventid = $clubeventid
+					AND participants.enddate IS NULL";
 	$checkResult = db_query($check);
 	$num = mysql_result($checkResult,0);
 	

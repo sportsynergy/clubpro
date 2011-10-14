@@ -63,3 +63,7 @@
 
 <div style="height: 30px"></div>
 
+<script type="text/javascript">
+document.entryform.searchname.focus();
+</script>
+

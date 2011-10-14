@@ -488,6 +488,22 @@ function isSoloReservationEnabled() {
 
 }
 
+function isLadderRankingScheme() {
+		/* this function simply returns the whether or not the site has solo reservations enabled. */
+
+	return $_SESSION["siteprefs"]["rankingscheme"]=='ladder'?true:false;
+	
+
+}
+
+function isPointRankingScheme() {
+		/* this function simply returns the whether or not the site has solo reservations enabled. */
+
+	return $_SESSION["siteprefs"]["rankingscheme"]=='point'?true:false;
+	
+
+}
+
 function isSelfScoreEnabled() {
 	/* this function simply returns the whether or not the site has self score enabled. */
 
@@ -4994,7 +5010,8 @@ function getSitePreferences($siteid) {
 					sites.allownearrankingadvertising,
 					sites.enableguestreservation,
 					sites.displaysitenavigation,
-					sites.displayrecentactivity
+					sites.displayrecentactivity,
+					sites.rankingscheme
 	        FROM tblClubSites sites
 			WHERE sites.siteid = '$siteid'";
 

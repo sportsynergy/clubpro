@@ -240,6 +240,15 @@ tr.lightrow td{
 	padding:0.25em;
 }
 
+tr.darkrow_plain td{
+	background-color: #C0C0C0;
+	padding:0.25em;
+}
+
+tr.lightrow_plain td{
+	background-color: #DBDDDD;	
+	padding:0.25em;
+}
 	
 /********* For Tabs*********************************************************/
 
@@ -285,11 +294,13 @@ padding-bottom: 2px;
 
 ul.whoscoming li {
 padding-bottom: 0px;
-list-style-type: disc;
 }
 
 
-
+.ladderpanel > a:link {
+color: #000;
+text-decoration: none;
+}
 
 
 /*********System*********************************************************/

@@ -211,7 +211,7 @@ function validate_form(&$frm, &$errors) {
 		}
 		// There is a site level setting out there that prevents normal users from recording their score
 		elseif( !isSelfScoreEnabled() && get_roleid() == 1 ){
-			 $msg .= "Sorry, but it appears that your club administrator is not allowing you to record your score.  If you want to know why this is happening to you right now you should ask them.";
+			 $msg .= "Sorry, but it appears that your club administrator is not allowing you to record your score.";
 		}
 		
         return $msg;

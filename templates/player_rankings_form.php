@@ -1,4 +1,4 @@
-<?php
+<?
 /*
  * $LastChangedRevision: 847 $
  * $LastChangedBy: Adam Preston $
@@ -20,18 +20,6 @@ function SubDisable(dform) {
 return true;
 }
 
-function disableSortByDropDown(listselection)
-{
-        
-        if(listselection.value == "ladder" ){
-             document.entryform.sortoption.disabled = true;
-        }
-        else{
-        	document.entryform.sortoption.disabled = "";
-        }
-        
-
-}
 
 
 </script>
@@ -72,7 +60,6 @@ function disableSortByDropDown(listselection)
            <td>
                <select name="displayoption" onchange="disableSortByDropDown(this)">
                        <option value="all">All Players</option>
-                       <option value="ladder">Club Ladder</option>
                        <option value="5+">5.0 and up</option>
                        <option value="4">4.0</option>
                        <option value="3">3.0</option>

@@ -287,7 +287,7 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 
 	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  winnerid = $winneruserid\n loserid = $loseruserid\n courttypeid = $courttypeid\n clubid = $clubid");
 
-	$winnerquery = "SELECT ladder.ladderposition 
+	$winnerquery = "SELECT ladder.ladderposition, ladder.going, ladder.id 
 						FROM tblClubLadder ladder 
 						WHERE ladder.courttypeid = $courttypeid 
 						AND ladder.clubid =  $clubid 
@@ -295,9 +295,11 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 						AND ladder.enddate IS NULL";
 	
 	$winnerresult = db_query($winnerquery);
-	$winnerposition = mysql_result($winnerresult,0);
-						
-	$loserquery = "SELECT ladder.ladderposition 
+	$winnerarray = mysql_fetch_array($winnerresult);
+	$winnerposition = $winnerarray['ladderposition'];
+	$winnergoing = $winnerarray['going'];
+	
+	$loserquery = "SELECT ladder.ladderposition, ladder.going, ladder.id 
 						FROM tblClubLadder ladder 
 						WHERE ladder.courttypeid = $courttypeid 
 						AND ladder.clubid =  $clubid 
@@ -305,9 +307,11 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 						AND ladder.enddate IS NULL";
 	
 	$loserresult = db_query($loserquery);
-	$loserposition = mysql_result($loserresult,0);
+	$loserarray = mysql_fetch_array($loserresult);
+	$loserposition = $loserarray['ladderposition'];
+	$losergoing = $loserarray['going'];
 	
-	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  The winners position is $winnerposition and the losers position is $loserposition");
+	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  The winners position/going is $winnerposition/$winnergoing and the losers position/going is $loserposition/$losergoing");
 	
 	//if the winner is already ahead of the loser don't do anything
 	if($winnerposition < $loserposition){
@@ -317,35 +321,62 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 	
 	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  The winner was ranked below the loser, adjusting...");
 	
-	// The loser's ladder position goes down one
-	$newloserposition = $loserposition + 1;		
+	//Set the goings
+	if($winnergoing=="up"){
+		$wgoing = "up";
+	} else if($winnergoing=="steady"){
+		$wgoing = "up";
+	} else{
+		$wgoing = "steady";
+	}
 	
+	if($losergoing=="up"){
+		$lgoing = "steady";
+	} else if($losergoing=="steady"){
+		$lgoing = "down";
+	} else{
+		$lgoing = "down";
+	}	
+	
+
 	moveLadderGroup($loserposition, $winnerposition, $clubid, $courttypeid)	;
 					
-	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  Setting winner ($winneruserid) to position $loserposition");
+	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  Setting winner ($winneruserid) to position $loserposition and going to $wgoing");
+	
+	
+	
 	//The winner gets the losers (higher) ladder position
-	$updateWinnerQuery = "UPDATE tblClubLadder 
-							SET ladderposition = $loserposition 
-							WHERE userid = $winneruserid 
-							AND courttypeid = $courttypeid 
-							AND clubid = $clubid 
-							AND enddate IS NULL";
-
+	//add new record for the guy that won
+	$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going) VALUES (
+                          $winneruserid,$courttypeid,$loserposition,$clubid,'$wgoing')";
+                          
+	db_query($query);
+	
+	//end date old one
+	$updateWinnerQuery = "UPDATE tblClubLadder SET enddate = NOW() WHERE id = ".$winnerarray['id'];
 	db_query($updateWinnerQuery);
 	
 
-	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  Setting loser ($loseruserid) down one to $newloserposition");
-	$updateLoserQuery = "UPDATE tblClubLadder 
-							SET ladderposition = $newloserposition   
-							WHERE userid = $loseruserid 
-							AND courttypeid = $courttypeid 
-							AND clubid = $clubid 
-							AND enddate IS NULL";
-
+	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  Setting loser ($loseruserid) down one to $newloserposition and going to $lgoing");
+	
+	// The loser's ladder position goes down one
+	$newloserposition = $loserposition + 1;		
+	
+	//add new record for the guy that lost
+	$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going) VALUES (
+                          $loseruserid,$courttypeid,$newloserposition,$clubid,'$lgoing')";                      
+	db_query($query);
+	
+	// end date the old one
+	$updateLoserQuery = "UPDATE tblClubLadder SET enddate = NOW() WHERE id = ".$loserarray['id'];
 	db_query($updateLoserQuery);
 		
 
 }
+
+
+
+
 
 /**
  * Starting with the position, moves everyone in the ladder up.  This is used
@@ -380,4 +411,84 @@ function moveEveryOneInClubLadderUp($courttypeid, $clubid, $ladderposition){
 	if( isDebugEnabled(2) ) logMessage("ladderlib: moveEveryOneInClubLadderUp.  Starting with position $ladderposition moved $count people up in courttype id $courttypeid ladder for club $clubid");
 	
 }
+
+/**
+ * Used by club administrators when moving people up one in the club ladder. Quietly exits if there is a problem.
+ * @param $courttypeid
+ * @param $clubid
+ * @param $userid
+ */
+function moveUpOneInClubLadder($courttypeid, $clubid, $userid){
+	
+	if( isDebugEnabled(2) ) logMessage("ladderlib: moveUpOneInClubLadder: moving user $userid up one in the ladder for club $clubid and courttypeid $courttypeid");
+	
+	//Look up the user (if this person has a ladder position of 1, exit
+	
+	
+	$query = "SELECT ladder.* 
+				FROM tblClubLadder ladder
+				WHERE ladder.courttypeid = $courttypeid
+				AND ladder.clubid = $clubid
+				AND ladder.userid = $userid
+				AND ladder.enddate IS NULL";
+	
+	$result = db_query($query);
+	$movingUpArray = mysql_fetch_array($result);
+	
+	
+	if($movingUpArray['ladderposition']==1){
+		return;
+	}
+	
+	//increment and store as variable
+	$oneup = $movingUpArray['ladderposition'] - 1;
+	
+	if( isDebugEnabled(2) ) logMessage("ladderlib: moveUpOneInClubLadder: user ".$movingUpArray['userid']." is moving up to position $oneup from position ".$movingUpArray['ladderposition']);
+	
+	
+	//Get the next person up 
+	$query = "SELECT ladder.* 
+				FROM tblClubLadder ladder
+				WHERE ladder.courttypeid = $courttypeid
+				AND ladder.clubid = $clubid
+				AND ladder.ladderposition = $oneup
+				AND ladder.enddate IS NULL";
+	
+	
+	$result = db_query($query);
+	
+	$movingDownArray = mysql_fetch_array($result);
+	
+	if( isDebugEnabled(2) ) logMessage("ladderlib: moveUpOneInClubLadder:  userid ".$movingDownArray['userid']." is moving down");
+	
+	//Add a new record for guy going up a spot
+	$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going) VALUES (
+                          $movingUpArray[userid],$courttypeid,$movingDownArray[ladderposition],$clubid,'$movingUpArray[going]')";
+                          
+	db_query($query);
+
+	//enddate the old one
+	$updateWinnerQuery = "UPDATE tblClubLadder ladder SET ladder.enddate = NOW() WHERE ladder.id = ".$movingUpArray['id'];
+	
+	db_query($updateWinnerQuery);
+	
+	if( isDebugEnabled(2) ) logMessage("ladderlib: moveUpOneInClubLadder:  moved ladderid ".$movingUpArray['id']." to ladder position: ".$movingDownArray['ladderposition']);
+	
+	//Add a new record for guy going down a spot
+	$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going) VALUES (
+                          $movingDownArray[userid],$courttypeid,$movingUpArray[ladderposition],$clubid,'$movingDownArray[going]')";
+                          
+	db_query($query);
+	
+	//end date the old one
+	$updateLoserQuery = "UPDATE tblClubLadder ladder SET ladder.enddate = NOW() WHERE ladder.id = ".$movingDownArray['id'];
+	
+	db_query($updateLoserQuery);
+	
+   if( isDebugEnabled(2) ) logMessage("ladderlib: moveUpOneInClubLadder:  moved ladderid ".$movingDownArray['id']." to ladder position: ".$movingUpArray['ladderposition']);
+	
+	
+}
+
+
 ?>
