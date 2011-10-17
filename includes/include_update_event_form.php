@@ -17,7 +17,8 @@
 
   $eventQuery = "SELECT events.eventid, events.playerlimit from tblReservations reservations, tblEvents events
 									WHERE reservations.time=$time AND reservations.courtid=$courtid
-									AND events.eventid = reservations.eventid";
+									AND events.eventid = reservations.eventid
+									AND reservations.enddate IS NULL";
                  
                  $eventIdResult = db_query($eventQuery);
                  $eventArray = mysql_fetch_array($eventIdResult);
