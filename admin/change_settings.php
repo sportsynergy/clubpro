@@ -251,12 +251,21 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
 		}
 	
 
+		if( get_magic_quotes_gpc()){
+			$firstName = $frm['firstname'];
+			$lastName = $frm['lastname'];
+		}
+		else{
+			$firstName= addslashes($frm['firstname']);
+			$lastName= addslashes($frm['lastname']);
+		}
+		
 		$updateUserQuery = "
         UPDATE tblUsers SET
 				username = '$username'
                 ,email = '$frm[email]'
-                ,firstname = '$frm[firstname]'
-                ,lastname = '$frm[lastname]'
+                ,firstname = '$firstName'
+                ,lastname = '$lastName'
                 ,homephone = '$frm[homephone]'
                 ,workphone = '$frm[workphone]'
                 ,cellphone = '$frm[cellphone]'
