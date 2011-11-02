@@ -4841,7 +4841,7 @@ function load_skill_policies($siteid) {
 function load_court_event($eventid){
 	
 	$query = "SELECT events.eventname,
-	                          events.playerlimit
+	                          events.playerlimit,events.eventid
 	                   FROM tblEvents events
 	                   WHERE events.eventid = $eventid";
 

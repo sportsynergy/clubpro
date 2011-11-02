@@ -33,7 +33,7 @@
             <td class="label">Player Limit:</td>
             <td><select name="playerlimit">
             		<?
-            		for($i = 0; $i < 7; ++$i){ ?>
+            		for($i = 0; $i < 11; ++$i){ ?>
             			<option value="<?=$i?>" <?=$i == $courtEvent['playerlimit']? "selected" : "" ?>><?=$i?></option>
             			
             		<? } ?>
@@ -45,7 +45,8 @@
      
        <tr>
            <td>
-           		<input type="submit" name="submit" value="Submit">
+           		<input type="submit" name="submit" value="Submit"/>
+           		<input type="hidden" name="policyid" value="<?=$courtEvent['eventid']?>"/>
           </td>
        </tr>
        	

@@ -182,6 +182,8 @@ $clubobj = db_fetch_object($clubresult);
 
 $tzdelta = $clubobj->timezone*3600;
 $curtime =   mktime()+$tzdelta;
+$_SESSION["current_time"] = $curtime; 
+
 $simtzdelta = $clubobj->timezone;
 
 if( isDebugEnabled(1) ) logMessage($curtime);

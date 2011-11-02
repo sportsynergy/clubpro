@@ -88,10 +88,10 @@ function insert_court_event(&$frm) {
    //If this is the case, then we're updating an existing policy
 		if( !empty($frm['policyid'] )) {
 			
-			$query = "UPDATE tblSkillRangePolicy SET
+			$query = "UPDATE tblEvents SET
 					eventname = '$name'
 	                ,playerlimit = '$frm[playerlimit]'
-	        		WHERE eventid = '$frm[eventid]'";
+	        		WHERE eventid = '$frm[policyid]'";
 		
 		}else{
 	        $query = "INSERT INTO tblEvents (

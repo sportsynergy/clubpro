@@ -40,6 +40,7 @@
                 <option value="norepeat">None</option>
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
+                <option value="biweekly">Bi-Weekly</option>
                 <option value="monthly">Monthly</option>
                 <?err($errors->repeat)?>
                 </select>
@@ -63,7 +64,12 @@
        </tr>
        <tr>
            <td></td>
-           <td><input type="submit" name="submit" value="Submit"></td>
+           <td>
+           <input type="submit" name="submit" value="Submit">
+           <input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
+        
+           
+           </td>
            <td></td>
     </tr>
  </table>

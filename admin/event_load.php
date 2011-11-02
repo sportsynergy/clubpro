@@ -291,6 +291,80 @@ function add_events(&$frm) {
 		       
 		        
 	       }
+	       
+			//Add the weekly event
+	       elseif ($frm['repeat']=="biweekly"){
+
+					
+				//Add as block event
+			     $reoccuringQuery = "INSERT INTO tblReoccurringBlockEvent (
+							 creator
+							) VALUES (
+								".get_userid()."
+								)";
+										
+			    $reservationResult = db_query($reoccuringQuery);
+				$blockId = db_insert_id();
+				$initialHourstart = 0;
+				
+				if( isDebugEnabled(2) ) logMessage("\t-> Setting Block Event Id: $blockId");
+
+
+		         //Set the occurance interval
+		         if($frm['reoccurringduration']=="week")
+		         	$numdays = 7;
+		         if($frm['reoccurringduration']=="month")
+		         	$numdays = 28;
+		         if($frm['reoccurringduration']=="year")
+		         	$numdays = 365;
+	
+		         for ($i = 0; $i < $numdays; $i += 14) {
+						
+									
+			          $startTime = gmmktime (gmdate("H",$initialStartTime),
+		         						gmdate("i",$initialStartTime),
+		         						gmdate("s",$initialStartTime),
+		         						gmdate("n",$initialStartTime),
+		         						gmdate("j", $initialStartTime)+$i,
+		         						gmdate("Y", $initialStartTime));
+		         						
+	 		         $endTime = gmmktime (gmdate("H",$initialEndTime),
+					 						gmdate("i",$initialEndTime),
+					 						gmdate("s",$initialEndTime),
+					 						gmdate("n",$initialEndTime),
+					 						gmdate("j", $initialEndTime)+$i,
+					 						gmdate("Y", $initialEndTime));		
+			
+			          
+			        	// Set the event interval.  This will be the duration for the court for that day
+				        $dayOfWeek = gmdate("w", $startTime);
+				        $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtId";
+				        $courtHourResult = db_query($courtHourQuery);
+				        $courtHourArray = mysql_fetch_array($courtHourResult);
+				        $eventinterval = 3600*$courtHourArray["duration"];
+				       
+				        //Adjust the start and endtimes.  If this is the second reservation then compare the hourstarts
+				        //to see if an adjustment needs to be made.  For example, if the hourstart of the first day is 15
+				        //and the second day is 30, then 15* 60 should be added to both start and end times.  If the hourstart
+				        // of the fist day is 30 and the hourstart of the second day is 0, then 30 should be subtracted from
+				        //both start and enttimes.
+				        if($i > 0){
+				        	$hourstart = $initialHourstart - $courtHourArray["hourstart"];
+				        	$startTime -= ($hourstart * 60);
+				        	$endTime -= ($hourstart * 60);
+				        }
+				        else{
+				        	$initialHourstart = $courtHourArray["hourstart"];
+				        }  
+			          
+			      	makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId);
+			      	
+			      
+		       }
+		       
+		        
+	       }
+	       
 	        //Add the monthly event
 	       elseif ($frm['repeat']=="monthly"){
 	
@@ -385,8 +459,11 @@ function add_events(&$frm) {
  */
 function getReservationWindow($courtid ,$time){
 
+	  if( isDebugEnabled(2) ) logMessage("event_load.getReservationWindow:ntId: courtid $courtid and time: $time");
+	
 	  //The Day of the week for the time
 	  $currDOW = gmdate("w",$time);
+	  $current_time = $_SESSION["current_time"];
 	
 	  //Get the Open and close time for the club
 	  $hoursquery =  "SELECT hours.opentime, hours.closetime, hours.duration, hours.hourstart from tblCourtHours hours WHERE courtid='$courtid' AND dayid ='$currDOW' ";
@@ -404,19 +481,19 @@ function getReservationWindow($courtid ,$time){
      
     
      //Build out dates
-     $currentMonth = gmdate("n", $time);
-     $currentDate = gmdate("j", $time);
-     $currentYear = gmdate("Y", $time);
+     $thisMonth = gmdate("n", $time);
+     $thisDate = gmdate("j", $time);
+     $thisYear = gmdate("Y", $time);
      
-     $courtOpenTime = gmmktime ($openHour, $hourStart, 0, $currentMonth, $currentDate, $currentYear);
-     $courtCloseTime = gmmktime ($closeHour, $hourStart, 0, $currentMonth, $currentDate, $currentYear);
+     $courtOpenTime = gmmktime ($openHour, $hourStart, 0, $thisMonth, $thisDate, $thisYear);
+     $courtCloseTime = gmmktime ($closeHour, $hourStart, 0, $thisMonth, $thisDate, $thisYear);
      
      $timeListArray = array();
      
      for($i=$courtOpenTime; $i<$courtCloseTime ; $i=$i+$duration){
      	
 	     	//Only add those slots that occur after the current time
-	     	if($time<$i){
+	     	if($current_time<$i){
 	     		
 	     		array_push($timeListArray, $i);
 	     	}

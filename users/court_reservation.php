@@ -1189,6 +1189,78 @@ function makeEventReservation(&$frm){
 						
 			     db_query($reoccuringQuery);
 	       }
+	       
+	       
+ 			//Add the weekly event
+	       elseif ($frm['repeat']=="biweekly"){
+
+		         //Set the occurance interval
+		         if($frm['duration']=="week")
+		         	$numdays = 7;
+		         if($frm['duration']=="month")
+		         	$numdays = 28;
+		         if($frm['duration']=="year")
+		         	$numdays = 365;
+	
+				 $initialHourstart = 0;
+				 
+		         for ($i = 0; $i < $numdays; $i += 14) {
+		
+			         $nextday = gmmktime (gmdate("H",$frm['time']),
+			         						gmdate("i",$frm['time']), 
+			         						gmdate("s",$frm['time']),
+			         						gmdate("n",$frm['time']),
+			         						gmdate("j", $frm['time'])+$i,
+			         						gmdate("Y", $frm['time']));
+			
+			         // Set the event interval.  This will be the duration for the court for that day
+			        $dayOfWeek = gmdate("w", $nextday);
+			        $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtid";
+			        $courtHourResult = db_query($courtHourQuery);
+			        $courtHourArray = mysql_fetch_array($courtHourResult);
+			        
+			        
+			       //Save off the first reservation time
+					if($i>0){
+	
+			         	$hourstart = $initialHourstart - $courtHourArray["hourstart"];
+			        	$nextday -= ($hourstart * 60);
+			         }
+			         else{
+			         	$startday = $nextday;
+			         	$initialHourstart = $courtHourArray["hourstart"];
+			         }
+			          
+			        if(!isCourtAlreadyReserved($frm['courtid'], $nextday)){
+					//Add as reservation
+			         $resquery = "INSERT INTO tblReservations (
+			                 courtid, eventid, time, lastmodifier, creator
+			                 ) VALUES (
+			                           '$frm[courtid]'
+			                           ,'$frm[eventid]'
+			                           ,$nextday
+									   , ".get_userid()."
+									   , ".get_userid().")";
+			
+			        $resresult =  db_query($resquery);
+				}
+		         
+		
+		       }
+		       
+		        //Add as reoccuring event
+		        $reoccuringQuery = "INSERT INTO tblReoccuringEvents (
+						courtid, eventinterval, starttime, endtime
+						) VALUES (
+							$frm[courtid],
+							604800,
+							$startday,
+							$nextday
+						)";
+						
+			     db_query($reoccuringQuery);
+	       }
+	       
 	
 	       //Add the monthly event
 	       elseif ($frm['repeat']=="monthly"){
