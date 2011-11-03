@@ -486,11 +486,11 @@ if ($clubid){
 					// this isn't the case however, use the current time, unless daysahead is used to load
 					// todays page, as daysahead is appeaded to when redirecting after any reservation is made.
                    	 
-                   	 if( isset($daysahead)  ){
-                   	 	$eventStartTime = $daysahead;
-                   	 }
-                   	 else if( isset($specDate)){
+                   	if( isset($specDate)){
                    	 	$eventStartTime = $specDate;
+                   	 }
+                   	 else if( isset($daysahead)  ){
+                   	 	$eventStartTime = $daysahead;
                    	 }
                    	 else{
                    	 	$eventStartTime = $curtime;
