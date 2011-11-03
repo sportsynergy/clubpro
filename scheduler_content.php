@@ -184,6 +184,7 @@ $tzdelta = $clubobj->timezone*3600;
 $curtime =   mktime()+$tzdelta;
 $_SESSION["current_time"] = $curtime; 
 
+
 $simtzdelta = $clubobj->timezone;
 
 if( isDebugEnabled(1) ) logMessage($curtime);
@@ -487,6 +488,9 @@ if ($clubid){
                    	 
                    	 if( isset($daysahead)  ){
                    	 	$eventStartTime = $daysahead;
+                   	 }
+                   	 else if( isset($specDate)){
+                   	 	$eventStartTime = $specDate;
                    	 }
                    	 else{
                    	 	$eventStartTime = $curtime;

@@ -459,11 +459,13 @@ function add_events(&$frm) {
  */
 function getReservationWindow($courtid ,$time){
 
-	  if( isDebugEnabled(2) ) logMessage("event_load.getReservationWindow:ntId: courtid $courtid and time: $time");
+	  $current_time = $_SESSION["current_time"];
+	
+	  if( isDebugEnabled(2) ) logMessage("event_load.getReservationWindow:ntId: courtid $courtid and time: $time and current time is: ".$current_time);
 	
 	  //The Day of the week for the time
 	  $currDOW = gmdate("w",$time);
-	  $current_time = $_SESSION["current_time"];
+	  
 	
 	  //Get the Open and close time for the club
 	  $hoursquery =  "SELECT hours.opentime, hours.closetime, hours.duration, hours.hourstart from tblCourtHours hours WHERE courtid='$courtid' AND dayid ='$currDOW' ";

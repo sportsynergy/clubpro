@@ -16,6 +16,7 @@
                     				<li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/change_password.php">Change Password</a></li>
                     				<li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_lookup.php">Account Maintenance</a></li>
                     				<li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/manage_club_policies.php">Club Policies</a></li>
+                    				
                     				<li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/system_preferences.php">System Preferences</a></li>
                               </ul>
                         </div>
