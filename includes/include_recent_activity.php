@@ -8,6 +8,13 @@
 */
 ?>
 
+
+
+<?
+$siteActivityResult = getRecentSiteActivity( get_siteid() );
+
+if(mysql_num_rows($siteActivityResult) > 0){ ?>
+
 <h2 style="padding-top: 15px">Recent Activity</h2>
 <hr class="hrline"/>
 
@@ -15,20 +22,16 @@
 <ul class="recentavtivity">
 
 <?
-$siteActivityResult = getRecentSiteActivity( get_siteid() );
-
-if(mysql_num_rows($siteActivityResult)==0){ ?>
-	<li>No activity logged...yet</li>
-<?}else{
 	
 while($siteActivity = mysql_fetch_array($siteActivityResult)){ ?>
 	
 	<li><?=$siteActivity['description']?></li>
 	
-<? }} ?>
-
-
+<? } ?>
 
 </ul>
 
 </div>
+
+<? } ?>
+
