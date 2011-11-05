@@ -323,18 +323,14 @@ function record_scores(&$frm){
 		
 		if( isDebugEnabled(1) ) logMessage("report_scores.record_scores: Updating player4 (".$frm["player4"].") ranking from $playerFourIndividualRanking to $newPlayerFourIndividualRanking");	
 		
-		
-		
-		
-		report_scores_doubles_simple($winnerTeamId, $loserTeamId, $winnersOldRanking, $newWinnerRanking, $losersOldRanking, $newLoserRanking, $frm["score"], $frm['matchtype']);
-		
 		// format - 
 		$winnersOldRanking = sprintf ("%01.4f",$winnersOldRanking);
 		$newWinnerRanking = sprintf ("%01.4f",$newWinnerRanking);
 		$losersOldRanking = sprintf ("%01.4f",$losersOldRanking);
 		$newLoserRanking = sprintf ("%01.4f",$newLoserRanking);
 		
-
+		report_scores_doubles_simple($winnerTeamId, $loserTeamId, $winnersOldRanking, $newWinnerRanking, $losersOldRanking, $newLoserRanking, $frm["score"], $frm['matchtype']);
+		
 		return  "<font class=bigbanner> Yipeeee for ".getFullNamesForTeamId($winnerTeamId)."!!!</font><br/><br/>".
 				getFullNamesForTeamId($winnerTeamId)." ranking climbed from $winnersOldRanking to $newWinnerRanking<br>
 						".getFullNamesForTeamId($loserTeamId)." ranking fell from $losersOldRanking to $newLoserRanking<br><br>

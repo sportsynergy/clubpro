@@ -2228,7 +2228,9 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
 	
 	$var->loserscore = $score;
 
-	$var->clubfullname = get_clubname();
+	$clubfullname = get_clubname();
+	$var->clubfullname = $clubfullname;
+	
 	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_doubles_simple.php", $var);
 
