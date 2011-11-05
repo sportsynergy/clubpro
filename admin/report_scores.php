@@ -178,15 +178,36 @@ function record_scores(&$frm){
 	//Report Scores for doubles
 	if( $frm["usertype"] == "doubles") {
 		
+
+				
+		//Get rankings
+		
+		
 		//Get Winner Team Id
 		$winnerTeamId = getTeamIDForPlayers($frm["courttype"], $frm["player1"], $frm["player2"]);
+		
+		$winnerResult = getUserIdsForTeamIdWithCourtType($winnerTeamId, $frm["courttype"]);
+		$playerRow = mysql_fetch_array($winnerResult);
+        $winnersOldRanking = $playerRow['ranking'];
+        $playerRow = mysql_fetch_array($winnerResult);
+        $winnersOldRanking  += $playerRow['ranking'];
+        $winnersOldRanking = $winnersOldRanking/2; 
+        
 		
 		//Get Loser Team Id
 		$loserTeamId = getTeamIDForPlayers($frm["courttype"], $frm["player3"], $frm["player4"]);
 		
-		//Get rankings
-		$winnersOldRanking = getUserRankingForUserType($winnerTeamId, $frm["courttype"], 1);
-		$losersOldRanking = getUserRankingForUserType($loserTeamId, $frm["courttype"], 1);
+		if(isDebugEnabled(1) ) logMessage("report_scores.record_scores: The Winning Team Id $winnerTeamId has a ranking of $winnersOldRanking for courttype: ".$frm["courttype"]);
+	
+
+         $loserResult = getUserIdsForTeamIdWithCourtType($loserTeamId, $frm["courttype"]);
+		 $playerRow = mysql_fetch_array($loserResult);
+         $losersOldRanking = $playerRow['ranking'];
+         $playerRow = mysql_fetch_array($loserResult);
+         $losersOldRanking  += $playerRow['ranking'];
+         $losersOldRanking = $losersOldRanking/2; 
+         
+		if(isDebugEnabled(1) ) logMessage("report_scores.record_scores: The losing Team Id $loserTeamId has a ranking of $losersOldRanking for courttype: ".$frm["courttype"]);
 		
 		//Calculate Rankings
 		$rankingArray =  calculateRankings($winnersOldRanking, $losersOldRanking);
@@ -307,7 +328,13 @@ function record_scores(&$frm){
 		
 		report_scores_doubles_simple($winnerTeamId, $loserTeamId, $winnersOldRanking, $newWinnerRanking, $losersOldRanking, $newLoserRanking, $frm["score"], $frm['matchtype']);
 		
+		// format - 
+		$winnersOldRanking = sprintf ("%01.4f",$winnersOldRanking);
+		$newWinnerRanking = sprintf ("%01.4f",$newWinnerRanking);
+		$losersOldRanking = sprintf ("%01.4f",$losersOldRanking);
+		$newLoserRanking = sprintf ("%01.4f",$newLoserRanking);
 		
+
 		return  "<font class=bigbanner> Yipeeee for ".getFullNamesForTeamId($winnerTeamId)."!!!</font><br/><br/>".
 				getFullNamesForTeamId($winnerTeamId)." ranking climbed from $winnersOldRanking to $newWinnerRanking<br>
 						".getFullNamesForTeamId($loserTeamId)." ranking fell from $losersOldRanking to $newLoserRanking<br><br>
