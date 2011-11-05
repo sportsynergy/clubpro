@@ -70,13 +70,14 @@
 		<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/main.css" rel=stylesheet type=text/css>
 		<?} ?>
  
- 		
+
  
     </head> 
     
     
   <body class="yui-skin-sam" id="main-com"> 
   
+  		<? include_once("analyticstracking.php") ?>
   		           <?
                 //When site is disabled display the gone fishing sign, but not for the system administration console.
                 if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){ 
