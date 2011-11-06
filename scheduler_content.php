@@ -535,7 +535,7 @@ if ($clubid){
                                      if (in_array ($i, $stack)){
 
                                       //Get Reservation ID
-                                      $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, lastmodifier, creator
+                                      $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, lastmodifier, creator, locked
                                                              FROM tblReservations
                                                              WHERE courtid=$courtobj->courtid
                                                              AND time=$i
@@ -595,7 +595,10 @@ if ($clubid){
 	                                                                	<tr class=reservecourtcl<?=$clubid?>>
 	                                                                    <td align=center><font class="normalsm1">
 	                                                                    <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&cmd=cancelall">
-	                                                                    <?=gmdate("g:i",$i)?><br>
+	                                                                    <? if($residobj->locked=="y"){ ?>
+							                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+							                                            <? }?>
+                                                                		<?=gmdate("g:i",$i)?><br>
 	                                                                     <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
                                                                 	<? }
 	                                                                /*
@@ -615,7 +618,9 @@ if ($clubid){
                                                                   <?  } else{ ?>
                                                                      <tr class=seekingmatchcl<?=$clubid?>>
                                                                      <td align="center"><font class="normalsm1">
-                                                                     
+                                                                     <? if($residobj->locked=="y"){ ?>
+						                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+						                                            <? }?>
                                                                       <? if($useridarray['matchtype']==1){ ?>
                                                                      		<img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif">
                                                                       <? } ?>
@@ -632,8 +637,9 @@ if ($clubid){
 
 	                                                                 <tr class=reservecourtcl<?=$clubid?>>
 	                                                                 <td align="center"><font class="normalsm1">
-	                                                                 
-		                                                                 <? if($useridarray['matchtype']==1){ ?>
+	                                                                 	<? if($residobj->locked=="y"){ ?>
+							                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+		                                                                 <? } if($useridarray['matchtype']==1){ ?>
 		                                                                 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif">
 		                                                                 <? } if($useridarray['matchtype']==4){ ?>
 		                                                                 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">
@@ -678,7 +684,10 @@ if ($clubid){
 	                                                        <tr class=seekingmatchcl<?=$clubid?>>
 	                                                        <td align=center><font class=normalsm1>
 	                                                        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&userid=<?=$teamidarray['userid']?>">
-	                                                        <?=gmdate("g:i",$i)?><br>
+	                                                        <? if($residobj->locked=="y"){ ?>
+				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+				                                            <? }?>
+                                                        	<?=gmdate("g:i",$i)?><br>
 	                                                        <?=printPlayer($userArray[0], $userArray[1],$teamidarray['userid'], $residobj->creator)?><br>
 	                                                        is up for some doubles</a>
                                                         	<?
@@ -688,7 +697,10 @@ if ($clubid){
 	                                                        <tr class="seekingmatchcl<?=$clubid?>">
 	                                                        <td align="center"><font class="normalsm1">
 	                                                        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&userid=<?=$teamidarray[0]?>">
-	                                                        <?=gmdate("g:i",$i)?><br>
+	                                                        <? if($residobj->locked=="y"){ ?>
+				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+				                                            <? }?>
+															<?=gmdate("g:i",$i)?><br>
 	                                                        <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
 	                                                        are looking for a match</a>
 	                                                       <?
@@ -702,7 +714,10 @@ if ($clubid){
 		                                                           <tr class=reservecourtcl<?=$clubid?>>
 		                                                           <td align=center><font class="normalsm1">
 		                                                           <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>">
-		                                                           <?=gmdate("g:i",$i)?><br>
+		                                                          <? if($residobj->locked=="y"){ ?>
+					                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+					                                            <? }?> 
+		                                                          <?=gmdate("g:i",$i)?><br>
 		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
 																	 
 		                                                           <?
@@ -718,7 +733,10 @@ if ($clubid){
 		                                                        <tr class=seekingmatchcl<?=$clubid?>>
 		                                                        <td align="center"><font class="normalsm1">
 		                                                        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&userid=<?=$teamidarray[0]?>">
-		                                                        <?=gmdate("g:i",$i)?><br>
+		                                                       	<? if($residobj->locked=="y"){ ?>
+					                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+					                                            <? }?> 
+		                                                       <?=gmdate("g:i",$i)?><br>
 		                                                      	<?=printPlayer($userArray[0], $userArray[1], $teamidarray['userid'], $residobj->creator)?><br>
 		                                                        is looking for a partner<br>
 		                                                        <?
@@ -760,7 +778,7 @@ if ($clubid){
                                if (in_array ($i, $stack)){
 
                                   //Get Reservation ID
-                                  $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, creator
+                                  $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, creator, locked
                                                  FROM tblReservations
                                                  WHERE courtid=$courtobj->courtid
                                                  AND time=$i
@@ -809,7 +827,10 @@ if ($clubid){
                                         echo "<td align=center><font class=normalsm1>\n";
 
                                          if($residobj->usertype==0){
-
+											if($residobj->locked=="y"){ ?>
+                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+                                            
+                                            <?}
                                              if($residobj->matchtype==1){ ?>
                                                  <img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif">
                                           
@@ -838,6 +859,9 @@ if ($clubid){
                                             
                                             ?> 
                                             
+                                            <? if($residobj->locked=="y"){ ?>
+                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+                                            <? }?>
                                             <?=gmdate("g:i",$i)?><br>   
 											 <?= printTeam($teamidarray['userid'],  $residobj->creator) ?>
                                              
@@ -884,14 +908,17 @@ if ($clubid){
                                                      * Simply print out the player for solo reservations
                                                      */
                                                     if( $residobj->matchtype == 5){ ?>
-		                                                    <tr class=postopencourt>
-		                                                    <td align=center><font class=normalsm1>
+		                                                    <tr class="postopencourt">
+		                                                    <td align="center"><font class="normalsm1">
 		                                                    <?=gmdate("g:i",$i)?><br>
 		                                                    <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>	
                                                    <?}elseif( mysql_num_rows($useridresult)==1 ) { ?>
-                                                  			<tr class=reportscorecl<?=$clubid?>>
-		                                                    <td align=center><font class=normalsm1>
-		                                                    <?=gmdate("g:i",$i)?><br>
+                                                  			<tr class="reportscorecl<?=$clubid?>">
+		                                                    <td align="center"><font class="normalsm1">
+		                                                    <? if($residobj->locked=="y"){ ?>
+				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+				                                            <? }?>
+                                                   			<?=gmdate("g:i",$i)?><br>
                                                    			<?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>	
                                                    			was looking for a match
                                                    <?}else{ ?>
@@ -899,7 +926,12 @@ if ($clubid){
 		                                                   <tr class=reportscorecl<?=$clubid?>>
 		                                                   <td align=center><font class=normalsm1>
 		                                                   
-		                                                   <? //If its a boxleague, display icon
+		                                                   <? if($residobj->locked=="y"){ ?>
+				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+				                                            <? }?>
+		                                                   <?
+
+		                                                   //If its a boxleague, display icon
 		                                                   if($residobj->matchtype==1){ ?>
 		                                                   		<img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif">
 		                                                  
@@ -952,6 +984,9 @@ if ($clubid){
                                                         	?>
 	                                                        <tr class=reportedcourtcl<?=$clubid?>>
 	                                                        <td align=center><font class="normalsm1">
+	                                                        <? if($residobj->locked=="y"){ ?>
+				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+				                                            <? }?>
 	                                                        <?=gmdate("g:i",$i)?><br>
 	                                                        <?=printPlayer($userArray[0],  $userArray[1], $teamidarray['userid'], $residobj->creator)?>
 	                                                        was up for some doubles</a>
@@ -960,8 +995,11 @@ if ($clubid){
                                                         else{
 															?>
 	                                                        <tr class="reportedcourtcl<?=$clubid?>">
-	                                                        <td align=center><font class=normalsm1>
-	                                                        <?=gmdate("g:i",$i)?><br>
+	                                                        <td align=center><font class="normalsm1">
+	                                                        <? if($residobj->locked=="y"){ ?>
+				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+				                                            <? }?>
+															<?=gmdate("g:i",$i)?><br>
 	                                                        <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
 	                                                        were looking for a match</a>
 	                                                       <?
@@ -975,7 +1013,10 @@ if ($clubid){
 		                                                           <tr class=reportedcourtcl<?=$clubid?>>
 		                                                           <td align="center"><font class="normalsm1">
 		                                                           <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$residobj->reservationid?>">
-		                                                           <?=gmdate("g:i",$i)?><br>
+		                                                          	<? if($residobj->locked=="y"){ ?>
+						                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+						                                            <? }?> 
+		                                                          <?=gmdate("g:i",$i)?><br>
 		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
 																	 
 		                                                           <?
@@ -989,7 +1030,10 @@ if ($clubid){
 		                                                       
 		                                                       ?>
 		                                                        <tr class=reportedcourtcl<?=$clubid?>>
-		                                                        <td align=center><font class=normalsm1>
+		                                                        <td align=center><font class="normalsm1">
+		                                                        <? if($residobj->locked=="y"){ ?>
+					                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+					                                            <? }?>
 		                                                        <?=gmdate("g:i",$i)?><br>
 		                                                      	<?=printPlayer($userArray[0], $userArray[1], $teamidarray['userid'], $residobj->creator)?><br>
 		                                                        was looking for a partner<br> 
@@ -1028,7 +1072,7 @@ if ($clubid){
                                     <? } ?>
                                <? } else{ ?>
                                        <tr class=postopencourt>
-                                       <td align=center><font class=normalsm1>
+                                       <td align=center><font class="normalsm1">
                                        <?=gmdate("g:i",$i)?><br>
                                 <? } ?>
 

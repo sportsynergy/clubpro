@@ -77,7 +77,12 @@
     
   <body class="yui-skin-sam" id="main-com"> 
   
-  		<? include_once("analyticstracking.php") ?>
+  		<? 
+  		if( isset($trackingid) ){
+  			include_once("analyticstracking.php") ;
+  		}
+  		
+  		?>
   		           <?
                 //When site is disabled display the gone fishing sign, but not for the system administration console.
                 if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){ 

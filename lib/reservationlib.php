@@ -672,9 +672,21 @@ function confirmCourtEvent($userid, $reservationid, $action){
 	}
 	
 	
+
 	
 	
+}
+
+
+/**
+ * Determines if the reservation is locked or not
+ */
+function isReservationLocked($time, $courtid){
 	
+	$query = "SELECT locked FROM tblReservations WHERE courtid = $courtid AND time = $time AND enddate IS NULL";
+	$result = db_query($query);
+	
+	return mysql_result($result,0)=="y"?true:false;
 }
 
 ?>

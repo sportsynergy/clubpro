@@ -23,7 +23,7 @@
       $isPageBeingLoadedForPastReservation = isInPast($time);
       
       //Get the players from the reservation (doubles will be teams, singles will be players)
-       $teamQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, reservations.reservationid
+       $teamQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, reservations.reservationid, reservations.locked
                         FROM tblReservations reservations, tblkpUserReservations reservationdetails
                         WHERE reservations.reservationid = reservationdetails.reservationid
                         AND reservations.time=$time
@@ -33,6 +33,8 @@
         
         $teamResult = db_query($teamQuery);
 		$teamRow = mysql_fetch_array($teamResult);
+		
+		$locked = $teamRow['locked'];
 		
 		if( $teamRow['usertype']==1){
 			$teamPlayerResult = getUserIdsForTeamId($teamRow['userid']);
@@ -94,6 +96,7 @@ function enabledoubles()
      document.entryform.name2.disabled = "";
      document.entryform.name3.disabled = "";
      document.entryform.name4.disabled = "";
+     document.entryform.lock.disabled = "";
 }
 
 function disabledoubles(disableIt)
@@ -101,7 +104,7 @@ function disabledoubles(disableIt)
         document.entryform.name1.disabled = true;
         document.entryform.name2.disabled = true;
         document.entryform.name3.disabled = true;
-        document.entryform.name4.disabled = true;
+        document.entryform.lock.disabled = true;
 
 }
 
@@ -132,8 +135,14 @@ document.onkeypress = function (aEvent)
 <table cellspacing="0" cellpadding="20" width="400" class="generictable">
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
-    	<span class=whiteh1>
-    		<div align="center"><? pv($DOC_TITLE) ?></div>
+    
+    	
+    	<span class="whiteh1">
+    		<div align="center">
+	    		<? if($locked=='y'){ ?>
+	    	 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+	    	<?}?>
+    		<? pv($DOC_TITLE) ?></div>
     	</span>
     </td>
  </tr>
@@ -147,7 +156,7 @@ document.onkeypress = function (aEvent)
                  <td colspan="2" class="normal">
 
                 <input type="radio" name="cancelall" value="3" onclick="disabledoubles(this.checked)" <? if($isPageBeingLoadedForPastReservation){?>disabled <? }else{ ?> checked <? }?>> &nbsp;Cancel the whole reservation <br>
-                <input type="radio" name="cancelall" value="8" onclick="javascript:enabledoubles()" <? if($isPageBeingLoadedForPastReservation){?>checked <? } ?>> &nbsp;Change players in the reservation
+                <input type="radio" name="cancelall" value="8" onclick="javascript:enabledoubles()" <? if($isPageBeingLoadedForPastReservation){?>checked <? } ?>> &nbsp;Update the reservation
 
                 </td>
                 </tr>
@@ -240,6 +249,25 @@ document.onkeypress = function (aEvent)
 	                </script> 
                  
                 </td>
+
+                 <? if( get_roleid()==2 || get_roleid() ==4){ 
+                 
+                 	$selected="";
+                 	if($locked=='y'){
+                 		$selected = "checked=checked"; 
+                 	}
+                 	
+                 ?>
+                
+               
+			    <tr>
+			    	<td>
+			    		<input type="checkbox" name="lock"  <?=$selected?> <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
+			    		<span class="normal">Lock reservation</span>
+			    	</td>
+			    </tr>
+			    <?}?>
+			    
                 </tr>
                 
                 <? if(!$isPageBeingLoadedForPastReservation){?>
@@ -262,7 +290,17 @@ document.onkeypress = function (aEvent)
 		<tr>
        <td>
 	       <br>
-	       <input type="submit" name="submit" value="Submit">
+	       
+	       <?
+	       //if its locked and its just a player disable the submit button
+	       $disabled="";
+	       if( $locked=='y' && get_roleid()==1){
+	       	
+	       	$disabled = "disabled=disabled";
+	       }
+	       
+	       ?>
+	       <input type="submit" name="submit" value="Submit" <?=$disabled?> >
 	       <input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
        </td>
       </tr> 

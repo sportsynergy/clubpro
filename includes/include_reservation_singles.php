@@ -95,6 +95,14 @@
         </span> 
         </td>
     </tr>
+     <? if( get_roleid()==2 || get_roleid() ==4){ ?>
+    <tr>
+    	<td>
+    		<input type="checkbox" name="lock" />
+    		<span class="normal">Lock reservation</span>
+    	</td>
+    </tr>
+    <?}?>
        <tr>
            <td></td>
            <td> 

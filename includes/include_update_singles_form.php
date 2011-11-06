@@ -23,7 +23,7 @@
       
       
       //Get the players from the reservation (doubles will be teams, singles will be players)
-       $playersQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, users.firstname, users.lastname, reservations.reservationid
+       $playersQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, users.firstname, users.lastname, reservations.reservationid, reservations.locked
                         FROM tblReservations reservations, tblkpUserReservations reservationdetails, tblUsers users
                         WHERE reservations.reservationid = reservationdetails.reservationid
                         AND reservations.time=$time
@@ -35,6 +35,8 @@
 		
        	$playersResult = db_query($playersQuery);
 		$playerRow = mysql_fetch_array($playersResult);
+		$locked = $playerRow['locked'];
+		
 	   	$player1Id = $playerRow['userid'];
 	    $player1FullName = "$playerRow[firstname] $playerRow[lastname]";
 	    $reservationid = $playerRow['reservationid'];
@@ -88,6 +90,7 @@ function disable(disableIt)
 {
         document.entryform.name1.disabled = disableIt;
         document.entryform.name2.disabled = disableIt;
+        document.entryform.lock.disabled = disableIt;
 }
 
 
@@ -96,6 +99,7 @@ function enable()
 {
      document.entryform.name1.disabled = "";
      document.entryform.name2.disabled = "";
+     document.entryform.lock.disabled = "";
 }
 
 	
@@ -110,8 +114,12 @@ function enable()
 <table cellspacing="0" cellpadding="20" width="400" class="generictable">
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
-    	<span class=whiteh1>
-    		<div align="center"><? pv($DOC_TITLE) ?></div>
+    	<span class="whiteh1">
+    		<div align="center">
+    		<? if($locked=='y'){ ?>
+	    	 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+	    	<?}?>
+			<? pv($DOC_TITLE) ?></div>
     	</span>
     </td>
  </tr>
@@ -122,7 +130,7 @@ function enable()
 		 <tr>
                 <td colspan="2" class="normal">
                 <input type="radio" name="cancelall" value="3" onclick="disable(this.checked);" <? if($isPageBeingLoadedForPastReservation){?>disabled <? }else{ ?> checked <? }?>>&nbsp;Cancel the whole reservation <br>
-                <input type="radio" name="cancelall" value="4" onclick="enable();" <? if($isPageBeingLoadedForPastReservation){?>checked <? } ?>>&nbsp;Change players in the reservation
+                <input type="radio" name="cancelall" value="4" onclick="enable();" <? if($isPageBeingLoadedForPastReservation){?>checked <? } ?>>&nbsp;Update the reservation
                 </td>
                 </tr>
 
@@ -170,11 +178,32 @@ function enable()
                 </td>
                 </tr>
                
+               
+               
                 <? if(!$isPageBeingLoadedForPastReservation){?>
                 <tr>
                 <td class="italitcsm" colspan="2">To Remove someone from the reservation, just delete their name<br><br></td>
                 </tr>
                 <? }?>
+                
+                 <? if( get_roleid()==2 || get_roleid() ==4){ 
+                 
+                 	$selected="";
+                 	if($locked=='y'){
+                 		$selected = "checked=checked"; 
+                 	}
+                 	
+                 ?>
+                
+               
+			    <tr>
+			    	<td>
+			    		<input type="checkbox" name="lock" <?=$selected?> <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
+			    		<span class="normal">Lock reservation</span>
+			    	</td>
+			    </tr>
+			    <?}?>
+                
                 <? 
                 //Only display the note if there are email addresses to send to.
                 if(count($emailArray)>0){?>
@@ -190,7 +219,16 @@ function enable()
 		<tr>
        <td>
 	       <br>
-	       <input type="submit" name="submit" value="Submit">
+	        <?
+	       //if its locked and its just a player disable the submit button
+	       $disabled="";
+	       if( $locked=='y' && get_roleid()==1){
+	       	
+	       	$disabled = "disabled=disabled";
+	       }
+	       
+	       ?>
+	       <input type="submit" name="submit" value="Submit"  <?=$disabled?>>
 	       <input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
 
        </td>

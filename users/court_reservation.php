@@ -157,7 +157,7 @@ if (match_referer() && isset($_POST['courttype'])) {
  ******************************************************************************/
 $newReservation = FALSE;
 
-$userTypeQuery = "SELECT usertype, matchtype, guesttype, lastmodified, reservationid
+$userTypeQuery = "SELECT usertype, matchtype, guesttype, lastmodified, reservationid, locked
 					FROM tblReservations reservations
 					WHERE reservations.time = $time 
 					AND reservations.courtid = $courtid
@@ -173,6 +173,7 @@ if( mysql_num_rows($userTypeResult) > 0) {
 	$guesttype = $reservationArray['guesttype'];
 	$lastupdated = $reservationArray['lastmodified'];
 	$reservationid = $reservationArray['reservationid'];
+	$locked = $reservationArray['locked'];
 	
 	if( isDebugEnabled(1) ) logMessage("court_reservation: setting usertype: $usertype, matchtype: $matchtype, guesttype: $guesttype, and lastupdated:$lastupdated ");
 	
@@ -969,10 +970,15 @@ function insert_reservation(&$frm) {
             $guesttype = 1;
         }
         
+        
+        $lock = "n";
+        if( isset( $frm['lock'] ) ){
+        	$lock = "y";
+        }
   
 	        // Add the Reservation
 	        $resquery = "INSERT INTO tblReservations (
-	                courtid, time, matchtype, guesttype, lastmodifier, creator, createdate
+	                courtid, time, matchtype, guesttype, lastmodifier, creator, createdate, locked
 	                ) VALUES (
 	                          '$frm[courtid]'
 	                          ,'$frm[time]'
@@ -980,8 +986,9 @@ function insert_reservation(&$frm) {
 	                          ,$guesttype
 							  , ".get_userid()."
 							  , ".get_userid()."
-							  , now() )";
-	
+							  , now() 
+							  , '$lock')";
+
 	        db_query($resquery);
 	                  
 	         //Now we need to get the reservationid.  (This is what we just inserted )

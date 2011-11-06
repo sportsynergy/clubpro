@@ -42,7 +42,7 @@ if (isset($_POST['cancelall'])) {
 	        if($frm["cancelall"]==4){ 
 	        	confirm_singles($resid, false);
 	        	
-	        	if(isSinglesReservationNeedPlayers($time, $courtid)){
+	        	if(isSinglesReservationNeedPlayers($time, $courtid) && !isReservationLocked($time, $courtid )){
 	        		header ("Location: $wwwroot/users/reservation_details.php?resid=$resid&time=$time");
 	        	}
 	        	else{
@@ -53,7 +53,7 @@ if (isset($_POST['cancelall'])) {
 	        elseif($frm["cancelall"]==8){ 
 	              confirm_doubles($resid, false );
 	              
-	              if(isDoublesReservationNeedPlayers($time, $courtid)){
+	              if(isDoublesReservationNeedPlayers($time, $courtid) && !isReservationLocked($time, $courtid ) ){
 	              	header ("Location: $wwwroot/users/reservation_details.php?resid=$resid&time=$time");
 	              }else{
 	              	 header ("Location: $wwwroot/clubs/".get_sitecode()."/index.php?daysahead=". gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ."");
@@ -569,8 +569,14 @@ function cancel_court(&$frm) {
 
                		if( isDebugEnabled(1) ) logMessage("court_cancelation.cancel_court: Just rearranging the reservation cancelall =  ".$frm["cancelall"]." player1 = ".$frm['player1']." player2 = ". $frm['player2']);
 	
+               		$locked = "n";
+               		if( isset($frm["lock"]) ) {
+               			$locked = "y";
+               		}
+               		
 				    $qid1 = db_query("UPDATE tblReservations
 									  SET lastmodifier = ".get_userid()."
+									  ,locked = '$locked'
                                       WHERE reservationid = $residarray[0]");
 
                    $qid2 = db_query("DELETE FROM tblkpUserReservations
@@ -810,8 +816,15 @@ function cancel_court(&$frm) {
                                       
                     				}
                                  
+                    				
+			                    $locked = "n";
+			               		if( isset($frm["lock"]) ) {
+			               			$locked = "y";
+			               		}
+			               		
                                  $qid1 = db_query("UPDATE tblReservations
 																  SET lastmodifier = ".get_userid()."
+																  ,locked = '$locked'
 					                                              WHERE reservationid = $residarray[0]");
 
                        // Where cancelall is two remove the whole reservation
