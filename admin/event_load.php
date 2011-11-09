@@ -115,6 +115,7 @@ function add_events(&$frm) {
 	$eventId = $frm['eventid'];
 	$courtduration = $frm['courtduration'];
 	$cancelConflicts = empty( $frm['cancelconflicts']) ? false : true;
+	$locked =  empty( $frm['lock'] ) ? "n" : "y" ;
 	
 	
 	if( isDebugEnabled(2) ) logMessage("event_load.add_events: \n\tinitialStartTime: $initialStartTime \n\tinitialEndTime: $initialEndTime \n\tcourtId: $courtId \n\teventId: $eventId \n\tcourtduration: $courtduration \n\tcancelConflicts: $cancelConflicts ");
@@ -129,7 +130,7 @@ function add_events(&$frm) {
 		// done see the notes in event_load_form.php above this hidden
 		// form field declaration.
 		
-		makeReoccurringReservations($initialStartTime, $initialEndTime, $courtId, $eventId, $courtduration, $cancelConflicts, null);
+		makeReoccurringReservations($initialStartTime, $initialEndTime, $courtId, $eventId, $courtduration, $cancelConflicts, null, $locked);
     
     
 	}
@@ -213,7 +214,7 @@ function add_events(&$frm) {
 		        
         
 		        
-				makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId);
+				makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId, $locked);
 				
 				}
 				   
@@ -284,7 +285,7 @@ function add_events(&$frm) {
 				        	$initialHourstart = $courtHourArray["hourstart"];
 				        }  
 			          
-			      	makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId);
+			      	makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId, $locked);
 			      	
 			      
 		       }
@@ -357,7 +358,7 @@ function add_events(&$frm) {
 				        	$initialHourstart = $courtHourArray["hourstart"];
 				        }  
 			          
-			      	makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId);
+			      	makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId, $locked);
 			      	
 			      
 		       }
@@ -430,7 +431,7 @@ function add_events(&$frm) {
 				        }
 				        
 				        
-				        makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId); 
+				        makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId, $locked); 
 			
 			       }
 			       
@@ -511,7 +512,7 @@ function getReservationWindow($courtid ,$time){
  * 
  * 
  */
-function makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId){
+function makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $eventinterval, $cancelConflicts, $blockId, $locked){
 	
 	
 	if( isDebugEnabled(2) ) logMessage("event_load.makeReoccurringReservations: \n\tstartTime: $startTime \n\tendTime: $endTime \n\tcourtId: $courtId \n\teventId: $eventId \n\teventinterval: $eventinterval \n\tcancelConflicts: $cancelConflicts \n\tblockId: $blockId");
@@ -540,13 +541,14 @@ function makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $
 					if( isDebugEnabled(2) ) logMessage("\t-> adding event reservation for court $courtId on $i");
 					
 					$resquery = "INSERT INTO tblReservations (
-				                 courtid, eventid, time, creator, lastmodifier
+				                 courtid, eventid, time, creator, lastmodifier, locked
 				                 ) VALUES (
 				                           '$courtId'
 				                           ,'$eventId'
 				                           ,'$i'
 											, ".get_userid()."
-											, ".get_userid().")";
+											, ".get_userid()."
+											, '$locked')";
 				
 				    $resresult =  db_query($resquery);
 			}
@@ -562,13 +564,14 @@ function makeReoccurringReservations($startTime, $endTime, $courtId, $eventId, $
 					if( isDebugEnabled(2) ) logMessage("\t-> adding event reservation for court $courtId on $i");
 					
 					$resquery = "INSERT INTO tblReservations (
-				                 courtid, eventid, time, creator, lastmodifier
+				                 courtid, eventid, time, creator, lastmodifier, locked
 				                 ) VALUES (
 				                           '$courtId'
 				                           ,'$eventId'
 				                           ,'$i'
 											, ".get_userid()."
-											, ".get_userid().")";
+											, ".get_userid()."
+											,'$locked')";
 				
 				    $resresult =  db_query($resquery);
 					

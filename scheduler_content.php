@@ -567,7 +567,7 @@ if ($clubid){
                                       //Check if this is an event
                                       if($residobj->eventid){ 
                                       
-                                      	printEvent($courtobj->courtid, $i, $residobj->eventid, $residobj->reservationid, false);
+                                      	printEvent($courtobj->courtid, $i, $residobj->eventid, $residobj->reservationid, false, $residobj->locked);
                                       }
                                       elseif($residobj->guesttype == 1){ ?>
 
@@ -882,7 +882,7 @@ if ($clubid){
 
                                        if($residobj->eventid){ 
                                      
-                                       	printEvent($courtobj->courtid, $i, $residobj->eventid, $residobj->reservationid, true);
+                                       	printEvent($courtobj->courtid, $i, $residobj->eventid, $residobj->reservationid, true, $residobj->locked);
                                        	
                                        }elseif($residobj->guesttype==1){ ?>
                                                     <tr class=reportscorecl<?=$clubid?>>
@@ -1253,7 +1253,7 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
 /**
  * Takes the necessary parameters and prints the event marked up with HTML
  */
-function printEvent($courtid, $time, $eventid, $reservationid, $ispast){
+function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked){
 	?>
 	<tr class="eventcourt">
         <td align=center>
@@ -1274,11 +1274,17 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast){
               	if( (get_roleid()==2 || get_roleid()==4) && !$ispast ){ ?>
               		 
               	 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
-                  <?=gmdate("g:i",$time)?><br>
+                 <? if($locked=="y"){ ?>
+                       <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+                 <? }?>  
+              	<?=gmdate("g:i",$time)?><br>
               		<?=$eventarray['eventname']?><br>  
               	 </a>
               		
               <?	}else{ ?>
+              	<? if($locked=="y"){ ?>
+                       <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+                 <? }?> 
               		<?=gmdate("g:i",$time)?><br>
               		<?=$eventarray['eventname']?><br>  
               		
@@ -1289,11 +1295,17 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast){
              <? } else{ 
              
              	if($ispast){ ?>
-             		 <?=gmdate("g:i",$time)?><br>
+             	 <? if($locked=="y"){ ?>
+                       <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+                 <? }?>  
+             		<?=gmdate("g:i",$time)?><br>
 					 <?=$eventarray['eventname']?> <br>
              	<? } else{ ?>
              		<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
-	                  <?=gmdate("g:i",$time)?><br>
+	             <? if($locked=="y"){ ?>
+                       <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+                 <? }?>       
+             	<?=gmdate("g:i",$time)?><br>
 					 <?=$eventarray['eventname']?> <br>
 					 </a>
              	<?} 

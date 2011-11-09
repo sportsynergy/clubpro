@@ -213,7 +213,7 @@ function addOption(selectbox,text,value )
        <tr>
        		<td colspan="2" class="normal">
        			<input type="checkbox" name="cancelconflicts"> 
-						<span class="italitcsm">
+						<span class="normal">
 							Remove any existing reservations. By leaving this checkbox unchecked any
        						reservations that were already out there will be left alone.
 						</span>
@@ -221,6 +221,13 @@ function addOption(selectbox,text,value )
        		</td>
        		
        </tr>
+     <tr>
+    	<td>
+    		<input type="checkbox" name="lock" />
+    		<span class="normal">Lock reservation</span>
+    	</td>
+    </tr>
+
        <tr>
             <td colspan="2">
             	<span class="required">*</span>

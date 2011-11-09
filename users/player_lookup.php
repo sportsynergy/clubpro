@@ -77,7 +77,7 @@ function validate_form($searchname) {
 function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
 
         if( mysql_num_rows($playerResults)<1 ){
-        	$errormsg = "Sorry, no results found.";
+        	$errormsg = "D'oh, nobody by that name here.";
         	include($_SESSION["CFG"]["includedir"]."/errorpage.php");
         }
         else{

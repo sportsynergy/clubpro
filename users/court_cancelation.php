@@ -385,8 +385,13 @@ function cancel_court(&$frm) {
 		//Update the event
         if($frm['cancelall']==10){
         	
+        	$locked = "n";
+             if( isset($frm["lock"]) ) {
+               $locked = "y";
+             }
+        	
         	$updateEventQuery = "UPDATE tblReservations 
-									SET eventid = $frm[events], lastmodifier = ".get_userid()."
+									SET eventid = $frm[events], lastmodifier = ".get_userid().", locked = '$locked'
 									WHERE time = $frm[time]
 									AND courtid = $frm[courtid]
 									AND enddate IS NULL";
