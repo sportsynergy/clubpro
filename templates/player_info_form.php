@@ -9,7 +9,7 @@
 
 
 
-<table width="600" cellpadding="20" cellspacing="0" class="generictable">
+<table width="650" cellpadding="20" cellspacing="0" class="generictable">
 	<tr>
 		<td class="clubid<?=get_clubid()?>th" >
 			<span class=whiteh1>
@@ -21,12 +21,20 @@
 	<tr>
 		<td>
 
-		<table cellspacing="5" cellpadding="1" width="600" class="borderless">
+		<table cellspacing="5" cellpadding="1" width="650" class="borderless">
 
 
 			<tr>
 				<td class=label>First Name:</td>
 				<td class="normal"><?=$frm["firstname"] ?></td>
+				<td rowspan="5" >
+					<div align="center">
+						<img src="<?=get_gravatar($frm["email"],120 )?>" />
+					</div>
+					
+					
+				</td>
+			
 			</tr>
 			<tr>
 				<td class=label>Last Name:</td>
@@ -72,8 +80,8 @@
 			<? } ?>
 
 			<tr>
-				<td class="label" valign=top>Address:</td>
-				<td class="normal"><textarea name="useraddress" cols="60" rows="5" disabled="disabled"><? pv($frm["useraddress"]) ?></textarea></td>
+				<td class="label" valign="top">Address:</td>
+				<td class="normal" colspan="2"><textarea name="useraddress" cols="60" rows="5" disabled="disabled"><? pv($frm["useraddress"]) ?></textarea></td>
 			</tr>
 			
 			
@@ -115,21 +123,22 @@
 					</td>
 				</tr>
 				<? } ?>
-				<td class="label" valign="top">Rankings:</td>
-				<td>
-				<table width="300">
-				<?  while ($registeredArray = db_fetch_array($registeredSports)){ ?>
-					<tr>
-						<td style="padding: 0px"><?=$registeredArray['courttypename']?></td>
-						<td style="padding: 0px"><?=$registeredArray['ranking']?></td>
-					</tr>
-					<?  }
-					?>
-				</table>
-				</td>
+				<tr>
+					<td class="label" valign="top">Rankings:</td>
+					<td colspan="2">
+						<table width="300">
+						<?  while ($registeredArray = db_fetch_array($registeredSports)){ ?>
+							<tr>
+								<td style="padding: 0px"><?=$registeredArray['courttypename']?></td>
+								<td style="padding: 0px"><?=$registeredArray['ranking']?></td>
+							</tr>
+							<?  }
+							?>
+						</table>
+					</td>
 			</tr>
 			<tr height="15">
-				<td colspan="2"></td>
+				<td colspan="3"></td>
 			</tr>
 
 			

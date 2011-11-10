@@ -24,6 +24,15 @@
         <tr >
             <td class="label medwidth" >Username:</td>
             <td class="normal"><? pv($frm["username"]) ?></td>
+           <td rowspan="9" valign="top" >
+					<div align="center">
+						<img src="<?=get_gravatar($frm["email"],120 )?>" />
+					</div>
+					
+					<div align="center">
+						<span class="normalsm">update your gravatar <a href="http://www.gravatar.com" target="_blank">here</a></span>
+					</div>
+				</td>
         </tr>
         
         <tr>
@@ -79,7 +88,7 @@
 
         <tr>
             <td class="label medwidth">Address:</td>
-            <td><textarea name="useraddress" cols="50" rows="5"><? pv($frm["useraddress"]) ?></textarea>
+            <td colspan="2"><textarea name="useraddress" cols="50" rows="5"><? pv($frm["useraddress"]) ?></textarea>
                 <?err($errors->address)?>
             </td>
         </tr>

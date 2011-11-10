@@ -9,7 +9,7 @@
 
 
 
-<table width="600" cellpadding="20" cellspacing="0" class="generictable">
+<table width="650" cellpadding="20" cellspacing="0" class="generictable">
     <tr>
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -22,11 +22,17 @@
     <td>
 
        <form name="entryform" method="post" action="<?=$ME?>">
-       <table cellspacing="5" cellpadding="1" width="600" >
+       <table cellspacing="5" cellpadding="1" width="650" >
        
        <tr>
 			<td class="label medwidth">Sportsynergy Id:</td>
 			<td class="normal"><? pv($frm["userid"]) ?></td>
+			 <td rowspan="9" valign="top" >
+					<div align="center">
+						<img src="<?=get_gravatar($frm["email"],120 )?>" />
+					</div>
+	
+				</td>
 		</tr>
 		
 		
@@ -96,7 +102,7 @@
 
         <tr>
             <td class=label>Address:</td>
-            <td><textarea name="useraddress" cols="50" rows="5"><? pv($frm["useraddress"]) ?></textarea>
+            <td colspan="2"><textarea name="useraddress" cols="50" rows="5"><? pv($frm["useraddress"]) ?></textarea>
                 <?err($errors->address)?>
             </td>
         </tr>
