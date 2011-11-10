@@ -197,9 +197,10 @@ function enable()
                 
                
 			    <tr>
-			    	<td>
+			    	<td colspan="2">
 			    		<input type="checkbox" name="lock" <?=$selected?> <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
 			    		<span class="normal">Lock reservation</span>
+			    		
 			    	</td>
 			    </tr>
 			    <?}?>

@@ -1037,20 +1037,26 @@ function makeEventReservation(&$frm){
 	$courtid = $frm['courtid'];
 	$tzdelta = $clubobj->timezone*3600;
 	
+		$locked = "n";
+         if( isset($frm["lock"]) ) {
+               $locked = "y";
+             }
+	
 	if( isDebugEnabled(1) ) logMessage("court_reservation.makeEventReservation: Repeat interval is ".$frm['repeat']." and duration inverval is ". $frm['duration']);
 	
 	 // Add the non reoccuring event
 	    if ($frm['repeat']=="norepeat"){
 	
 	      $resquery = "INSERT INTO tblReservations (
-	                 courtid, eventid, time, lastmodifier, creator, createdate
+	                 courtid, eventid, time, lastmodifier, creator, createdate, locked
 	                 ) VALUES (
 	                           '$frm[courtid]'
 	                           ,'$frm[eventid]'
 	                           ,'$frm[time]'
 							   , ".get_userid()."
 							   ,  ".get_userid()."
-							   , now() )";
+							   , now() 
+							   ,'$locked')";
 	
 	        $resresult =  db_query($resquery);
 	    }
@@ -1099,13 +1105,14 @@ function makeEventReservation(&$frm){
 						if(!isCourtAlreadyReserved($frm['courtid'], $nextday)){
 							//Add as reservation
 					         $resquery = "INSERT INTO tblReservations (
-					                 courtid, eventid, time, lastmodifier, creator
+					                 courtid, eventid, time, lastmodifier, creator, locked
 					                 ) VALUES (
 					                           '$frm[courtid]'
 					                           ,'$frm[eventid]'
 					                           ,$nextday
 											   , ".get_userid()."
-											   , ".get_userid().")";
+											   , ".get_userid()."
+											   , '$locked')";
 					
 					        $resresult =  db_query($resquery);
 						}
@@ -1170,13 +1177,14 @@ function makeEventReservation(&$frm){
 			        if(!isCourtAlreadyReserved($frm['courtid'], $nextday)){
 					//Add as reservation
 			         $resquery = "INSERT INTO tblReservations (
-			                 courtid, eventid, time, lastmodifier, creator
+			                 courtid, eventid, time, lastmodifier, creator, locked
 			                 ) VALUES (
 			                           '$frm[courtid]'
 			                           ,'$frm[eventid]'
 			                           ,$nextday
 									   , ".get_userid()."
-									   , ".get_userid().")";
+									   , ".get_userid()."
+									   , '$locked')";
 			
 			        $resresult =  db_query($resquery);
 				}
@@ -1227,30 +1235,31 @@ function makeEventReservation(&$frm){
 			        $courtHourArray = mysql_fetch_array($courtHourResult);
 			        
 			        
-			       //Save off the first reservation time
-					if($i>0){
-	
-			         	$hourstart = $initialHourstart - $courtHourArray["hourstart"];
-			        	$nextday -= ($hourstart * 60);
-			         }
-			         else{
-			         	$startday = $nextday;
-			         	$initialHourstart = $courtHourArray["hourstart"];
-			         }
-			          
-			        if(!isCourtAlreadyReserved($frm['courtid'], $nextday)){
-					//Add as reservation
-			         $resquery = "INSERT INTO tblReservations (
-			                 courtid, eventid, time, lastmodifier, creator
-			                 ) VALUES (
-			                           '$frm[courtid]'
-			                           ,'$frm[eventid]'
-			                           ,$nextday
-									   , ".get_userid()."
-									   , ".get_userid().")";
+					       //Save off the first reservation time
+							if($i>0){
 			
-			        $resresult =  db_query($resquery);
-				}
+					         	$hourstart = $initialHourstart - $courtHourArray["hourstart"];
+					        	$nextday -= ($hourstart * 60);
+					         }
+					         else{
+					         	$startday = $nextday;
+					         	$initialHourstart = $courtHourArray["hourstart"];
+					         }
+			          
+					        if(!isCourtAlreadyReserved($frm['courtid'], $nextday)){
+							//Add as reservation
+					         $resquery = "INSERT INTO tblReservations (
+					                 courtid, eventid, time, lastmodifier, creator, locked
+					                 ) VALUES (
+					                           '$frm[courtid]'
+					                           ,'$frm[eventid]'
+					                           ,$nextday
+											   , ".get_userid()."
+											   , ".get_userid()."
+											   , '$locked')";
+					
+					        $resresult =  db_query($resquery);
+						}
 		         
 		
 		       }
@@ -1312,13 +1321,14 @@ function makeEventReservation(&$frm){
 			         if(!isCourtAlreadyReserved($frm['courtid'], $nextday)){
 						//Add as reservation
 				         $resquery = "INSERT INTO tblReservations (
-				                 courtid, eventid, time, lastmodifier, creator
+				                 courtid, eventid, time, lastmodifier, creator, locked
 				                 ) VALUES (
 				                           '$frm[courtid]'
 				                           ,'$frm[eventid]'
 				                           ,$nextday
 										   , ".get_userid()."
-										   , ".get_userid().")";
+										   , ".get_userid()."
+										   , '$locked')";
 				
 				        $resresult =  db_query($resquery);
 			}

@@ -70,14 +70,15 @@ if (isset($_POST['cancelall'])) {
 //This little part handles adding and removing players from events
 else if(isset($_POST['cmd']) && $_POST['cmd']=="managecourtevent"){
 	
- if( isDebugEnabled(1) ) logMessage("court_cancelation.canIcancel: site doesn't allow self cancel");
+ if( isDebugEnabled(1) ) logMessage("court_cancelation: managing court events");
 	
 	if($_POST['action']=='add'){
-		
+		if( isDebugEnabled(1) ) logMessage("court_cancelation: managing court events. Adding user ".$_POST['userid'] ." to reservation id: ".$_POST['reservationid']);
 		addToCourtEvent($_POST['userid'],$_POST['reservationid']);
 		confirmCourtEvent($_POST['userid'],$_POST['reservationid'],$_POST['action']);
 	}
 	else if($_POST['action']=='remove'){
+		if( isDebugEnabled(1) ) logMessage("court_cancelation: managing court events. Removing user ".$_POST['userid']." to reservationid ".$_POST['reservationid']);
 		removeFromCourtEvent($_POST['userid'],$_POST['reservationid']);
 		confirmCourtEvent($_POST['userid'],$_POST['reservationid'],$_POST['action']);
 	}
@@ -390,11 +391,22 @@ function cancel_court(&$frm) {
                $locked = "y";
              }
         	
-        	$updateEventQuery = "UPDATE tblReservations 
+             // only update the event id if its set
+        	if( isset($frm['events']) ){
+        		
+        		 $updateEventQuery = "UPDATE tblReservations 
 									SET eventid = $frm[events], lastmodifier = ".get_userid().", locked = '$locked'
 									WHERE time = $frm[time]
 									AND courtid = $frm[courtid]
 									AND enddate IS NULL";
+        	}else {
+        		 $updateEventQuery = "UPDATE tblReservations 
+									SET lastmodifier = ".get_userid().", locked = '$locked'
+									WHERE time = $frm[time]
+									AND courtid = $frm[courtid]
+									AND enddate IS NULL";
+        	}
+            
 									
 			db_query($updateEventQuery);
         	

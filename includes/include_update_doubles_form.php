@@ -264,6 +264,7 @@ document.onkeypress = function (aEvent)
 			    	<td>
 			    		<input type="checkbox" name="lock"  <?=$selected?> <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
 			    		<span class="normal">Lock reservation</span>
+			    	
 			    	</td>
 			    </tr>
 			    <?}?>

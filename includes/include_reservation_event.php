@@ -63,6 +63,13 @@
 
        </tr>
        <tr>
+       	<td colspan="2">
+       		<input type="checkbox" name="lock" />
+	    	<span class="normal">Lock reservation</span>
+	    	
+       	</td>
+       </tr>
+       <tr>
            <td></td>
            <td>
            <input type="submit" name="submit" value="Submit">

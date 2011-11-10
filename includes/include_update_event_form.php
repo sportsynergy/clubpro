@@ -27,23 +27,84 @@
 
 <script>
 
-function addMeToReservation()
+YAHOO.namespace("clubevent.container");
+
+YAHOO.util.Event.onDOMReady(function () {
+	
+	// Define various event handlers for Dialog
+	var handleSubmit = function() {
+		this.submit();
+	};
+	var handleCancel = function() {
+		this.cancel();
+	};
+	var handleSuccess = function(o) {
+		window.location.href=window.location.href;
+	};
+
+	var handleFailure = function(o) {
+		alert("Submission failed: " + o.status);
+	};
+
+    // Remove progressively enhanced content class, just before creating the module
+    YAHOO.util.Dom.removeClass("dialog1", "yui-pe-content");
+
+	// Instantiate the Dialog
+	YAHOO.clubevent.container.dialog1 = new YAHOO.widget.Dialog("dialog1", 
+							{ width : "30em",
+							  fixedcenter : true,
+							  modal: true,
+							  visible : false, 
+							  constraintoviewport : true,
+							  buttons : [ { text:"Add Player", handler:handleSubmit, isDefault:true } ]
+							});
+
+	YAHOO.clubevent.container.dialog1.setHeader('Pick A Player');
+
+	// Validate the entries in the form to require that both first and last name are entered
+	YAHOO.clubevent.container.dialog1.validate = function() {
+		var data = this.getData();
+
+		if (data.playeroneid == "" ) {
+			alert("Please pick a name from the list.");
+			return false;
+		} else {
+			return true;
+		}
+	};
+
+	// Wire up the success and failure handlers
+	YAHOO.clubevent.container.dialog1.callback = { success: handleSuccess,
+						     failure: handleFailure };
+	
+	// Render the Dialog
+	YAHOO.clubevent.container.dialog1.render();
+
+	YAHOO.util.Event.addListener("show", "click", YAHOO.clubevent.container.dialog1.show, YAHOO.clubevent.container.dialog1, true);
+	YAHOO.util.Event.addListener("hide", "click", YAHOO.clubevent.container.dialog1.hide, YAHOO.clubevent.container.dialog1, true);
+});
+
+function addToReservation(userid)
 {
 
       document.manageform.action.value = 'add';
+      document.manageform.userid.value = userid;
       document.manageform.submit();
 }
 
-function removeMeFromReservation()
+function removeFromReservation(userid)
 {
-
       document.manageform.action.value = 'remove';
+      document.manageform.userid.value = userid;
       document.manageform.submit();
 }
 
-function enableEvent()
+function enableEvent(updateEvent)
 {
-	document.entryform.events.disabled = ""; 
+
+	if(updateEvent=="true"){
+		document.entryform.events.disabled = ""; 
+	}
 	document.entryform.lock.disabled = "";  
 }
 
@@ -53,6 +114,18 @@ function disableevent(disableIt)
   document.entryform.lock.disabled = disableIt;
  	
 }
+
+document.onkeypress = function (aEvent)
+{
+    if(!aEvent) aEvent=window.event;
+  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+    if( key == 13 ) // enter key
+    {
+        return false; // this will prevent bubbling ( sending it to children ) the event!
+    }
+  	
+};
+
 </script>
 
 
@@ -60,7 +133,7 @@ function disableevent(disableIt)
 <input type="hidden" name="action"/>
 <input type="hidden" name="courtid" value="<?=$courtTypeArray['courtid']?>"/>
 <input type="hidden" name="time" value="<?=$courtTypeArray['time']?>"/>
-<input type="hidden" name="userid" value="<?=get_userid()?>"/>
+<input type="hidden" name="userid" />
 <input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>"/>
 <input type="hidden" name="cmd" value="managecourtevent"/>
 </form>
@@ -87,7 +160,7 @@ function disableevent(disableIt)
 		<table>
 		 <? 
 		 
-		 $enableupdate = "";
+		 $allowChangeEvent = true;
 		 
 		 if(  $eventArray['playerlimit'] > 0  ){ 
 		 
@@ -113,11 +186,17 @@ function disableevent(disableIt)
 				 		|| $amISignedup 
 				 		) { ?>
 				 		<span class="normalsm">
-				 		<?if($amISignedup){ ?>
-				 			<a href="javascript:removeMeFromReservation();">Take me out</a></span>
-				 		<? }else{ ?>
-				 			<a href="javascript:addMeToReservation();">Put me down, I will be there!</a></span>
-				 		<? } ?>
+				 		
+				 		<? if( get_roleid() ==2 || get_roleid() ==4) {?>
+				 			<span class="normalsm" id="show"><a style="text-decoration: underline; cursor: pointer">Add Player</a></span>
+				 		<?} else {?>
+				 		
+						 		<?if($amISignedup){ ?>
+						 			<a href="javascript:removeFromReservation(<?=get_userid()?>);">Take me out</a></span>
+						 		<? }else{ ?>
+						 			<a href="javascript:addToReservation(<?=get_userid()?>);">Put me down, I will be there!</a></span>
+						 		<? } ?>
+						 <? } ?>
 				 		</span>
 				 		
 				 		<? } ?>
@@ -130,12 +209,20 @@ function disableevent(disableIt)
 				 	if( mysql_num_rows($eventplayerResult) > 0 ){ 
 				 		
 				 		//If anyone has signed up, don't let the administrator change the event
-				 		$enableupdate = "disabled=\"disabled\"";
+				 		$allowChangeEvent = false;
 				 		
 						while($player = mysql_fetch_array($eventplayerResult)){ ?>
 							<tr>
-								<td style="padding: 1px"><?=$player['firstname']?> 
-								<?=$player['lastname']?></td>
+								<td style="padding: 1px">
+								<?=$player['firstname']?> <?=$player['lastname']?>
+								<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
+								  <span class="normalsm">
+								  <a href="javascript:removeFromReservation(<?=$player['userid']?>);">
+								 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
+								</a></span>
+								<? }?>
+								
+								</td>
 							</tr>
 						
 		
@@ -147,27 +234,19 @@ function disableevent(disableIt)
 				 	<tr>
 						 	<td>
 						 		<span class="normal">
-						 		<?=isInPast( $courtTypeArray['time'])?"There were no takers":"Noone has signed up yet "?>
-						 		
-						 		
+						 			<?=isInPast( $courtTypeArray['time'])?"There were no takers":"Noone has signed up yet "?>
 						 		</span>
 						 	</td> 
 						  </tr>
 				 	 
 				 	  <?	}?>
 				 	 
-				 	  
-				 
 				 <?	}   ?>
-		
-		 
+
 			
        		<? 
        		//Only display this to administrators
        		if( get_roleid()==2 || get_roleid==4){  
-       		
-       		
-       	
        		
        			if(isReoccuringReservation($time, $courtid)){ ?>
        			
@@ -176,27 +255,30 @@ function disableevent(disableIt)
 	       			<td><hr/></td>
 	       		</tr>	
 	       		<? } ?>
-		 	<tr>
-		       <td>
+		 	<tr><td>
 		       
        		This is a reoccuring event.  What do you want to do?<br><br>
        		<input type="radio" name="cancelall" value="3" onclick="disableevent(this.checked)" checked>&nbsp; Cancel just this occurrence <br>	
        		<input type="radio" name="cancelall" value="9" onclick="disableevent(this.checked)" >&nbsp; Cancel all occurrences <br>
        			
        		<? } else{ ?>
+       			<? if( $eventArray['playerlimit'] > 0  ) {?>
+	       		<tr>
+	       			<td><hr/></td>
+	       		</tr>	
+	       		<? } ?>
+       		<tr><td>
        		<input type="radio" name="cancelall" value="3" onclick="disableevent(this.checked)" checked> &nbsp;Cancel the event <br>	
        		<? } ?>
        	 
        	 
-	   	 <input type="radio" name="cancelall" value="10" onclick="javascript:enableEvent()" <?=$enableupdate?>">&nbsp;Update this event occurrence
+	   	 <input type="radio" name="cancelall" value="10" onclick="javascript:enableEvent('<?=$allowChangeEvent?"true":"false"?>')">&nbsp;Update this event occurrence
 			<select name="events" disabled>
                
 
                 <?
                 //Get Club Players
                  $eventDrpDown = get_site_events(get_siteid());
-                 
-               
                  
                  while($row = mysql_fetch_row($eventDrpDown)) {
 
@@ -223,9 +305,10 @@ function disableevent(disableIt)
                  	
                  ?>
        	<tr>
-	    	<td>
+	    	<td colspan="2">
 	    		<input type="checkbox" name="lock"  <?=$selected?> disabled="disabled"/>
 	    		<span class="normal">Lock reservation</span>
+	    		
 	    	</td>
 	    </tr>
         
@@ -234,7 +317,7 @@ function disableevent(disableIt)
 	       <br>
 	       <input type="submit" name="submit" value="Submit">
 	       <input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
-	       <input type="hidden" name="reservationid" value="<?=$reservationid?>">
+	       <input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>">
 	       <input type="hidden" name="courtid" value="<?=$courtid?>">
 	       <input type="hidden" name="time" value="<?=$time?>">
        </td>
@@ -262,3 +345,37 @@ function disableevent(disableIt)
 
 
 </form>
+
+<div id="dialog1" class="yui-pe-content">
+
+
+<div class="bd">
+
+<form method="POST" action="<?=$ME?>">
+	<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
+             <input id="id1" name="userid" type="hidden" />
+   				<input type="hidden" name="cmd" value="managecourtevent">
+   				<input type="hidden" name="action" value="add">
+   				<input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>">
+    			<script>
+                <?
+                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+                 pat_autocomplete( array(
+						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+						'source'=>'name1',
+						'target'=>'id1',
+						'className'=>'autocomplete',
+						'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+						'progressStyle'=>'throbbing',
+						'minimumCharacters'=>3,
+						));
+           
+                 ?>
+
+                </script>
+
+	
+</form>
+</div>
+</div>
+

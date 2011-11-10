@@ -26,12 +26,12 @@ document.onkeypress = function (aEvent)
 
 <form name="doubles_reservation_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
  
-<table cellspacing="10" cellpadding="0" width="540" class="tabtable">
+<table cellspacing="5" cellpadding="0" width="540" class="tabtable">
  		<tr>
             <td class="biglabel" colspan="2">Team 1</td>
         </tr>
         <tr>
-            <td class="normal">Player One:</td>
+            
             <td>
              <input id="dname1" name="playeronename" type="text" size="30" class="form-autocomplete"  
              <?
@@ -68,12 +68,7 @@ document.onkeypress = function (aEvent)
                 </script>
 
             </td>
-       </tr>
-
-
-       <tr>
-            <td class="normal">Player Two:</td>
-              <td>  
+            <td>  
               		<input id="dname2" name="playertwoname" type="text" size="30" class="form-autocomplete" onchange="javascript:unsetplayertwo();" value="<? pv($frm["playertwoname"]) ?>"/>
              		<?err($errors->playertwoname)?>
              		<input id="did2" name="playertwoid" type="hidden" value="<? pv($frm["playertwoid"]) ?>" />
@@ -93,8 +88,8 @@ document.onkeypress = function (aEvent)
 	                 ?>
 	                </script>
                 </td>
-
        </tr>
+
 
 
 
@@ -102,7 +97,7 @@ document.onkeypress = function (aEvent)
             <td class="biglabel" colspan="2"><br>Team 2</td>
         </tr>
         <tr>
-            <td class="normal">Player One:</td>
+
              <td>  
               		<input id="name3" name="playerthreename" type="text" size="30" class="form-autocomplete" onchange="javascript:unsetplayerthree();" value="<? pv($frm["playerthreename"]) ?>"/>
              		<?err($errors->playerthreename)?>
@@ -123,12 +118,8 @@ document.onkeypress = function (aEvent)
 	                 ?>
 	                </script>
                 </td>
-       </tr>
-
-
-       <tr>
-            <td class="normal">Player Two:</td>
-              <td> 
+                
+                <td> 
 					<input id="name4" name="playerfourname" type="text" size="30" class="form-autocomplete" onchange="javascript:unsetplayerfour();" value="<? pv($frm["playerfourname"]) ?>"/>
              		<?err($errors->playerfourname)?>
              		<input id="id4" name="playerfourid" type="hidden" value="<? pv($frm["playerfourid"]) ?>"/>
@@ -148,22 +139,26 @@ document.onkeypress = function (aEvent)
 	                 ?>
 	                </script>
               </td>
-
        </tr>
 
 
 
+
        <tr>
-        <td colspan="2" class="italitcsm">To book a reservation, type in the name of the each player and select from the list of club members.  If you don't
-        know who all four players will be yet, don't worry, just fill in what you know now.  We will ask you about how to advertise for any open spots on the 
-        next screen.
+        <td colspan="2">
+	        <span class="italitcsm">To book a reservation, type in the name of the each player and select from the list of club members.  If you don't
+	        know who all four players will be yet, don't worry, just fill in what you know now.  We will ask you about how to advertise for any open spots on the 
+	        next screen.
+	        </span>
         </td>
     </tr>
     <tr>
          <td height="15" colspan="2"><hr></td>
     </tr>
     <tr>
-    	  <td class="biglabel" title="hello"> Match Type:</td>
+    	  <td > <span  class="biglabel">Match Type:</span>
+    	 
+    	  </td>
     	<td class="normal" >
     		<select name="matchtype" >
     			 <option value="0" selected>Practice</option>
@@ -181,9 +176,10 @@ document.onkeypress = function (aEvent)
     </tr>
     <? if( get_roleid()==2 || get_roleid() ==4){ ?>
     <tr>
-    	<td>
+    	<td colspan="2">
     		<input type="checkbox" name="lock" />
     		<span class="normal">Lock reservation</span>
+    		
     	</td>
     </tr>
     <?}?>
@@ -210,3 +206,4 @@ document.onkeypress = function (aEvent)
 
 
 </form>
+

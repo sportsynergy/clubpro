@@ -108,7 +108,7 @@ function addOption(selectbox,text,value )
         </tr>
         <tr>
             <td class="label">
-            	<span class="required">* </span>
+            	
             	Event:
             </td>
             <td><select name="eventid">
@@ -135,7 +135,7 @@ function addOption(selectbox,text,value )
        </tr>
        <tr>
        		<td class="label">
-       			<span class="required">*</span> 
+       			
        			First Reservation:
        		</td>
        		<td>
@@ -156,7 +156,7 @@ function addOption(selectbox,text,value )
        </tr>
        <tr>
        		<td class="label">
-       			<span class="required">* </span>
+       			
        			Last Reservation:
        		</td>
        		<td>
@@ -225,16 +225,11 @@ function addOption(selectbox,text,value )
     	<td>
     		<input type="checkbox" name="lock" />
     		<span class="normal">Lock reservation</span>
+    		
     	</td>
     </tr>
 
-       <tr>
-            <td colspan="2">
-            	<span class="required">*</span>
-            	<span class="normalsm">indicates a required field.</span><br/>
-            <br/>
-            </td>
-        </tr>
+      
        <tr>
            <td colspan="2">
            		<input type="submit" name="submit" value="Submit">
