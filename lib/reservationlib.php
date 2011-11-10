@@ -597,6 +597,9 @@ function getCourtEventParticipants($reservationid){
 
 function confirmCourtEvent($userid, $reservationid, $action){
 	
+	//remove white space
+	$userid = rtrim($userid);
+	
 	if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: confirming reservation $reservationid for userid $userid with an action $action");
 	
 	// from the reservation get, court name, time, event name
@@ -663,7 +666,7 @@ function confirmCourtEvent($userid, $reservationid, $action){
 	$message = "Hello $var->adminfirstname,\n";
 	$message .= "$emailbody";
 	
-	#if( isDebugEnabled(1) ) logMessage($message);
+	if( isDebugEnabled(1) ) logMessage($message);
 	
 	//Dont' send this email if the creator has put themselves in the reservaiton, its kind of redundatn
 	if($userid != $var->creator){
@@ -680,7 +683,7 @@ function confirmCourtEvent($userid, $reservationid, $action){
 			$message = "Hello $player[firstname],\n";
 			$message .= "$emailbody";
 			
-			if( isDebugEnabled(1) ) logMessage($message);
+			if( isDebugEnabled(1) ) logMessage("sending notice to fellow court event participant:\n$message");
 			mail("$player[firstname] $player[lastname] <$player[email]>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 
 		}

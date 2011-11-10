@@ -69,7 +69,7 @@
   			
   		}   
 		
-	    logMessage($query);
+	    if(isDebugEnabled(1) ) logMessage($query);
           
 	    $result = db_query($query);
 	    

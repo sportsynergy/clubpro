@@ -45,11 +45,11 @@ YAHOO.util.Event.onDOMReady(function () {
 
 	YAHOO.clubevent.container.dialog1.setHeader('Pick A Player');
 
-	// Validate the entries in the form to require that both first and last name are entered
+	// Validate the user has selected the name from the drop down
 	YAHOO.clubevent.container.dialog1.validate = function() {
 		var data = this.getData();
 
-		if (data.playeroneid == "" ) {
+		if (!data.userid ) {
 			alert("Please pick a name from the list.");
 			return false;
 		} else {
