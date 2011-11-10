@@ -6,8 +6,11 @@
 
 */
 
+		if( !isset($time)){
+			$time = $_POST['time'];
+		}
 
-       $courtTypeQuery = "SELECT * from tblReservations WHERE time = $time and courtid = $courtid AND enddate IS NULL";
+       $courtTypeQuery = "SELECT usertype, eventid, reservationid, time, courtid FROM tblReservations WHERE time = $time and courtid = $courtid AND enddate IS NULL";
        $courtTypeResult = db_query($courtTypeQuery);
        $courtTypeArray = mysql_fetch_array($courtTypeResult);
         

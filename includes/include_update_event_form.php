@@ -129,7 +129,7 @@ document.onkeypress = function (aEvent)
 </script>
 
 
-<form name="manageform" method="post" action="<?=$ME?>">
+<form name="manageform" method="post" action="<?=$MEWQ?>">
 <input type="hidden" name="action"/>
 <input type="hidden" name="courtid" value="<?=$courtTypeArray['courtid']?>"/>
 <input type="hidden" name="time" value="<?=$courtTypeArray['time']?>"/>

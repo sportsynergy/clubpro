@@ -529,15 +529,29 @@ function addToCourtEvent($userid, $reservationid){
 	
 	logMessage("clubadminlib.addToCourtEvent: User $userid Reservationid: $reservationid");
 	
+	$check = "SELECT count(*) FROM tblCourtEventParticipants participants 
+					WHERE participants.userid = $userid 
+					AND participants.reservationid = $reservationid
+					AND participants.enddate IS NULL";
+	$checkResult = db_query($check);
+	$num = mysql_result($checkResult,0);
 	
-	$query = "INSERT INTO tblCourtEventParticipants (
+	if($num == 0){
+		
+		$query = "INSERT INTO tblCourtEventParticipants (
                 userid, reservationid
                 ) VALUES (
                           '$userid'
 					  	  ,'$reservationid'
                           )";
+		
+		$result = db_query($query);
+	} else{
+		logMessage("reservationlib.addToCourtEvent: User $userid is already in reservation $reservationid. not doing anything.");
+	}
 	
-	$result = db_query($query);
+	
+	
 	
 }
 
@@ -632,7 +646,8 @@ function confirmCourtEvent($userid, $reservationid, $action){
 	
 	//send email to the person who created the reservation
 	$creatorQuery = "SELECT users.firstname, users.lastname, users.email FROM tblUsers users WHERE users.userid = $var->creator";
-	$creatorResult = db_query($userQuery);
+	if( isDebugEnabled(1) ) logMessage($creatorQuery);
+	$creatorResult = db_query($creatorQuery);
 	$creatorArray = mysql_fetch_array($creatorResult);
 	
 	$var->adminfirstname = $creatorArray['firstname'];
@@ -648,7 +663,7 @@ function confirmCourtEvent($userid, $reservationid, $action){
 	$message = "Hello $var->adminfirstname,\n";
 	$message .= "$emailbody";
 	
-	if( isDebugEnabled(1) ) logMessage($message);
+	#if( isDebugEnabled(1) ) logMessage($message);
 	
 	//Dont' send this email if the creator has put themselves in the reservaiton, its kind of redundatn
 	if($userid != $var->creator){
@@ -666,7 +681,7 @@ function confirmCourtEvent($userid, $reservationid, $action){
 			$message .= "$emailbody";
 			
 			if( isDebugEnabled(1) ) logMessage($message);
-			mail("$player[firstname] $player[lastname] <$player[email]>", $subject, $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+			mail("$player[firstname] $player[lastname] <$player[email]>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 
 		}
 	}
