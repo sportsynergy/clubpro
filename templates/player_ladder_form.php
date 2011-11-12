@@ -193,6 +193,11 @@ Nobody has signed up for the ladder yet.
                  	
                    ?>
                  	
+                 	<form name="playerform<?=$numrows?>" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php" >
+                            <input type="hidden" name="userid" value="<?=$playerarray['userid']?>">
+                       		<input type="hidden" name="origin" value="ladder">
+                     </form>
+                                   
                  	<tr class="<?=$rc?>">
                  		<td ><?=$playerarray['ladderposition']?>
                  			<? if($playerarray['going']=="up"){ ?>
@@ -201,7 +206,8 @@ Nobody has signed up for the ladder yet.
                  				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/fall.png" title="has lost at least two in a row" >
                  			<? } ?>
                  		</td>
-                 		<td class="ladderpanel"><?=$playerarray['firstname']?> <?=$playerarray['lastname']?>
+                 		<td >
+                 		<a href="javascript:submitForm('playerform<?=$numrows?>')"><?=$playerarray['firstname']?> <?=$playerarray['lastname']?></a>
                  		<? if(get_roleid()==2 || get_roleid()==4){?>
                  		
                  		<a href="javascript:removeFromLadder(<?=$playerarray['userid']?>);">

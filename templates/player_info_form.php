@@ -166,7 +166,12 @@ if($origin=="lookup"){ ?>
 						<a href="javascript:submitForm('backtolistform');"><< Back to List</a>
 						<input type="hidden" name="searchname" value="<?=$searchname?>">
 	</form>
-<? } elseif($origin=="rankings"){ ?>
+<? } elseif($origin=="ladder"){ ?>
+	<form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">
+						<a href="javascript:submitForm('backtolistform');"><< Back to Ladder</a>
+	</form>
+	
+<? }elseif($origin=="rankings") {?>
    <form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">
 						<a href="javascript:submitForm('backtolistform');"><< Back to Rankings</a>
 						<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
