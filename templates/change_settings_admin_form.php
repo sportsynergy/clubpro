@@ -99,6 +99,12 @@
                 <?err($errors->pager)?>
             </td>
         </tr>
+ 		<tr>
+            <td class=label>Date Joined:</td>
+            <td><input type="text" name="msince" size="35" value="<? pv($frm["msince"]) ?>">
+                <?err($errors->msince)?>
+            </td>
+        </tr>
 
         <tr>
             <td class=label>Address:</td>

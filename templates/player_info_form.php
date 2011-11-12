@@ -27,12 +27,11 @@
 			<tr>
 				<td class=label>First Name:</td>
 				<td class="normal"><?=$frm["firstname"] ?></td>
-				<td rowspan="5" >
+				<td rowspan="4" valign="top">
 					<div align="center">
 						<img src="<?=get_gravatar($frm["email"],120 )?>" />
 					</div>
-					
-					
+
 				</td>
 			
 			</tr>

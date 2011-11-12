@@ -283,6 +283,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
                 ,enable = '$enable'
                 ,memberid = '$frm[memberid]'
 				,roleid 	  =  '$frm[roleid]'
+				,msince  =  '$frm[msince]'
         WHERE userid = '$userid'";
         
         $qid = db_query($updateClubUserQuery);
