@@ -148,7 +148,7 @@
 					 | <a class="normal" href="<?=$_SESSION["CFG"]["wwwroot"]?>/logout.php">Logout</a>
 	    		<? }?>
     			</div>
-    			 <div id="logoPanel" style="padding-bottom: 20px; padding-left: 185px; text-align: left">
+    			 <div id="logoPanel" style="padding-bottom: 20px; padding-left: 185px; text-align: center">
     			<? if(isSystemAdministrationConsole()){ ?>
     				 <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/images/0.gif" >
 			    <? } else{ ?>	
