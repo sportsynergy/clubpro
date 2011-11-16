@@ -146,7 +146,7 @@ document.onkeypress = function (aEvent)
 
        <tr>
         <td colspan="2">
-	        <span class="italitcsm">To book a reservation, type in the name of the each player and select from the list of club members.  If you don't
+	        <span class="normal">To book a reservation, type in the name of the each player and select from the list of club members.  If you don't
 	        know who all four players will be yet, don't worry, just fill in what you know now.  We will ask you about how to advertise for any open spots on the 
 	        next screen.
 	        </span>
@@ -168,10 +168,18 @@ document.onkeypress = function (aEvent)
     </tr>
     <tr>
         <td colspan="2">
-        	<span class="italitcsm" title="test">The match type really only has do with what happens when the score is reported.  The main differce between a 
-        Practice match and a Challenge match is that when reporting the results of a Challenge match the players positions will be adjusted in the Club
-        Ladder. Also, with a Challenge match the ranking adjustments are weighted twice those of a Practice match.
-        </span>
+        	<span class="normal" >
+        	<? if( isLadderRankingScheme() ){?>
+        	Select Challenge Match you plan on recording the score for the ladder.
+        	<? }else{?>
+        	Select Challenge Match you plan on recording the score
+        	<? } ?>
+        	
+       
+        		For more infomation on the match types, click <A HREF=javascript:newWindow('../help/squash-matchtypes.html')>here</a>.  
+        
+
+        	</span>
         </td>
     </tr>
     <? if( get_roleid()==2 || get_roleid() ==4){ ?>

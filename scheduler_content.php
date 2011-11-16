@@ -940,8 +940,8 @@ if ($clubid){
 		                                                      <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">                
 		                                                  
 		                                                   <?  //take out the link to record the score if this is a lesson
-		                                                  }   if($residobj->matchtype!=4){ ?>
-		                                                         <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$residobj->reservationid?>">
+		                                                  }   if($residobj->matchtype==1 || $residobj->matchtype==2){ ?>
+		                                                         <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$residobj->reservationid?>" title="Record your score">
 		                                                  <? } ?>
                                                             <?=gmdate("g:i",$i)?><br>
                                                             <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
@@ -951,7 +951,7 @@ if ($clubid){
                                                             
                                                             
                                                             <?  //again if this is a lesson, don't recod the score.
-                                                            if($residobj->matchtype!=4){ ?>
+                                                            if($residobj->matchtype==1 || $residobj->matchtype==2){ ?>
                                                                 </a>
                                                             <? } ?>
                                                    <? } 
@@ -1061,9 +1061,6 @@ if ($clubid){
                                                   }
                                        
 
-
-
-
                                        } ?>
                                   
 
@@ -1117,6 +1114,18 @@ if ($clubid){
 
                 <!-- Court Table End-->
                </tr>
+               </table>
+               
+               <div style="padding-top: 2em;"></div>
+               
+               
+               <table class="legend">
+               	<tr>
+               		<td class="seekingmatchcl<?=$clubid?>">Needs Players</td>
+               		<td class="eventcourt">Special Event</td>
+               		<td class="reportscorecl<?=$clubid?>">Record Score</td>
+               		<td class="reservecourtcl<?=$clubid?>">Plain Old Reservation</td>
+               	</tr>
                </table>
                
 
@@ -1254,19 +1263,29 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
  * Takes the necessary parameters and prints the event marked up with HTML
  */
 function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked){
+	
+	 $clubid = get_clubid();
+	 $eventquery = "SELECT events.eventname, events.playerlimit 
+              				FROM tblEvents events
+              				WHERE events.eventid = $eventid ";
+
+      $eventresult = db_query($eventquery);
+      $eventarray = mysql_fetch_array($eventresult, 0);
+              
+	
+	// if this is unlocked and needs players and is !ispast set the color to seeking match, otherwise event
+	
+      $eventclass = $eventarray['playerlimit'] > 0 && !$ispast && $locked=="n" ? "seekingmatchcl$clubid" : "eventcourt";
 	?>
-	<tr class="eventcourt">
-        <td align=center>
+	
+	
+	<tr class="<?=$eventclass?>">
+        <td align="center">
         <font class="normalsm1" >
                 
                                                     
             <?
-             $eventquery = "SELECT events.eventname, events.playerlimit 
-              				FROM tblEvents events
-              				WHERE events.eventid = $eventid ";
-
-              $eventresult = db_query($eventquery);
-              $eventarray = mysql_fetch_array($eventresult, 0);
+            
                                                     
               if( $eventarray['playerlimit']==0){
                     
@@ -1312,13 +1331,22 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
              	
              	
              	// Get the club participants
-             	$query = "SELECT count(*) FROM tblCourtEventParticipants WHERE reservationid = $reservationid AND enddate IS NULL";
+             	$query = "SELECT user.firstname, user.lastname
+             			 	FROM tblCourtEventParticipants participant, tblUsers user
+             				WHERE participant.reservationid = $reservationid 
+             				AND participant.enddate IS NULL
+             				AND participant.userid = user.userid";
              	$result = db_query($query);
-             	$count = mysql_result($result,0);
-             	$spotsleft = $eventarray['playerlimit'] - $count;
-
+             	
+             	$spotsleft = $eventarray['playerlimit'] - mysql_num_rows($result);
+             	
+             	while($array = mysql_fetch_array($result)){ ?>
+             		<div class="normalsm"> <? print "$array[firstname] $array[lastname]";?></div>
+             	<? 
+             	}
+             	
              	if(!$ispast){ ?>
-             		<span class="normalsm"><?=$spotsleft?> <?=$spotsleft==1?"spot":"spots"?> left</span>
+             		<span class="italitcsm"><?=$spotsleft?> <?=$spotsleft==1?"spot":"spots"?> left</span>
              	<? }  ?>
              	
              	
@@ -1330,6 +1358,9 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
          
   <? 
 }
+
+
+
 
 
 ?>

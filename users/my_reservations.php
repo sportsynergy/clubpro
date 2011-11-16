@@ -463,12 +463,12 @@ function printSinglesPastReservation($reservationID){
 
 
                     echo "<font class=normal>";
-                    if($courtdetailsrow[5]!=4){
+                    if($courtdetailsrow[5]==1 || $courtdetailsrow[5]==2){
                       echo "<a href=\"$wwwroot/users/report_scores.php?reservationid=$reservationID\">";
                     }
                      echo "".gmdate(" l F j h:i a",$courtdetailsrow[0])."";
 
-                     if($courtdetailsrow[5]!=4){
+                     if($courtdetailsrow[5]==1 || $courtdetailsrow[5]==2){
                          echo "</a>";
                      }
 

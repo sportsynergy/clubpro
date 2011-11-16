@@ -54,13 +54,12 @@ $courtid = $_REQUEST["courtid"];
 // we have to load in the site preferences (normally this is done in
 // the scheduler content.
 
-if( !isset($_SESSION["siteprefs"]["clubid"]) ) {
 
 	if( isDebugEnabled(1) ) logMessage("court_reservation: setting site preference for court $courtid");
 	$siteprefs = getSitePreferencesForCourt($courtid);
 	$_SESSION["siteprefs"] = $siteprefs;
 
-}
+
 
 require_loginwq();
 

@@ -4986,8 +4986,21 @@ function getSitePreferencesForCourt($courtid) {
       AND courts.courtid = $courtid";
 
 	$qid = db_query($query);
+	$array =  db_fetch_array($qid);
+	
+	$anyboxesquery = "SELECT tblBoxLeagues.boxid
+                         FROM tblBoxLeagues
+                          WHERE tblBoxLeagues.siteid=".$array['siteid'];
 
-	return db_fetch_array($qid);
+    $anyboxesresult = db_query($anyboxesquery);
+    
+	if(mysql_num_rows($anyboxesresult)>0){
+     	$array['boxenabled'] = 'true';
+     }else{
+     	$array['boxenabled'] = 'false';
+     }
+
+	return $array;
 }
 
 /*****************************************************************/
@@ -5016,12 +5029,26 @@ function getSitePreferences($siteid) {
 					sites.displaysitenavigation,
 					sites.displayrecentactivity,
 					sites.rankingscheme
-	        FROM tblClubSites sites
+	        FROM tblClubSites sites, tblBoxLeagues box
 			WHERE sites.siteid = '$siteid'";
 
 	$qid = db_query($query);
 
-	return db_fetch_array($qid);
+	$array = db_fetch_array($qid);
+	
+	$anyboxesquery = "SELECT tblBoxLeagues.boxid
+                         FROM tblBoxLeagues
+                          WHERE tblBoxLeagues.siteid=$siteid";
+
+    $anyboxesresult = db_query($anyboxesquery);
+
+     if(mysql_num_rows($anyboxesresult)>0){
+     	$array['boxenabled'] = 'true';
+     }else{
+     	$array['boxenabled'] = 'false';
+     }
+	
+	return $array;
 }
 
 /*
@@ -5081,19 +5108,7 @@ function getSitePreferences($siteid) {
  */
  function isSiteBoxLeageEnabled(){
  	
-	$leagues = false;
- 	
- 	$anyboxesquery = "SELECT tblBoxLeagues.boxid
-                         FROM tblBoxLeagues
-                          WHERE tblBoxLeagues.siteid=".get_siteid()."";
-
-    $anyboxesresult = db_query($anyboxesquery);
-
-     if(mysql_num_rows($anyboxesresult)>0){
-     	$leagues = true;
-     }
-     
-     return $leagues;
+	return $_SESSION["siteprefs"]["boxenabled"]=='true'?true:false;
  }
 
 /*****************************************************************/
