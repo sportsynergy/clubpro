@@ -6,6 +6,7 @@
 
 */
 require($_SESSION["CFG"]["libdir"]."/reservationlib.php");
+require($_SESSION["CFG"]["libdir"]."/courtlib.php");
 
  //Load necessary libraries and set the wanturl to get back here.
 $_SESSION["wantsurl"] = qualified_mewithq();
@@ -187,7 +188,6 @@ $_SESSION["current_time"] = $curtime;
 
 $simtzdelta = $clubobj->timezone;
 
-if( isDebugEnabled(1) ) logMessage($curtime);
 
 //Allow Person to type in the date to load
 $month = $_REQUEST['month'];
@@ -361,8 +361,6 @@ if ($clubid){
 							 			print " | ";
 							 		}
 							 		
-							 		if( isDebugEnabled(1) ) logMessage("Here is courtgrouprow" . $courtGroupRow[1] ." and here is whats in session " . $_SESSION["courtGroup"][$siteid] );
-							 		
 							 		// Don't display a link for the group that is loaded
 							 		if($courtGroupRow[1] == $_SESSION["courtGroup"][$siteid] ){
 							 			print $courtGroupRow[0];
@@ -424,9 +422,7 @@ if ($clubid){
                   $hoursresult = db_query($hoursquery);
                   $hoursobj = db_fetch_object($hoursresult);
                   
-                   if( isDebugEnabled(1) ) logMessage("Court ". $hoursobj->courtid." is ".  $hoursobj->hourstart." currdow: ".$currDOW );
-							 		
-                 
+                  
 	                  
 	              if(mysql_num_rows($hourPolicyResult)==0){
 	                  $otimearray = explode (":", $hoursobj->opentime);
@@ -544,18 +540,8 @@ if ($clubid){
                                        $residresult = db_query($residquery);
                                        $residobj = db_fetch_object($residresult);
 
-                                      if($residobj->guesttype == 0){
-                         					$useridresult = getSinglesReservationUser($residobj->reservationid);
-                         					$useridarray = db_fetch_array($useridresult);
-                                       }
-                                       elseif($residobj->guesttype == 1){
-
-                                                $guestquery = "SELECT name
-                                                               FROM tblkpGuestReservations INNER JOIN tblReservations ON tblkpGuestReservations.reservationid = tblReservations.reservationid
-                                                               WHERE (((tblReservations.reservationid)=".$residobj->reservationid."))";
-                                                $guestresult = db_query($guestquery);
-                                                $guestarray = mysql_fetch_array($guestresult);
-                                        }
+                                    
+                                      
                                        //If this is a doubles court get the team name
                                        // On the other hand if this is a singles court
                                        // just get the player names
@@ -568,92 +554,56 @@ if ($clubid){
                                       if($residobj->eventid){ 
                                       
                                       	printEvent($courtobj->courtid, $i, $residobj->eventid, $residobj->reservationid, false, $residobj->locked);
-                                      }
-                                      elseif($residobj->guesttype == 1){ ?>
+                                      
+                                      } elseif($residobj->guesttype == 1){ 
 
-                                                <tr class=reservecourtcl<?=$clubid?>>
-                                                 <td align=center><font class="normalsm1">
-                                                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&cmd=cancelall">
-                                                 <?=gmdate("g:i",$i)?><br>
-                                                 <?=$guestarray['name']?><br>
-                                                 <? if($residobj->matchtype != 5){ ?>
-			                                         <?        $guestarray = mysql_fetch_array($guestresult); ?>
-			                                         <?=$guestarray['name']?><br>
-                                           		<? } ?>
-		                                                 
-                                      <? } else{ ?>
+		                                      	$guestquery = "SELECT name
+		                                                         FROM tblkpGuestReservations 
+		                                                         INNER JOIN tblReservations ON tblkpGuestReservations.reservationid = tblReservations.reservationid
+		                                                         WHERE (((tblReservations.reservationid)=".$residobj->reservationid."))";
+                                      	 
+                                                $guestresult = db_query($guestquery);
+                                                $guestarray = mysql_fetch_array($guestresult);
+                                                $guest1 = $guestarray['name'];
+                                                $guest2 = "";
+                                                	
+	                                      	if( mysql_num_rows($guestresult) > 1){ 
+				                                       $guestarray = mysql_fetch_array($guestresult); 
+				                                       $guest2 = $guestarray['name'];
+				                             }
+      
+											printGuestReservation($guest1, $guest2, $i, $courtobj->courtid, $residobj->matchtype, false );
+                                       
+                                      } else{ 
 
-                                      <? //$useridarray = db_fetch_array($useridresult);
+                                      	$useridresult = getSinglesReservationUser($residobj->reservationid);
+                         			   
+                         					
+                                       //$useridarray = db_fetch_array($useridresult);
                                        //All singles reservations are made with a userype of
                                        //0. Doubles with a 1.
                                        if($residobj->usertype==0){
 
-                                                            //Check to see if this was made needing a player
-                                                            if ( mysql_num_rows($useridresult)==1){
+                                                 //Check to see if this was made needing a player
+                                                 if ( mysql_num_rows($useridresult)==1){
 
-                                                                	if($residobj->matchtype == 5){ ?>
-	                                                                	<tr class=reservecourtcl<?=$clubid?>>
-	                                                                    <td align=center><font class="normalsm1">
-	                                                                    <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&cmd=cancelall">
-	                                                                    <? if($residobj->locked=="y"){ ?>
-							                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-							                                            <? }?>
-                                                                		<?=gmdate("g:i",$i)?><br>
-	                                                                     <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-                                                                	<? }
-	                                                                /*
-	                                                                As of 042005 the club administrator will have the ability to
-	                                                                make a reservation looking for a lesson.  This only applies to
-	                                                                singles courts
-	                                                                */
-                                                                    elseif($residobj->matchtype == 4){ ?>
-	                                                                    <tr class=seekingmatchcl<?=$clubid?>>
-	                                                                    <td align=center><font class="normalsm1">
-	                                                                    <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">
-	                                                                    <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&userid=<?=$useridarray['userid']?>">
-	                                                                     <?=gmdate("g:i",$i)?><br>
-	                                                                     <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-	                                                                    is available for a lesson
-                                                                 
-                                                                  <?  } else{ ?>
-                                                                     <tr class=seekingmatchcl<?=$clubid?>>
-                                                                     <td align="center"><font class="normalsm1">
-                                                                     <? if($residobj->locked=="y"){ ?>
-						                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-						                                            <? }?>
-                                                                      <? if($useridarray['matchtype']==1){ ?>
-                                                                     		<img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif">
-                                                                      <? } ?>
-                                                                       <a title=Ranking:<?=$useridarray['ranking']?> href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&userid=<?=$useridarray['userid']?>">
-                                                                       <?=gmdate("g:i",$i)?><br>
-                                                                       
-                                                                        <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-                                                                    	is looking for a match
-                                                                   <? } ?>
-                                                                    
-                                                                <? 
-                                                                //Display two guys in the reservation
-                                                                } else { ?>
-
-	                                                                 <tr class=reservecourtcl<?=$clubid?>>
-	                                                                 <td align="center"><font class="normalsm1">
-	                                                                 	<? if($residobj->locked=="y"){ ?>
-							                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-		                                                                 <? } if($useridarray['matchtype']==1){ ?>
-		                                                                 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif">
-		                                                                 <? } if($useridarray['matchtype']==4){ ?>
-		                                                                 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">
-		                                                                 <? } ?>
-	                                                                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>">
-	                                                                 <?=gmdate("g:i",$i)?><br>
-	                                                                 <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-	                                                                 
-	                                                                 <? //Get the next guy
-	                                                                    $useridarray = mysql_fetch_array($useridresult); ?>
-	                                                                     <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-                                                           		 <? } ?>
-                                                            </a>
-                                    <?  } 
+                                                 	$useridarray = db_fetch_array($useridresult);
+                                                 	$userid1 = $useridarray['userid']; 
+                                                 	printPartialSinglesReservation($useridarray['userid'], $i, $courtobj->courtid, $residobj->matchtype, false, $residobj->locked, $residobj->creator);
+	                                                 
+                                                     //Display two guys in the reservation
+                                                  } else {
+                                                  	
+                                                  	$useridarray = db_fetch_array($useridresult);
+                                                  	$userid1 = $useridarray['userid'];
+                                                  	$useridarray = mysql_fetch_array($useridresult); 
+                                                  	$userid2 = $useridarray['userid'];
+                                                  	
+                                                  	printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, false, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
+         
+                                                  } 
+                                                           
+                                     } 
 
                                       //************************************************************
                                       //************************************************************
@@ -675,101 +625,61 @@ if ($clubid){
                                                         
                                                         // If usertype is 0 at this point then neither team is set.
                                                         if($teamidarray['usertype']==0){
-                                                        	
-                                                        	 $fullNameResult = getFullNameResultForUserId($teamidarray['userid']);
-															  $userArray = mysql_fetch_array($fullNameResult); 
-                                                        	
-                                                        	?>
-                                                        	
-	                                                        <tr class=seekingmatchcl<?=$clubid?>>
-	                                                        <td align=center><font class=normalsm1>
-	                                                        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&userid=<?=$teamidarray['userid']?>">
-	                                                        <? if($residobj->locked=="y"){ ?>
-				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-				                                            <? }?>
-                                                        	<?=gmdate("g:i",$i)?><br>
-	                                                        <?=printPlayer($userArray[0], $userArray[1],$teamidarray['userid'], $residobj->creator)?><br>
-	                                                        is up for some doubles</a>
-                                                        	<?
+                                                        	 printDoublesReservationSinglePlayer($teamidarray['userid'], $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, false);
                                                         }
                                                         else{
-															?>
-	                                                        <tr class="seekingmatchcl<?=$clubid?>">
-	                                                        <td align="center"><font class="normalsm1">
-	                                                        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&userid=<?=$teamidarray[0]?>">
-	                                                        <? if($residobj->locked=="y"){ ?>
-				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-				                                            <? }?>
-															<?=gmdate("g:i",$i)?><br>
-	                                                        <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
-	                                                        are looking for a match</a>
-	                                                       <?
+															printDoublesReservationTeamWanted($teamidarray['userid'], $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, false);
+                                                     
                                                         }
 
                                                    }
                                                    else{
 		                                                   //Check to see if this is single player or a team
 		                                                   if($teamidarray['usertype']==1){
-		                                                          ?>   
-		                                                           <tr class=reservecourtcl<?=$clubid?>>
-		                                                           <td align=center><font class="normalsm1">
-		                                                           <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>">
-		                                                          <? if($residobj->locked=="y"){ ?>
-					                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-					                                            <? }?> 
-		                                                          <?=gmdate("g:i",$i)?><br>
-		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
-																	 
-		                                                           <?
+		                                                         
+		                                                   	// team
+		                                                     $teamOne = $teamidarray['userid'];
 		
 		                                                   }
 		                                                   //If the usertype is set to 0 then we are talking about a single user.
 		                                                   elseif($teamidarray['usertype']==0){
 		                                                       
-		                                                       $fullNameResult = getFullNameResultForUserId($teamidarray['userid']);
-															  $userArray = mysql_fetch_array($fullNameResult); 
-		                                                       
-		                                                       ?>
-		                                                        <tr class=seekingmatchcl<?=$clubid?>>
-		                                                        <td align="center"><font class="normalsm1">
-		                                                        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$i?>&courtid=<?=$courtobj->courtid?>&userid=<?=$teamidarray[0]?>">
-		                                                       	<? if($residobj->locked=="y"){ ?>
-					                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-					                                            <? }?> 
-		                                                       <?=gmdate("g:i",$i)?><br>
-		                                                      	<?=printPlayer($userArray[0], $userArray[1], $teamidarray['userid'], $residobj->creator)?><br>
-		                                                        is looking for a partner<br>
-		                                                        <?
+		                                                     	$playerOne = $teamidarray['userid'];
 		                                                   }
 		
 		                                                   //Get Second Team
 		                                                   $teamidarray = db_fetch_array($teamidresult);
-		                                                   if($teamidarray['usertype']==1){
-		                                                                
-		                                                        printTeam($teamidarray['userid'], $residobj->creator);?></a>
-		
-		                                                  <?} elseif($teamidarray['usertype']==0){
-		                                                    
-		                                                    $fullNameResult = getFullNameResultForUserId($teamidarray['userid']);
-															$userArray = mysql_fetch_array($fullNameResult); 
-		                                                    
-		                                                     ?>
-		                                                        	<?=printPlayer($userArray[0], $userArray[1], $teamidarray['userid'], $residobj->creator)?><br>
-		                                                            is looking for a partner</a>
-		                                                     <?
-		
+
+                                                    	   // full team 2, regular reservation
+		                                                   if($teamidarray['usertype']==1){          
+
+				                                                   	// Print full reservation
+				                                                   	if( isset($teamOne) ){
+				                                                   		printDoublesReservationFull($teamOne, $teamidarray['userid'], $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, false, false, $residobj->reservationid );
+				                                                   	} 
+				                                                   	// Print player wanted
+				                                                   	else if( isset($playerOne) ){
+				                                                   		if( isDebugEnabled(1) ) logMessage("courtlib.printDou");
+				                                                   		printDoublesReservationPlayerWanted($teamidarray['userid'], $playerOne, $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, false );
+				                                                   	}
+		                                                   
+		                                                   }elseif($teamidarray['usertype']==0){
+
+		                                                   	  // print players wanted
+		                                                   	  printDoublesReservationPlayersWanted($teamidarray['userid'],$playerOne, $residobj->locked, $residobj->matchtype, $i, $residobj->courtid, $residobj->creator, false );
+		                                                 		
 		                                                  }
+				                                             
+				                                          unset($teamOne);
+				                                          unset($playerOne);   
                                                   }
                                          }
-                                      //************************************************************
+                                      
                                       }
-                                      }
-                                      else{
-                                       echo "<tr class=preopencourtcl$clubid>\n";
-                                       echo " <td align=center><font class=normalsm1>
-                                       <a href=$wwwroot/users/court_reservation.php?time=".sprintf("%d" , $i )."&courtid=$courtobj->courtid>
-                                       " . gmdate("g:i",$i) ."<br>\n";
-                                       }
+                                      
+                                 }else{
+                                    printEmptyReservation($i, $courtobj->courtid, false);
+                                 }
                            }
 
                           //after current time but is in stack. So this means that the the resource
@@ -787,277 +697,176 @@ if ($clubid){
                                   $residresult = db_query($residquery);
                                   $residobj = db_fetch_object($residresult);
 
-                                  //Get the userids
-                                  if($residobj->guesttype == 0){
+                                   //Get the userids
+                                   if($residobj->guesttype == 0){
                                   
-                                        $useridresult = getSinglesReservationUser($residobj->reservationid);
-										$useridarray = db_fetch_array($useridresult);
-										
                                         //find out if the scores have been reported.  If they have, we
                                        // are going to use a different color as the tr background and
                                        // we will also not make it a link any more
-                                       $isreportedquery ="SELECT outcome
+                                       $isreportedquery ="SELECT sum(outcome)
                                                           FROM tblkpUserReservations
                                                           WHERE reservationid=$residobj->reservationid";
 
                                        $isreportedresult = db_query($isreportedquery);
-                                       while ($isreportedarray = db_fetch_array($isreportedresult)){
+                                       $outcome = mysql_result($isreportedresult,0);
+                                       $scored = $outcome > 0 ? true : false;
 
-                                                   if ( $isreportedarray[0]  > 0){
-                                                         $scored = 1;
-                                                   }
-                                       }
+                                     }
+                                 
 
-                                   }
-                                  elseif($residobj->guesttype == 1){
-                                  $guestquery = "SELECT name
-                                                 FROM tblkpGuestReservations INNER JOIN tblReservations ON tblkpGuestReservations.reservationid = tblReservations.reservationid
-                                                 WHERE (((tblReservations.reservationid)=".$residobj->reservationid."))";
-                                  $guestresult = db_query($guestquery);
-                                  $guestarray = mysql_fetch_array($guestresult);
-                                  }
-
-
-                                     if (isset($scored)){
-                                        //************************************************************
-                                        //Get the userids
-                                       //************************************************************
-
-                                        echo "<tr class=reportedcourtcl$clubid>\n";
-                                        echo "<td align=center><font class=normalsm1>\n";
-
+                                     if ($scored) {
+                                        
                                          if($residobj->usertype==0){
-											if($residobj->locked=="y"){ ?>
-                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-                                            
-                                            <?}
-                                             if($residobj->matchtype==1){ ?>
-                                                 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif">
-                                          
-                                          <? }elseif($residobj->matchtype==4){ ?>
-                                                 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">
-                                             <? } ?>
-                                            <?=gmdate("g:i",$i)?><br>
-                                            <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-                                            
-                                            <? $useridarray = db_fetch_array($useridresult) ?>
-                                            <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>										
-
-										<?
-                                       //************************************************************
-                                      //Get Doubles Team
-                                      //************************************************************
-                                     } elseif($residobj->usertype==1) {
-
-                                            		$teamidquery = "SELECT userid, usertype
+                                         	
+                                         	$useridresult = getSinglesReservationUser($residobj->reservationid);
+										    $useridarray = db_fetch_array($useridresult);
+										
+                                         	$userid1 = $useridarray['userid'];
+                                            $useridarray = mysql_fetch_array($useridresult); 
+                                            $userid2 = $useridarray['userid'];
+                                                
+                                           printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, true, $residobj->creator, $residobj->reservationid);
+                                         	
+                                     	} elseif($residobj->usertype==1) {
+										
+                                     		$teamidquery = "SELECT userid, usertype
 	                                                              FROM tblkpUserReservations
 	                                                              WHERE reservationid=$residobj->reservationid
 	                                                              ORDER BY usertype, userid";
 	
-	                                                $teamidresult = db_query($teamidquery);
-	                                                $teamidarray = db_fetch_array($teamidresult);
-                                            
-                                            ?> 
-                                            
-                                            <? if($residobj->locked=="y"){ ?>
-                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-                                            <? }?>
-                                            <?=gmdate("g:i",$i)?><br>   
-											 <?= printTeam($teamidarray['userid'],  $residobj->creator) ?>
-                                             
-                                             <?  //Get Second Team
-                                             $teamidarray = db_fetch_array($teamidresult) ?>
-											 <?= printTeam($teamidarray['userid'],  $residobj->creator) ?>
-											
-                                     <?      }
+	                                    	$teamidresult = db_query($teamidquery);
+	                                    	$teamidarray = db_fetch_array($teamidresult);
+	                                    	$team1 = $teamidarray['userid'];
+	                                    	$teamidarray = db_fetch_array($teamidresult);
+	                                    	$team2 = $teamidarray['userid'];
+	                                    	
+                                     		printDoublesReservationFull($team1, $team2, $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true, true, $residobj->reservationid);
+                                     	
+                                        }
 
-                                           unset($scored);
+                                           
+                                        unset($scored);
 
                                   }
-								 // There reservations have not been scored.
+								 
+                                  // There reservations have not been scored.
                                   else{
 
-                                    //if this is an event print it out otherwise don't print the
-                                    //reservation
-
+                                  
                                        if($residobj->eventid){ 
                                      
-                                       	printEvent($courtobj->courtid, $i, $residobj->eventid, $residobj->reservationid, true, $residobj->locked);
+                                       		printEvent($courtobj->courtid, $i, $residobj->eventid, $residobj->reservationid, true, $residobj->locked);
                                        	
-                                       }elseif($residobj->guesttype==1){ ?>
-                                                    <tr class=reportscorecl<?=$clubid?>>
-                                                    <td align="center"><font class="normalsm1">
-                                                    <?=gmdate("g:i",$i)?><br>
-                                                     <?=$guestarray['name']?><br>
-                                                     
-                                                     <? //If its not a solo
-                                                     if($residobj->matchtype != 5){ ?>
-                                                     	 
-                                                     	<? $guestarray = mysql_fetch_array($guestresult); ?>
-                                                     	<?=$guestarray['name']?><br>
-                                                    <? } ?>
+                                       }elseif($residobj->guesttype==1){
                                                     
-                                      <? } else{
+                                              $guestquery = "SELECT name
+	                                                 				FROM tblkpGuestReservations 
+	                                                 				INNER JOIN tblReservations ON tblkpGuestReservations.reservationid = tblReservations.reservationid
+	                                                 				WHERE (((tblReservations.reservationid)=".$residobj->reservationid."))";
+			                                  $guestresult = db_query($guestquery);
+			                                  $guestarray = mysql_fetch_array($guestresult);  
+
+			                                  $guest1 = $guestarray['name'];
+			                                  $guestarray = mysql_fetch_array($guestresult);
+			                                  $guest2 = $guestarray['name'];
+			                                  
+			                                  printGuestReservation($guest1, $guest2, $i, $courtobj->courtid, $courtobj->matchtype, true);
+			                           
+                                       } else{
 
 		                                  //************************************************************
 		                                  //Get the userids
 		                                  //************************************************************
 		                                  if($residobj->usertype==0){
 
-                                                    /*
-                                                     * Simply print out the player for solo reservations
-                                                     */
-                                                    if( $residobj->matchtype == 5){ ?>
-		                                                    <tr class="postopencourt">
-		                                                    <td align="center"><font class="normalsm1">
-		                                                    <?=gmdate("g:i",$i)?><br>
-		                                                    <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>	
-                                                   <?}elseif( mysql_num_rows($useridresult)==1 ) { ?>
-                                                  			<tr class="reportscorecl<?=$clubid?>">
-		                                                    <td align="center"><font class="normalsm1">
-		                                                    <? if($residobj->locked=="y"){ ?>
-				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-				                                            <? }?>
-                                                   			<?=gmdate("g:i",$i)?><br>
-                                                   			<?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>	
-                                                   			was looking for a match
-                                                   <?}else{ ?>
-
-		                                                   <tr class=reportscorecl<?=$clubid?>>
-		                                                   <td align=center><font class=normalsm1>
-		                                                   
-		                                                   <? if($residobj->locked=="y"){ ?>
-				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-				                                            <? }?>
-		                                                   <?
-
-		                                                   //If its a boxleague, display icon
-		                                                   if($residobj->matchtype==1){ ?>
-		                                                   		<img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif">
-		                                                  
-		                                                   <? //If its a lesson, display icon
-		                                                   } if($residobj->matchtype==4){ ?>
-		                                                      <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">                
-		                                                  
-		                                                   <?  //take out the link to record the score if this is a lesson
-		                                                  }   if($residobj->matchtype==1 || $residobj->matchtype==2){ ?>
-		                                                         <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$residobj->reservationid?>" title="Record your score">
-		                                                  <? } ?>
-                                                            <?=gmdate("g:i",$i)?><br>
-                                                            <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?><br>
-                                                            
-                                                            <? $useridarray = db_fetch_array($useridresult); ?>
-                                                            <?=printPlayer($useridarray[2], $useridarray[3], $useridarray[4], $residobj->creator)?>
-                                                            
-                                                            
-                                                            <?  //again if this is a lesson, don't recod the score.
-                                                            if($residobj->matchtype==1 || $residobj->matchtype==2){ ?>
-                                                                </a>
-                                                            <? } ?>
-                                                   <? } 
-                                           
-                                           
-                                  //************************************************************
-                                   //Get Doubles Team
-                                   //************************************************************
-                                       } elseif($residobj->usertype==1){
-                                       
-                                       $teamidquery = "SELECT userid, usertype
-	                                                              FROM tblkpUserReservations
-	                                                              WHERE reservationid=$residobj->reservationid
-	                                                              ORDER BY usertype, userid";
+		                                  		$useridresult = getSinglesReservationUser($residobj->reservationid);
+     
+                                                   if( mysql_num_rows($useridresult)==1 ) { 
+                                                  		
+                                                   		
+                                                   	     $useridarray = db_fetch_array($useridresult);
+                                                   	     $userid = $useridarray['userid'];	
+                                                   	     printPartialSinglesReservation($userid, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, $residobj->creator);
+                                                   }
+                                                   else{ 
+                                                   
+	                                                   	 $useridarray = db_fetch_array($useridresult);
+                                                   	     $userid1 = $useridarray['userid'];		
+                                                   	     $useridarray = db_fetch_array($useridresult);  
+                                                   	     $userid2 = $useridarray['userid'];
 	
-	                                    $teamidresult = db_query($teamidquery);
-	                                    $teamidarray = db_fetch_array($teamidresult);
+                                                   	    printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
+                                                   	    
+                                                   		
+                                                   } 
+                                           
+                                           
+		                                  //************************************************************
+		                                   //Get Doubles Team
+		                                   //************************************************************
+                                       		} elseif($residobj->usertype==1){
                                        
-                                       //Get First Team
+		                                       $teamidquery = "SELECT userid, usertype
+			                                                       FROM tblkpUserReservations
+			                                                       WHERE reservationid=$residobj->reservationid
+			                                                       ORDER BY usertype, userid";
+			
+			                                    $teamidresult = db_query($teamidquery);
+			                                    $teamidarray = db_fetch_array($teamidresult);
+                                       
+                                       			//Get First Team.  If one of the teams id is zero, either 1 or 2 players were looking 
                                                   if ( $teamidarray['userid']==0){
-                                                         $teamidarray = db_fetch_array($teamidresult);
+                                                  	
+                                                  		$teamidarray = db_fetch_array($teamidresult);
                                                         
                                                         // If usertype is 0 at this point then neither team is set.
                                                         if($teamidarray['usertype']==0){
-                                                        	
-                                                        	//Get the lone guy that didn't find any one to play with on the doubles court
-                                                        	  $fullNameResult = getFullNameResultForUserId($teamidarray['userid']);
-															  $userArray = mysql_fetch_array($fullNameResult); 
-
-                                                        	?>
-	                                                        <tr class=reportedcourtcl<?=$clubid?>>
-	                                                        <td align=center><font class="normalsm1">
-	                                                        <? if($residobj->locked=="y"){ ?>
-				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-				                                            <? }?>
-	                                                        <?=gmdate("g:i",$i)?><br>
-	                                                        <?=printPlayer($userArray[0],  $userArray[1], $teamidarray['userid'], $residobj->creator)?>
-	                                                        was up for some doubles</a>
-                                                        	<?
+                                                        	printDoublesReservationSinglePlayer($teamidarray['userid'],$residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true);
                                                         }
-                                                        else{
-															?>
-	                                                        <tr class="reportedcourtcl<?=$clubid?>">
-	                                                        <td align=center><font class="normalsm1">
-	                                                        <? if($residobj->locked=="y"){ ?>
-				                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-				                                            <? }?>
-															<?=gmdate("g:i",$i)?><br>
-	                                                        <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
-	                                                        were looking for a match</a>
-	                                                       <?
+                                                        else{                                                      	
+                                                        	printDoublesReservationTeamWanted($teamidarray['userid'], $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true);
                                                         }
 
                                                    }
                                                    else{
 		                                                   //Check to see if this is single player or a team
 		                                                   if($teamidarray['usertype']==1){
-		                                                          ?>   
-		                                                           <tr class=reportedcourtcl<?=$clubid?>>
-		                                                           <td align="center"><font class="normalsm1">
-		                                                           <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$residobj->reservationid?>">
-		                                                          	<? if($residobj->locked=="y"){ ?>
-						                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-						                                            <? }?> 
-		                                                          <?=gmdate("g:i",$i)?><br>
-		                                                           <?=printTeam($teamidarray['userid'],  $residobj->creator)?>
-																	 
-		                                                           <?
-		
+		                                                          
+			                                                   	// team
+			                                                   	$teamOne = $teamidarray['userid'];
 		                                                   }
 		                                                   //If the usertype is set to 0 then we are talking about a single user.
 		                                                   elseif($teamidarray['usertype']==0){
 		                                                       
-		                                                      $fullNameResult = getFullNameResultForUserId($teamidarray['userid']);
-															  $userArray = mysql_fetch_array($fullNameResult); 
-		                                                       
-		                                                       ?>
-		                                                        <tr class=reportedcourtcl<?=$clubid?>>
-		                                                        <td align=center><font class="normalsm1">
-		                                                        <? if($residobj->locked=="y"){ ?>
-					                                            	 <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-					                                            <? }?>
-		                                                        <?=gmdate("g:i",$i)?><br>
-		                                                      	<?=printPlayer($userArray[0], $userArray[1], $teamidarray['userid'], $residobj->creator)?><br>
-		                                                        was looking for a partner<br> 
-		                                                        <?
+			                                                   	// player
+			                                                   	$playerOne = $teamidarray['userid'];
 		                                                   }
 		
 		                                                   //Get Second Team
 		                                                   $teamidarray = db_fetch_array($teamidresult);
+		                                                   
+		                                                   // full team 2, regular reservation
 		                                                   if($teamidarray['usertype']==1){          
-		                                                        printTeam($teamidarray['userid'], $residobj->creator);?>
-		                                                        </a>
-		                                                 <? }
-		                                                  elseif($teamidarray['usertype']==0){
-		                                                     
-		                                                      $fullNameResult = getFullNameResultForUserId($teamidarray['userid']);
-															  $userArray = mysql_fetch_array($fullNameResult); 
-		                                                     
-		                                                     
-		                                                     ?>
-		                                                        	<?=printPlayer($userArray[0], $userArray[1], $teamidarray['userid'], $residobj->creator)?><br>
-		                                                            was looking for a partner
-		                                                     <?
-		
+
+				                                                   	// Print full reservation
+				                                                   	if( isset($teamOne) ){
+				                                                   		printDoublesReservationFull($teamOne, $teamidarray['userid'], $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true, false, $residobj->reservationid );
+				                                                   	} 
+				                                                   	// Print player wanted
+				                                                   	else if( isset($playerOne) ){
+				                                                   		printDoublesReservationPlayerWanted($teamidarray['userid'], $playerOne,$residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true );
+				                                                   	}
+		                                                   
+		                                                   }elseif($teamidarray['usertype']==0){
+
+		                                                   	  // print players wanted
+		                                                   	  printDoublesReservationPlayersWanted($playerOne, $teamidarray['userid'],$residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true );
+		                                                 		
 		                                                  }
+		                                                  
+		                                                  unset($teamOne);
+		                                                  unset($playerOne);
+		                                                  
                                                   }
                                        
 
@@ -1066,14 +875,13 @@ if ($clubid){
 
 
                                    <? } ?>
-                                    <? } ?>
-                               <? } else{ ?>
-                                       <tr class=postopencourt>
-                                       <td align=center><font class="normalsm1">
-                                       <?=gmdate("g:i",$i)?><br>
                                 <? } ?>
+                               
+                            <? } else{
+                               		printEmptyReservation($i, $courtobj->courtid, true);
+                               }
 
-                          <?  } ?>
+                           } ?>
 
 
                               <? } 
@@ -1081,31 +889,24 @@ if ($clubid){
                          //if stack is not set.  This means that the particular resource does not have
                          // any reservations for this day
                               else {
-                                    if ($curtime < $i)
-                                         { ?>
+                                    if ($curtime < $i) {
+                                         printEmptyReservation($i, $courtobj->courtid, false);
+                                    } else {
+                                   		
+                                   		printEmptyReservation($i, $courtobj->courtid, true);
+                                   	
+                                   }
 
-                                          <tr class=preopencourtcl<?=$clubid?>>
-                                          <td align="center"><font class="normalsm1" >
-                                          <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=sprintf("%d" , $i )?>&courtid=<?=$courtobj->courtid?>">
-                                          <?=gmdate("g:i",$i)?></a><br>
-                                   <? } else { ?>
-                                          <tr class="postopencourt">
-                                          <td align="center"><font class="normalsm1">
-                                          <?=gmdate("g:i",$i) ?><br>
+                        } ?>
 
-                                  <? } ?>
-
-                        <? } ?>
-
-                         </font>
-                         </td>
-                         </tr>
+                         
 
                       <?  } ?>
 
                   </table>
                   </td>
-                 <? unset($stack); ?>
+                 
+                      <? unset($stack); ?>
 
 
 
@@ -1134,230 +935,6 @@ if ($clubid){
 
 
 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
-
-/******************************************************************************
- * FUNCTIONS
- *****************************************************************************/
-
-function getCourtTableWidth($totalCurrentCourts){
-	
-	$width = 0;
-	
-	if($totalCurrentCourts == 1){
-		$width = 450;
-	}
-	elseif($totalCurrentCourts == 2){
-		$width = 300;
-	}
-	elseif($totalCurrentCourts == 3 || $totalCurrentCourts == 4){
-		$width = 150;
-	}
-	else{
-		$width = 100;
-	}
-	
-	return $width;
-}
-
-/*
- * Displays a hyperlink to navigation to the next/previous set of courts.
- * This function determine:
- *  a) if the link is to be displayed
- *  b) what paramter to pass in as to start the court display window ($courtWindowStart)
- * 
- * This will always display a full screen of courts.  So if there are 7 courts, clicking the
- * next arrow will then display courts 2-7 not just 7.  The reason for this because one
- * court on the page doesn't really do anyone any good, plus it looks weird.  As you might imagine
- * both of these function work the same, but do the inverse of the other one or whatever.
- * 
- */
- 
-/**
- * Prints out the left court navigation arrow
- */
-function printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts,$daysahead, $siteid){
-	
-	$wwwroot = $_SESSION["CFG"]["wwwroot"];
-	
-	if( $totalCourts <= 6 ){
-		return;
-	}
-	
-	//If already displaying first court dont't print the link
-	$veryFirstCourt = mysql_result($totalCourtResult,0);
-	$firstCourtDisplayed = mysql_result($currentCourtResult,0);
-	
-	if($veryFirstCourt == $firstCourtDisplayed){
-		return;
-	}
-	
-	//Get 6 less than the first court or the very first court, which ever is less
-	$nextCourtWindow = "SELECT court.courtid FROM tblCourts court WHERE court.siteid= $siteid AND court.courtid < $firstCourtDisplayed AND court.enable = 1 ORDER BY court.courtid DESC LIMIT 6";
-	$nextCourtWindowResult = db_query($nextCourtWindow);
-
-	while( $courtidArray = mysql_fetch_array($nextCourtWindowResult) ){
-
-		$startCourtId = $courtidArray[0];
-	}
-	
-	//Print the Form
-	print "<form name=\"windowForm\" method=\"post\"><input type=\"hidden\" name=\"courtWindowStart\" value=\"$startCourtId\"><input type=\"hidden\" name=\"daysahead\" value=\"$daysahead\"></form>";	
-	//Print the link to the form
-	print "<br><a STYLE=\"text-decoration:none\" href=\"javascript:submitFormWithAction('windowForm','$wwwroot/clubs/".get_sitecode()."/index.php')\"> < Previous </a><br>";
-	
-}
-
-
-/**
- * Print out the right court navigation array
- */
-function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid){
-	
-	$wwwroot = $_SESSION["CFG"]["wwwroot"];
-	
-	if( $totalCourts <= 6 ){
-		return;
-	}
-
-	//If already displaying last court dont't print the link
-	$veryLastCourt = mysql_result($totalCourtResult,$totalCourts-1);
-	$firstCourtDisplayed = mysql_result($totalCourtResult,0);
-	$lastCourtDisplayed = mysql_result($currentCourtResult,$totalCurrentCourts-1);
-	
-	// The courts will be in numerical order but not necessarily sequential.  If the 
-	// last court is within the courts that are displayed, then there is no need to 
-	// display the right navigation link.
-	if($veryLastCourt >= $firstCourtDisplayed && $veryLastCourt <= $lastCourtDisplayed){
-		return;
-	}
-	
-	//Get 6 more than the last court or the very last court, which ever is bigger
-	$nextCourtWindow = "SELECT court.courtid 
-							FROM tblCourts court 
-							WHERE court.siteid= $siteid 
-							AND court.courtid > $lastCourtDisplayed 
-							ORDER BY court.courtid ASC LIMIT 6";
-							
-	$nextCourtWindowResult = db_query($nextCourtWindow);
-	$numberInNextWindow = mysql_num_rows($nextCourtWindowResult);
-	
-
-	//If the next window does not contain a full 6 courts, set the setCourtId to
-	// 6 back from th elast one.
-	if($numberInNextWindow < 6 ){
-		$startCourtId = mysql_result($currentCourtResult,$numberInNextWindow);
-	}
-	//Otherwise set this to the first
-	else{
-		$startCourtId = mysql_result($nextCourtWindowResult,0);
-	}
-	//Print the Form
-	print "<form name=\"windowForm\" method=\"post\"><input type=\"hidden\" name=\"courtWindowStart\" value=\"$startCourtId\"><input type=\"hidden\" name=\"daysahead\" value=\"$daysahead\"></form>";	
-	//Print the link to the form
-	print "<br><a STYLE=\"text-decoration:none\" href=\"javascript:submitFormWithAction('windowForm','$wwwroot/clubs/".get_sitecode()."/index.php')\"> Next >  </a><br>";
-	
-	
-}
-
-/**
- * Takes the necessary parameters and prints the event marked up with HTML
- */
-function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked){
-	
-	 $clubid = get_clubid();
-	 $eventquery = "SELECT events.eventname, events.playerlimit 
-              				FROM tblEvents events
-              				WHERE events.eventid = $eventid ";
-
-      $eventresult = db_query($eventquery);
-      $eventarray = mysql_fetch_array($eventresult, 0);
-              
-	
-	// if this is unlocked and needs players and is !ispast set the color to seeking match, otherwise event
-	
-      $eventclass = $eventarray['playerlimit'] > 0 && !$ispast && $locked=="n" ? "seekingmatchcl$clubid" : "eventcourt";
-	?>
-	
-	
-	<tr class="<?=$eventclass?>">
-        <td align="center">
-        <font class="normalsm1" >
-                
-                                                    
-            <?
-            
-                                                    
-              if( $eventarray['playerlimit']==0){
-                    
-              	//only provide links to administrators, who then have the option to cancel or change
-              	if( (get_roleid()==2 || get_roleid()==4) && !$ispast ){ ?>
-              		 
-              	 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
-                 <? if($locked=="y"){ ?>
-                       <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-                 <? }?>  
-              	<?=gmdate("g:i",$time)?><br>
-              		<?=$eventarray['eventname']?><br>  
-              	 </a>
-              		
-              <?	}else{ ?>
-              	<? if($locked=="y"){ ?>
-                       <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-                 <? }?> 
-              		<?=gmdate("g:i",$time)?><br>
-              		<?=$eventarray['eventname']?><br>  
-              		
-              <? } ?>
-                     
-              
-                                       
-             <? } else{ 
-             
-             	if($ispast){ ?>
-             	 <? if($locked=="y"){ ?>
-                       <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-                 <? }?>  
-             		<?=gmdate("g:i",$time)?><br>
-					 <?=$eventarray['eventname']?> <br>
-             	<? } else{ ?>
-             		<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
-	             <? if($locked=="y"){ ?>
-                       <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-                 <? }?>       
-             	<?=gmdate("g:i",$time)?><br>
-					 <?=$eventarray['eventname']?> <br>
-					 </a>
-             	<?} 
-             	
-             	
-             	// Get the club participants
-             	$query = "SELECT user.firstname, user.lastname
-             			 	FROM tblCourtEventParticipants participant, tblUsers user
-             				WHERE participant.reservationid = $reservationid 
-             				AND participant.enddate IS NULL
-             				AND participant.userid = user.userid";
-             	$result = db_query($query);
-             	
-             	$spotsleft = $eventarray['playerlimit'] - mysql_num_rows($result);
-             	
-             	while($array = mysql_fetch_array($result)){ ?>
-             		<div class="normalsm"> <? print "$array[firstname] $array[lastname]";?></div>
-             	<? 
-             	}
-             	
-             	if(!$ispast){ ?>
-             		<span class="italitcsm"><?=$spotsleft?> <?=$spotsleft==1?"spot":"spots"?> left</span>
-             	<? }  ?>
-             	
-             	
-             	
-             	
-            <? } ?>
-          
-           
-         
-  <? 
-}
 
 
 

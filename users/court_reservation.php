@@ -560,10 +560,10 @@ function validate_form(&$frm, &$errors) {
 				 	$guestReservation = false;
 				 }
 				
-				if( isSiteGuestReservationEnabled() ){
+				if( isSiteGuestReservationEnabled() && (get_roleid() == 1 || get_roleid()==5)){
 					
 					//Set the playerone name
-					if( get_roleid() == 1){
+					if( get_roleid() == 1 || get_roleid() ==5){
 						$playerOneName = get_userfullname();
 					}
 					else{
@@ -582,12 +582,7 @@ function validate_form(&$frm, &$errors) {
 						return  "Please type in all names from the drop down list";
 					}	
 				}
-				else{
-					
-					if($guestReservation){
-						return "Please select all names from the drop down list";
-					}
-				}
+				
 				
 				if(isSoloReservationEnabled() ){
 					
@@ -1630,7 +1625,15 @@ function makeSinglesReservation($frm, $guesttype, $reservationid){
             		$playerOneName = get_userfullname();
             	}
             	else{
-            		$playerOneName = $frm['playeronename'];
+            		
+		            	// Strip Slashes
+						if(get_magic_quotes_gpc()){
+							$playerOneName=stripslashes($frm['playeronename']);
+		
+						}else{
+							$playerOneName=addslashes($frm['playeronename']);
+						}
+        
             	}
             	
             	
@@ -1647,11 +1650,19 @@ function makeSinglesReservation($frm, $guesttype, $reservationid){
 							 //Make Player Two Reservation (if not a solo reservation)
 							if( $frm['matchtype']!=5 ){
 								 
+								// Strip Slashes
+								if(get_magic_quotes_gpc()){
+									$playerTwoName=stripslashes($frm['playertwoname']);
+				
+								}else{
+									$playerTwoName=addslashes($frm['playertwoname']);
+								}
+								
                              	$query = "INSERT INTO tblkpGuestReservations (
                                             reservationid, name
                                             ) VALUES (
                                                       '$reservationid'
-                                                      ,'$frm[playertwoname]')";
+                                                      ,'$playerTwoName')";
 
 	                           // run the query on the database
 	                           $result = db_query($query);

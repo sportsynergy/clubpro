@@ -5,9 +5,8 @@ We are sorry that you can't make to the $var->eventname on $var->courtname at $v
 
 
 
-Sincerely,
+Regards,
 
-The Sportsynergy Athletic Promotions Committee
 
 
 

@@ -116,35 +116,17 @@ return true;
            </td>
 
        </tr>
-      <tr>
-         <td class="label">Match Type:</td>
-           <td><select name="matchtype">
-          
-           
-            <? 
-            //Default Selection
-            $practiceSelection = $restypearray[1]==0?"selected":"";
-            $leagueSelection = $restypearray[1]==1?"selected":"";
-            $challengeSelection = $restypearray[1]==2?"selected":"";
-            
-            if( isUnscoredBoxLeagueReservation( $reservationid ) || are_boxplayers($userarray[0],$userarray[1] ) ){  ?>
-            <option value="1" <?=$leagueSelection?> >Box League</option>
-             <? } ?>
-            <option value="2" <?=$challengeSelection?> >Challenge</option>
-            <option value="0" <?=$practiceSelection?>>Practice</option>
-
-           </select>
-           </td>
-       </tr>
+      
        <tr>
        		<td class="italitcsm" colspan="2"><br><br>If these are not the player's that played click <a href="court_cancelation.php?time=<?=$restypearray[2]?>&courtid=<?=$restypearray[3]?>">here</a>.</td>
        </tr>
        <tr>
            <td colspan="2">
-           		<input type="hidden" name="usertype" value="<?=$restypearray[0] ?>">
-               <input type="hidden" name="Player1" value="<? echo $userarray[0] ?>">
-			   <input type="hidden" name="Player2" value="<? echo $userarray[1] ?>">
-			   <input type="hidden" name="reservationid" value="<? echo $reservationid ?>">
+           		<input type="hidden" name="usertype" value="<?=$restypearray['usertype'] ?>">
+               <input type="hidden" name="Player1" value="<?=$userarray[0] ?>">
+			   <input type="hidden" name="Player2" value="<?=$userarray[1] ?>">
+			   <input type="hidden" name="reservationid" value="<?=$reservationid ?>">
+			   <input type="hidden" name="matchtype" value="<?=$restypearray['matchtype'] ?>">
            </td>
 
        </tr>

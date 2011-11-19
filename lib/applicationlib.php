@@ -2559,10 +2559,8 @@ function record_score(& $frm) {
 
 		$rankingArray = calculateRankings($winneridarray[0], $loseridarray[0]);
 		
-		//If the match type is a two (challenge match) count the match two times
-		if ($ctidarray[3] == 2) {
-			$rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
-		}
+		$rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
+		
 		
 		$newWinnerRanking = $rankingArray['winner'];
 		$newLoserRanking = $rankingArray['loser'];	
@@ -2648,7 +2646,7 @@ function record_score(& $frm) {
 		<tr>
 		<tr>
 		<td class="normal">
-
+		<br/>
 		<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back to the scheduler.</a>
 
 		<td>
