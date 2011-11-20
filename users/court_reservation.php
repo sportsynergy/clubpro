@@ -236,7 +236,8 @@ if($newReservation){
 elseif( $usertype == 0  && isSinglesReservationNeedPlayers($time, $courtid) ) {
 	
 	if( $userid == get_userid() || get_roleid()==2 || get_roleid() ==4 ){
-			include($_SESSION["CFG"]["includedir"]."/include_update_singles_form.php");
+			
+		include($_SESSION["CFG"]["includedir"]."/include_update_singles_form.php");
 		}
 	else{
 		include($_SESSION["CFG"]["includedir"]."/include_signup_singles_form.php");

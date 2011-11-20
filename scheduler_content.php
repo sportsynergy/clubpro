@@ -854,7 +854,7 @@ if ($clubid){
 				                                                   	} 
 				                                                   	// Print player wanted
 				                                                   	else if( isset($playerOne) ){
-				                                                   		printDoublesReservationPlayerWanted($teamidarray['userid'], $playerOne,$residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true );
+				                                                   		printDoublesReservationPlayerWanted($teamidarray['userid'], $playerOne, $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true );
 				                                                   	}
 		                                                   
 		                                                   }elseif($teamidarray['usertype']==0){

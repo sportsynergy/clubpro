@@ -406,12 +406,20 @@ function printDoublesReservationPlayerWanted($teamid, $userid, $lock, $matchType
 					<? if($lock=="y"){ ?>
 					        <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
 					<? }?> 
+					
+					<? if(!$inpast) { ?>
+                       <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
+                     <? } ?>
+                     
 		             <?=gmdate("g:i",$time)?><br>
 		             <?=printTeam($teamid, $creator)?>
 				    <?=printPlayer($userArray[0], $userArray[1], $userid, $creator)?><br>
 					        <?=$verb?> a partner</br>
 				    
 		    
+		    		<? if(!$inpast) { ?>
+                       </a>
+                     <? } ?>
 		      		</span>
 		    </td>
 		   </tr>
@@ -439,7 +447,6 @@ function printDoublesReservationPlayersWanted($userid1, $userid2, $lock, $matchT
 	  $userArray = mysql_fetch_array($fullNameResult); 
 	  $clubid = get_clubid();
 	  $verb = $inpast ? "needed" : "needs";
-
 	  
 	  $trclass = $inpast ? "postopencourt" : "seekingmatchcl$clubid";
 		                                                     
@@ -725,7 +732,7 @@ function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $i
             <span class="normalsm1">
             
              <? if(!$inpast){?>
-                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
+                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
              <? } ?>
              
              <?=gmdate("g:i",$time)?><br> 
@@ -738,7 +745,7 @@ function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $i
               else if($matchtype==0 || $matchtype==1|| $matchtype==2){
               	print $portext;
               }
-              else if($matchtype==2){
+              else if($matchtype==3){
               		print $buddytext;
               }
              
