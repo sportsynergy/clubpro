@@ -315,7 +315,7 @@ document.onkeypress = function (aEvent)
        <td>
 	       <br>
 	       <input type="submit" name="submit" value="Submit">
-	       <input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
+	       <input type="button" value="Go back to where I was" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
 	       <input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>">
 	       <input type="hidden" name="courtid" value="<?=$courtid?>">
 	       <input type="hidden" name="time" value="<?=$time?>">

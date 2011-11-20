@@ -263,7 +263,7 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
              	<? 
              	}
              	
-             	if(!$ispast){ ?>
+             	if(!$ispast && $locked=="n"){ ?>
              		<span class="italitcsm"><?=$spotsleft?> <?=$spotsleft==1?"spot":"spots"?> left</span>
              	<? }  ?>
              	
