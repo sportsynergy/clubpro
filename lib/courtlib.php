@@ -183,7 +183,7 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
 function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked){
 	
 	 $clubid = get_clubid();
-	 $eventquery = "SELECT events.eventname, events.playerlimit 
+	 $eventquery = "SELECT events.eventname, events.playerlimit, events.eventid
               				FROM tblEvents events
               				WHERE events.eventid = $eventid ";
 
@@ -193,15 +193,33 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
 	
 	// if this is unlocked and needs players and is !ispast set the color to seeking match, otherwise event
 	
-      $eventclass = $eventarray['playerlimit'] > 0 && !$ispast && $locked=="n" ? "seekingmatchcl$clubid" : "eventcourt";
+     // $eventclass = $eventarray['playerlimit'] > 0 && !$ispast && $locked=="n" ? "seekingmatchcl$clubid" : "eventcourt";
+     
+      // Get the club participants
+      $query = "SELECT user.firstname, user.lastname
+             	 	FROM tblCourtEventParticipants participant, tblUsers user
+             		WHERE participant.reservationid = $reservationid 
+             		AND participant.enddate IS NULL
+             		AND participant.userid = user.userid";
+       $result = db_query($query);
+             	
+       $spotsleft = $eventarray['playerlimit'] - mysql_num_rows($result);
+       $eventid = $eventarray['eventid'];
+      
+      if($ispast){
+      	 $eventclass = "postopencourt";
+      } else if( $eventarray['playerlimit'] > 0 && $spotsleft > 0 &&  $locked=="n") {
+      	$eventclass = "seekingmatchcl$clubid event-$eventid";
+      } else {
+      	$eventclass = "eventcourt event-$eventid";
+      }
 	?>
 	
 	
 	<tr class="<?=$eventclass?>">
         <td align="center">
-        <font class="normalsm1" >
-                
-                                                    
+        <span class="normalsm1" >
+                                  
             <?
             
                                                     
@@ -226,9 +244,7 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
               		<?=$eventarray['eventname']?><br>  
               		
               <? } ?>
-                     
-              
-                                       
+                                      
              <? } else{ 
              
              	if($ispast){ ?>
@@ -247,17 +263,6 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
 					 </a>
              	<?} 
              	
-             	
-             	// Get the club participants
-             	$query = "SELECT user.firstname, user.lastname
-             			 	FROM tblCourtEventParticipants participant, tblUsers user
-             				WHERE participant.reservationid = $reservationid 
-             				AND participant.enddate IS NULL
-             				AND participant.userid = user.userid";
-             	$result = db_query($query);
-             	
-             	$spotsleft = $eventarray['playerlimit'] - mysql_num_rows($result);
-             	
              	while($array = mysql_fetch_array($result)){ ?>
              		<div class="normalsm"> <? print "$array[firstname] $array[lastname]";?></div>
              	<? 
@@ -271,7 +276,9 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
              	
              	
             <? } ?>
-          
+          </span>
+          </td>
+          </tr>
            
          
   <? 
