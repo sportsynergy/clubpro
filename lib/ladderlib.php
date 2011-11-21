@@ -490,5 +490,49 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid){
 	
 }
 
+/**
+ * 
+ * @param $user1
+ * @param $user2
+ * @param $courtid
+ * @param $time
+ * @param $reservationid
+ * @param $scored
+ */
+function printLadderEvent($user1, $user2, $courtname, $time, $reservationid, $scored, $inreservation){
+	
+	
+	?>
+	
+	 <li>
+			 <? if( !$scored && (get_roleid() ==2 || get_roleid()==4 || $inreservation)) { ?>
+			 	<a title="Click on me to record the score" href="javascript:submitForm('recordScoreForm<?=$reservationid?>')">
+			 <? }?>
+			 <span class="bold">
+			<?=gmdate("l F j g:i a ", $time);?><br/>
+			</span>
+			<? 
+			// Print out the players
+			print "$user1 and $user2";
+			
+			?>
+			on <?=$courtname?>
+			
+			 <? if( !$scored && (get_roleid() ==2 || get_roleid()==4 || $inreservation) ) { ?>
+			 	</a>
+			 <? }?>
+			
+    
+    
+    <form name="recordScoreForm<?=$reservationid?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php" method="post">
+           <input type="hidden" name="reservationid" value="<?=$reservationid ?>">
+           <input type="hidden" name="source" value="ladder">
+           
+     </form>
+     
+     </li>
 
-?>
+<?
+}
+
+

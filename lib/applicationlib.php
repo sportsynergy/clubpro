@@ -2356,8 +2356,11 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
  * 	score
  */
 
-function record_score(& $frm) {
+function record_score(&$frm, $source) {
 
+	 if(isDebugEnabled(1) ) logMessage("applicationlib.record_score: source is $source");
+	 
+	
 	/* Record score */
 	//The winner userid is passed in the post vars, the loser is passed
 	//in either the player1 or player2 post vars.  Also, the outcome is
@@ -2647,8 +2650,13 @@ function record_score(& $frm) {
 		<tr>
 		<td class="normal">
 		<br/>
-		<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back to the scheduler.</a>
-
+		
+		<?
+		if( isset($source) && $source == "ladder"){?>
+			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back to the ladder</a>
+		<? } else { ?>
+			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back to the scheduler</a>
+		<? } ?>
 		<td>
 		<tr>
 		</table>
@@ -5670,6 +5678,28 @@ function getClubEvents($clubid){
 }
 
 /**
+ * Gets the recent challenges matches
+ * @param $siteid
+ */
+function getChallengeMatches($siteid, $limit){
+	
+	logMessage("applicationlib.get_site_events: Getting challenge matches $siteid");
+	
+	
+	$curresidquery = "SELECT reservations.reservationid, reservations.time, courts.courtname
+		                  FROM tblReservations reservations,tblCourts courts
+						  WHERE reservations.matchtype = 2
+		                  AND reservations.usertype=0
+						  AND reservations.enddate IS NULL
+						  AND courts.courtid = reservations.courtid
+						  AND courts.siteid = $siteid
+						  ORDER BY reservations.time DESC LIMIT $limit";
+	//print $curresidquery;
+	
+	return db_query($curresidquery);
+}
+
+/**
  * 
  * @param unknown_type $clubeventid
  */
@@ -5683,6 +5713,10 @@ function getClubEventParticipants($clubeventid){
 				AND participant.enddate is NULL";
 	
 	return db_query($query);
+}
+
+function getLadderActivity($siteid){
+	
 }
 /**
  * 

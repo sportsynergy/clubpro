@@ -127,6 +127,7 @@ return true;
 			   <input type="hidden" name="Player2" value="<?=$userarray[1] ?>">
 			   <input type="hidden" name="reservationid" value="<?=$reservationid ?>">
 			   <input type="hidden" name="matchtype" value="<?=$restypearray['matchtype'] ?>">
+			   <input type="hidden" name="source" value="<?=$source ?>">
            </td>
 
        </tr>

@@ -170,7 +170,9 @@ Nobody has signed up for the ladder yet.
 </div>
 
 
-
+<table>
+	<tr>
+	<td valign="top">
 
 <table cellspacing="0" cellpadding="20" width="400" class="generictable" >
  <tr>
@@ -183,8 +185,8 @@ Nobody has signed up for the ladder yet.
 
      <table cellspacing="1" cellpadding="5" width="400" class="borderless" >
  		<tr>
-                 <td >Place</th>
-                 <td>Name</th>
+                 <td ><span class="bold">Place</span></th>
+                 <td><span class="bold">Name</span></th>
              </tr>
 			 <?
 				$numrows = mysql_num_rows($ladderplayers);
@@ -232,6 +234,14 @@ Nobody has signed up for the ladder yet.
 
 	</td>
 	</tr>
+</table>
+
+</td>
+	<td valign="top" >
+		<div style="padding-left: 3em;"><? include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php"); ?></div>
+	 				  		
+	</td>
+</tr>
 </table>
 
 <? } ?>

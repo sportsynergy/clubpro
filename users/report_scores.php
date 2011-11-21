@@ -14,6 +14,8 @@ $DOC_TITLE = "Report Scores";
 
 //Set the http variables
 $reservationid = $_REQUEST["reservationid"];
+$source = $_REQUEST["source"];
+
 
 
 require_loginwq();
@@ -130,7 +132,7 @@ if (match_referer() && isset($_POST["submit"])) {
                      markMatchType($frm['reservationid'],$frm['matchtype']);
                      
                      //Record score
-                     record_score($frm);
+                     record_score($frm, $source);
                      update_streakval($frm);
 
                 $goto = empty($_SESSION["wantsurl"]) ? $_SESSION["CFG"]["wwwroot"] : $_SESSION["wantsurl"];

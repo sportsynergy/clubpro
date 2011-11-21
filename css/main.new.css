@@ -303,6 +303,10 @@ ul.whoscoming li {
 padding-bottom: 0px;
 }
 
+ul.ladderactivity li {
+	padding-bottom: 2px;
+}
+
 
 .ladderpanel > a:link {
 color: #000;
