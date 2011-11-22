@@ -46,10 +46,11 @@ while($challengeMatch = mysql_fetch_array($challengeMatchResult)){
 			$playerArray = mysql_fetch_array($playerResult);
 			$playerTwo = "$playerArray[firstname] $playerArray[lastname]";
 			$userid2 = $playerArray['userid'];
+			$loserscore = $playerArray['outcome'];
 			  
 			$inreservation = get_userid() == $userid1 || get_userid() == $userid2 ? true : false;
 			
-			printLadderEvent($playerOne, $playerTwo, $challengeMatch['courtname'], $challengeMatch['time'], $challengeMatch['reservationid'], $scored, $inreservation )
+			printLadderEvent($playerOne, $playerTwo, $challengeMatch['courtname'], $challengeMatch['time'], $challengeMatch['reservationid'], $scored, $loserscore, $inreservation )
 			?>
 			
 		<? } ?>

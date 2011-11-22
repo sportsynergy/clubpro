@@ -4,11 +4,4 @@ This is an automated message from $var->clubfullname.  Please do not reply to th
 Good news! $var->fullname signed up for the $var->eventname on $var->courtname at $var->time. This is going to be good.
 
 
-Sincerely,
-
-The Sportsynergy Athletic Promotions Committee
-
-
-
-
 

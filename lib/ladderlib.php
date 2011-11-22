@@ -497,9 +497,10 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid){
  * @param $courtid
  * @param $time
  * @param $reservationid
+ * @param $loserscore
  * @param $scored
  */
-function printLadderEvent($user1, $user2, $courtname, $time, $reservationid, $scored, $inreservation){
+function printLadderEvent($user1, $user2, $courtname, $time, $reservationid, $scored, $loserscore, $inreservation){
 	
 	
 	?>
@@ -512,8 +513,15 @@ function printLadderEvent($user1, $user2, $courtname, $time, $reservationid, $sc
 			<?=gmdate("l F j g:i a ", $time);?><br/>
 			</span>
 			<? 
+			
+			if( !$scored){
+				print "$user1 and $user2";
+			} else {
+				print "$user1 defeated $user2 3-$loserscore ";
+			}
+			
 			// Print out the players
-			print "$user1 and $user2";
+			
 			
 			?>
 			on <?=$courtname?>
