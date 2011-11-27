@@ -221,8 +221,7 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
         <span class="normalsm1" >
                                   
             <?
-            
-                                                    
+                                                 
               if( $eventarray['playerlimit']==0){
                     
               	//only provide links to administrators, who then have the option to cancel or change
@@ -300,7 +299,7 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
 function printDoublesReservationSinglePlayer($userid, $lock, $matchType, $time, $courtid, $creator, $inpast){
 	
 	
-		if( isDebugEnabled(1) ) logMessage("scheduler_content.printDoubles single player");
+		if( isDebugEnabled(1) ) logMessage("scheduler_content.printDoubles single player where lock is $lock");
 		
 		$clubid = get_clubid();
 		$fullNameResult = getFullNameResultForUserId($userid);
@@ -313,7 +312,7 @@ function printDoublesReservationSinglePlayer($userid, $lock, $matchType, $time, 
             <tr class="<?=$trclass?>">
                <td align="center">
 	               <span class="normalsm1">
-	                    <? if($locked=="y"){ ?>
+	                    <? if($lock=="y"){ ?>
 	                     <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
 	                      <? }?>
 	                      

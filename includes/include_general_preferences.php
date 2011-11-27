@@ -107,7 +107,7 @@
 						<div class="spacer"/>
 					</td>
 				</tr>
-				<tr>
+				
 					<tr>
 						<td class="label">Allow Players To Score Their Own Reservations:</td>
 						<td><select name="allowselfscore">
@@ -130,6 +130,39 @@
 							<div class="spacer"/>
 						</td>
 					</tr>
+					
+					<? if(isLadderRankingScheme() ){ ?>
+					
+					<tr>
+						<td class="label">Number of spots ahead people can challenge in the ladder:</td>
+						<td>
+						<select name="challengerange">
+						<? for($i=1; $i<13; ++$i){ ?>
+				
+						<?
+						//Default to the current daysahead setting.
+						if($generalPreferences["challengerange"] == $i){
+							$selected = "selected";
+						}
+						?>
+				
+							<option value="<?=$i?>" <?=$selected?>><?=$i?></option>
+				
+							<? unset($selected)?>
+							<? } ?>
+						</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="spacer">
+							<span class="normal">
+								The Challenge Range is how many spots ahead a person can challenge someone else in the ladder. 
+							</span>
+							<div class="spacer"/>
+						</td>
+					</tr>
+					<? } ?>
+					
 					<tr>
 						<td><input type="submit" name="submit" value="Submit"></td>
 						<td></td>

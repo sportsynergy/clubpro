@@ -13,21 +13,25 @@ $DOC_TITLE = "Player Ladder";
 require_loginwq();
 
 
-/* form has been submitted, try to create the new role */
+//TODO hardcoding for now
+$courttypeid = 2;
+
+
+/* form has been submitted */
      
 if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
 
-	$frm = $_POST;
+		$frm = $_POST;
         $userid = $frm['userid'];
-        $courttypeid = $frm['courttypeid'];
         $clubid = get_clubid();
         
-       if(isDebugEnabled(2) ) logMessage("player_ladder: ");
+       
 
     	// Add User to Ladder
         if($frm['cmd']=='addtoladder'){
       
-			
+			if(isDebugEnabled(2) ) logMessage("player_ladder: addtoladder");
+        	
         	//Check to see if player is already in ladder
         	$check = "SELECT count(*) from tblClubLadder 
         				WHERE userid = $userid 
@@ -58,11 +62,8 @@ if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
 				
 	        } else{
 	        	
-	        	if(isDebugEnabled(2) ) logMessage("player_ladder: user $userid is already playing in this ladder with court typeid $courttypeid ");
-	
+	        	if(isDebugEnabled(2) ) logMessage("player_ladder: user $userid is already playing in this ladder with court typeid $courttypeid ");	
 	        }
-
-        	
         }
 		
         else if($frm['cmd']=='moveupinladder' ){
@@ -79,7 +80,7 @@ if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
         	$result = db_query($query);
         	$position = mysql_result($result, 0);
         	
-			if(isDebugEnabled(2) ) logMessage("player_ladder: removing user $userid to club ladder for club $clubid for courttypeid $courttypeid");
+			if(isDebugEnabled(1) ) logMessage("player_ladder: removing user $userid to club ladder for club $clubid for courttypeid $courttypeid");
 			
 			$query = "UPDATE tblClubLadder SET enddate = NOW() WHERE userid = $userid AND  courttypeid = $courttypeid AND clubid = $clubid";
 	                          
@@ -88,17 +89,33 @@ if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
 			//Move everybody else up
 			moveEveryOneInClubLadderUp($courttypeid, $clubid, $position+1);
 			
+		}  
 
+		else if ( $frm['cmd']=='challengeplayer'){
+			
+			$challengeeid = $frm['challengeeid'];
+			$challengerid = get_userid();
+			
+			if(isDebugEnabled(2) ) logMessage("player_ladder: challengeplayer $challengerid has challenged $challengeeid");
+			
+			//Create the challenge match
+			createChallengematch($challengerid, $challengeeid, $courttypeid);
+			
+			//lock the two players
+			lockLadderPlayers($challengerid, $challengeeid, $courttypeid);
+			
+			//send the email
+			sendEmailsForLadderMatch($challengerid, $challengeeid, $message);
+			
+			//Refresh Page
+			$wwwroot = $_SESSION["CFG"]["wwwroot"];
+			header ("Location: $wwwroot/users/player_ladder.php");
+        	die;
+			
 		}
-        
-        
-        
 }
 
 // Initialize view with data    
-
-//TODO hardcoding for now
-$courttypeid = 2;
 
 $availbleSports = load_avail_sports();
 $ladderplayers = getLadder($courttypeid);
@@ -113,6 +130,45 @@ include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
  *****************************************************************************/
 
 
+/**
+ * Locks the players in the ladder
+ * 
+ * @param $challengerid
+ * @param $challengeeid
+ */
+function lockLadderPlayers($challengerid, $challengeeid, $courttypeid){
+	
+	logMessage("player_ladder.lockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on courttypeid $courttypeid");
+	
+	$query = "UPDATE tblClubLadder ladder SET ladder.locked = 'y' WHERE ladder.userid = $challengerid OR ladder.userid = $challengeeid
+				AND ladder.enddate IS NULL and ladder.courttypeid = $courttypeid and ladder.clubid = ".get_clubid();
+	
+	db_query($query);
+}
+
+
+/**
+ * Puts an entry in the challenge match table
+ * 
+ * @param $challengerid
+ * @param $challengeeid
+ * @param $courttypeid
+ */
+function createChallengematch($challengerid, $challengeeid, $courttypeid){
+	
+	logMessage("player_ladder.createChallengematch: creating a challenge match for challenger: $challengerid and challengee: $challengeeid with courttype $courttypeid");
+	
+	$query = "INSERT INTO tblChallengeMatch (
+		                challengerid, challengeeid, courttypeid, siteid
+		                ) VALUES (
+		                          $challengerid
+		                          ,$challengeeid
+		                          ,$courttypeid
+		                          ,".get_siteid().")";
+		                          
+	db_query($query);
+	
+}
 
 
 
@@ -125,12 +181,17 @@ include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
 function getLadder($courttypeid){
 	
 
+	logMessage("player_ladder.getLadder: getting the players in the ladder for courttype $courttypeid");
+	
 	$rankquery = "SELECT 
 						users.userid,
 						ladder.ladderposition,
 						ladder.going,
 						users.firstname, 
-						users.lastname
+						users.lastname,
+						concat_ws(' ', users.firstname, users.lastname) as fullname,
+						users.email,
+						ladder.locked
                     FROM 
 						tblUsers users, 
 						tblClubLadder ladder
@@ -159,6 +220,60 @@ function isPlayingInLadder($userid, $courttypeid){
     } else{
     	return false;
     }
+}
+
+/**
+ * Send off an email to the challenger and the challengee
+ * 
+ * @param unknown_type $challengerid
+ * @param unknown_type $challengeeid
+ */
+function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
+	
+	logMessage("player_ladder.sendEmailsForLadderMatch: sending out emails to challenger $challengerid and challengee $challengeeid ");
+	
+	/* load up the user record for the winner */
+	$query = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
+						FROM tblUsers users
+						WHERE users.userid = '$challengerid'";
+	$qid = db_query($query);
+	$challenger = db_fetch_object($qid);
+	
+	/* load up the user record for the winner */
+	$query = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
+						FROM tblUsers users
+						WHERE users.userid = '$challengeeid'";
+	$qid = db_query($query);
+	$challengee = db_fetch_object($qid);
+	
+	
+	/* email the user with the new account information */
+	$var = new Object;
+	$var->challenger_firstname = $challenger->firstname;
+	$var->challenger_fullname = $challenger->firstname . " " . $challenger->lastname;
+	$var->challengee_firstname = $challengee->firstname;
+	$var->challengee_fullname = $challengee->firstname ." ". $challengee->lastname;
+	$var->support = $_SESSION["CFG"]["support"];
+	
+	$var->message = $message;
+	
+
+	$clubfullname = get_clubname();
+	$var->clubfullname = $clubfullname;
+		
+	$challenger_emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_ladder_match_challenger.php", $var);
+	$challengee_emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_ladder_match_challengee.php", $var);
+	
+	
+	$challenger_message = "Hello $var->challenger_firstname,\n";
+	$challenger_message .= "$challenger_emailbody";
+	
+	$challengee_message = "Hello $var->challengee_firstname,\n";
+	$challengee_message .= "$challengee_emailbody";
+	
+
+	mail("$var->challenger_fullname <$challenger->email>", "$clubfullname -- Ladder Match", $challenger_message, "From: $var->support", "-fPlayerMailer@sportsynergy.com");
+	mail("$var->challengee_fullname <$challengee->email>", "$clubfullname -- Ladder Match", $challengee_message, "From: $var->support", "-fPlayerMailer@sportsynergy.com");
 }
 
 ?>

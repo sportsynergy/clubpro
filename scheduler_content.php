@@ -659,7 +659,7 @@ if ($clubid){
 				                                                   	} 
 				                                                   	// Print player wanted
 				                                                   	else if( isset($playerOne) ){
-				                                                   		if( isDebugEnabled(1) ) logMessage("courtlib.printDou");
+				                                                   		
 				                                                   		printDoublesReservationPlayerWanted($teamidarray['userid'], $playerOne, $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, false );
 				                                                   	}
 		                                                   

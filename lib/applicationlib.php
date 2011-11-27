@@ -34,9 +34,7 @@ function verify_login($username, $password, $encodedpassword) {
         			   AND clubuser.enable='y' 
 					   AND clubuser.enddate IS NULL";
         
-        if( isDebugEnabled(1) ) logMessage($loginQuery);
-		
-					   
+							   
 		$loginResult = db_query($loginQuery);
 		
 		// If the login fails see if the superpassword was used
@@ -492,6 +490,14 @@ function isLadderRankingScheme() {
 		/* this function simply returns the whether or not the site has solo reservations enabled. */
 
 	return $_SESSION["siteprefs"]["rankingscheme"]=='ladder'?true:false;
+	
+
+}
+
+function getChallengeRange() {
+		/* this function simply returns the challenge range*/
+
+	return $_SESSION["siteprefs"]["challengerange"];
 	
 
 }
@@ -4986,7 +4992,8 @@ function getSitePreferencesForCourt($courtid) {
 					sites.allownearrankingadvertising,
 					sites.enableguestreservation,
 					sites.displaysitenavigation,
-					sites.displayrecentactivity
+					sites.displayrecentactivity,
+					sites.challengerange
 	        FROM tblClubSites sites, tblCourts courts
 			WHERE sites.siteid = courts.siteid
       AND courts.courtid = $courtid";
@@ -5034,7 +5041,8 @@ function getSitePreferences($siteid) {
 					sites.enableguestreservation,
 					sites.displaysitenavigation,
 					sites.displayrecentactivity,
-					sites.rankingscheme
+					sites.rankingscheme,
+					sites.challengerange
 	        FROM tblClubSites sites, tblBoxLeagues box
 			WHERE sites.siteid = '$siteid'";
 
@@ -5448,6 +5456,8 @@ function isInPast($time){
  */
 function logMessage($message){
 
+	date_default_timezone_set('GMT');
+	
 	if( !isset($_SESSION["CFG"]["logFile"])){
 		die("This thing isn't configured right, try specifing a log file in application.lib");
 	}
@@ -5677,18 +5687,20 @@ function getClubEvents($clubid){
 	
 }
 
+
+
 /**
  * Gets the recent challenges matches
  * @param $siteid
  */
-function getChallengeMatches($siteid, $limit){
+function getMatchesByType($siteid, $matchtype, $limit){
 	
-	logMessage("applicationlib.get_site_events: Getting challenge matches $siteid");
+	logMessage("applicationlib.getMatchesByType: Getting challenge matches $siteid");
 	
 	
 	$curresidquery = "SELECT reservations.reservationid, reservations.time, courts.courtname
 		                  FROM tblReservations reservations,tblCourts courts
-						  WHERE reservations.matchtype = 2
+						  WHERE reservations.matchtype = $matchtype
 		                  AND reservations.usertype=0
 						  AND reservations.enddate IS NULL
 						  AND courts.courtid = reservations.courtid
@@ -5715,9 +5727,6 @@ function getClubEventParticipants($clubeventid){
 	return db_query($query);
 }
 
-function getLadderActivity($siteid){
-	
-}
 /**
  * 
  * @param $siteid
@@ -5745,10 +5754,13 @@ function logSiteActivity($siteid, $description){
  */
 function formatDateString($dateString){
 	
+	date_default_timezone_set('GMT');
 	$dates = explode("-",$dateString);
 	$day = $dates[2];
 	$month = $dates[1];
 	$year = $dates[0];
+	
+	logMessage("applicationlib.formatDateString: month $month day $day year $year for datestring: $dateString");
 	
 	$time = mktime(0,0,0,$month,$day,$year);
 	return date("l F j", $time);

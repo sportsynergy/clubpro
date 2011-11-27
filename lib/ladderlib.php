@@ -282,11 +282,24 @@ function moveDoublesLadderGroup($highestRankedLoserPosition, $lowestRankedWinner
 
 /**
  * This assumes that these two are ladder players
+ * 
+ * Returns an object that looks like this: 
+ * 		winnerid
+ * 		winnernewspot
+ * 		winneroldspot
+ * 		loserid
+ * 		losernewspot
+ * 		loseroldspot
+ * 	
  */
 function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 
 	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  winnerid = $winneruserid\n loserid = $loseruserid\n courttypeid = $courttypeid\n clubid = $clubid");
 
+	$var = new Object;
+	$var->winnerid = $winneruserid;
+	$var->loserid = $loseruserid;
+	
 	$winnerquery = "SELECT ladder.ladderposition, ladder.going, ladder.id 
 						FROM tblClubLadder ladder 
 						WHERE ladder.courttypeid = $courttypeid 
@@ -298,6 +311,10 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 	$winnerarray = mysql_fetch_array($winnerresult);
 	$winnerposition = $winnerarray['ladderposition'];
 	$winnergoing = $winnerarray['going'];
+
+	$var->winneroldspot = $winnerposition;
+	$var->winnernewspot = $winnerposition;
+	
 	
 	$loserquery = "SELECT ladder.ladderposition, ladder.going, ladder.id 
 						FROM tblClubLadder ladder 
@@ -311,15 +328,10 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 	$loserposition = $loserarray['ladderposition'];
 	$losergoing = $loserarray['going'];
 	
+	$var->loseroldspot = $loserposition;
+	$var->losernewspot = $loserposition;
+	
 	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  The winners position/going is $winnerposition/$winnergoing and the losers position/going is $loserposition/$losergoing");
-	
-	//if the winner is already ahead of the loser don't do anything
-	if($winnerposition < $loserposition){
-		if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  Winner is already ahead of the loser. Don't do nothing.");
-		return;
-	}
-	
-	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  The winner was ranked below the loser, adjusting...");
 	
 	//Set the goings
 	if($winnergoing=="up"){
@@ -337,6 +349,31 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 	} else{
 		$lgoing = "down";
 	}	
+	
+	//if the winner is already ahead of the loser don't do anything
+	if($winnerposition < $loserposition){
+		if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  Winner is already ahead of the loser. Just update the going attribute");
+		
+		//add new record for the guy that lost
+		$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going) VALUES (
+                          $loseruserid,$courttypeid,$loserposition,$clubid,'$lgoing')";                      
+		db_query($query);
+		
+		$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going) VALUES (
+                          $winneruserid,$courttypeid,$winnerposition,$clubid,'$wgoing')";
+                          
+		db_query($query);
+	
+		//end date old ones
+		$updateWinnerQuery = "UPDATE tblClubLadder SET enddate = NOW() WHERE id = ".$winnerarray['id']." OR id = ".$loserarray['id']; 
+		db_query($updateWinnerQuery);
+		
+		return $var;
+	}
+	
+	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  The winner was ranked below the loser, adjusting...");
+	
+	
 	
 
 	moveLadderGroup($loserposition, $winnerposition, $clubid, $courttypeid)	;
@@ -357,10 +394,15 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 	db_query($updateWinnerQuery);
 	
 
-	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  Setting loser ($loseruserid) down one to $newloserposition and going to $lgoing");
 	
 	// The loser's ladder position goes down one
-	$newloserposition = $loserposition + 1;		
+	$newloserposition = $loserposition + 1;	
+
+	$var->losernewspot = $newloserposition;
+	$var->winnernewspot = $loserposition;
+	
+	if( isDebugEnabled(2) ) logMessage("ladderlib: adjustClubLadder.  Setting loser ($loseruserid) down one to $newloserposition and going to $lgoing");
+	
 	
 	//add new record for the guy that lost
 	$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going) VALUES (
@@ -372,6 +414,7 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid){
 	db_query($updateLoserQuery);
 		
 
+	return $var;
 }
 
 
@@ -414,6 +457,7 @@ function moveEveryOneInClubLadderUp($courttypeid, $clubid, $ladderposition){
 
 /**
  * Used by club administrators when moving people up one in the club ladder. Quietly exits if there is a problem.
+ * 
  * @param $courttypeid
  * @param $clubid
  * @param $userid
@@ -462,8 +506,8 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid){
 	if( isDebugEnabled(2) ) logMessage("ladderlib: moveUpOneInClubLadder:  userid ".$movingDownArray['userid']." is moving down");
 	
 	//Add a new record for guy going up a spot
-	$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going) VALUES (
-                          $movingUpArray[userid],$courttypeid,$movingDownArray[ladderposition],$clubid,'$movingUpArray[going]')";
+	$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going, locked) VALUES (
+                          $movingUpArray[userid],$courttypeid,$movingDownArray[ladderposition],$clubid,'$movingUpArray[going]','$movingUpArray[locked]')";
                           
 	db_query($query);
 
@@ -475,8 +519,8 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid){
 	if( isDebugEnabled(2) ) logMessage("ladderlib: moveUpOneInClubLadder:  moved ladderid ".$movingUpArray['id']." to ladder position: ".$movingDownArray['ladderposition']);
 	
 	//Add a new record for guy going down a spot
-	$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going) VALUES (
-                          $movingDownArray[userid],$courttypeid,$movingUpArray[ladderposition],$clubid,'$movingDownArray[going]')";
+	$query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going, locked) VALUES (
+                          $movingDownArray[userid],$courttypeid,$movingUpArray[ladderposition],$clubid,'$movingDownArray[going]', '$movingDownArray[locked]')";
                           
 	db_query($query);
 	
@@ -487,10 +531,10 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid){
 	
    if( isDebugEnabled(2) ) logMessage("ladderlib: moveUpOneInClubLadder:  moved ladderid ".$movingDownArray['id']." to ladder position: ".$movingUpArray['ladderposition']);
 	
-	
 }
 
 /**
+ * Prints out the HTML for the ladder
  * 
  * @param $user1
  * @param $user2
@@ -500,9 +544,8 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid){
  * @param $loserscore
  * @param $scored
  */
-function printLadderEvent($user1, $user2, $courtname, $time, $reservationid, $scored, $loserscore, $inreservation){
-	
-	
+function printChallengeMatch($user1, $user2, $courtname, $time, $reservationid, $scored, $loserscore, $inreservation){
+
 	?>
 	
 	 <li>
@@ -521,8 +564,6 @@ function printLadderEvent($user1, $user2, $courtname, $time, $reservationid, $sc
 			}
 			
 			// Print out the players
-			
-			
 			?>
 			on <?=$courtname?>
 			
@@ -532,10 +573,9 @@ function printLadderEvent($user1, $user2, $courtname, $time, $reservationid, $sc
 			
     
     
-    <form name="recordScoreForm<?=$reservationid?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php" method="post">
-           <input type="hidden" name="reservationid" value="<?=$reservationid ?>">
+    <form name="recordScoreForm<?=$id?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder.php" method="post">
            <input type="hidden" name="source" value="ladder">
-           
+           <input type="hidden" name="challengematchid" value="<?=$id?>">
      </form>
      
      </li>
@@ -543,4 +583,147 @@ function printLadderEvent($user1, $user2, $courtname, $time, $reservationid, $sc
 <?
 }
 
+/**
+ * 
+ * @param unknown_type $id
+ * @param unknown_type $challengerName
+ * @param unknown_type $challengeeName
+ * @param unknown_type $challengeDate
+ * @param unknown_type $scored
+ * @param unknown_type $inreservation
+ */
+function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate, $scored, $inreservation ){
+	
+	$isscored = empty($scored) ? false : true;
+	$isinreservation = $inreservation ? true : false;
+	$loserscore = 3 - abs($scored);
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.printChallengeMatch: challengerName: $challengerName challengeeName $challengeeName scored: $isscored isinreservation: $isinreservation");
+	
+	?>
+	
+	 <li> 
+			 <span class="bold">
+			<?=formatDateString( $challengeDate)?><br/>
+			</span>
+			<span class="normal">
+			<? 
+			
+			// Print out the players
+			if( $isscored && $scored > 0 ){
+				print "$challengerName challenged and defeated $challengeeName 3-$loserscore ";
+			} 
+			else if($isscored && $scored < 0){
+				print "$challengerName challenged and lost to $challengeeName 3-$loserscore ";
+			}
+			else if( !$isscored  && (get_roleid() == 2 || get_roleid() == 4 || $inreservation)  ){ ?>
+				<a title="Click on me to record the score" href="javascript:submitForm('recordScoreForm<?=$id?>')"> <?=$challengerName." challenged ". $challengeeName?></a>
+				
+			<? } else {
+				print "$challengerName challenged $challengeeName";
+			}
+			
+			?>
+			</span>
+			
+    
+    <form name="recordScoreForm<?=$id?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder.php" method="post">
+           <input type="hidden" name="source" value="ladder">
+           <input type="hidden" name="challengematchid" value="<?=$id?>">
+     </form>
+     
+     </li>
 
+<?
+	
+}
+
+/**
+ * Determines whether or not the person can challenge or now
+ */
+function isLadderChallengable($myposition, $playerposition){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib: isLadderChallengable myposition: $myposition playerposition $playerposition");
+	
+	$range = getChallengeRange();
+	
+	$value = $myposition-$range;
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib: isLadderChallengable checking range: $range is ". $value);
+	
+	if($playerposition >= $myposition-$range && $playerposition < $myposition){
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
+/**
+ * Gets the recent challenges matches
+ * 
+ * @param $siteid
+ */
+function getChallengeMatches($siteid, $courttypeid, $limit){
+	
+	logMessage("ladderlib.getChallengeMatches: Getting challenge matches $siteid and courtypeid $courttypeid limit $limit");
+	
+	$curresidquery = "SELECT 	
+							challenge.id, challenge.score, challenge.date, 
+							challenger.firstname AS challenger_first, 
+							challenger.lastname AS challenger_last, 
+							concat_ws(' ', challenger.firstname, challenger.lastname) AS challenger_full,
+							challenger.userid AS challenger_id, 
+							challengee.firstname AS challengee_first, 
+							challengee.lastname AS challengee_last, 
+							challengee.userid AS challengee_id, 
+							challengerladder.locked AS challenger_locked, 
+							challengeeladder.locked AS challengee_locked
+						FROM tblChallengeMatch challenge
+							INNER JOIN tblUsers challenger ON challenge.challengerid = challenger.userid
+							INNER JOIN tblClubLadder challengerladder ON challenge.challengerid = challengerladder.userid
+							INNER JOIN tblUsers challengee ON challenge.challengeeid = challengee.userid
+							INNER JOIN tblClubLadder challengeeladder ON challenge.challengeeid = challengeeladder.userid
+						WHERE challenge.enddate IS NULL 
+							AND challenge.courttypeid =$courttypeid
+							AND challenge.siteid = $siteid
+							AND challengerladder.enddate IS NULL 
+							AND challengeeladder.enddate IS NULL 
+					 ORDER BY challenge.date DESC LIMIT $limit";
+	
+	//print $curresidquery;
+	return db_query($curresidquery);
+}
+
+/**
+ * 
+ * @param $challengeMatchId
+ */
+function loadLadderMatch($challengeMatchId){
+	
+	
+	logMessage("ladderlib.loadLadderMatch: Getting challenge match challengeMatchId $challengeMatchId");
+	
+	$curresidquery = "SELECT 	
+							challenge.id, challenge.score, challenge.date, challenge.courttypeid,
+							challenger.firstname AS challenger_first, 
+							challenger.lastname AS challenger_last, 
+							challenger.userid AS challenger_id, 
+							challengee.firstname AS challengee_first, 
+							challengee.lastname AS challengee_last, 
+							challengee.userid AS challengee_id, 
+							challengerladder.locked AS challenger_locked, 
+							challengeeladder.locked AS challengee_locked
+						FROM tblChallengeMatch challenge
+							INNER JOIN tblUsers challenger ON challenge.challengerid = challenger.userid
+							INNER JOIN tblClubLadder challengerladder ON challenge.challengerid = challengerladder.userid
+							INNER JOIN tblUsers challengee ON challenge.challengeeid = challengee.userid
+							INNER JOIN tblClubLadder challengeeladder ON challenge.challengeeid = challengeeladder.userid
+						WHERE challenge.id =$challengeMatchId
+							AND challengerladder.enddate IS NULL 
+							AND challengeeladder.enddate IS NULL";
+	
+	//print $curresidquery;
+	return db_query($curresidquery);
+	
+}

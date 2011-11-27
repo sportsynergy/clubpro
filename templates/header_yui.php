@@ -1,14 +1,3 @@
-<?
-
-/*
- * $LastChangedRevision: 836 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-22 17:35:17 -0600 (Tue, 22 Feb 2011) $
-
-*/
-
-?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd"> 
         
@@ -30,7 +19,6 @@
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/dragdrop/dragdrop-min.js"></script> 
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/calendar-min.js"></script>
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/connection/connection-min.js"></script>
-		
 
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/tabview/tabview-min.js"></script>
