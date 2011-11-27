@@ -584,6 +584,7 @@ function printChallengeMatch($user1, $user2, $courtname, $time, $reservationid, 
 }
 
 /**
+ * Writes out HTML for the challenge match
  * 
  * @param unknown_type $id
  * @param unknown_type $challengerName
@@ -611,16 +612,16 @@ function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate,
 			
 			// Print out the players
 			if( $isscored && $scored > 0 ){
-				print "$challengerName challenged and defeated $challengeeName 3-$loserscore ";
+				print "$challengerName challenged and defeated $challengeeName 3-$loserscore.";
 			} 
 			else if($isscored && $scored < 0){
-				print "$challengerName challenged and lost to $challengeeName 3-$loserscore ";
+				print "$challengerName challenged and lost to $challengeeName 3-$loserscore.";
 			}
 			else if( !$isscored  && (get_roleid() == 2 || get_roleid() == 4 || $inreservation)  ){ ?>
-				<a title="Click on me to record the score" href="javascript:submitForm('recordScoreForm<?=$id?>')"> <?=$challengerName." challenged ". $challengeeName?></a>
+				 <?=$challengerName." challenged ". $challengeeName?>.  Click <a title="Click on me to record the score" href="javascript:submitForm('recordScoreForm<?=$id?>')">here</a> to put the score in.
 				
 			<? } else {
-				print "$challengerName challenged $challengeeName";
+				print "$challengerName challenged $challengeeName.";
 			}
 			
 			?>

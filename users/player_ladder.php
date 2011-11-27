@@ -132,7 +132,7 @@ include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
  */
 function lockLadderPlayers($challengerid, $challengeeid, $courttypeid){
 	
-	logMessage("player_ladder.lockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on courttypeid $courttypeid");
+	if( isDebugEnabled(1) ) logMessage("player_ladder.lockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on courttypeid $courttypeid");
 	
 	$query = "UPDATE tblClubLadder ladder SET ladder.locked = 'y' WHERE ladder.userid = $challengerid OR ladder.userid = $challengeeid
 				AND ladder.enddate IS NULL and ladder.courttypeid = $courttypeid and ladder.clubid = ".get_clubid();
@@ -150,7 +150,7 @@ function lockLadderPlayers($challengerid, $challengeeid, $courttypeid){
  */
 function createChallengematch($challengerid, $challengeeid, $courttypeid){
 	
-	logMessage("player_ladder.createChallengematch: creating a challenge match for challenger: $challengerid and challengee: $challengeeid with courttype $courttypeid");
+	if( isDebugEnabled(1) ) logMessage("player_ladder.createChallengematch: creating a challenge match for challenger: $challengerid and challengee: $challengeeid with courttype $courttypeid");
 	
 	$query = "INSERT INTO tblChallengeMatch (
 		                challengerid, challengeeid, courttypeid, siteid
@@ -165,8 +165,6 @@ function createChallengematch($challengerid, $challengeeid, $courttypeid){
 }
 
 
-
-
 /**
  * Gets the ladder for the given court type
  * 
@@ -174,8 +172,7 @@ function createChallengematch($challengerid, $challengeeid, $courttypeid){
  */
 function getLadder($courttypeid){
 	
-
-	logMessage("player_ladder.getLadder: getting the players in the ladder for courttype $courttypeid");
+	if( isDebugEnabled(1) ) logMessage("player_ladder.getLadder: getting the players in the ladder for courttype $courttypeid");
 	
 	$rankquery = "SELECT 
 						users.userid,
@@ -224,7 +221,7 @@ function isPlayingInLadder($userid, $courttypeid){
  */
 function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	
-	logMessage("player_ladder.sendEmailsForLadderMatch: sending out emails to challenger $challengerid and challengee $challengeeid ");
+	if( isDebugEnabled(1) ) logMessage("player_ladder.sendEmailsForLadderMatch: sending out emails to challenger $challengerid and challengee $challengeeid ");
 	
 	/* load up the user record for the winner */
 	$query = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
@@ -250,7 +247,6 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	$var->support = $_SESSION["CFG"]["support"];
 	
 	$var->message = $message;
-	
 
 	$clubfullname = get_clubname();
 	$var->clubfullname = $clubfullname;
@@ -266,8 +262,11 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	$challengee_message .= "$challengee_emailbody";
 	
 
-	mail("$var->challenger_fullname <$challenger->email>", "$clubfullname -- Ladder Match", $challenger_message, "From: $var->support", "-fPlayerMailer@sportsynergy.com");
-	mail("$var->challengee_fullname <$challengee->email>", "$clubfullname -- Ladder Match", $challengee_message, "From: $var->support", "-fPlayerMailer@sportsynergy.com");
+	if( isDebugEnabled(1) ) logMessage($challenger_message);
+	if( isDebugEnabled(1) ) logMessage($challengee_message);
+	
+	mail("$var->challenger_fullname <$challenger->email>", "$clubfullname -- Ladder Match", $challenger_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+	mail("$var->challengee_fullname <$challengee->email>", "$clubfullname -- Ladder Match", $challengee_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 }
 
 ?>

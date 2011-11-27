@@ -88,7 +88,7 @@ function wipeOutClubMessages()
 						</div> 
 						<div>
 							<span class="normal">
-								 If set, these little bits of news will appear on each page on the right hand side of the page in the Info Panel abover Club Events and Recent Activity.  The 
+								 If set, these little bits of news will appear on each page on the right hand side of the page next to Club Events and Recent Activity.  The 
 								 most recent 3 updates will appear. You can wipe out the news in one shot by clicking <a href="javascript:wipeOutClubMessages();">here</a>.
 							</span>
 						</div>

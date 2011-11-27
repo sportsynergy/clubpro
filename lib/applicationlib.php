@@ -5419,7 +5419,7 @@ function getFullNameResultForUserId($userId){
  */
 function get_site_events($siteid){
 	
-	logMessage("applicationlib.get_site_events: Getting events for site $siteid");
+	if( isDebugEnabled(1) )  logMessage("applicationlib.get_site_events: Getting events for site $siteid");
 	  
 	$query = "SELECT eventid, eventname
                           FROM tblEvents
@@ -5695,7 +5695,7 @@ function getClubEvents($clubid){
  */
 function getMatchesByType($siteid, $matchtype, $limit){
 	
-	logMessage("applicationlib.getMatchesByType: Getting challenge matches $siteid");
+	if( isDebugEnabled(1) ) logMessage("applicationlib.getMatchesByType: Getting challenge matches $siteid");
 	
 	
 	$curresidquery = "SELECT reservations.reservationid, reservations.time, courts.courtname
@@ -5760,9 +5760,8 @@ function formatDateString($dateString){
 	$month = $dates[1];
 	$year = $dates[0];
 	
-	logMessage("applicationlib.formatDateString: month $month day $day year $year for datestring: $dateString");
-	
 	$time = mktime(0,0,0,$month,$day,$year);
+	
 	return date("l F j", $time);
 	
 }

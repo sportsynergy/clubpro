@@ -105,7 +105,7 @@ function scoreChallengeMatch($score, $challengematchid){
  */
 function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
 	
-	logMessage("report_ladder.emailLadderMatch: sending out emails to winner $winnerid and loser $loserid about the score $score and challengeeid $challengeeid");
+	if( isDebugEnabled(1) ) logMessage("report_ladder.emailLadderMatch: sending out emails to winner $winnerid and loser $loserid about the score $score and challengeeid $challengeeid");
 	
 	/* load up the user record for the winner */
 	$query = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
@@ -138,7 +138,7 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
 	$clubfullname = get_clubname();
 	$var->clubfullname = $clubfullname;
 	
-	$var->score = $score;
+	$var->score = 3-$score;
 		
 	// If the guy who got challenged won, then no change in the ladder
 	if( $challengeeid == $winnerid){
@@ -153,6 +153,8 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
 	$l_message = "Hello $var->l_firstname,\n";
 	$l_message .= "$emailbody";
 	
+	if( isDebugEnabled(1) ) logMessage($l_message);
+	if( isDebugEnabled(1) ) logMessage($w_message);
 
 	mail("$var->w_fullname <$winner->email>", "$clubfullname -- Ladder Match Report", $w_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 	mail("$var->l_fullname <$loser->email>", "$clubfullname -- Ladder Match Report", $l_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
@@ -167,7 +169,7 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
  */
 function unlockPlayers($winneruserid, $loseruserid,$courttypeid){
 
-		logMessage("report_ladder.unlockPlayers: unlocking players $winneruserid and loseruserid $loseruserid for courttypeid $courttypeid");
+		if( isDebugEnabled(1) )logMessage("report_ladder.unlockPlayers: unlocking players $winneruserid and loseruserid $loseruserid for courttypeid $courttypeid");
 		 
 		$query = "UPDATE tblClubLadder ladder SET locked = 'n' WHERE ladder.userid = '$winneruserid' OR ladder.userid = '$loseruserid' 
 					AND ladder.courttypeid = '$courttypeid' ";

@@ -34,9 +34,13 @@
 	<label for="to_email">E-mail:</label><input type="textbox" name="email" disabled="disabled" id="to_email" size="50"> 
 
 	<div class="clear"></div>
-	<label for="textarea">Message:</label><textarea name="textarea" cols="50" rows="10"></textarea>
+	<label for="textarea">Message:</label><textarea name="textarea" cols="50" rows="10" onKeyDown="limitText(this.form.textarea,this.form.countdown,140);" 
+			onKeyUp="limitText(this.form.textarea,this.form.countdown,140);"></textarea>
 
 	<div class="clear"></div>
+	<span class="normalsm">
+				You have <input readonly type="text" name="countdown" size="3" value="140"> characters left.
+	</span>	
 	<input type="hidden" name="cmd" value="challengeplayer">
    	<input type="hidden" name="challengeeid" id="challengeeid">
 
@@ -217,7 +221,6 @@ Nobody has signed up for the ladder yet.
 
 <script>
 
-
 		YAHOO.namespace("clubladder.container");
 		
 		YAHOO.util.Event.onDOMReady(function () {
@@ -366,6 +369,14 @@ Nobody has signed up for the ladder yet.
 		    }
 		  	
 		};
+
+		function limitText(limitField, limitCount, limitNum) {
+			if (limitField.value.length > limitNum) {
+				limitField.value = limitField.value.substring(0, limitNum);
+			} else {
+				limitCount.value = limitNum - limitField.value.length;
+			}
+		}
 
 </script>
 
