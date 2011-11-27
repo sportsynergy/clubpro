@@ -17,15 +17,12 @@ require_loginwq();
 $courttypeid = 2;
 
 
-/* form has been submitted */
-     
+/* form has been submitted */   
 if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
 
 		$frm = $_POST;
         $userid = $frm['userid'];
         $clubid = get_clubid();
-        
-       
 
     	// Add User to Ladder
         if($frm['cmd']=='addtoladder'){
@@ -95,6 +92,7 @@ if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
 			
 			$challengeeid = $frm['challengeeid'];
 			$challengerid = get_userid();
+			$message = $frm['textarea'];
 			
 			if(isDebugEnabled(2) ) logMessage("player_ladder: challengeplayer $challengerid has challenged $challengeeid");
 			
@@ -107,10 +105,6 @@ if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
 			//send the email
 			sendEmailsForLadderMatch($challengerid, $challengeeid, $message);
 			
-			//Refresh Page
-			$wwwroot = $_SESSION["CFG"]["wwwroot"];
-			header ("Location: $wwwroot/users/player_ladder.php");
-        	die;
 			
 		}
 }

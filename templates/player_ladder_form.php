@@ -285,9 +285,7 @@ Nobody has signed up for the ladder yet.
 				this.cancel();
 			};
 			var handleSuccess = function(o) {
-				var response = o.responseText;
-				response = response.split("<!")[0];
-				document.getElementById("resp").innerHTML = response;
+				window.location.href=window.location.href;
 			};
 			var handleFailure = function(o) {
 				alert("Submission failed: " + o.status);

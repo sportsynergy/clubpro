@@ -105,7 +105,7 @@ function scoreChallengeMatch($score, $challengematchid){
  */
 function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
 	
-	logMessage("report_ladder.emailLadderMatch: sending out emails to winner $winnerid and loser $loserid about the score $score");
+	logMessage("report_ladder.emailLadderMatch: sending out emails to winner $winnerid and loser $loserid about the score $score and challengeeid $challengeeid");
 	
 	/* load up the user record for the winner */
 	$query = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
@@ -137,8 +137,11 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
 
 	$clubfullname = get_clubname();
 	$var->clubfullname = $clubfullname;
+	
+	$var->score = $score;
 		
-	if( $challengerid == $winnerid){
+	// If the guy who got challenged won, then no change in the ladder
+	if( $challengeeid == $winnerid){
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_ladder_match_nochange.php", $var);
 	} else {
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_ladder_match.php", $var);
@@ -151,8 +154,8 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
 	$l_message .= "$emailbody";
 	
 
-	mail("$var->wfullname <$winner->email>", "$clubfullname -- Ladder Match Report", $w_message, "From: $var->support", "-fPlayerMailer@sportsynergy.com");
-	mail("$var->lfullname <$loser->email>", "$clubfullname -- Ladder Match Report", $l_message, "From: $var->support", "-fPlayerMailer@sportsynergy.com");
+	mail("$var->w_fullname <$winner->email>", "$clubfullname -- Ladder Match Report", $w_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+	mail("$var->l_fullname <$loser->email>", "$clubfullname -- Ladder Match Report", $l_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 }
 
 /**
