@@ -4992,6 +4992,7 @@ function getSitePreferencesForCourt($courtid) {
 					sites.allownearrankingadvertising,
 					sites.enableguestreservation,
 					sites.displaysitenavigation,
+					sites.rankingscheme,
 					sites.displayrecentactivity,
 					sites.challengerange
 	        FROM tblClubSites sites, tblCourts courts
