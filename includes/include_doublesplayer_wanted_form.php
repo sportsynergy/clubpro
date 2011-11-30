@@ -1,9 +1,5 @@
 <?
-/*
- * $LastChangedRevision: 847 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-01 10:26:06 -0600 (Tue, 01 Mar 2011) $
-*/
+
 
   //reservation_doubles_wanted_form.php
    $DOC_TITLE = "Doubles Court Reservation";
@@ -28,6 +24,28 @@ function SubDisable(dform) {
 return true;
 }
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+ function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
 
 </script>
 <?
@@ -46,7 +64,7 @@ return true;
 <form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable">
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
   
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
@@ -78,8 +96,8 @@ return true;
 			       }
 			       
 			       ?>
-	            	<input type="submit" name="cancel" value="Yes" <?=$disabled?>>
-	            	<input type="button" value="No, go back" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta()))?>'">
+	            	<input type="button" name="cancel" value="Yes" <?=$disabled?> id="submitbutton">
+	            	<input type="button" value="No, go back" id="cancelbutton">
 	       		</td>
 	       </tr>
  	</table>

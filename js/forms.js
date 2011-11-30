@@ -19,8 +19,26 @@ function newWindow(newContent)
 
 function submitForm(theForm)
 {
-
-      var form = eval("document." + theForm);
+    alert(theForm);  
+	var form = eval("document." + theForm);
       form.submit();
 
 }//end function submitForm()
+
+function loadReservationPage(month,date,year,site){
+	
+	var submitForm = getNewSubmitForm();
+	 createNewFormElement(submitForm, "month", month);
+	 createNewFormElement(submitForm, "date", date);
+	 createNewFormElement(submitForm, "year", year);
+	 submitForm.action= site;
+	 submitForm.submit();
+	
+}
+
+function getNewSubmitForm(){
+	 var submitForm = document.createElement("FORM");
+	 document.body.appendChild(submitForm);
+	 submitForm.method = "POST";
+	 return submitForm;
+}

@@ -22,7 +22,7 @@ require_loginwq();
 
 /* form has been submitted, now reserve court */
 
-if (match_referer() && isset($_POST["submit"])) {
+if (match_referer() && isset($_POST["submitme"])) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
 

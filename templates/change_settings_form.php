@@ -1,17 +1,33 @@
-<?
-/*
- * $LastChangedRevision: 857 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
+<script type="text/javascript">
 
-*/
-?>
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+
+</script>
 
  <form name="entryform" method="post" action="<?=$ME?>">
 
-<table width="600" cellpadding="20" cellspacing="0" class="generictable">
+<table width="600" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
      <tr>
-         <td class=clubid<?=get_clubid()?>th><font class=whiteh1><div align="center"><? pv($DOC_TITLE) ?></div></font></td>
+         <td class=clubid<?=get_clubid()?>th>
+         	<font class=whiteh1>
+         		<div align="center"><? pv($DOC_TITLE) ?></div>
+         	</font></td>
     </tr>
 
  <tr>
@@ -169,7 +185,7 @@
             <td colspan="2" height="20"></td>
         </tr>
         <tr>
-        	<td><input type="submit" name="submit" value="Update Settings"></td>
+        	<td><input type="button" name="submit" value="Update Settings" id="submitbutton"></td>
             <td></td>
         </tr>
         

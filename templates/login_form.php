@@ -13,6 +13,13 @@
 <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css"> 
 <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
 
+<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
+<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" />
+<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+
+<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
+<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/button-min.js"></script>
+
 </head>
 
 
@@ -30,14 +37,31 @@
 ?>
 
 
-<body style="margin-left: 1.5em"  OnLoad="document.entryform.username.focus();">
+<body style="margin-left: 1.5em"  OnLoad="document.entryform.username.focus();" class="yui-skin-sam">
 
 
+<script type="text/javascript">
+
+    YAHOO.example.init = function () {
+
+        // "contentready" event handler for the "submitbuttonsfrommarkup" <fieldset>
+        
+        YAHOO.util.Event.onContentReady("formtable", function () {
+
+            // Create a Button using an existing <input> element as a data source
+            var oSubmitButton1 = new YAHOO.widget.Button("submitbutton1", { value: "submitbutton1value" });
+            var oCancelButton1 = new YAHOO.widget.Button("cancelbutton1", { value: "cancelbutton1value" });
+
+        });
+
+    } ();
+
+    </script>
 
 
  <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/login.php" autocomplete="off">
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable">
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
  <tr class="borderow loginth">
     <td>
     	<span class="whiteh1">
@@ -66,8 +90,8 @@
        
         <tr>
                 <td></td>
-                <td align="center"><input type="submit" value="Login">
-                        <input type="button" value="Cancel" onClick="javascript: history.go(-1)">
+                <td align="center"><input type="submit" value="Login" id="submitbutton1">
+                        <input type="button" value="Cancel" onClick="javascript: history.go(-1)" id="cancelbutton1">
                        <? if(!isSiteAutoLogin()){ ?>
                         <div class="normal" style="margin-top: 15px">
                         	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/forgot_password.php">Forgot my password</a>

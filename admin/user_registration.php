@@ -1,10 +1,5 @@
 <?
 
-/*
- * $LastChangedRevision: 857 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
- */
 
 include("../application.php");
 $DOC_TITLE = "User Registration";
@@ -12,13 +7,12 @@ require_loginwq();
 require_priv("2");
 
 
-
 $availbleSportsResult = load_avail_sports();
 $availableSitesResult = load_avail_sites();
 $extraParametersResult = load_site_parameters();
 
 /* form has been submitted, try to create the new user account */
-if (  isset($_POST['submit']) || isset($_POST['action']) ) {
+if ( match_referer() && isset($_POST['submitme'])  ) {
 
         $frm = $_POST;
       
@@ -39,13 +33,8 @@ if (  isset($_POST['submit']) || isset($_POST['action']) ) {
          
          	 }
 		         	
-		         	
-		        
-		        
+   
  }
-
-
-
 
 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
 include($_SESSION["CFG"]["templatedir"]."/user_registration_form.php");

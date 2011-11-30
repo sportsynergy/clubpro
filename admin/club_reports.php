@@ -12,7 +12,7 @@ require_priv("2");
 
 
 
-if (match_referer() && isset($_POST['submit'])) {
+if (match_referer() && isset($_POST['submitme'])) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
 

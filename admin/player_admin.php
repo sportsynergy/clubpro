@@ -1,11 +1,6 @@
 <?
 
 
-/*
- * $LastChangedRevision: 857 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
- */
 
 include ("../application.php");
 $DOC_TITLE = "Account Maintenance";

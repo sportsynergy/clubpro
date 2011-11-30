@@ -18,7 +18,7 @@ require_loginwq();
 require_priv("2");
 
 /* form has been submitted, try to create the new user account */
-if (match_referer() && isset($_POST['submit'])) {
+if (match_referer() && isset($_POST['submitme'])) {
 
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);

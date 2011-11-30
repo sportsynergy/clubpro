@@ -10,6 +10,15 @@ function removeCourtEvent(eventid)
 
 }
 
+function manageCourtEvent(eventid)
+{
+
+      document.manageCourtEventForm.eventid.value = eventid;
+      document.manageCourtEventForm.submit();
+
+
+}
+
 </script>
 
 
@@ -17,6 +26,11 @@ function removeCourtEvent(eventid)
 	<input type="hidden" name="eventid" value="">
 	<input type="hidden" name="preferenceType" value="court_events">
    <input type="hidden" name="action" value="removeCourtEvent">
+</form> 
+
+<form name="manageCourtEventForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_court_event.php" method="POST">
+	<input type="hidden" name="eventid" value="">
+
 </form> 	
 
 <form name="court_events_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
@@ -86,11 +100,13 @@ function removeCourtEvent(eventid)
                                      	<?=$courtEvent['playerlimit'] ?>
                                      </td>
                                      <td class=normal align="left" style="vertical-align: top" width="75px">
-                                     	<a href="javascript:submitForm('manageCourtEventsForm<?=$courtEvent['eventid']?>')">Edit </a> |
-                                     	<a href="javascript:removeCourtEvent(<?=$courtEvent['eventid'] ?>);">Delete</a>
-                                     	<form name="manageCourtEventsForm<?=$courtEvent['eventid']?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_court_event.php" method="post">
+                                     	<form name="manageCourtEventsForm-<?=$courtEvent['eventid']?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_court_event.php" method="post">
 		                                    <input type="hidden" name="eventid" value="<?=$courtEvent['eventid'] ?>">
-	                                     </form> 	
+	                                     </form>
+	                                     
+                                     	  	<a href="javascript:manageCourtEvent(<?=$courtEvent['eventid'] ?>);">Edit </a> |
+                                     	<a href="javascript:removeCourtEvent(<?=$courtEvent['eventid'] ?>);">Delete</a>
+                                     	 	
                                      </td>
 
                                 </tr>

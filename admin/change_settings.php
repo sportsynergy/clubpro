@@ -1,10 +1,5 @@
 <?
 
-/*
- * $LastChangedRevision: 858 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 23:29:16 -0500 (Mon, 14 Mar 2011) $
- */
 
 include("../application.php");
 require_login();
@@ -19,7 +14,6 @@ if(!isset($userid)){
   $userid = get_userid();
 }
 
-
 $DOC_TITLE = "Player Administration";
 
 // Load up data for view
@@ -32,7 +26,7 @@ $extraParametersResult = load_site_parameters();
 
 
 /* form has been submitted, check if it the user login information is correct */
-if ( isset($_POST['submit']) || isset($_POST['action'])) {
+if ( isset($_POST['submitme'])) {
         
 		 $frm = $_POST;
 		 

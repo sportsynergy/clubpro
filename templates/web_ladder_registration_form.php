@@ -1,10 +1,6 @@
 <?
-  /*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
+
 
 //Set the http variables
 $action = $_REQUEST["action"];
@@ -204,11 +200,26 @@ print "var thisyear = new Array(13);
      }
 
 
+     YAHOO.example.init = function () {
+
+    	    YAHOO.util.Event.onContentReady("formtable", function () {
+
+    	        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+    	        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    	    });
+
+    	} ();
+
+
+    	function onSubmitButtonClicked(){
+    		submitForm('entryform');
+    	}
 </script>
 
 <form name="entryform" method="post" action="<?=$ME?>">
 
-<table width="600" cellpadding="20" cellspacing="0" class="generictable">
+<table width="600" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
      <tr>
          <td class="clubid<?=get_clubid()?>th">
          	<span class="whiteh1">
@@ -301,7 +312,8 @@ print "var thisyear = new Array(13);
       </tr>
      <tr>
       <td colspan="2">
-      <input type="submit" name ="submit" value="Submit">
+      <input type="button" name ="submit" value="Submit" id="submitbutton">
+      <input type="hidden" name ="submitme" value="submitme" >
       </form>
 
        <script language="JavaScript">

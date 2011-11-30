@@ -1,11 +1,4 @@
-<?
-/*
- * $LastChangedRevision: 844 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-28 21:05:07 -0600 (Mon, 28 Feb 2011) $
 
-*/
-?>
 
 
 <div id="recordscores" class="yui-navset">
@@ -62,6 +55,36 @@
     }
    
 })();
+
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable-doubles", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("dsubmitbutton", { value: "dsubmitbutton1value" });
+        oSubmitButton1.on("click", onDoublesSubmitButtonClicked);
+
+    });
+
+    YAHOO.util.Event.onContentReady("formtable-singles", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("ssubmitbutton", { value: "ssubmitbutton1value" });
+        oSubmitButton1.on("click", onSinglesSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onDoublesSubmitButtonClicked(){
+	submitForm('doubles_entryform');
+}
+
+function onSinglesSubmitButtonClicked(){
+	submitForm('singles_entryform');
+}
+
+
 </script>
 
 

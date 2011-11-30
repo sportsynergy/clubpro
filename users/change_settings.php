@@ -29,7 +29,7 @@ $extraParametersResult = load_site_parameters();
 
 
 /* form has been submitted, check if it the user login information is correct */
-if (match_referer() && isset($_REQUEST['submit'])) {
+if (match_referer() && isset($_POST)) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
 

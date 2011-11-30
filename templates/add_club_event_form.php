@@ -1,19 +1,10 @@
-<?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-*/
-
-
-?>
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
 
 
-<table cellspacing="0" cellpadding="20" width="600" class="generictable">
+<table cellspacing="0" cellpadding="20" width="600" class="generictable" id="formtable">
  <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -51,11 +42,12 @@
 				<td> </td>
 				<td>
 				<? if(isset($clubEventArray["id"])){ ?>
-					<input type="submit" name="submit" value="Update Club Event">
+					<input type="button" name="submit" value="Update Club Event" id="submitbutton">
 				<? } else {?>
-					<input type="submit" name="submit" value="Add Club Event">
+					<input type="button" name="submit" value="Add Club Event" id="submitbutton">
 				<? } ?>
-					<input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_events.php'">
+					<input type="button" value="Cancel" id="cancelbutton">
+					<input type="hidden" name="submitme" value="submitme" >
 					<input type="hidden" name="id" value="<?=$frm["id"]?>" >
 				</td>
 			</tr>
@@ -115,5 +107,30 @@ YAHOO.yuibook.calendar.launchCal = function() {
 
 //create calendar on page load
 YAHOO.util.Event.onDOMReady(YAHOO.yuibook.calendar.launchCal);
+
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbutton1value" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+ function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_events.php';
+ }
+ 
 
 </script>

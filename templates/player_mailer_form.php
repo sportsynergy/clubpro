@@ -1,11 +1,4 @@
-<?php
-/*
- * $LastChangedRevision: 847 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-01 10:26:06 -0600 (Tue, 01 Mar 2011) $
 
-*/
-?>
 
 
 <script language="Javascript">
@@ -35,6 +28,24 @@ function disableRankingDropDown(listselection)
 
 }
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+
+
 
 </script>
 
@@ -45,7 +56,7 @@ function disableRankingDropDown(listselection)
 <form name="entryform" method="post" action="<?=$ME?>">
 
 
-<table cellspacing="0" cellpadding="20" width="400" >
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
   
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
@@ -54,7 +65,7 @@ function disableRankingDropDown(listselection)
  </tr>
 
  <tr>
-    <td class=generictable>
+    <td >
 
      <table width="400">
 		
@@ -111,10 +122,12 @@ function disableRankingDropDown(listselection)
         </tr>
        <tr>
            <td></td>
-           <td><input type="submit" name="submit" value="Send"></td>
+           <td><input type="button" name="submit" value="Send" id="submitbutton"></td>
             <td></td>
     </tr>
  </table>
+
+<input type="hidden" name="submitme" value="submitme">
 
 </table>
 </form>

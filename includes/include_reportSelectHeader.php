@@ -1,16 +1,32 @@
-<?php
-/*
- * $LastChangedRevision: 819 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-01 07:44:09 -0600 (Tue, 01 Feb 2011) $
- */
-?>
+
+<script type="text/javascript">
+
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+
+
+</script>
 
 <form name="entryform" method="post" action="<?=$ME?>">
-<table cellspacing="0" cellpadding="5" width="700" >
+<table cellspacing="0" cellpadding="5" width="700" id="formtable">
 
        <tr>
-           <td><font class=reportTitle>
+           <td><font class="reportTitle">
            <?pv($reportName)?>
            </font>
            </td>
@@ -19,7 +35,8 @@
                 <option value="memberactivity">Member Activity Report</option>
                 <option value="courtutil">Court Utilization Report</option>
                </select>
-          <input type="submit" name="submit" value="Run Report">
+          <input type="hidden" name="submitme" value="submitme">
+          <input type="button" name="submit" value="Run Report" id="submitbutton">
           </td>
 
        </tr>

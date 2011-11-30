@@ -1,13 +1,4 @@
-<?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-
-*/
-
-?>
 
 <script language="Javascript">
 
@@ -20,6 +11,22 @@ document.onkeypress = function (aEvent)
         return false; // this will prevent bubbling ( sending it to children ) the event!
     }
   	
+}
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
 }
 
 </script>
@@ -117,7 +124,7 @@ $userid = $_REQUEST["userid"];
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
-<table width="500" cellpadding="20" cellspacing="0" class="generictable">
+<table width="500" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
      <tr>
          <td class=clubid<?=get_clubid()?>th>
          	<span class="whiteh1">
@@ -160,6 +167,7 @@ $userid = $_REQUEST["userid"];
             <td>
             	<input type="hidden" name="boxid" value="<?=$boxid ?>">
             	<input type="hidden" name="courttype" value="<?=$courttype?>">
+            	<input type="hidden" name="submitme" value="submitme">
 			</td>
        </tr>
        <tr>
@@ -168,8 +176,8 @@ $userid = $_REQUEST["userid"];
 			</td>
 		</tr>
      <tr>
-      <td><input type="submit" value="Submit" name="submit"></td>
-      <td></form> </td>
+      <td><input type="button" value="Submit" name="submit" id="submitbutton"></td>
+      <td> </td>
      </tr>
      <tr>
       <td colspan="2">
@@ -254,3 +262,7 @@ $userid = $_REQUEST["userid"];
     </span>
 </div> 
 
+</td>
+</tr>
+</table>
+</form>

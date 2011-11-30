@@ -16,7 +16,7 @@ if( isset($eventid) ){
 	
 }
 
-if (match_referer() && isset($_POST['submit'])) {
+if (match_referer() && isset($_POST['submitme'])) {
 	
 	$frm = $_POST;
     $errormsg = validate_form($frm, $errors);
@@ -49,16 +49,22 @@ function validate_form(&$frm, &$errors) {
 		if(empty($frm["name"]) ){
 			$errors->subject = true;
 			$msg .= "You did not specify an event name";
+			return $msg;
 		}
 
         
+        else if ( empty($frm["eventdate"]) ) {
+                $errors->eventdate = true;
+                $msg .= "You did not specify an event date";
+                return $msg;
+        } 
+
         elseif( empty($frm["description"])  ){
         	 $errors->description = true;
         	$msg .= "You did not specify an event description";
         	return $msg;
         	
         }
-        
         // Make sure date is ok
         $datesArray = explode("/",$frm["eventdate"]);
         $month = $datesArray[2];
@@ -69,31 +75,33 @@ function validate_form(&$frm, &$errors) {
          $thisyear = date("Y", $gmttime);
         
         		
-		if ( empty($frm["eventdate"]) ) {
-                $errors->eventdate = true;
-                $msg .= "You did not specify an event date";
-        } 
-        elseif( count($datesArray)!=3 ){
+		
+        if( count($datesArray)!=3 ){
         	logMessage("This is the number of dates elements: ". count($datesArray));
         	$errors->eventdate = true;
             $msg .= "The date is not properly formatted";
+            return $msg;
+            
         }
         elseif ( !is_numeric($month) && $month > 12) {
          	$errors->eventdate = true;
             $msg .= "The month is not properly formatted";
+            return $msg;
          }
 	
 		 elseif ( !is_numeric($day) && $day > 31) {
          	$errors->eventdate = true;
             $msg .= "The day is not properly formatted";
+            return $msg;
          }
 		elseif ( !is_numeric($year) && ($year > $thisyear + 2 || $year < $thisyear - 1 ) ) {
          	$errors->eventdate = true;
             $msg .= "The year is not properly formatted";
+            return $msg;
          }
 	 
 
-        return $msg;
+        
 
 }
 

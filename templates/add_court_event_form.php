@@ -1,6 +1,24 @@
 
 
+<script type="text/javascript">
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+</script>
 
 
 
@@ -8,7 +26,7 @@
 
 
 
-<table cellspacing="0" cellpadding="20" width="550" class="generictable" >
+<table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -25,7 +43,7 @@
         <tr>
             <td class="label">Name:</td>
             <td>
-            	<input type="text" name="name" maxlength="30" size="30" value="<?=$courtEvent['eventname']?>"><?err($errors->name)?>
+            	<input type="text" name="name" maxlength="30" size="30" value="<?=$courtEventName?>"><?err($errors->name)?>
             </td>
         </tr>
        
@@ -45,8 +63,9 @@
      
        <tr>
            <td>
-           		<input type="submit" name="submit" value="Submit"/>
+           		<input type="button" name="submit" value="Add Court Event" id="submitbutton"/>
            		<input type="hidden" name="policyid" value="<?=$courtEvent['eventid']?>"/>
+           		<input type="hidden" name="submitme" value="submitme"/>
           </td>
        </tr>
        	

@@ -1,17 +1,36 @@
-<?
-/*
- * $LastChangedRevision: 857 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
 
- */
-?>
+<script type="text/javascript">
+
+YAHOO.clubpro.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+ function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
+</script>
 
 <form name="entryform" method="post" action="<?=$ME?>">
 
 
 
-<table cellspacing="0" cellpadding="20" width="600" class="generictable">
+<table cellspacing="0" cellpadding="20" width="600" class="generictable" id="formtable">
  <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -230,8 +249,9 @@
 			</tr>
 
 			<tr>
-				<td></td>
-				<td><input type="submit" name="submit" value="Add New User"></td>
+				<td colspan="2">
+					<input type="button" name="submit" value="Add New User" id="submitbutton">
+				</td>
 			</tr>
 		</table>
 
@@ -240,6 +260,7 @@
 	</tr>
 </table>
 
+<input type="hidden" name="submitme" value="submitme">
 
 </form>
 

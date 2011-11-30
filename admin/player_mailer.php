@@ -1,10 +1,6 @@
 <?php
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
- */
+
 
 include("../application.php");
 $DOC_TITLE = "Player Mailer";
@@ -13,7 +9,7 @@ require_loginwq();
 require_priv("2");
 
 
-if (match_referer() && isset($_POST['submit'])) {
+if (match_referer() && isset($_POST['submitme'])) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
         $backtopage = $_SESSION["CFG"]["wwwroot"]."/admin/player_mailer.php";
@@ -30,6 +26,7 @@ if (match_referer() && isset($_POST['submit'])) {
 
 }
 $availbleSports = load_avail_sports();
+
 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
 include($_SESSION["CFG"]["templatedir"]."/player_mailer_form.php");
 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");

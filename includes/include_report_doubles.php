@@ -43,7 +43,7 @@ function unsetplayers()
 <form name="doubles_entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
 
-     <table cellspacing="10" cellpadding="0" class="tabtable">
+     <table cellspacing="10" cellpadding="0" class="tabtable" id="formtable-doubles">
 			
                  <tr>
                  <td><span class="label">Team One: </span></td>
@@ -156,7 +156,6 @@ function unsetplayers()
                 	<td> <span class="label">Match Type:</span></td>
                 	<td colspan="2">
 						  <select name="matchtype">
-						  	<option value="practice" <?=$practiceSelection?>>Practice</option>
 						    <option value="challenge" <?=$challengeSelection?> >Challenge</option>
 						  </select>
    					</td>
@@ -178,8 +177,9 @@ function unsetplayers()
                 </tr>
                 <tr>
                 	<td>
-  						<input type="submit" name="submit" value="Report Score">
+  						<input type="button" name="submit" value="Report Score" id="dsubmitbutton">
   						 <input type="hidden" name="usertype" value="doubles">
+  						 <input type="hidden" name="submitme" value="submitme">
                 	<td>
                 <tr>
  	</table>

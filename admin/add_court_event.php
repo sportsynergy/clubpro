@@ -11,6 +11,15 @@ $DOC_TITLE = "Add Court Event";
 $eventid = $_REQUEST["eventid"];
 if( !empty($eventid) ) {
 	$courtEvent = load_court_event($eventid);
+	
+	
+	if(get_magic_quotes_gpc()){
+			$courtEventName=stripslashes($courtEvent['eventname']);
+		}else{
+			
+			$courtEventName=addslashes($courtEvent['eventname']);
+		}
+		
 }
 
 

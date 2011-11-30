@@ -1,15 +1,33 @@
-<?
-/*
- * $LastChangedRevision: 857 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
 
-*/
-?>
+<script type="text/javascript">
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+ function onCancelButtonClicked(){
+	 submitForm('backtolistform');
+ }
+
+</script>
 
 
 
-<table width="650" cellpadding="20" cellspacing="0" class="generictable">
+<table width="650" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
     <tr>
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -321,8 +339,8 @@
         </tr>
         <tr>
             <td colspan="2">
-            <input type="submit" name="submit" value="Update Settings">
-            <input type="button" value="Cancel" onClick="submitForm('backtolistform');">
+            <input type="button" name="submit" value="Update Settings" id="submitbutton">
+            <input type="button" value="Cancel" id="cancelbutton" >
 
             </td>
         </tr>
@@ -334,6 +352,7 @@
         <input type="hidden" name="mycourttypes" value="<? pv($mycourtTypes) ?>">
         <input type="hidden" name="mysites" value="<? pv($mysites) ?>">
         <input type="hidden" name="searchname" value="<? pv($searchname)?>">
+        <input type="hidden" name="submitme" value="submitme">
             
        </form>
 

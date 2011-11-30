@@ -22,11 +22,34 @@ document.onkeypress = function (aEvent)
 	
 }
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('doubles_reservation_form');
+}
+
+ function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
 </script>
 
 <form name="doubles_reservation_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
  
-<table cellspacing="5" cellpadding="0" width="540" class="tabtable">
+<table cellspacing="5" cellpadding="0" width="540" class="tabtable" id="formtable">
  		<tr>
             <td class="biglabel" colspan="2">Team 1</td>
         </tr>
@@ -194,8 +217,8 @@ document.onkeypress = function (aEvent)
        <tr>
            <td colspan="2"> 
 	           	<br/><br/>
-	           	<input type="submit" name="submit" value="Make Reservation">  
-	           	<input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
+	           	<input type="button" name="submit" value="Make Reservation" id="submitbutton">  
+	           	<input type="button" value="Cancel" id="cancelbutton">
 	        </td>
     </tr>
 

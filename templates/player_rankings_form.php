@@ -20,6 +20,21 @@ function SubDisable(dform) {
 return true;
 }
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbutton1value" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
 
 
 </script>
@@ -30,7 +45,7 @@ return true;
 
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" >
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
  <tr>
     <td class=clubid<?=get_clubid()?>th><font class="whiteh1"><div align="center"><? pv($DOC_TITLE) ?></div></font></td>
  </tr>
@@ -70,7 +85,7 @@ return true;
 
     </tr>
 
-       <tr>
+     <tr>
            <td class="label">Sort By:</td>
            <td>
            <select name="sortoption">
@@ -81,12 +96,18 @@ return true;
            </td>
 
     </tr>
-
+	<tr>
+           <td colspan="2" height="20"><!--  Spacer --></td>
+    </tr>
 
        <tr>
-           <td></td>
-           <td><input type="submit" name="submit" value="Submit"></td>
-
+       
+           <td colspan="2">
+           
+           <input type="button" name="submit" value="Submit" id="submitbutton">
+           <input type="hidden" name="submitme" value="submitme">
+           
+           </td>
     </tr>
  </table>
 

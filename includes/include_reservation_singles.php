@@ -10,7 +10,7 @@
 
 <form name="singlesform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
 
-     <table cellspacing="10" cellpadding="0" width="440" class="tabtable">
+     <table cellspacing="10" cellpadding="0" width="440" class="tabtable" id="formtable">
         <tr>
             <td class="label">Player&nbsp;One:</td>
              
@@ -114,8 +114,8 @@
        <tr>
            <td></td>
            <td> 
-           		<input type="submit" name="submit" value="Make Reservation"> 
-           		<input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
+           		<input type="button" name="submit" value="Make Reservation" id="submitbutton"> 
+           		<input type="button" value="Cancel" id="cancelbutton" >
             </td>
            <td>
 	          
@@ -137,18 +137,30 @@
  
  <script>
 
+ YAHOO.example.init = function () {
+
+	    YAHOO.util.Event.onContentReady("formtable", function () {
+
+	        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbutton1value" });
+	        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+	        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+	        oCancelButton.on("click", onCancelButtonClicked);
+	    });
+
+	} ();
+
+
+	function onSubmitButtonClicked(){
+		submitForm('singlesform');
+	}
+
+	 function onCancelButtonClicked(){
+
+		parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+	 }
  
- 
-document.onkeypress = function (aEvent)
-{
- if(!aEvent) aEvent=window.event;
-	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
- if( key == 13 ) // enter key
- {
-     return false; // this will prevent bubbling ( sending it to children ) the event!
- }
-	
-}
+
 
 function cancelCourt(){
 	 var submitForm = document.createElement("FORM");

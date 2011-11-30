@@ -1,11 +1,4 @@
-<?
-  /*
- * $LastChangedRevision: 857 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
 
-*/
-?>
 
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
@@ -13,7 +6,7 @@
 
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable">
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
  <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
     	<span class=whiteh1>
@@ -45,7 +38,7 @@
        </tr>
        <tr>
            <td></td>
-           <td><input type="submit" name="submit" value="Search"></td>
+           <td><input type="button" name="submit" value="Search" id="submitbutton"></td>
 
        </tr>
  </table>
@@ -60,11 +53,26 @@
 
 <script type="text/javascript">
 
-function defaultform(){
-	document.entryform.searchname.focus();
+document.entryform.searchname.focus();
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
 }
 
-defaultform();
+
+
 
 
 </script>

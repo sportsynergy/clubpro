@@ -1,11 +1,6 @@
 <?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
 
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/ladderlib.php");
@@ -15,13 +10,14 @@ require_loginwq();
 
 /* form has been submitted, try to create the new role */
      
-if ( isset($_POST['submit']) || isset($_POST['cmd']) || isset($_POST['origin'])   ) {
+if ( isset($_POST['submitme']) || isset($_POST['cmd']) || isset($_POST['origin'])   ) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
        
 
         if ($errormsg){
-                include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
+                $availbleSports = load_avail_sports();
+        		include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
                 include($_SESSION["CFG"]["templatedir"]."/player_rankings_form.php");
                 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
                 die;

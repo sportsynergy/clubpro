@@ -12,6 +12,15 @@
         <link rel="icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/icon.ico" type="image/x-icon" />
  
         <!-- Dependency source files --> 
+        
+        <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
+		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/tabview/assets/skins/sam/tabview.css" />
+		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/assets/skins/sam/container.css" /> 
+		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/assets/skins/sam/calendar.css" />
+		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" /> 
+		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/menu/assets/skins/sam/menu.css"> 
+		
+ 		 <!-- CSS for Menu --> 
         <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js"></script> 
         <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/animation/animation.js"></script> 
         <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/container_core.js"></script> 
@@ -21,21 +30,10 @@
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/connection/connection-min.js"></script>
 
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
+		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/button-min.js"></script>
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/tabview/tabview-min.js"></script>
-		
-		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
-		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/tabview/assets/skins/sam/tabview.css" />
-		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/assets/skins/sam/container.css" /> 
-		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/assets/skins/sam/calendar.css" />
-		<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" /> 
-	
-		
- 		 <!-- CSS for Menu --> 
-        <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/menu/assets/skins/sam/menu.css"> 
- 
- 
- 		<!-- Menu source file --> 
         <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/menu/menu.js"></script> 
+ 		
  		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/navigation.js"></script> 
  
  

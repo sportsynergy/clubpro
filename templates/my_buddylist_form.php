@@ -1,11 +1,5 @@
-<?php
-  /*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
-?>
+
 <script language="Javascript">
 
 document.onkeypress = function(aEvent)
@@ -19,6 +13,24 @@ document.onkeypress = function(aEvent)
     }
 }
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+
+ 
 </script>
 
 <?
@@ -38,7 +50,7 @@ $bid = $_REQUEST["bid"];
 
 <form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this)" autocomplete="off">
 
-<table width="550" cellpadding="20" cellspacing="0" class="generictable">
+<table width="550" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
      <tr class="borderow">
          <td class=clubid<?=get_clubid()?>th>
          	<span class="whiteh1">
@@ -73,7 +85,7 @@ $bid = $_REQUEST["bid"];
 			
 			                </script>
 	        </td>
-        <td><input type="submit" name="submit" value="Submit"></td>
+        <td><input type="button" name="submit" value="Submit" id="submitbutton"></td>
       </tr>
 
 

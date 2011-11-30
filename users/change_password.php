@@ -1,16 +1,11 @@
 <?
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
 
 include("../application.php");
 require_login();
 
 /* form has been submitted, check if it the user login information is correct */
-if (match_referer() && isset($_POST['submit'])) {
+if (match_referer() && isset($_POST)) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
         $backtopage = $_SESSION["CFG"]["wwwroot"]."/users/change_password.php";

@@ -1,10 +1,4 @@
-<?
-/*
- * $LastChangedRevision: 809 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-01-15 17:59:46 -0600 (Sat, 15 Jan 2011) $
- */
-?>
+
 
 <script language="Javascript">
 
@@ -38,6 +32,7 @@ function enableMatchType()
 	
 }
 
+
 </script>
 
 <div style="height: 25px;"></div>
@@ -45,7 +40,7 @@ function enableMatchType()
 <form name="singles_entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
 
-     <table cellspacing="10" cellpadding="0" width="400" class="tabtable">
+     <table cellspacing="10" cellpadding="0" width="400" class="tabtable" id="formtable-singles">
 		
                  <tr>
                  <td>
@@ -108,7 +103,6 @@ function enableMatchType()
                 	<td colspan="2">
 						  <select name="matchtype" >
 						     <option value="practice">Practice</option>
-						    <option value="challenge">Challenge</option>
 							 <option value="boxleague">Box League</option>
 						  </select>
    					</td>
@@ -132,7 +126,8 @@ function enableMatchType()
                 
                 <tr>
                 	<td>
-  						<input type="submit" name="submit" value="Report Score">
+  						<input type="button" name="submit" value="Report Score" id="ssubmitbutton">
+  						<input type="hidden" name="submitme" value="submitme">
   						 <input type="hidden" name="usertype" value="singles">
   						
                 	<td>
