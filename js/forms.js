@@ -18,8 +18,7 @@ function newWindow(newContent)
 }//end function submitForm()
 
 function submitForm(theForm)
-{
-    alert(theForm);  
+{ 
 	var form = eval("document." + theForm);
       form.submit();
 

@@ -25,7 +25,7 @@ require_priv("2");
 	   wipeOutCurrentClubMessages();
 	}
 
-	else if (match_referer() && isset($_POST['submit']) ){
+	else if (match_referer() && isset($_POST['submitme']) ){
 		
 		//Save Messages
 		if(match_referer() && $_POST['preferenceType'] == "message"){

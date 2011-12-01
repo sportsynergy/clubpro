@@ -1,11 +1,4 @@
-<?
-/*
- * $LastChangedRevision: 840 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-26 18:52:13 -0600 (Sat, 26 Feb 2011) $
 
-*/
-?>
 
 
 <script language="Javascript">
@@ -185,7 +178,9 @@ function onSubmitButtonClicked(){
     	<td class="normal" >
     		<select name="matchtype" >
     			 <option value="0" selected>Practice</option>
-    			 <option value="2">Challenge</option>
+    			  <? if ( isPointRankingScheme() ) {?>
+              		<option value="2">Challenge</option>
+             	<? } ?>
     		</select>
     	</td>
     </tr>

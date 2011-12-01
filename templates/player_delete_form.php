@@ -22,7 +22,7 @@
     </tr>
     <tr>
     	<td>
-           		<input type="submit" name="cancel" value="Yes, I know. Delete this player" id="submitbutton">
+           		<input type="button" name="cancel" value="Yes, I know. Delete this player" id="submitbutton">
            		<input type="button" value="No, go back" id="cancelbutton">
            </td>
     </tr>
@@ -32,6 +32,7 @@
 
 <input type="hidden" name="searchname" value="<?=$searchname?>">
 <input type="hidden" name="userid" value="<?=$userid?>">
+<input type="hidden" name="submitme" value="submitme">
 
 </form>
 

@@ -1,11 +1,31 @@
-<?php
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
+<script type="text/javascript">
 
-*/
-?>
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/login.php'
+ }
+
+</script>
+ 
 <form name="entryform" method="post" action="<?=$ME?>">
 
 
@@ -16,7 +36,7 @@
 <td>
         
 
-        <table cellspacing="0" cellpadding="20" width="400" class="generictable">
+        <table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
 
 
          <tr>
@@ -47,9 +67,10 @@
         </tr>
         
         <tr>
-                <td></td>
-                <td><input type="submit" name="submit" value="Submit">
-                        <input type="button" value="Cancel" onClick="javascript: history.go(-1)">
+              
+                <td colspan="2">
+                <input type="button" name="submit" value="Send me a new password" id="submitbutton">
+                        <input type="button" value="Go Back" id="cancelbutton">
                 </td>
         </table>
 

@@ -1,9 +1,4 @@
 <?
-/*
- * $LastChangedRevision: 862 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-04-07 22:24:19 -0500 (Thu, 07 Apr 2011) $
-
 
 
 /*
@@ -498,6 +493,8 @@ function validate_form(&$frm, &$errors) {
          *******************************************/
         elseif($frm['courttype'] == "doubles"){
         	
+        
+        	
         	if( isDebugEnabled(1) ) logMessage("court_reservation.validate_form(): Validating Doubles Reservation");
         	
         	if( ($frm['action']=="addteam" || $frm['action']=="addpartner" || $frm['action']=="addpartners" || $frm['action']=="addplayerorteam" )
@@ -549,7 +546,15 @@ function validate_form(&$frm, &$errors) {
 			// Make sure at least two people when solo reservation is enabled
 			elseif( $frm['action'] =="create"){
 				
-				if( isDebugEnabled(1) ) logMessage("court_reservation_validate_form(): Validating a player making a doubles reservation");
+				if( isDebugEnabled(1) ) logMessage("court_reservation_validate_form(): Validating a player making a new doubles reservation");
+				
+				// Make sure that at least one player has been specified
+				if( empty($frm["playeronename"]) 
+						&& empty($frm["playertwoname"]) 
+						&&  empty($frm["playerthreename"]) 
+						&& empty($frm["playerfourname"]) ){
+					return "You have to put at least one name in";
+				}
 				
 				if(  (isGuestPlayer($frm['playeroneid'], $frm['playeronename'])
 						|| isGuestPlayer($frm['playertwoid'], $frm['playertwoname'])
@@ -589,7 +594,7 @@ function validate_form(&$frm, &$errors) {
 					
 					if( !$guestReservation 
 						&& !isAtLeastOnePlayerSpecifiedForDoubles( $frm['playeroneid'], $frm['playertwoid'], $frm['playerthreeid'], $frm['playerfourid']) ){
-						$msg .= "For doubles, please specify at least one person";
+						return "For doubles, please specify at least one person";
 					}
 				}
 				else{
@@ -597,7 +602,7 @@ function validate_form(&$frm, &$errors) {
 					if( get_roleid()==1
 					    && !$guestReservation 
 						&& !isAtLeastTwoPlayerSpecifiedForDoubles( $frm['playeroneid'], $frm['playertwoid'], $frm['playerthreeid'], $frm['playerfourid'])  ) {
-						$msg .= "For doubles, please specify at least two people";
+						return "For doubles, please specify at least two people";
 					}
 				}
 			}

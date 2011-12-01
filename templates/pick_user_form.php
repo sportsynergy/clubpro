@@ -1,23 +1,52 @@
-<?php
-  /*
- * $LastChangedRevision: 319 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2007-09-03 17:14:31 -0500 (Mon, 03 Sep 2007) $
 
-*/
-?>
 <html>
 <head>
-<title>ClubPro Login</title>
-<LINK href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
+<title>Clubpro Login</title>
+
+
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css"> 
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
+
+<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
+<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" />
+<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+
+<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
+<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/button-min.js"></script>
+
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
+
 </head>
 
 
-<body bgcolor=#ffffff link=#0000ff vlink=#000099 alink=#ff0000>
+
+<body bgcolor=#ffffff link=#0000ff vlink=#000099 alink=#ff0000 class="yui-skin-sam">
+
+<script type="text/javascript">
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
 
 
-<p>
-<table cellspacing="0" cellpadding="20" width="400"  class="generictable">
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+</script>
+
+
+
+<form name="entryform" method="post" action="<?=$_SESSION["wantsurl"]?>">
+
+<table cellspacing="0" cellpadding="20" width="400"  class="generictable" id="formtable">
 
 
  <tr class="borderow">
@@ -32,7 +61,7 @@
     <td>
 
 
-        <form name="entryform" method="post" action="<?=$_SESSION["wantsurl"]?>">
+       
         <table>
         <tr>
                 <td class="label">User:</td>
@@ -55,15 +84,19 @@
         </tr>
         <tr>
         	<td>
-        		<input type="submit" value="Submit">
+        		<input type="button" value="Sign in with this user" id="submitbutton">
         	</td>
         </tr>
         
         </table>
-        </form>
+       
 </td>
 </tr>
 </table>
 
+ </form>
+ 
+ 
+ 
 </body>
 </html>

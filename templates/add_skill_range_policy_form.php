@@ -1,11 +1,5 @@
-<?
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
-?>
+
 <script language="Javascript">
 
  function disable(disableIt)
@@ -26,10 +20,23 @@ function toggle()
         }
 }
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('skill_entryform');
+}
+
 </script>
-
-
-
 
 
 <form name="skill_entryform" method="post" action="<?=$ME?>" autocomplete="off">
@@ -39,7 +46,7 @@ function toggle()
 </div>
 
 
-<table cellspacing="0" cellpadding="20" width="550" class="generictable">
+<table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
   <tr>
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -159,12 +166,13 @@ function toggle()
                 <? } ?>
                 </select>
                 <input type="hidden" name="policyid" value="<?=$skillRangePolicy['policyid']?>">
+                <input type="hidden" name="submitme" value="submitme">
              </td>
        </tr>
 
        <tr>
            <td>
-           		<input type="submit" name="submit" value="Submit">
+           		<input type="button" name="submit" value="<?=$buttonLabel?>" id="submitbutton">
            </td>
        </tr>
        

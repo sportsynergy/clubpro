@@ -1,10 +1,5 @@
 <?
-/*
- * $LastChangedRevision: 856 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 13:29:36 -0500 (Mon, 14 Mar 2011) $
 
-*/
 require($_SESSION["CFG"]["libdir"]."/reservationlib.php");
 require($_SESSION["CFG"]["libdir"]."/courtlib.php");
 
@@ -28,7 +23,8 @@ if( !isset($_SESSION["footermessage"]) ){
 
 //Get user log in the user in from the multiuser login form
  if( isset($_POST["frompickform"] ) ){
-    	$user = load_user($_POST["userid"] );
+
+ 	$user = load_user($_POST["userid"] );
     	if($user){
 			$_SESSION["user"] = $user;
     	}
@@ -55,7 +51,7 @@ if(isset($username) && isset($password) && !is_logged_in()  ){
 }
 	
 	
-$DOC_TITLE = "Sportsynergy ClubPro"; 
+$DOC_TITLE = "Sportsynergy Clubpro"; 
 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
 
 
@@ -907,8 +903,6 @@ if ($clubid){
                   </td>
                  
                       <? unset($stack); ?>
-
-
 
                  <? } ?>
 

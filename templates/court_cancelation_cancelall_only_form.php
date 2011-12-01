@@ -1,11 +1,4 @@
-<?php
-/*
- * $LastChangedRevision: 847 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-01 10:26:06 -0600 (Tue, 01 Mar 2011) $
 
-*/
-?>
 <script language="Javascript">
 
 // please keep these lines on when you copy the source
@@ -21,6 +14,31 @@ return true;
 }
 
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
+
 </script>
 
 
@@ -32,48 +50,35 @@ return true;
 <form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);">
 
 
-<table cellspacing="0" cellpadding="20" width="400" >
-  <tr>
-    <td class=clubid<?=get_clubid()?>th><font class=whiteh1><div align="center"><? pv($DOC_TITLE) ?></div></font></td>
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable" >
+  
+   <tr class="borderow">
+    <td class=clubid<?=get_clubid()?>th>
+    <span class="whiteh1">
+    	<div align="center"><? pv($DOC_TITLE) ?></div>
+    </span>
+   </td>
  </tr>
-
- <tr>
-    <td class="generictable">
-
-     <table width="400">
-
-
-       <tr>
-        <td><? echo "<input type=\"hidden\" name=\"time\" value=\"$time\">" ?><td>
-         <td><?echo "<input type=\"hidden\" name=\"courtid\" value=\"$courtid\">" ?><td>
-         <td></td>
-       </tr>
-       <tr>
-           <td><div class=normal>Are you sure you want to cancel this court?</div></td>
-           <td><input type="submit" name="cancel" value="Yes"></td>
-            <td>
-                <input type="button" value="No" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta()))?>'">
-            </td>
+	<tr>
+           <td>
+           		<div class="normal">Are you sure you want to cancel this court?</div>
+        	</td>
     </tr>
     <tr>
      <td>
-     <table width="350" cellspacing=2 cellpadding=2>
-
-       <tr>
-      <td></td>
-       <td><input type="hidden" name="cancelall" value="3"></td>
-       </tr>
-
-
-     </table>
-
+      	<input type="button" name="cancel" value="Yes" id="submitbutton">
+	    <input type="button" value="No" id="cancelbutton">
      </td>
     </tr>
 
 
- </table>
+
 
 </table>
+
+<input type="hidden" name="cancelall" value="3">
+<input type="hidden" name="time" value="<?=$time?>">
+<input type="hidden" name="courtid" value="<?=$courtid?>">
 </form>
 
 

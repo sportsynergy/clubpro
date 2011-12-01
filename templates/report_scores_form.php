@@ -1,12 +1,5 @@
 <?php
-/*
- * $LastChangedRevision: 847 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-01 10:26:06 -0600 (Tue, 01 Mar 2011) $
 
-*/
-?>
-<?
  //Initialize script variables
   $userarray = array();
 ?>
@@ -54,7 +47,10 @@ function onSubmitButtonClicked(){
 <table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
  <tr>
     <td class="clubid<?=get_clubid()?>th">
-    <font class="whiteh1"><div align="center"><? pv($DOC_TITLE) ?></div></font></td>
+    	<div class="whiteh1">
+    		<div align="center"><? pv($DOC_TITLE) ?></div>
+    	</div>
+    </td>
  </tr>
 
  <tr>
@@ -150,7 +146,7 @@ function onSubmitButtonClicked(){
        </tr>
        <tr>
 	       <td>
-	           <input type="button" name="submitme" value="submitme" id="submitbutton">
+	           <input type="button" name="submitme" value="Put this score in" id="submitbutton">
 	       </td>
 
     </tr>

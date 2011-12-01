@@ -88,6 +88,39 @@ function clearMessage(){
 	document.getElementById("message_div").innerHTML = "";
 }
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("message-formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("message-submitbutton", { value: "message-submitbuttonvalue" });
+        oSubmitButton1.on("click", onMessageSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onMessageSubmitButtonClicked(){
+	submitForm('message_preferences_form');
+}
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("general-formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("general-submitbutton", { value: "general-submitbuttonvalue" });
+        oSubmitButton1.on("click", onGeneralSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onGeneralSubmitButtonClicked(){
+	submitForm('general_preferences_form');
+}
+
+
 </script> 
  
 

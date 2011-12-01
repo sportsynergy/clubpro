@@ -1,37 +1,85 @@
-<?
+<html>
+<head>
+<title>Clubpro Login</title>
 
-/*
- * $LastChangedRevision: 799 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-01-02 20:23:24 -0600 (Sun, 02 Jan 2011) $
 
-*/
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css"> 
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
 
-?>
+<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
+<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" />
+<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
 
-<table cellspacing="0" cellpadding="0" border="0" width="710" align="center">
+<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
+<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/button-min.js"></script>
 
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
+
+</head>
+
+
+
+<body bgcolor=#ffffff link=#0000ff vlink=#000099 alink=#ff0000 class="yui-skin-sam">
+
+<script type="text/javascript" >
+
+YAHOO.clubpro.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+</script>
+
+<table cellspacing="0" cellpadding="0" border="0" width="710" align="center" id="formtable">
+<tr>
+	<td>
+		<img src="<?=$_SESSION["CFG"]["wwwroot"]?>/images/0.gif" >
+	</td>
+</tr>
+<tr>
+    <td height="25">
+    <!-- Spacer row -->
+    </td>
+</tr>
 <tr>
 	<td>
 		<span class="normal">
 		Thanks for looking into our online court reservation service.  Trying out this software before you buy it is a 
-		great way to see how it will fit in at your club.  As many of our current customers have found, once you see
+		great way to see how our online service will fit in at your club.  As many of our current customers have found, once you see
 		how simple this system is you're not going to want to go back.  So, go head, take the first step and register.  
 		After you submit this form you will be sent an email with some more instructions.  
 		</span>
 	</td>
 </tr>
+
 <tr>
-    <td height="15">
-    <!-- Spacer row -->
+    <td height="25">
+    <? include($_SESSION["CFG"]["templatedir"]."/form_header.php"); ?>
     </td>
 </tr>
 <tr>
 <td>
 
 	<table width="600" cellpadding="20" cellspacing="0">
-	     <tr>
-	         <td class=clubid0th><font class=whiteh1><div align="center"><? pv($DOC_TITLE) ?></div></font></td>
+	     
+	     <tr class="borderow">
+	         <td class=clubid0th>
+	         	<span class="whiteh1">
+	         		<div align="center"><? pv($DOC_TITLE) ?></div>
+	         	</span>
+	         </td>
 	    </tr>
 	
 	 	<tr>
@@ -119,7 +167,10 @@
 				  </tr>
 				  <tr>
 				  	<td>
-				  		<input type="submit" name="submit" value="Submit">
+				  		<div style="padding-top: 25px">
+					  		<input type="button" name="submit" value="Register Club" id="submitbutton">
+					  		<input type="hidden" name="submitme" value="submitme" >
+					  	</div>
 				  	</td>
 				  </tr>
 				</table>
@@ -131,3 +182,9 @@
 </td>
 </tr>
 </table>
+
+
+
+</body>
+
+</html>

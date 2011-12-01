@@ -1,10 +1,5 @@
 <?
 
-/*
- * $LastChangedRevision: 854 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-08 20:15:00 -0600 (Tue, 08 Mar 2011) $
- */
 
 include("../application.php");
 $DOC_TITLE = "Delete Player";
@@ -16,7 +11,7 @@ require_priv("2");
 $searchname= $_REQUEST["searchname"];
 $userid = $_REQUEST["userid"];
 
-if (match_referer() && isset($_POST)) {
+if (match_referer() && isset($_POST['submitme'])) {
      
      $frm = $_POST;
      include($_SESSION["CFG"]["templatedir"]."/header_yui.php");

@@ -1,10 +1,4 @@
-<?
-/*
- * $LastChangedRevision: 815 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-01-30 17:00:33 -0600 (Sun, 30 Jan 2011) $
- */
-?>
+
   
   
   <script language="javascript" type="text/javascript">
@@ -21,6 +15,7 @@ function wipeOutClubMessages()
 
       document.clubnewsmessagesform.submit();
 }
+
 </script>
 
 <form name="clubnewsmessagesform" method="post" action="<?=$ME?>">
@@ -31,7 +26,7 @@ function wipeOutClubMessages()
 <form name="message_preferences_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
   
   
-<table width="550" class="tabtable">
+<table width="550" class="tabtable" id="message-formtable">
 	<tr>
 		<td>
 		
@@ -112,8 +107,10 @@ function wipeOutClubMessages()
 				</tr>
 				
 				<tr>
-					<td><input type="submit" name="submit" value="Submit"></td>
-					<td></td>
+					<td colspan="2">
+						<input type="button" name="submit" value="Update Message Preferences" id="message-submitbutton">
+					</td>
+
 				</tr>
 			</table>
 			</td>
@@ -121,5 +118,6 @@ function wipeOutClubMessages()
 		</table>
 
 <input type="hidden" name="preferenceType" value="message">
+<input type="hidden" name="submitme" value="submitme">
 
 </form>

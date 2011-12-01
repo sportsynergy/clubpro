@@ -1,17 +1,37 @@
-<?
+<script type="text/javascript">
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-*/
 
-?>
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
+
+</script>
 
 <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php" onSubmit="SubDisable(this);" autocomplete="off">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable">
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
   
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
@@ -43,8 +63,8 @@
 		       }
 		       
 		       ?>
-           		<input type="submit" name="cancel" <?=$disabled?> value="Yes"> 
-            	<input type="button" value="No, go back" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?=gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta()))?>'">
+           		<input type="button" name="cancel" <?=$disabled?> value="Yes" id="submitbutton"> 
+            	<input type="button" value="No, go back" id="cancelbutton">
             </td>
     </tr>
  </table>

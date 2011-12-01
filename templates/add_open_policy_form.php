@@ -1,13 +1,31 @@
 <script language="JavaScript">
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/admin/manage_club_policies.php'
+ }
+
 <?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-
-*/
 
 $thisYear = gmdate("Y");
 $daysinFeb = gmdate("t", gmmktime(0,0,0,2,1,$thisYear));
@@ -79,7 +97,7 @@ print "var thisyear = new Array(13);
 <form name="entryform" method="post" action="<?=$ME?>">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable">
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
     	<span class=whiteh1>
@@ -223,9 +241,10 @@ print "var thisyear = new Array(13);
        </tr>
 
        <tr>
-           <td><input type="submit" name="submit" value="Submit"></td>
-           <td><input type="submit" name="back" value="Cancel"></td>
-
+           <td colspan="2">
+           	<input type="button" name="submit" value="Add Open Policy" id="submitbutton">
+           	<input type="button" name="back" value="Go Back" id="cancelbutton">
+           </td>
     </tr>
  </table>
 

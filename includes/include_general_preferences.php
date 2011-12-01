@@ -1,17 +1,11 @@
-<?
-/*
- * $LastChangedRevision: 836 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-22 17:35:17 -0600 (Tue, 22 Feb 2011) $
- */
-?>
+
 
 <form name="general_preferences_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
 
 
 <div style="height: 25px;"></div>
 
-<table width="550" class="tabtable">
+<table width="550" class="tabtable" id="general-formtable">
 	<tr>
 		<td>
 			<table class="skinnytable">
@@ -164,8 +158,9 @@
 					<? } ?>
 					
 					<tr>
-						<td><input type="submit" name="submit" value="Submit"></td>
-						<td></td>
+						<td colspan="2">
+						<input type="button" name="submit" value="Update  General Preferences" id="general-submitbutton"></td>
+
 					</tr>
 		
 			</table>
@@ -175,5 +170,6 @@
 	
 
 <input type="hidden" name="preferenceType" value="general">
+<input type="hidden" name="submitme" value="submitme">
 
 </form>

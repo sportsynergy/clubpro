@@ -1,11 +1,5 @@
 <?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-
-*/
 
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/ladderlib.php");
@@ -246,6 +240,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	$var->challengee_fullname = $challengee->firstname ." ". $challengee->lastname;
 	$var->support = $_SESSION["CFG"]["support"];
 	
+	
 	$var->message = $message;
 
 	$clubfullname = get_clubname();
@@ -266,7 +261,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	if( isDebugEnabled(1) ) logMessage($challengee_message);
 	
 	mail("$var->challenger_fullname <$challenger->email>", "$clubfullname -- Ladder Match", $challenger_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-	mail("$var->challengee_fullname <$challengee->email>", "$clubfullname -- Ladder Match", $challengee_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+	mail("$var->challengee_fullname <$challengee->email>", "$clubfullname -- Ladder Match", $challengee_message, "From: $challenger->email", "-f$challenger->email");
 }
 
 ?>

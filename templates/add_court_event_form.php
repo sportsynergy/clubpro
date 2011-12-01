@@ -63,7 +63,7 @@ function onSubmitButtonClicked(){
      
        <tr>
            <td>
-           		<input type="button" name="submit" value="Add Court Event" id="submitbutton"/>
+           		<input type="button" name="submit" value="<?=$DOC_TITLE?>" id="submitbutton"/>
            		<input type="hidden" name="policyid" value="<?=$courtEvent['eventid']?>"/>
            		<input type="hidden" name="submitme" value="submitme"/>
           </td>

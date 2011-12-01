@@ -7,24 +7,20 @@ require_priv("2");
 
 $DOC_TITLE = "Add Court Event";
 
+
 //This puppy will be set when editing a policy
 $eventid = $_REQUEST["eventid"];
 if( !empty($eventid) ) {
 	$courtEvent = load_court_event($eventid);
+	$courtEventName= htmlentities($courtEvent['eventname']);
+	$DOC_TITLE = "Update Court Event";
+
 	
-	
-	if(get_magic_quotes_gpc()){
-			$courtEventName=stripslashes($courtEvent['eventname']);
-		}else{
-			
-			$courtEventName=addslashes($courtEvent['eventname']);
-		}
-		
 }
 
 
 /* form has been submitted, try to create the new role */
-if (match_referer() && isset($_POST['submit'])) {
+if (match_referer() && isset($_POST['submitme'])) {
         
 		$frm = $_POST;
         $errormsg = validate_form($frm, $errors);

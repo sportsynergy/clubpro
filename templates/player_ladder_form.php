@@ -26,7 +26,7 @@
 			 
 ?>
 <div id="challengedialog" class="yui-pe-content">
-<div class="hd">Challenge this Mofo</div>
+
 <div class="bd">
 <form method="POST" action="<?=$ME?>">
 	<label for="from_name">From:</label><input type="textbox" name="firstname" value="<?=get_userfullname()?>" disabled="disabled"/>
@@ -34,15 +34,18 @@
 	<label for="to_email">E-mail:</label><input type="textbox" name="email" disabled="disabled" id="to_email" size="50"> 
 
 	<div class="clear"></div>
-	<label for="textarea">Message:</label><textarea name="textarea" cols="50" rows="10" onKeyDown="limitText(this.form.textarea,this.form.countdown,140);" 
-			onKeyUp="limitText(this.form.textarea,this.form.countdown,140);"></textarea>
+	<label for="textarea">Message:</label><textarea name="textarea" cols="50" rows="10" onKeyDown="limitText(this.form.textarea,this.form.countdown,250);" 
+			onKeyUp="limitText(this.form.textarea,this.form.countdown,250);">Hello, I would like to challenge you in the ladder.  Please let me know what time works best for you. See you on the court.</textarea>
 
 	<div class="clear"></div>
 	<span class="normalsm">
-				You have <input readonly type="text" name="countdown" size="3" value="140"> characters left.
+				You have <input readonly type="text" name="countdown" size="3" value="9"> characters left.
 	</span>	
 	<input type="hidden" name="cmd" value="challengeplayer">
    	<input type="hidden" name="challengeeid" id="challengeeid">
+   	<script>
+   
+   	</script>
 
 </form>
 </div>
@@ -140,10 +143,13 @@ Nobody has signed up for the ladder yet.
 	<tr>
 	<td valign="top">
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" >
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
  <tr>
     <td class=clubid<?=get_clubid()?>th>
-    	<font class="whiteh1"><div align="center"><? pv($DOC_TITLE) ?></div></font></td>
+    	<span class="whiteh1">
+    		<div align="center"><? pv($DOC_TITLE) ?></div>
+    	</span>
+    </td>
  </tr>
 
  <tr>

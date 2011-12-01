@@ -1,11 +1,6 @@
 <?
 /*
  * 
- * $LastChangedRevision: 843 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-28 12:15:07 -0600 (Mon, 28 Feb 2011) $
- * 
- * 
  * The following variables are required before loading this form:
  * 
  * 		$userid
@@ -59,7 +54,7 @@ YAHOO.util.Event.onDOMReady(function () {
 							  buttons : [ { text:"Add Player", handler:handleSubmit, isDefault:true } ]
 							});
 
-	YAHOO.clubevent.container.dialog1.setHeader('Pick A Player');
+	YAHOO.clubevent.container.dialog1.setHeader('Add a player to this event');
 
 	// Validate the user has selected a name from the drop down
 	YAHOO.clubevent.container.dialog1.validate = function() {
@@ -125,6 +120,30 @@ document.onkeypress = function (aEvent)
   	
 };
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
 </script>
 
 
@@ -140,7 +159,7 @@ document.onkeypress = function (aEvent)
 <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" onSubmit="SubDisable(this);" autocomplete="off">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable">
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -314,8 +333,8 @@ document.onkeypress = function (aEvent)
       <tr>
        <td>
 	       <br>
-	       <input type="submit" name="submit" value="Update Court Reservation">
-	       <input type="button" value="Back to Court Reservations" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
+	       <input type="button" name="submit" id="submitbutton" value="Update Court Reservation">
+	       <input type="button" id="cancelbutton" value="Back to Court Reservations">
 	       <input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>">
 	       <input type="hidden" name="courtid" value="<?=$courtid?>">
 	       <input type="hidden" name="time" value="<?=$time?>">
@@ -327,7 +346,7 @@ document.onkeypress = function (aEvent)
        </tr>
        <tr>
        	<td>
-       		<input type="button" value="Back to Court Reservations" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
+       		<input type="button" id="cancelbutton" value="Back to Court Reservations" >
 	   </td>
        </tr>
          

@@ -1,28 +1,25 @@
 <?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
- */
 
 include("../application.php");
 require_login();
 require_priv("2");
 
 $DOC_TITLE = "Scheduling Policy Setup";
+$buttonLabel = "Add Scheduling Policy";
 
 $policyid = $_REQUEST["policyid"];
 
 //If a policy id was passed in, then load it up.
 if( !empty($policyid) ) {
 	$schedulePolicy = load_reservation_policy($policyid);
+	$buttonLabel = "Update Scheduling Policy";
 }
 
 
 
 /* form has been submitted, try to create the new role */
-if (match_referer() && isset($_POST['submit'])) {
+if (match_referer() && isset($_POST['submitme'])) {
         
 	$frm = $_POST;
         $errormsg = validate_form($frm, $errors);

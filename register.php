@@ -1,18 +1,11 @@
 <?
 
-/*
- * $LastChangedRevision:  $
- * $LastChangedBy:  $
- * $LastChangedDate:  $
-
-*/
-
 
 include("./application.php");
 $DOC_TITLE = "Register Club";
 
 /* form has been submitted, check if it the user login information is correct */
-if (match_referer() && isset($_REQUEST['submit'])) {
+if (match_referer() && isset($_REQUEST['submitme'])) {
 
         $frm = $_REQUEST;
         $errormsg = validate_form($frm, $errors);
@@ -39,9 +32,9 @@ if (match_referer() && isset($_REQUEST['submit'])) {
 
 $availbleTimezones = load_avail_timezones();
 
-include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
+
 include($_SESSION["CFG"]["templatedir"]."/register_club_form.php");
-include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+
 
 /******************************************************************************
  * FUNCTIONS

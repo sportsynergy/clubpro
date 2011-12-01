@@ -154,7 +154,7 @@ function onSubmitButtonClicked(){
      <tr>
         <td colspan="2">
         <br>
-            <input type="button" value="Submit" id="submitbutton">
+            <input type="button" value="Send out Emails" id="submitbutton">
         </td>
      </tr>
      <tr>

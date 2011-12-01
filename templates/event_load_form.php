@@ -83,17 +83,44 @@ function addOption(selectbox,text,value )
 	selectbox.options.add(optn);
 }
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+function onCancelButtonClicked(){
+
+    <?
+    $mytime = $_SESSION["current_time"];
+    ?>
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$mytime+get_tzdelta() ),gmdate("j", $mytime+get_tzdelta()),gmdate("Y", $mytime+get_tzdelta())) ?>'
+ }
+
 </script>
 
 <form name="entryform" method="post" action="<?=$ME?>">
 
 
 
-<table cellspacing="0" cellpadding="0" width="550" class="generictable">
+<table cellspacing="0" cellpadding="0" width="550" class="generictable" id="formtable">
  
  
  <tr class="borderow">
-    <td class=clubid<?=get_clubid()?>th height=60>
+    <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
     		<div align="center">Event Reservation</div>
     	</span>
@@ -232,8 +259,8 @@ function addOption(selectbox,text,value )
       
        <tr>
            <td colspan="2">
-           		<input type="submit" name="submit" value="Submit">
-           		<input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
+           		<input type="button" name="submit" value="Load Events" id="submitbutton">
+           		<input type="button" value="Cancel" id="cancelbutton">
            </td>
     	</tr>
  </table>

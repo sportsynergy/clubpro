@@ -58,13 +58,36 @@ document.onkeypress = function (aEvent)
     }
   	
 }
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+
+    });
+
+} ();
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
 </script>
 
 
 <form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable">
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
   <tr>
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -128,8 +151,8 @@ document.onkeypress = function (aEvent)
 	       }
 	       
 	       ?>
-	       <input type="submit" name="submit" value="Make Reservation"  <?=$disabled?>>
-			        <input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?=gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta()))?>'">
+	       <input type="button" name="submit" value="Make Reservation"  <?=$disabled?> id="submitbutton">
+			        <input type="button" value="Cancel" id="cancelbutton">
 			    </td>
 		    </tr>
 
@@ -142,6 +165,7 @@ document.onkeypress = function (aEvent)
 
 </table>
 
+<input type="hidden" name="submitme" value="submitme"/>
 <input type="hidden" name="time" value="<?=$time?>"/>
 <input type="hidden" name="courtid" value="<?=$courtid?>"/>
 <input type="hidden" name="lastupdated" value="<?=$lastupdated?>">

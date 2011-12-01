@@ -1,16 +1,34 @@
-<?
-/*
- * $LastChangedRevision: 843 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-28 12:15:07 -0600 (Mon, 28 Feb 2011) $
+<script language="JavaScript">
 
-*/
-?>
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("event_formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("event_submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onEventSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("event_cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onEventCancelButtonClicked);
+
+    });
+
+} ();
+
+
+function onEventSubmitButtonClicked(){
+	submitForm('event_reservation_form');
+}
+
+function onEventCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+}
+</script>
 
 <form name="event_reservation_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
 
 
- <table cellspacing="10" cellpadding="0" width="400" class="tabtable">
+ <table cellspacing="10" cellpadding="0" width="400" class="tabtable" id="event_formtable">
 
 
         <tr>
@@ -72,8 +90,8 @@
        <tr>
            <td></td>
            <td>
-           <input type="submit" name="submit" value="Submit">
-           <input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'">
+           <input type="button" name="submit" value="Make Reservation" id="event_submitbutton">
+           <input type="button" value="Cancel" id="event_cancelbutton">
         
            
            </td>

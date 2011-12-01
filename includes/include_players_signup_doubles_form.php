@@ -1,12 +1,5 @@
 <?
 
-  /*
- * $LastChangedRevision: 861 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-16 12:42:52 -0500 (Wed, 16 Mar 2011) $
-*/
-
-
   //reservation_doubles_wanted_form.php
   $DOC_TITLE = "Doubles Court Reservation";
 
@@ -44,12 +37,39 @@
 
 ?>
 
+<script type="text/javascript">
 
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
+</script>
 
 <form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable">
+<table cellspacing="0" cellpadding="20" width="400" class="generictable" >
   <tr>
     <td class=clubid<?=get_clubid()?>th>
     	<span class=whiteh1>
@@ -71,9 +91,9 @@
          	<td class="normal">Play with <?echo "$playerTwoNameArray[firstname] $playerTwoNameArray[lastname]"?></td>
        </tr>
 	    <tr> 
-		    <td colspan="2">
-		           	<input type="submit" name="submit" value="Submit">
-		           	<input type="button" value="Cancel" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta()))?>'">
+		    <td colspan="2" id="formtable">
+		           	<input type="button" name="submit" value="Make Reservation" id="submitbutton">
+		           	<input type="button" value="Go Back" id="cancelbutton">
 		          	<input type="hidden" name="time" value="<?=$_REQUEST["time"]?>">
 	         		<input type="hidden" name="courtid" value="<?=$_REQUEST["courtid"]?>">
 					<input type="hidden" name="courttype" value="doubles">

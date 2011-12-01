@@ -1,17 +1,27 @@
-<?
-  /*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
+<script type="text/javascript">
 
-*/
+YAHOO.example.init = function () {
 
-?>
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+</script>
 
 <form name="entryform" method="post" action="<?=$ME?>">
 
 
-<table cellspacing="0" cellpadding="0" width="450" class="generictable">
+<table cellspacing="0" cellpadding="0" width="450" class="generictable" id="formtable">
   <tr class="borderow">
     <td class="clubid<?=get_clubid()?>th">
 		<span class="whiteh1">
@@ -49,8 +59,10 @@
 	                       	</td>
                        </tr>
                        <tr>
-                            <td><input type="submit" name="submit" value="Submit"></td>
-                            <td></td>
+                            <td colspan="2">
+                            	<input type="button" name="submit" value="Update Footer Message" id="submitbutton">
+                            
+                            </td>
                         </tr>
                   </table>
              </td>

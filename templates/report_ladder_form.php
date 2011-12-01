@@ -1,11 +1,4 @@
-<?php
-/*
- * $LastChangedRevision: 847 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-01 10:26:06 -0600 (Tue, 01 Mar 2011) $
 
-*/
-?>
 <?
  //Initialize script variables
   $userarray = array();
@@ -25,6 +18,29 @@ function SubDisable(dform) {
 return true;
 }
 
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbutton1value" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+function onCancelButtonClicked(){
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php'
+	
+ }
 </script>
 
 
@@ -34,7 +50,7 @@ return true;
 
 
 
-	<table cellspacing="0" cellpadding="20" width="400" class="generictable">
+	<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
 	 <tr>
 	    <td class="clubid<?=get_clubid()?>th">
 	    <font class="whiteh1"><div align="center"><? pv($DOC_TITLE) ?></div></font></td>
@@ -72,8 +88,9 @@ return true;
 			     
 			       <tr>
 				       <td colspan="2">
-				           <input type="submit" name="submit" value="Record Score">
-				           <input type="button" value="No, Go Back" onClick="parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php'">
+				           <input type="button" name="submit" value="Record Score" id="submitbutton">
+				           <input type="hidden" name="submitme" value="submitme" >
+				           <input type="button" value="No, Go Back" id="cancelbutton">
 				       </td>
 			
 			    </tr>

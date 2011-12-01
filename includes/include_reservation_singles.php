@@ -1,11 +1,4 @@
-<?
-/*
- * $LastChangedRevision: 840 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-26 18:52:13 -0600 (Sat, 26 Feb 2011) $
 
-*/
-?>
 
 
 <form name="singlesform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
@@ -75,7 +68,9 @@
              <? if( isSiteBoxLeageEnabled() ){ ?>
              <option value="1">Box League</option>
              <? } ?>
-             <option value="2">Challenge</option>
+             <? if ( isPointRankingScheme() ) {?>
+              <option value="2">Challenge</option>
+             <? } ?>
              <? if( get_roleid() ==2 || get_roleid()==4) {?>
              <option value="4">Lesson</option>
              <? } ?>

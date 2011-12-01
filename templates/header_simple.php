@@ -1,13 +1,4 @@
-<?
 
-/*
- * $LastChangedRevision: 797 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2010-12-30 17:04:10 -0600 (Thu, 30 Dec 2010) $
-
-*/
-
-?>
 
 <html>
 <head>

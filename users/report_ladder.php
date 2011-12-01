@@ -1,11 +1,6 @@
 <?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
 
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/ladderlib.php");
@@ -24,7 +19,7 @@ $ladderMatchArray = mysql_fetch_array($ladderMatchResult);
 
 /* form has been submitted, now reserve court */
 
-if (match_referer() && isset($_POST["submit"])) {
+if (match_referer() && isset($_POST["submitme"])) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
         $wwwroot = $_SESSION["CFG"]["wwwroot"];
