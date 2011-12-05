@@ -34,11 +34,7 @@ function wipeOutClubMessages()
        				<table width="450" cellpadding="1" cellspacing="0" border="0">
                         <tr>
                            <td align="left">
-                               <span class="biglabel">Scrolling Message</span> 
-	                               <span class="normal">
-	                               		<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_court_event.php">Add</a>
-	                               	</span>
-                               <br/>
+                               <span class="biglabel">Scrolling Message</span>
                            </td>
                          </tr>
                          <tr>
@@ -60,8 +56,8 @@ function wipeOutClubMessages()
 				<tr>
 					<td class="label" width="125">Message Display:</td>
 					<td>
-						On<input type="radio" name="messagedisplay" value="on" <? if($siteMessages["enable"] ==1){ echo "checked";} ?>>
-						Off<input type="radio" name="messagedisplay" value="off" <? if($siteMessages["enable"] ==0){ echo "checked";} ?>>
+						On<input type="radio" name="messagedisplay" value="on" <? if($scrollingMessages["enable"] ==1){ echo "checked";} ?>>
+						Off<input type="radio" name="messagedisplay" value="off" <? if($scrollingMessages["enable"] ==0){ echo "checked";} ?>>
 					</td>
 				</tr>
 				
@@ -71,7 +67,7 @@ function wipeOutClubMessages()
 						<span class="label">Scrolling Message:</span><br/>
 					</td>
 					<td>
-						<textarea cols="45" rows="4" name="Messagetextarea"><?=$siteMessages["message"] ?></textarea>
+						<textarea cols="45" rows="4" name="Messagetextarea"><?=$scrollingMessages["message"] ?></textarea>
 						<?err($errors->Messagetextarea)?>
 					</td>
 				</tr>
