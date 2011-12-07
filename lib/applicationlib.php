@@ -1341,6 +1341,11 @@ function email_players($resid, $emailType) {
 		} 
 		//Default for team wanted
 		else {
+			
+			//guard against certain types of situations
+			if( empty($var->timestamp) || empty($var->courtid) || empty($var->teamid) ){
+				return;
+			}
 			$var->signupurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->teamid;
 			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/doubles_wanted.php", $var);
 		}
