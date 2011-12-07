@@ -1,12 +1,5 @@
 <?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
- */
-
-
 
 /**
  * 
@@ -515,7 +508,7 @@ function printDoublesReservationFull($teamid1, $teamid2, $lock, $matchType, $tim
 		
 		if($scored){
 			$trclass = "postopencourt";
-		} else if($matchType==1 || $matchType==2 || $matchType==3) {
+		} else if($matchType==0 || $matchType==1 || $matchType==2 || $matchType==3) {
 			$trclass = "reportscorecl$clubid";
 		} else {
 			$trclass = "postopencourt";
@@ -536,7 +529,7 @@ function printDoublesReservationFull($teamid1, $teamid2, $lock, $matchType, $tim
 					     
 					       <? if(!$inpast) { ?>
                        			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
-                     		<? } else if(!$scored && ($matchType==1 || $matchType==2 || $matchType==3)) {?>
+                     		<? } else if(!$scored && ($matchType==0 || $matchType==1 || $matchType==2 || $matchType==3)) {?>
                      			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$reservationid?>">
                      		<?}  ?>
                      		
@@ -544,7 +537,7 @@ function printDoublesReservationFull($teamid1, $teamid2, $lock, $matchType, $tim
 		                  <?=printTeam($teamid1, $creator)?>
 						  <?=printTeam($teamid2, $creator)?>	
 						  
-						  <? if(!$inpast && !$scored && ($matchType==1 || $matchType==2 || $matchType==3)) { ?>
+						  <? if(!$inpast && !$scored && ($matchType==0 || $matchType==1 || $matchType==2 || $matchType==3)) { ?>
                        			</a>
                      		<? } ?>										 
 		                
@@ -644,7 +637,7 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
 		
 		if($scored){
 			$trclass = "postopencourt";
-		} else if($matchtype==1 || $matchtype==2 || $matchtype==3) {
+		} else if($matchtype==0 || $matchtype==1 || $matchtype==2 || $matchtype==3) {
 			$trclass = "reportscorecl$clubid";
 		} else {
 			$trclass = "postopencourt";
@@ -677,7 +670,7 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
             	
             	<? if(!$inpast) { ?>
                        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
-                 <? } else if(!$scored && ($matchtype==1 || $matchtype==2 || $matchtype==3)) {?>
+                 <? } else if(!$scored && ($matchtype==0 ||$matchtype==1 || $matchtype==2 || $matchtype==3)) {?>
                      	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$reservationid?>">
                  <?}  ?>
                 
@@ -685,7 +678,7 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
                 <?=printPlayer($user1Array[0], $user1Array[1], $userid1, $creator)?><br/>
                 <?=printPlayer($user2Array[0], $user2Array[1], $userid2, $creator)?><br/>
                 
-                 <? if(!$inpast && !$scored && ($matchType==1 || $matchType==2 || $matchType==3)) { ?>
+                 <? if(!$inpast && !$scored && ($matchType==0 || $matchType==1 || $matchType==2 || $matchType==3)) { ?>
                        </a>
                  <? } ?>	
                   

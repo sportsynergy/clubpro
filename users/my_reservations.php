@@ -1,10 +1,5 @@
 <?
-/*
- * $LastChangedRevision: 854 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-08 20:15:00 -0600 (Tue, 08 Mar 2011) $
 
-*/
 include("../application.php");
 require_login();
 

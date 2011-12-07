@@ -141,12 +141,13 @@ function onSubmitButtonClicked(){
 			   <input type="hidden" name="reservationid" value="<?=$reservationid ?>">
 			   <input type="hidden" name="matchtype" value="<?=$restypearray['matchtype'] ?>">
 			   <input type="hidden" name="source" value="<?=$source ?>">
+			   <input type="hidden" name="submitme" value="submitme">
            </td>
 
        </tr>
        <tr>
 	       <td>
-	           <input type="button" name="submitme" value="Put this score in" id="submitbutton">
+	           <input type="button" name="submit" value="Put this score in" id="submitbutton">
 	       </td>
 
     </tr>

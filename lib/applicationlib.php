@@ -1,10 +1,5 @@
 <?
 
-/*
- * $LastChangedRevision: 863 $
- * $LastChangedBy: Adam Preston $isMailDebugEnabled
- * $LastChangedDate: 2011-05-20 17:23:46 -0500 (Fri, 20 May 2011) $
- */
 
 /**
  * Logs in user
@@ -2568,8 +2563,9 @@ function record_score(&$frm, $source) {
 
 		$rankingArray = calculateRankings($winneridarray[0], $loseridarray[0]);
 		
-		$rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
-		
+		if ($ctidarray[3] == 2) {
+			$rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
+		}
 		
 		$newWinnerRanking = $rankingArray['winner'];
 		$newLoserRanking = $rankingArray['loser'];	
