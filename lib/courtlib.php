@@ -731,7 +731,13 @@ function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $i
             <span class="normalsm1">
             
              <? if(!$inpast){?>
-                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
+                 
+                  <? if($matchtype==5) { ?>
+                 	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>&cmd=cancelall">
+                 <? } else {  ?>
+	                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
+	              <? } ?> 
+	                
              <? } ?>
              
              <?=gmdate("g:i",$time)?><br> 
