@@ -1,11 +1,3 @@
-<?
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-
-*/
-?>
 
 
 <script language="Javascript">
@@ -283,6 +275,7 @@ if(count($reservationWindowArray)>1){
 <input type="hidden" name="courtduration" value="<?=$courtduration?>">
 <input type="hidden" name="courtid" value="<?=$courtid?>">
 <input type="hidden" name="time" value="<?=$time?>">
+<input type="hidden" name="submitme" value="submitme">
 
 </form>
 

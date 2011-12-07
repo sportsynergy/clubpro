@@ -1,10 +1,5 @@
 <?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
- */
 
 include("../application.php");
 $DOC_TITLE = "Add Events";
@@ -14,7 +9,7 @@ require_priv("2");
 $courtid = $_REQUEST["courtid"];
 $time = $_REQUEST["time"];
 
-if (match_referer() && isset($_POST['submit'])) {
+if (match_referer() && isset($_POST['submitme'])) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
         $wwwroot = $_SESSION["CFG"]["wwwroot"];       
