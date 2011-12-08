@@ -122,10 +122,10 @@ Nobody has signed up for the ladder yet.
 <? } else{ ?>
 
 <div id="ladderControlPanel" style="padding-bottom: 5px;">
-<span class="normalsm">
+<span class="normal">
  <a href=javascript:newWindow('../help/club_ladders.html')> Ladders explained</a> |
 <?  if(get_roleid()==2 || get_roleid()==4){ ?>
-	 <span class="normalsm" id="show"><a style="text-decoration: underline; cursor: pointer">Add Player</a></span>
+	 <span class="normal" id="show"><a style="text-decoration: underline; cursor: pointer">Add Player</a></span>
 <? } else if($playingInLadder){ ?>
  <a href="javascript:submitForm('deleteform')">Take me out of this</a>
 <? } else{ ?>

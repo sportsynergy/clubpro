@@ -1,11 +1,4 @@
-<?php
-/*
- * $LastChangedRevision: 847 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-01 10:26:06 -0600 (Tue, 01 Mar 2011) $
 
-*/
-?>
 <?
 
   //Get the skill range for players wanted advertising for the club.
@@ -154,7 +147,7 @@ function onSubmitButtonClicked(){
      <tr>
         <td colspan="2">
         <br>
-            <input type="button" value="Send out Emails" id="submitbutton">
+            <input type="button" value="Complete Reservation" id="submitbutton">
         </td>
      </tr>
      <tr>

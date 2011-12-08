@@ -548,13 +548,7 @@ function validate_form(&$frm, &$errors) {
 				
 				if( isDebugEnabled(1) ) logMessage("court_reservation_validate_form(): Validating a player making a new doubles reservation");
 				
-				// Make sure that at least one player has been specified
-				if( empty($frm["playeronename"]) 
-						&& empty($frm["playertwoname"]) 
-						&&  empty($frm["playerthreename"]) 
-						&& empty($frm["playerfourname"]) ){
-					return "You have to put at least one name in";
-				}
+				
 				
 				if(  (isGuestPlayer($frm['playeroneid'], $frm['playeronename'])
 						|| isGuestPlayer($frm['playertwoid'], $frm['playertwoname'])
@@ -598,11 +592,17 @@ function validate_form(&$frm, &$errors) {
 					}
 				}
 				else{
-					
+					//for a regular player, they have to put in at least two people
 					if( get_roleid()==1
 					    && !$guestReservation 
 						&& !isAtLeastTwoPlayerSpecifiedForDoubles( $frm['playeroneid'], $frm['playertwoid'], $frm['playerthreeid'], $frm['playerfourid'])  ) {
 						return "For doubles, please specify at least two people";
+					}
+					//Administrators can still make a solo reservation
+					if( (get_roleid()==2 || get_roleid==4) 
+						&& !isAtLeastOnePlayerSpecifiedForDoubles( $frm['playeroneid'], $frm['playertwoid'], $frm['playerthreeid'], $frm['playerfourid']) 
+					){
+						return "For doubles, please specify at least one person";
 					}
 				}
 			}
