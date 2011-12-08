@@ -39,7 +39,7 @@
 
 	<div class="clear"></div>
 	<span class="normalsm">
-				You have <input readonly type="text" name="countdown" size="3" value="9"> characters left.
+				You have <input readonly type="text" name="countdown" size="3" value="127"> characters left.
 	</span>	
 	<input type="hidden" name="cmd" value="challengeplayer">
    	<input type="hidden" name="challengeeid" id="challengeeid">
