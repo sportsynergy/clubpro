@@ -144,6 +144,9 @@
     			  <? if ( isPointRankingScheme() ) {?>
               		<option value="2">Challenge</option>
              	<? } ?>
+             	<? if( get_roleid() ==2 || get_roleid()==4) {?>
+             		<option value="4">Lesson</option>
+             <? } ?>
     		</select>
     	</td>
     </tr>

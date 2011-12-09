@@ -523,9 +523,13 @@ function printDoublesReservationFull($teamid1, $teamid2, $lock, $matchType, $tim
 		 <tr class="<?=$trclass?>">
 		        <td align="center">
 		        	<span class="normalsm1">
-		        		<? if($lock=="y"){ ?>
-					           <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
-					     <? }?> 
+		        		 <? if($matchType==4){ ?>
+		          				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">
+		    			<? } 
+		    			
+			            if($locked=="y"){ ?>
+							<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
+						<? }?>
 					     
 					       <? if(!$inpast) { ?>
                        			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
