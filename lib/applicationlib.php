@@ -1,5 +1,14 @@
 <?
 
+/**
+ * 
+ * @param $dateString
+ */
+function formatDate($dateString){
+	
+	return date("Y-n-d G:i:s", $dateString);
+}
+
 
 /**
  * Logs in user
