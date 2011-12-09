@@ -1,11 +1,9 @@
-/*
- * $LastChangedRevision: 162 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2006-11-07 21:18:09 -0600 (Tue, 07 Nov 2006) $
 
-*/
 /**********General***************************************************/
 
+.hideme{
+	display: none;	
+}
 
 .mainbody{
 	background-image: url(../images/image001.jpg);

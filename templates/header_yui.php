@@ -27,7 +27,9 @@
         <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/container-min.js"></script>
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/dragdrop/dragdrop-min.js"></script> 
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/calendar-min.js"></script>
+		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/json/json-min.js"></script>
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/connection/connection-min.js"></script>
+
 
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
 		<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/button-min.js"></script>

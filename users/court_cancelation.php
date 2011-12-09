@@ -1,11 +1,5 @@
 <?
 
-/*
- * $LastChangedRevision: 843 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-28 12:15:07 -0600 (Mon, 28 Feb 2011) $
-
-*/
 
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/reservationlib.php");

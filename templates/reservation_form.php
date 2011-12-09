@@ -1,11 +1,4 @@
-<?
-/*
- * $LastChangedRevision: 847 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-01 10:26:06 -0600 (Tue, 01 Mar 2011) $
 
-*/
-?>
 <?
   $DOC_TITLE = "Court Reservation";
 

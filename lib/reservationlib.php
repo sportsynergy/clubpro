@@ -1,5 +1,13 @@
 <?
 
+/**
+ * 
+ * @param $dateString
+ */
+function formatDate($dateString){
+	
+	return date("Y-n-d G:i:s", $dateString);
+}
 
 /**
  * Validates a doubles reservation.  Checks that of the four players entered that one is an actual player.  The way that the form may

@@ -5664,6 +5664,22 @@ function getRecentSiteActivity($siteid){
 }
 
 /**
+ * Gets recent activity older than a $startDate
+ * 
+ * @param $siteId
+ */
+function getRecentSiteActivityBlock($siteid,$startDate){
+	
+	$query = "SELECT activity.description,activity.activitydate from tblSiteActivity activity 
+				WHERE siteid = $siteid AND enddate is NULL
+				AND activity.activitydate < '$startDate'
+				ORDER BY activity.activitydate DESC LIMIT 3";
+	
+	return db_query($query);
+	
+}
+
+/**
  * Gets the Club news
  * @param $siteid
  */
