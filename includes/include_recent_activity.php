@@ -85,7 +85,7 @@ var callback =
 
 
 function makeRequest(){
-	var sUrl = "<?=$_SESSION["CFG"]["wwwroot"]?>/users/recent_activity.php?start="+recentActivity+"&siteid="+siteid; 
+	var sUrl = "<?=$_SESSION["CFG"]["wwwroot"]?>/api/recent_activity.php?start="+recentActivity+"&siteid="+siteid; 
 	var request = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 	
 }
