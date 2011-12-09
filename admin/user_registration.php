@@ -12,7 +12,7 @@ $availableSitesResult = load_avail_sites();
 $extraParametersResult = load_site_parameters();
 
 /* form has been submitted, try to create the new user account */
-if ( match_referer() && isset($_POST['submitme'])  ) {
+if ( match_referer() && isset($_POST) ) {
 
         $frm = $_POST;
       

@@ -1,30 +1,5 @@
 
-<script type="text/javascript">
 
-YAHOO.clubpro.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-    });
-
-} ();
-
-
-function onSubmitButtonClicked(){
-	submitForm('entryform');
-}
-
- function onCancelButtonClicked(){
-
-	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
- }
-
-</script>
 
 <form name="entryform" method="post" action="<?=$ME?>">
 
@@ -260,7 +235,6 @@ function onSubmitButtonClicked(){
 	</tr>
 </table>
 
-<input type="hidden" name="submitme" value="submitme">
 
 </form>
 
@@ -269,3 +243,31 @@ function onSubmitButtonClicked(){
 	<span class="warning">* </span>
 	<span class="normal">indicates a required field</span>	
 </div>
+
+
+<script type="text/javascript">
+
+YAHOO.clubpro.init = function () {
+
+    YAHOO.util.Event.onContentReady("formtable", function () {
+
+        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
+        oCancelButton.on("click", onCancelButtonClicked);
+    });
+
+} ();
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+ function onCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
+</script>
