@@ -3,7 +3,7 @@
 
 <form name="singlesform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
 
-     <table cellspacing="10" cellpadding="0" width="440" class="tabtable" id="formtable">
+     <table cellspacing="10" cellpadding="0" width="440" class="tabtable" id="singles-formtable">
         <tr>
             <td class="label">Player&nbsp;One:</td>
              
@@ -109,8 +109,8 @@
        <tr>
            <td></td>
            <td> 
-           		<input type="button" name="submit" value="Make Reservation" id="submitbutton"> 
-           		<input type="button" value="Cancel" id="cancelbutton" >
+           		<input type="button" name="submit" value="Make Reservation" id="singles-submitbutton"> 
+           		<input type="button" value="Cancel" id="singles-cancelbutton" >
             </td>
            <td>
 	          
@@ -134,23 +134,23 @@
 
  YAHOO.example.init = function () {
 
-	    YAHOO.util.Event.onContentReady("formtable", function () {
+	    YAHOO.util.Event.onContentReady("singles-formtable", function () {
 
-	        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbutton1value" });
-	        oSubmitButton1.on("click", onSubmitButtonClicked);
+	        var sinSubmitButton1 = new YAHOO.widget.Button("singles-submitbutton", { value: "submitbuttonvalue" });
+	        sinSubmitButton1.on("click", onSinglesSubmitButtonClicked);
 
-	        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
-	        oCancelButton.on("click", onCancelButtonClicked);
+	        var sinCancelButton = new YAHOO.widget.Button("singles-cancelbutton", { value: "cancelbuttonvalue" });   
+	        sinCancelButton.on("click", onSinglesCancelButtonClicked);
 	    });
 
 	} ();
 
 
-	function onSubmitButtonClicked(){
+	function onSinglesSubmitButtonClicked(){
 		submitForm('singlesform');
 	}
 
-	 function onCancelButtonClicked(){
+	 function onSinglesCancelButtonClicked(){
 
 		parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
 	 }

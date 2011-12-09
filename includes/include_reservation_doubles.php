@@ -1,48 +1,11 @@
 
 
 
-<script language="Javascript">
 
 
-document.onkeypress = function (aEvent)
-{
- if(!aEvent) aEvent=window.event;
-	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
- if( key == 13 ) // enter key
- {
-     return false; // this will prevent bubbling ( sending it to children ) the event!
- }
-	
-}
-
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-    });
-
-} ();
-
-
-function onSubmitButtonClicked(){
-	submitForm('doubles_reservation_form');
-}
-
- function onCancelButtonClicked(){
-
-	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
- }
-
-</script>
-
-<form name="doubles_reservation_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
+<form name="doublesform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
  
-<table cellspacing="5" cellpadding="0" width="540" class="tabtable" id="formtable">
+<table cellspacing="5" cellpadding="0" width="540" class="tabtable" id="doubles-formtable">
  		<tr>
             <td class="biglabel" colspan="2">Team 1</td>
         </tr>
@@ -212,8 +175,8 @@ function onSubmitButtonClicked(){
        <tr>
            <td colspan="2"> 
 	           	<br/><br/>
-	           	<input type="button" name="submit" value="Make Reservation" id="submitbutton">  
-	           	<input type="button" value="Cancel" id="cancelbutton">
+	           	<input type="button" name="submit" value="Make Reservation" id="doubles-submitbutton">  
+	           	<input type="button" value="Cancel" id="doubles-cancelbutton">
 	        </td>
     </tr>
 
@@ -233,3 +196,42 @@ function onSubmitButtonClicked(){
 
 </form>
 
+
+<script language="Javascript">
+
+
+document.onkeypress = function (aEvent)
+{
+ if(!aEvent) aEvent=window.event;
+	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+ if( key == 13 ) // enter key
+ {
+     return false; // this will prevent bubbling ( sending it to children ) the event!
+ }
+	
+}
+
+YAHOO.example.init = function () {
+
+    YAHOO.util.Event.onContentReady("doubles-formtable", function () {
+
+        var dblSubmitButton = new YAHOO.widget.Button("doubles-submitbutton", { value: "submitbuttonvalue" });
+        dblSubmitButton.on("click", onDoublesSubmitButtonClicked);
+
+        var dblCancelButton = new YAHOO.widget.Button("doubles-cancelbutton", { value: "cancelbuttonvalue" });   
+        dblCancelButton("click", onDoublesCancelButtonClicked);
+    });
+
+} ();
+
+
+function onDoublesSubmitButtonClicked(){
+	submitForm('doublesform');
+}
+
+ function onDoublesCancelButtonClicked(){
+
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
+</script>
