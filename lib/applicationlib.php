@@ -552,6 +552,12 @@ function get_daysahead() {
 
 }
 
+function get_facebookurl() {
+	/* this function simply returns the the url. This is optional. */
+
+	return $_SESSION["siteprefs"]["facebookurl"];
+
+}
 
 function isLiteVersion() {
 	/* this function returns if the site is the free version. */
@@ -5004,7 +5010,8 @@ function getSitePreferencesForCourt($courtid) {
 					sites.displaysitenavigation,
 					sites.rankingscheme,
 					sites.displayrecentactivity,
-					sites.challengerange
+					sites.challengerange,
+					sites.facebookurl
 	        FROM tblClubSites sites, tblCourts courts
 			WHERE sites.siteid = courts.siteid
       AND courts.courtid = $courtid";
@@ -5053,7 +5060,8 @@ function getSitePreferences($siteid) {
 					sites.displaysitenavigation,
 					sites.displayrecentactivity,
 					sites.rankingscheme,
-					sites.challengerange
+					sites.challengerange,
+					sites.facebookurl
 	        FROM tblClubSites sites, tblBoxLeagues box
 			WHERE sites.siteid = '$siteid'";
 

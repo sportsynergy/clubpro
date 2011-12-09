@@ -114,7 +114,7 @@
 					<tr>
 						<td colspan="2" class="spacer">
 							<span class="normal">
-								Sometime you may want to
+								Sometimes you may want to
 								crack down on how scores are being recorded. This little setting is
 								pretty much the best way to do just that. When this is set to 'No'
 								players will not be able to record the score of any match they play
@@ -124,6 +124,28 @@
 							<div class="spacer"/>
 						</td>
 					</tr>
+						<td colspan="2">
+						<div style="float: left;">
+							<span class="label">Facebook URL:</span>
+						</div>
+						<div style="float: right">
+							<input type="text" name="facebookurl" size="50" value="<?=$generalPreferences["facebookurl"]?>"></input>
+						</div>
+						
+								
+						</td>
+						
+					<tr>
+						<td colspan="2" class="spacer">
+							<span class="normal">
+								If you have a facebook page for your club, you can slap that link here and this will display in the 
+								top left corner of every page. 
+							</span>
+							<div class="spacer"/>
+						</td>
+					
+					</tr>
+					
 					
 					<? if(isLadderRankingScheme() ){ ?>
 					

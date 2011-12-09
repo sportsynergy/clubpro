@@ -252,7 +252,13 @@ function load_scrolling_messages($siteid) {
  function load_general_preferences($siteid){
  	
  	 //if userid exists then the club administrator is updating a users account
-        $qid = db_query("SELECT clubsite.allowselfcancel, clubsite.daysahead, clubsite.rankingadjustment, clubsite.allowselfscore, clubsite.displayrecentactivity,clubsite.challengerange
+        $qid = db_query("SELECT clubsite.allowselfcancel, 
+        						clubsite.daysahead, 
+        						clubsite.rankingadjustment, 
+        						clubsite.allowselfscore, 
+        						clubsite.displayrecentactivity,
+        						clubsite.challengerange,
+        						clubsite.facebookurl
                          FROM tblClubSites clubsite
                          WHERE clubsite.siteid = $siteid");
 
@@ -624,6 +630,7 @@ function update_general_clubprefs(&$frm) {
 				,allowselfscore = '$frm[allowselfscore]'
 				,displayrecentactivity = '$frm[displayrecentactivity]'
 				,challengerange = '$frm[challengerange]'
+				,facebookurl = '$frm[facebookurl]'
                 WHERE siteid = '".get_siteid()."'";
         
         // run the query on the database

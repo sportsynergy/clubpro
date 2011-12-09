@@ -125,7 +125,16 @@
 			                      		
 			                      		<?}?>
 		                        <?}?>
-                      	 <?} } ?>
+                      	 <?} ?>
+				
+				<? 
+				$fburl = get_facebookurl();
+				if( !empty( $fburl ) ) { ?>
+				&nbsp;
+				<span class="normalsm">Find us on  <a href="<?=get_facebookurl()?>" target="_blank">Facebook</a></span>
+				<? } ?> 
+				
+				<? } ?>
 
                 <!-- start: your content here --> 
                <div style="text-align: right; width: 915px; padding: 5px" id="loginPanel"> 
