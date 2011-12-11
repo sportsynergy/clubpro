@@ -18,7 +18,7 @@ function onSubmitButtonClicked(){
 
 </script>
 
-<form name="entryform" method="post" action="<?=$ME?>">
+<form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
 
 <table cellspacing="0" cellpadding="0" width="450" class="generictable" id="formtable">
@@ -61,7 +61,7 @@ function onSubmitButtonClicked(){
                        <tr>
                             <td colspan="2">
                             	<input type="button" name="submit" value="Update Footer Message" id="submitbutton">
-                            
+                            	<input type="hidden" name="submitme" value="submitme">
                             </td>
                         </tr>
                   </table>

@@ -218,11 +218,11 @@ YAHOO.example.init = function () {
 
     YAHOO.util.Event.onContentReady("doubles-formtable", function () {
 
-        var dblSubmitButton = new YAHOO.widget.Button("doubles-submitbutton", { value: "submitbuttonvalue" });
+        var dblSubmitButton = new YAHOO.widget.Button("doubles-submitbutton", { value: "doubles-submitvalue" });
         dblSubmitButton.on("click", onDoublesSubmitButtonClicked);
 
-        var dblCancelButton = new YAHOO.widget.Button("doubles-cancelbutton", { value: "cancelbuttonvalue" });   
-        dblCancelButton("click", onDoublesCancelButtonClicked);
+        var dblCancelButton = new YAHOO.widget.Button("doubles-cancelbutton", { value: "doubles-cancelbuttonvalue" });   
+        dblCancelButton.on("click", onDoublesCancelButtonClicked);
     });
 
 } ();
