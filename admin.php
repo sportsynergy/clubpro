@@ -1,13 +1,11 @@
 <?
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
 $DOC_TITLE = "System Administration Console";
+
+
 $_SESSION["wantsurl"] = qualified_mewithq();
 $_SESSION["siteprefs"]["clubid"] = 0;
+$_SESSION["siteprefs"]["siteid"] = 0;
 
 //Set the footer message
 if( !isset($_SESSION["footermessage"]) ){

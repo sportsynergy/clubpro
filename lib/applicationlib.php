@@ -3899,6 +3899,12 @@ function get_sitecode() {
 
 
 	$siteid = $_SESSION["siteprefs"]["siteid"];
+	if( isDebugEnabled(1) ) logMessage("getting sitecode for site: $siteid");
+	
+	//special case when system console is loaded
+	if($siteid == 0){
+		return "system";
+	}
 
 	$sitecodequery = "SELECT sitecode from tblClubSites where siteid=$siteid";
 	$sitecodeResult = db_query($sitecodequery);
