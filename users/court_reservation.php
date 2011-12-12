@@ -548,8 +548,6 @@ function validate_form(&$frm, &$errors) {
 				
 				if( isDebugEnabled(1) ) logMessage("court_reservation_validate_form(): Validating a player making a new doubles reservation");
 				
-				
-				
 				if(  (isGuestPlayer($frm['playeroneid'], $frm['playeronename'])
 						|| isGuestPlayer($frm['playertwoid'], $frm['playertwoname'])
 						|| isGuestPlayer($frm['playerthreeid'], $frm['playerthreename'])
@@ -558,6 +556,13 @@ function validate_form(&$frm, &$errors) {
 				 	$guestReservation = true;
 				 }else{
 				 	$guestReservation = false;
+				 }
+				 
+			
+				// Dont' allow regular players to type in names, they have to pick them from the drop down.
+				 if(!isSiteGuestReservationEnabled() && $guestReservation && ( get_roleid() == 1 || get_roleid()==5 )){
+				 	
+				 	return  "Please pick all of the player names from the drop down list";
 				 }
 				
 				if( isSiteGuestReservationEnabled() && (get_roleid() == 1 || get_roleid()==5)){
