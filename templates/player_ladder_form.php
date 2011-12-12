@@ -25,66 +25,6 @@
 	mysql_data_seek($ladderplayers,0);
 			 
 ?>
-<div id="challengedialog" class="yui-pe-content">
-
-<div class="bd">
-<form method="POST" action="<?=$ME?>">
-	<label for="from_name">From:</label><input type="textbox" name="firstname" value="<?=get_userfullname()?>" disabled="disabled"/>
-	<label for="to_name">To:</label><input type="textbox" name="lastname" disabled="disabled" id="to_name"/>
-	<label for="to_email">E-mail:</label><input type="textbox" name="email" disabled="disabled" id="to_email" size="50"> 
-
-	<div class="clear"></div>
-	<label for="textarea">Message:</label><textarea name="textarea" cols="50" rows="10" onKeyDown="limitText(this.form.textarea,this.form.countdown,250);" 
-			onKeyUp="limitText(this.form.textarea,this.form.countdown,250);">Hello, I would like to challenge you in the ladder.  Please let me know what time works best for you. See you on the court.</textarea>
-
-	<div class="clear"></div>
-	<span class="normalsm">
-				You have <input readonly type="text" name="countdown" size="3" value="127"> characters left.
-	</span>	
-	<input type="hidden" name="cmd" value="challengeplayer">
-   	<input type="hidden" name="challengeeid" id="challengeeid">
-   	<script>
-   
-   	</script>
-
-</form>
-</div>
-</div>
-
-
-<div id="dialog1" class="yui-pe-content">
-
-
-<div class="bd">
-
-<form method="POST" action="<?=$ME?>">
-	<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
-             <input id="id1" name="userid" type="hidden" />
-                <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
-   				<input type="hidden" name="cmd" value="addtoladder">
-   				<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-    			<script>
-                <?
-                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
-                 pat_autocomplete( array(
-						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-						'source'=>'name1',
-						'target'=>'id1',
-						'className'=>'autocomplete',
-						'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
-						'progressStyle'=>'throbbing',
-						'minimumCharacters'=>3,
-						));
-           
-                 ?>
-
-                </script>
-
-	
-</form>
-</div>
-</div>
-
 
 
  <form name="addmetoladderform" method="post" action="<?=$ME?>">
@@ -224,6 +164,66 @@ Nobody has signed up for the ladder yet.
 
 <? } ?>
 
+
+<div id="challengedialog" class="yui-pe-content">
+
+<div class="bd">
+<form method="POST" action="<?=$ME?>">
+	<label for="from_name">From:</label><input type="textbox" name="firstname" value="<?=get_userfullname()?>" disabled="disabled"/>
+	<label for="to_name">To:</label><input type="textbox" name="lastname" disabled="disabled" id="to_name"/>
+	<label for="to_email">E-mail:</label><input type="textbox" name="email" disabled="disabled" id="to_email" size="50"> 
+
+	<div class="clear"></div>
+	<label for="textarea">Message:</label><textarea name="textarea" cols="50" rows="10" onKeyDown="limitText(this.form.textarea,this.form.countdown,250);" 
+			onKeyUp="limitText(this.form.textarea,this.form.countdown,250);">Hello, I would like to challenge you in the ladder.  Please let me know what time works best for you. See you on the court.</textarea>
+
+	<div class="clear"></div>
+	<span class="normalsm">
+				You have <input readonly type="text" name="countdown" size="3" value="127"> characters left.
+	</span>	
+	<input type="hidden" name="cmd" value="challengeplayer">
+   	<input type="hidden" name="challengeeid" id="challengeeid">
+   	<script>
+   
+   	</script>
+
+</form>
+</div>
+</div>
+
+
+<div id="dialog1" class="yui-pe-content">
+
+
+<div class="bd">
+
+<form method="POST" action="<?=$ME?>">
+	<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
+             <input id="id1" name="userid" type="hidden" />
+                <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+   				<input type="hidden" name="cmd" value="addtoladder">
+   				<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
+    			<script>
+                <?
+                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+                 pat_autocomplete( array(
+						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+						'source'=>'name1',
+						'target'=>'id1',
+						'className'=>'autocomplete',
+						'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+						'progressStyle'=>'throbbing',
+						'minimumCharacters'=>3,
+						));
+           
+                 ?>
+
+                </script>
+
+	
+</form>
+</div>
+</div>
 
 <script>
 
