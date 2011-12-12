@@ -66,15 +66,19 @@ else if(isset($_POST['cmd']) && $_POST['cmd']=="managecourtevent"){
 	
  if( isDebugEnabled(1) ) logMessage("court_cancelation: managing court events");
 	
+ 	// set variable to indicate that the administrator is adding/removing users vs players adding themselves
+ 	$adminaction = $_POST['user']=="admin" ? true : false;
+ 
 	if($_POST['action']=='add'){
 		if( isDebugEnabled(1) ) logMessage("court_cancelation: managing court events. Adding user ".$_POST['userid'] ." to reservation id: ".$_POST['reservationid']);
 		addToCourtEvent($_POST['userid'],$_POST['reservationid']);
-		confirmCourtEvent($_POST['userid'],$_POST['reservationid'],$_POST['action']);
+		confirmCourtEvent($_POST['userid'],$_POST['reservationid'],$_POST['action'], $adminaction);
 	}
 	else if($_POST['action']=='remove'){
 		if( isDebugEnabled(1) ) logMessage("court_cancelation: managing court events. Removing user ".$_POST['userid']." to reservationid ".$_POST['reservationid']);
+
 		removeFromCourtEvent($_POST['userid'],$_POST['reservationid']);
-		confirmCourtEvent($_POST['userid'],$_POST['reservationid'],$_POST['action']);
+		confirmCourtEvent($_POST['userid'],$_POST['reservationid'],$_POST['action'], $adminaction);
 	}
 }
 

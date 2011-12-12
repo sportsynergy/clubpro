@@ -595,13 +595,18 @@ function getCourtEventParticipants($reservationid){
 //Send out an email to the player who signed up for this event, the creator of the event and the list
 // and anyone that might have been signed up as well
 
+// when admin action is set to true, an administrator is adding or removing players. in this case, they don't need to be notified 
+// because they are doing it.
 
-function confirmCourtEvent($userid, $reservationid, $action){
+
+function confirmCourtEvent($userid, $reservationid, $action, $adminaction){
 	
 	//remove white space
 	$userid = rtrim($userid);
 	
-	if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: confirming reservation $reservationid for userid $userid with an action $action");
+	$adminaction_var = $adminaction ? "true" : "false";
+	
+	if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: confirming reservation $reservationid for userid $userid with an action $action and adminaction is $adminaction_var");
 	
 	// from the reservation get, court name, time, event name
 	//Obtain the court and matchtype information
@@ -646,11 +651,9 @@ function confirmCourtEvent($userid, $reservationid, $action){
 	if( isDebugEnabled(1) ) logMessage($message);
 	mail("$var->firstname $var->lastname <$var->email>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 	
-
-	
 	//send email to the person who created the reservation
 	$creatorQuery = "SELECT users.firstname, users.lastname, users.email FROM tblUsers users WHERE users.userid = $var->creator";
-	if( isDebugEnabled(1) ) logMessage($creatorQuery);
+
 	$creatorResult = db_query($creatorQuery);
 	$creatorArray = mysql_fetch_array($creatorResult);
 	
@@ -667,24 +670,27 @@ function confirmCourtEvent($userid, $reservationid, $action){
 	$message = "Hello $var->adminfirstname,\n";
 	$message .= "$emailbody";
 	
-	if( isDebugEnabled(1) ) logMessage($message);
+	
 	
 	//Dont' send this email if the creator has put themselves in the reservaiton, its kind of redundatn
-	if($userid != $var->creator){
+	if($userid != $var->creator && !$adminaction){
+		
+		if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: sending the  message to the guy who created this.");
+		if( isDebugEnabled(1) ) logMessage($message);
 		mail("$var->adminfirstname $var->adminlastname <$var->adminemail>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 	}
 	
 	$rresult = getCourtEventParticipants($reservationid);
 	while ($player = mysql_fetch_array($rresult)) {
 
-	if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: this is the user: $userid and this is the current ".$player['userid']);
+	if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: this is the user: $userid and this is the current ".$player['userid'].".");
 		
 		if (!empty ($player['email']) && $player['userid']!=$userid ) {
 			//Prepare the message
 			$message = "Hello $player[firstname],\n";
 			$message .= "$emailbody";
 			
-			if( isDebugEnabled(1) ) logMessage("sending notice to fellow court event participant:\n$message");
+			if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: sending notice to fellow court event participant:\n$message");
 			mail("$player[firstname] $player[lastname] <$player[email]>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 
 		}

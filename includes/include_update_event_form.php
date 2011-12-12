@@ -374,6 +374,7 @@ function onCancelButtonClicked(){
              <input id="id1" name="userid" type="hidden" />
    				<input type="hidden" name="cmd" value="managecourtevent">
    				<input type="hidden" name="action" value="add">
+   				<input type="hidden" name="user" value="admin">
    				<input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>">
     			<script>
                 <?
