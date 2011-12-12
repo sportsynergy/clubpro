@@ -131,13 +131,17 @@
 				$fburl = get_facebookurl();
 				if( !empty( $fburl ) ) { ?>
 				&nbsp;
-				<span class="normalsm">Find us on  <a href="<?=get_facebookurl()?>" target="_blank">Facebook</a></span>
+				<div style="float: left">
+					<a href="<?=$fburl?>" target="_blank">
+ 						<img src="<?=$_SESSION["CFG"]["imagedir"]?>/fb.png" border="0">
+ 					</a>
+				</div >
 				<? } ?> 
 				
-				<? } ?>
+			<? } ?>
 
                 <!-- start: your content here --> 
-               <div style="text-align: right; width: 915px; padding: 5px" id="loginPanel"> 
+               <div style="float: right;  padding: 5px" id="loginPanel"> 
 	    		<? if( !is_logged_in() ){ ?>
 	    			 <a class="normal" href="<?=$_SESSION["CFG"]["wwwroot"]?>/login.php">Login</a>
 	    		<? } else { ?>
