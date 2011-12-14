@@ -15,9 +15,10 @@ function SubDisable(dform) {
 return true;
 }
 
-function disableRankingDropDown(listselection)
+function disableRankingDropDown()
 {
         
+        var listselection = document.getElementById('sportselect');
         if(listselection.value == "all" ){
              document.entryform.ranking.disabled = true;
         }
@@ -34,6 +35,8 @@ YAHOO.example.init = function () {
 
         var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
         oSubmitButton1.on("click", onSubmitButtonClicked);
+
+        YAHOO.util.Event.addListener("sportselect", "change", disableRankingDropDown); 
 
     });
 
@@ -60,7 +63,9 @@ function onSubmitButtonClicked(){
   
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
-    	<span class="whiteh1"><div align="center"><? pv($DOC_TITLE) ?></div></font>
+    	<span class="whiteh1">
+    			<div align="center"><? pv($DOC_TITLE) ?></div>
+    	</span>
     </td>
  </tr>
 
@@ -86,7 +91,7 @@ function onSubmitButtonClicked(){
        <tr>
        		<td class=label align="left">Sport:</td>
 	        <td align="left">
-	        	 <select name="sport" onclick="disableRankingDropDown(this)">
+	        	 <select name="sport" id="sportselect">
 	        	    <option value="all">All</option>
 	        	  	<?  while ( $sportarray = db_fetch_array($availbleSports)){ ?>
              			<option value="<? pv($sportarray['courttypeid'] ) ?>"><? pv($sportarray['courttypename'] ) ?>   </option>
@@ -122,7 +127,7 @@ function onSubmitButtonClicked(){
         </tr>
        <tr>
            <td></td>
-           <td><input type="button" name="submit" value="Send" id="submitbutton"></td>
+           <td><input type="button" name="submit" value="Send Email" id="submitbutton"></td>
             <td></td>
     </tr>
  </table>

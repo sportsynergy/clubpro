@@ -3,6 +3,8 @@
 
 
 include("../application.php");
+require($_SESSION["CFG"]["libdir"]."/postageapplib.php");
+
 $DOC_TITLE = "Player Mailer";
 
 require_loginwq();
@@ -396,13 +398,23 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking){
 
        while($emailidrow = db_fetch_row($emailidresult)) {
 
-          mail(
-                "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>",
-                "$subject",
-                "$message",
-                "From: $clubadminval");
-
-            }
+		$to_email = $emailidrow[2];
+		$to_name = "$emailidrow[0] $emailidrow[1]";
+		$from_email = "$clubadminval";
+		$content = new Object;
+		$content->line1 = $message;
+		$content->clubname = $var->clubfullname;
+		$content->to_firstname = $emailidrow[0];
+		$template = get_sitecode()."-blank";
+	
+       	send_email($subject, $to_email, $to_name,$from_email, $content, $template);
+//          mail(
+//                "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>",
+//                "$subject",
+//                "$message",
+//                "From: $clubadminval");
+//
+         }
            
            
             

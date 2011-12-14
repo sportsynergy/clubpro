@@ -1,6 +1,54 @@
 <?
 
 /**
+ * Calls the PostageApp
+ * 
+ * @param $subject
+ * @param $to_email
+ * @param $to_name
+ * @param $content an array of line1, line2, line3
+ */
+function send_email($subject, $to_email, $to_name, $from_email, $content, $template){
+	
+	if( isDebugEnabled(1) ) logMessage("applicationlib.send_email: sending email with subject $subject to $to_email from $from_email");
+	
+		
+	# Who's going to receive this email.
+    # The $to field can have the following formats:
+    #
+    # String:  
+    #   $to = 'myemail@somewhere.com';
+    #
+    # Array:   
+    #   $to = array('myemail@somewhere.com', 'youremail@somewhere.com', ...)
+    #
+    # Array with variables:
+    #   $to = array(
+    #     'myemail@somewhere.com'   => array('name' => 'John Smith', ...),
+    #     'youremail@somewhere.com' => array('name' => 'Ann Johnson', ...),
+    #     ...
+    #   )
+    $to = array($to_email => array('name' => $to_name));
+    
+	$variables = array('line1' =>  $content->line1,
+						'line2' =>  $content->line2, 
+						'line3' =>  $content->line3, 
+						'clubname' =>  $content->clubname, 
+						'to_firstname' =>  $content->to_firstname);
+    
+    # Setup some headers
+    $header = array(
+      'From'      => $from_email,
+      'Reply-to'  => $from_email
+    );
+    
+
+    # Send it all
+    $response = PostageApp::mail($to, $subject, $template, $header, $variables);
+    //return $response;
+}
+
+/**
  * 
  * @param $dateString
  */
@@ -599,11 +647,15 @@ function get_userfullname(){
 	return $_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"];
 }
 
+/* 
+ * this function simply returns the club name 
+ * 
+ *  */
 function get_clubname(){
 	
-	/* this function simply returns the club name  */
+	if( isDebugEnabled(1) ) logMessage("applicationlib.get_clubname: ".$_SESSION["siteprefs"]["clubname"]);
 	
-	return $_SESSION["user"]["clubname"];
+	return $_SESSION["siteprefs"]["clubname"];
 }
 
 
@@ -644,24 +696,7 @@ function atleastof_priv($roleid) {
 }
 
 
-/* returns a randomly generated password of length $maxlen.  inspired by
-	 * http://www.phpbuilder.com/columns/jesus19990502.php3 */
-function generate_password() {
 
-	$maxlen = 10;
-	
-	if(isDebugEnabled(1) ) logMessage("applicationlib: generate_passowrd: ".$_SESSION["CFG"]["wordlist"]);
-	
-	$fillers = "1234567890!@#$%&*-_=+^";
-	$wordlist = file($_SESSION["CFG"]["wordlist"]);
-
-	srand((double) microtime() * 1000000);
-	$word1 = trim($wordlist[rand(0, count($wordlist) - 1)]);
-	$word2 = trim($wordlist[rand(0, count($wordlist) - 1)]);
-	$filler1 = $fillers[rand(0, strlen($fillers) - 1)];
-
-	return substr($word1 . $filler1 . $word2, 0, $maxlen);
-}
 
 function err(& $errorvar) {
 	/* if $errorvar is set, then print an error marker << */
@@ -731,45 +766,6 @@ function email_exists($email) {
 }
 
 
-/**
- * Reset the users password
- * 
- * @param $userid
- */
-function reset_user_password($userid) {
-	/* resets the password for the user with the username $username, and sends it
-	 * to him/her via email */
-
-	if(isDebugEnabled(1) ) logMessage("applicationlib: reset_user_password for userid: $userid");
-	
-
-	/* load up the user record */
-	$qid = db_query("SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
-						FROM tblUsers users
-						WHERE users.userid = '$userid'");
-	$user = db_fetch_object($qid);
-
-	/* reset the password */
-	$newpassword = generate_password();
-	
-	if(isDebugEnabled(1) ) logMessage("applicationlib: reset_user_password the new password will be: $newpassword");
-	
-	$qid = db_query("UPDATE tblUsers SET password = '" . md5($newpassword) . "' WHERE userid = '$user->userid'");
-
-	/* email the user with the new account information */
-	$var = new Object;
-	$var->username = $user->username;
-	$var->fullname = $user->firstname . " " . $user->lastname;
-	$var->newpassword = $newpassword;
-	$var->support = $_SESSION["CFG"]["support"];
-
-	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/reset_password.php", $var);
-	
-	if(isDebugEnabled(1) ) logMessage("applicationlib: sending this email $emailbody");
-	
-
-	mail("$var->fullname <$user->email>", "Sportsynergy Account Information", $emailbody, "From: $var->support", "-fPlayerMailer@sportsynergy.com");
-}
 
 
 /*
@@ -941,78 +937,7 @@ function findSelfTeam($array) {
 	}
 }
 
-/************************************************************************************************************************/
-/*
-  This function is called after any reservation is made where the admin is available for a lesson
 
-*/
-
-function email_players_about_lesson($resid) {
-
-	$rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, courttype.courttypeid, rankings.ranking, reservations.matchtype, users.email, users.homephone, users.cellphone, users.workphone
-	                 FROM tblCourts courts, tblReservations reservations, tblUsers users, tblCourtType courttype, tblUserRankings rankings, tblkpUserReservations reservationdetails
-					 WHERE users.userid = rankings.userid
-					 AND reservations.courtid = courts.courtid
-	                 AND reservationdetails.reservationid = reservations.reservationid
-	                 AND courttype.courttypeid = rankings.courttypeid
-	                 AND courts.courttypeid = courttype.courttypeid
-	                 AND reservationdetails.userid = users.userid
-	                 AND reservations.reservationid = $resid
-					 AND rankings.usertype=0";
-
-	$rresult = db_query($rquery);
-	$robj = mysql_fetch_object($rresult);
-	$var = new Object;
-
-	/* email the user with the new account information    */
-
-	$var->firstname = $robj->firstname;
-	$var->lastname = $robj->lastname;
-	$var->email = $robj->email;
-	$var->homephone = $robj->homephone;
-	$var->cellphone = $robj->cellphone;
-	$var->workphone = $robj->workphone;
-	$var->courtname = $robj->courtname;
-	$var->time = gmdate("l F j g:i a", $robj->time);
-	$var->timestamp = $robj->time;
-	$var->dns = $_SESSION["CFG"]["dns"];
-	$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
-	$var->fullname = $robj->firstname . " " . $robj->lastname;
-	$var->support = $_SESSION["CFG"]["support"];
-
-	$var->signupurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;
-	
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
-	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/lesson_wanted.php", $var);
-
-	//Now get all players who receive players wanted notifications at the club
-	$emailidquery = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.email
-	                        FROM tblUsers, tblClubUser
-	                        WHERE tblClubUser.recemail='y'
-							AND  tblUsers.userid = tblClubUser.userid
-	                        AND tblClubUser.clubid=" . get_clubid() . "
-	                        AND tblUsers.userid != " . get_userid() . "
-	                        AND tblClubUser.enable='y'
-							AND tblClubUser.enddate IS NULL";
-
-	// run the query on the database
-	$emailidresult = db_query($emailidquery);
-
-	while ($emailidrow = db_fetch_row($emailidresult)) {
-
-		//Prepare the message
-		$message = "Hello $emailidrow[0],\n";
-		$message .= "$emailbody";
-
-		
-		if( isDebugEnabled(1) ) logMessage($message);
-		mail("$emailidrow[0] $emailidrow[1] <$emailidrow[2]>", "$clubfullname -- Lesson Available", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-
-	}
-
-}
 /************************************************************************************************************************/
 /*
   This function is called after any reservation is made where the user is looking for a match
@@ -3899,8 +3824,7 @@ function get_sitecode() {
 
 
 	$siteid = $_SESSION["siteprefs"]["siteid"];
-	if( isDebugEnabled(1) ) logMessage("getting sitecode for site: $siteid");
-	
+
 	//special case when system console is loaded
 	if($siteid == 0){
 		return "system";
@@ -5017,9 +4941,11 @@ function getSitePreferencesForCourt($courtid) {
 					sites.rankingscheme,
 					sites.displayrecentactivity,
 					sites.challengerange,
-					sites.facebookurl
-	        FROM tblClubSites sites, tblCourts courts
+					sites.facebookurl,
+					clubs.clubname
+	        FROM tblClubSites sites, tblCourts courts, tblClubs clubs
 			WHERE sites.siteid = courts.siteid
+			AND sites.clubid = clubs.clubid
       AND courts.courtid = $courtid";
 
 	$qid = db_query($query);
@@ -5067,9 +4993,11 @@ function getSitePreferences($siteid) {
 					sites.displayrecentactivity,
 					sites.rankingscheme,
 					sites.challengerange,
-					sites.facebookurl
-	        FROM tblClubSites sites, tblBoxLeagues box
-			WHERE sites.siteid = '$siteid'";
+					sites.facebookurl,
+					clubs.clubname
+	        FROM tblClubSites sites, tblBoxLeagues box, tblClubs clubs
+			WHERE sites.siteid = '$siteid'
+			AND sites.clubid = clubs.clubid";
 
 	$qid = db_query($query);
 

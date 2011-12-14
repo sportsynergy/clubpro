@@ -90,7 +90,7 @@ function onSubmitButtonClicked(){
         
          <? 
        //Only let admins do this
-       if( get_roleid()==4 || get_roleid()==2 || isNearRankingAdvertising() ){
+       if( (get_roleid()==4 || get_roleid()==2 || isNearRankingAdvertising() )  &&  $matchType != 4){
        ?>
         <tr>
             <td><div class="normal">Advertise this reservation to players within <? pv($rankdev)?> of my skill level:</div></td>
@@ -105,6 +105,7 @@ function onSubmitButtonClicked(){
         
        }?>
        
+       <? if($matchType != 4){?>
         <tr>
          <td>
            <div class=normal>Advertise this reservation to my buddies:</div></td>
@@ -112,19 +113,19 @@ function onSubmitButtonClicked(){
            <input type="radio" name="resdetails" value="2" <?=$advertBuddies ?>>
          </td>
        </tr>
-       
-		       <? 
-		       //Only let admins do this
-		       if( get_roleid()==4 || get_roleid()==2 || isAllowAllSiteAdvertising() ){
-		       ?>
-		       <tr>  
-		         <td>
-		           <div class=normal>Advertise this reservation to the whole club:</div></td>
-		           <td>
-		           <input type="radio" name="resdetails" value="3">
-		         </td>
-		       </tr>
-		       <? } ?>
+       <? } 
+	       //Only let admins do this
+	       if( (get_roleid()==4 || get_roleid()==2 || isAllowAllSiteAdvertising() ) && $matchType != 4 ){
+	       ?>
+	       <tr>  
+	         <td>
+	           <div class=normal>Advertise this reservation to the whole club:</div></td>
+	           <td>
+	           <input type="radio" name="resdetails" value="3">
+	         </td>
+	       </tr>
+	       <? } ?>
+	       
 		 <tr>
             <td><div class=normal>Don't advertise this one</div></td>
             <td>

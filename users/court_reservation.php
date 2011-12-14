@@ -104,7 +104,7 @@ if (match_referer() && isset($_POST['courttype'])) {
 	            			&& ($frm['playeroneid']=="" || $frm['playertwoid']=="")
 	            			&& !isGuestPlayer($frm['playeroneid'], $frm['playeronename']) 
 	            			&& !isGuestPlayer($frm['playertwoid'], $frm['playertwoname'])  
-	            			&& ($frm['matchtype']==0 || $frm['matchtype']==1 || $frm['matchtype']==2)
+	            			&& ($frm['matchtype']==0 || $frm['matchtype']==1 || $frm['matchtype']==2 || $frm['matchtype']==4)
 	            			
 	            ){
 	            	if( isDebugEnabled(1) ) logMessage("court_reservation: courttype is singles and opponent is empty");

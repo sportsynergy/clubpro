@@ -26,7 +26,7 @@ function onCancelButtonClicked(){
 
 </script>
  
-<form name="entryform" method="post" action="<?=$ME?>">
+<form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
 
 <table cellpadding="20" > 
@@ -82,5 +82,6 @@ function onCancelButtonClicked(){
 </tr>
 </table>
 
+<input type="hidden" value="submitme" name="submitme" />
 
   </form>

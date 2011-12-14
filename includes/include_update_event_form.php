@@ -124,10 +124,14 @@ YAHOO.example.init = function () {
 
     YAHOO.util.Event.onContentReady("formtable", function () {
 
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
+    	<? 
+    	//only display this for administrators
+    	if(get_roleid()==2 || get_roleid()==4){ ?>
+        var oSubmitButton = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+        oSubmitButton.on("click", onSubmitButtonClicked);
+	
+		<? } ?>
+        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
         oCancelButton.on("click", onCancelButtonClicked);
 
     });
@@ -334,24 +338,15 @@ function onCancelButtonClicked(){
        <td>
 	       <br>
 	       <input type="button" name="submit" id="submitbutton" value="Update Court Reservation">
-	       <input type="button" id="cancelbutton" value="Back to Court Reservations">
 	       <input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>">
 	       <input type="hidden" name="courtid" value="<?=$courtid?>">
 	       <input type="hidden" name="time" value="<?=$time?>">
        </td>
       </tr> 
-      <? } else{ ?>
-       <tr style="height: 30px">
-       	<td></td>
-       </tr>
-       <tr>
-       	<td>
+      <? } ?>  
+      <td>
        		<input type="button" id="cancelbutton" value="Back to Court Reservations" >
-	   </td>
-       </tr>
-         
-      	
-     <?  }?>       
+	   </td>     
 	</table>
 	
 	</td>

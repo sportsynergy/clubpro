@@ -4,7 +4,7 @@
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/reservationlib.php");
 require($_SESSION["CFG"]["libdir"]."/courtlib.php");
-
+require($_SESSION["CFG"]["libdir"]."/postageapplib.php");
 
 //Set the http variables
 $courtid = $_REQUEST["courtid"];
