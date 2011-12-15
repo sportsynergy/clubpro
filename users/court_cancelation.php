@@ -555,8 +555,6 @@ function cancel_court(&$frm) {
        // need to first find out what team they are referring to then get rid of that team
        // in the same table
 
-
-
                   /*If this was a box league match update the boxhistory table.  This is applicable for
                    any cancellation type.
                    */
@@ -659,7 +657,7 @@ function cancel_court(&$frm) {
                                      '$secondplayerlisted')");
 					}  
                 	
-                	confirm_singles($frm[reservationid],false);
+                	
 
                  }
 

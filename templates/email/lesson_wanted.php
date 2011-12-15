@@ -1,4 +1,1 @@
-
-
-$var->fullname is available for a lesson on $var->courtname at $var->time. Interested? If so, click here: $var->signupurl
-
+$var->fullname is available for a lesson on $var->courtname on $var->time. Interested? If so, click here: $var->signupurl

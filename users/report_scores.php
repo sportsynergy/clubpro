@@ -3,6 +3,7 @@
 
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/ladderlib.php");
+require($_SESSION["CFG"]["libdir"]."/postageapplib.php");
 
 $DOC_TITLE = "Report Scores";
 
@@ -104,7 +105,8 @@ function validate_form(&$frm, &$errors) {
 
         }
         /*Check doubles reservation */
-        elseif( $reservationTypeValue==1 && (isCurrentUserOnTeam($frm['Player1'])==0) && (isCurrentUserOnTeam($frm['Player2'])==0) ){
+        elseif( $reservationTypeValue==1 && (isCurrentUserOnTeam($frm['Player1'])==0) && (isCurrentUserOnTeam($frm['Player2'])==0)  
+        		&& (get_roleid() == 1 || get_roleid() == 5)) {
 
                 $errors->reportscore = true;
                 $msg .= "You have to be on one of the teams that played to report the score";

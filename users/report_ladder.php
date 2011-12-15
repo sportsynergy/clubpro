@@ -4,6 +4,8 @@
 
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/ladderlib.php");
+require($_SESSION["CFG"]["libdir"]."/postageapplib.php");
+
 require_loginwq();
 
 $DOC_TITLE = "Report Ladder Match";
@@ -142,17 +144,28 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_ladder_match.php", $var);
 	}
 	
-	$w_message = "Hello $var->w_firstname,\n";
-	$w_message .= "$emailbody";
+	$emailbody = nl2br($emailbody);
 	
-	$l_message = "Hello $var->l_firstname,\n";
-	$l_message .= "$emailbody";
+	// Provide Content
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+	$subject = get_clubname()." - Ladder Match Report";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 	
-	if( isDebugEnabled(1) ) logMessage($l_message);
-	if( isDebugEnabled(1) ) logMessage($w_message);
+	
+		
+	//Send the email to the winner
+	$to_email = array($winner->email => array('name' => $winner->firstname) );
+     send_email($subject, $to_email, $from_email, $content, $template); 
+	
+    //Send the email to the loser
+    $to_email = array($loser->email => array('name' => $loser->firstname) );
+	send_email($subject, $to_email, $from_email, $content, $template); 
+	
+     
 
-	mail("$var->w_fullname <$winner->email>", "$clubfullname -- Ladder Match Report", $w_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-	mail("$var->l_fullname <$loser->email>", "$clubfullname -- Ladder Match Report", $l_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 }
 
 /**

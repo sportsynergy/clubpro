@@ -488,13 +488,26 @@ function registerClub($clubName,
 
 	
 	//Send out the email
-	$email = read_template($_SESSION["CFG"]["templatedir"]."/email/registration_complete.php", $var);
+	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/registration_complete.php", $var);
+	$emailbody = nl2br($emailbody);
 
 	if( isDebugEnabled(1) ) logMessage("register.registerClub: Sent out Confirmation Email...Done");
-	if( isDebugEnabled(1) ) logMessage("register.registerClub: $email");
+	if( isDebugEnabled(1) ) logMessage("register.registerClub: $emailbody");
 		
-	
-	mail("$adminFirstName $adminLastName <$adminEmail>", "$clubName, Welcome to Sportsynergy", $email, "From: support@sportsynergy.net", "-fsupport@sportsynergy.net");
+	// Provide Content
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+
+	//Use default template
+	$template = "sportsynergy";
+	$subject = get_clubname()." - Welcome to Sportsynergy";
+	$from_email = "Sportsynergy <support@sportsynergy.net>";
+	$to_email = array('$adminFirstName $adminLastName <$adminEmail>' => array('name') => $adminFirstName) );
+		
+	//Send the email
+     send_email($subject, $to_email, $from_email, $content, $template); 
+     
 		
 }
 

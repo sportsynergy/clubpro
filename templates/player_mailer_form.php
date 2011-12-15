@@ -56,7 +56,7 @@ function onSubmitButtonClicked(){
 <tr>
 <td>
 
-<form name="entryform" method="post" action="<?=$ME?>">
+<form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
 
 <table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
@@ -121,7 +121,7 @@ function onSubmitButtonClicked(){
        </tr>
        <tr>
            <td class=label valign="top">Message:</td>
-                 <td colspan="3"><textarea name="message" cols=50 rows=5><? pv($frm["message"]) ?></textarea>
+                 <td colspan="3"><textarea name="message" cols="80" rows="15"><? pv($frm["message"]) ?></textarea>
                       <?err($errors->useraddress)?>
                 </td>
         </tr>

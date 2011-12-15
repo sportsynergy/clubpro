@@ -1,7 +1,3 @@
-
-This is an automated message from $var->clubfullname.  Please do not reply to this message.
-
-
 Match Summary:
 
 $var->winnerfull defeated $var->loserfull.

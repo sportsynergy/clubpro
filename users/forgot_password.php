@@ -90,23 +90,26 @@ function reset_user_password($userid) {
 
 	/* email the user with the new account information */
 	$var = new Object;
+	$var->username = $user->username;
 	$var->support = $_SESSION["CFG"]["support"];
+	$var->newpassword = $newpassword;
+	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/reset_password.php", $var);
+	$emailbody = nl2br($emailbody);
 
 	$subject = "Sportsynergy Account Information";
-	$to_email = $user->email;
+	$to_email = array($user->email => array('name' => $user->firstname) );
 	$to_name = $user->firstname." ".$user->lastname;
-	$from_email = "PlayerMailer@sportsynergy.net";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 	$content = new Object;
-	$content->line1 = "Your password at Sportsynergy has been reset, your username is $user->username and your new password is $newpassword.";
-	$content->line2 = "It is highly recommended that you log into Sportsynergy and change your password as soon as possible.  Thank you for using Sportsynergy.  If you have any questions or concerns, please contact us at $var->support.";
+	$content->line1 = $emailbody;
+	
 	$content->clubname = get_clubname();
-	$content->to_firstname = $user->firstname;
 	
 	$template = get_sitecode();
 	
 	
-	send_email($subject, $to_email, $to_name,$from_email, $content, $template);
-	//mail("$var->fullname <$user->email>", "Sportsynergy Account Information", $emailbody, "From: $var->support", "-fPlayerMailer@sportsynergy.com");
+	send_email($subject, $to_email, $from_email, $content, $template);
+
 }
 
 /* returns a randomly generated password of length $maxlen.  inspired by

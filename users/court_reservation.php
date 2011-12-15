@@ -35,6 +35,8 @@
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/reservationlib.php");
 require($_SESSION["CFG"]["libdir"]."/courtlib.php");
+require($_SESSION["CFG"]["libdir"]."/postageapplib.php");
+
 
 $DOC_TITLE = "Court Reservation";
 

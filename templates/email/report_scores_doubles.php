@@ -1,7 +1,3 @@
-
-This is an automated message from $var->clubfullname.  Please do not reply to this message.
-
-
 Match Summary:
 
 $var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 on $var->courtname $var->time in a $var->matchtype match 3-$var->loserscore.

@@ -1,7 +1,3 @@
-
-This is an automated message from $var->clubfullname.  Please do not reply to this message.
-
-
 Match Summary:
 
 $var->winner $var->howbad1 $var->loser in a match 3-$var->loserscore.

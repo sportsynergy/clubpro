@@ -604,6 +604,9 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction){
 	//remove white space
 	$userid = rtrim($userid);
 	
+	//Set variables
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+	$template = get_sitecode();
 	$adminaction_var = $adminaction ? "true" : "false";
 	
 	if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: confirming reservation $reservationid for userid $userid with an action $action and adminaction is $adminaction_var");
@@ -630,35 +633,29 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction){
 	$userResult = db_query($userQuery);
 	$userArray = mysql_fetch_array($userResult);
 	
-	
 	$var->firstname = $userArray['firstname'];
 	$var->lastname = $userArray['lastname'];
 	$var->fullname = "$var->firstname $var->lastname";
 	$var->email = $userArray['email'];
 	
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	
 	if($action=="add"){
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_court_event.php", $var);
+		$subject = get_clubname()." - Court Event Reservation Notice";
 	}else{
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_court_event.php", $var);
+		$subject = get_clubname()." - Court Event Cancellation Notice";
 	}
 
 	//send email to the person who signed up
 	if( isDebugEnabled(1) ) logMessage($emailbody);
-	$subject = "Court Reservation Notice";
-	$to_email = $var->email;
-	$to_name = "$var->firstname $var->lastname";
-	$from_email = "PlayerMailer@sportsynergy.net";
+	
+	$to_email = array($var->email => array('name' => $var->firstname));
 	$content = new Object;
 	$content->line1 = $emailbody;
-	$content->clubname = $var->clubfullname;
-	$content->to_firstname = $var->firstname;
-	$template = get_sitecode();
+	$content->clubname = get_clubname();
+
 	
-	//mail("$var->firstname $var->lastname <$var->email>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-	send_email($subject, $to_email, $to_name,$from_email, $content, $template);
+	send_email($subject, $to_email, $from_email, $content, $template);
 	
 
 	//send email to the person who created the reservation
@@ -666,7 +663,6 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction){
 
 	$creatorResult = db_query($creatorQuery);
 	$creatorArray = mysql_fetch_array($creatorResult);
-	
 	$var->adminfirstname = $creatorArray['firstname'];
 	$var->adminlastname = $creatorArray['lastname'];
 	$var->adminfullname = "$var->adminfirstname $var->adminlastname";
@@ -674,21 +670,18 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction){
 	
 	if($action=="add"){
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_others_court_event.php", $var);
+		$subject = get_clubname()." - Court Event Reservation Notice";
 	}else{
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_others_court_event.php", $var);
+		$subject = get_clubname()." - Court Event Cancellation Notice";
 	}
 	
 	//Set Email Variables
-	$subject = "Court Reservation Notice";
-	$to_email = $var->adminemail;
-	$to_name = "$var->adminfirstname $var->adminlastname";
-	$from_email = "PlayerMailer@sportsynergy.net";
+	$to_email = array($var->adminemail => array('name' => $var->adminfirstname) );
 	$content = new Object;
 	$content->line1 = $emailbody;
-	$content->clubname = $var->clubfullname;
-	$content->to_firstname = $var->adminfirstname;
-	
-	$template = get_sitecode();
+	$content->clubname = get_clubname();
+
 	
 	//Dont' send this email if the creator has put themselves in the reservaiton, its kind of redundatn
 	if($userid != $var->creator && !$adminaction){
@@ -696,40 +689,29 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction){
 		if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: sending the  message to the guy who created this.");
 		if( isDebugEnabled(1) ) logMessage($emailbody);
 		
-		send_email($subject, $to_email, $to_name,$from_email, $content, $template);
-		//mail("$var->adminfirstname $var->adminlastname <$var->adminemail>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+		send_email($subject, $to_email, $from_email, $content, $template);
+		
 	}
 	
+	$to_emails = array();
 	$rresult = getCourtEventParticipants($reservationid);
 	while ($player = mysql_fetch_array($rresult)) {
 
-		$subject = "Court Reservation Notice";
-		$to_email = $player['email'];
-		$to_name = $player['firstname']." ".$player['lastname'];
-		$from_email = "PlayerMailer@sportsynergy.net";
-		$content = new Object;
-		$content->line1 = $emailbody;
-		$content->clubname = $var->clubfullname;
-		$content->to_firstname = $player['firstname'];
-	
-		
-		if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: this is the user: $userid and this is the current ".$player['userid'].".");
-		
 		if (!empty ($player['email']) && $player['userid']!=$userid ) {
 			
 			if( isDebugEnabled(1) ) logMessage("reservationlib.confirmCourtEvent: sending notice to fellow court event participant:".$player['email']);
-			
-			send_email($subject, $to_email, $to_name,$from_email, $content, $template);
-			
-			//mail("$player[firstname] $player[lastname] <$player[email]>", "Court Reservation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+			$to_emails[$player['email'] = array('name' => $player['firstname'])];
 
 		}
 	}
 	
-	
+	//Configure email content
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
 
-	
-	
+	send_email($subject, $to_emails, $from_email, $content, $template);
+
 }
 
 

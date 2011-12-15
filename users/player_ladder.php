@@ -3,6 +3,7 @@
 
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/ladderlib.php");
+require($_SESSION["CFG"]["libdir"]."/postageapplib.php");
 $DOC_TITLE = "Player Ladder";
 require_loginwq();
 
@@ -217,6 +218,11 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	
 	if( isDebugEnabled(1) ) logMessage("player_ladder.sendEmailsForLadderMatch: sending out emails to challenger $challengerid and challengee $challengeeid ");
 	
+	//Set some variables
+	$template = get_sitecode();
+	$subject = get_clubname()." - Ladder Match";
+
+	
 	/* load up the user record for the winner */
 	$query = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
 						FROM tblUsers users
@@ -239,29 +245,35 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	$var->challengee_firstname = $challengee->firstname;
 	$var->challengee_fullname = $challengee->firstname ." ". $challengee->lastname;
 	$var->support = $_SESSION["CFG"]["support"];
-	
-	
 	$var->message = $message;
-
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
 		
 	$challenger_emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_ladder_match_challenger.php", $var);
+	$challenger_emailbody = nl2br($challenger_emailbody);
+	
 	$challengee_emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_ladder_match_challengee.php", $var);
+	$challengee_emailbody = nl2br($challengee_emailbody);
+	
+	// Provide Content for Challenger
+	$challenger_email = array($challenger->email => array('name' => $challenger->firstname) );
+	$content = new Object;
+	$content->line1 = $challenger_emailbody;
+	$content->clubname = get_clubname();
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+		
+	//Send the email
+     send_email($subject, $challenger_email, $from_email, $content, $template); 
+     
+     // Provide Content for Challengee
+    $challengee_email = array($challengee->email => array('name' => $challengee->firstname) );
+	$content = new Object;
+	$content->line1 = $challengee_emailbody;
+	$content->clubname = get_clubname();
+	$from_email = "$var->challenger_fullname <$challenger->email>";
+		
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
 	
 	
-	$challenger_message = "Hello $var->challenger_firstname,\n";
-	$challenger_message .= "$challenger_emailbody";
-	
-	$challengee_message = "Hello $var->challengee_firstname,\n";
-	$challengee_message .= "$challengee_emailbody";
-	
-
-	if( isDebugEnabled(1) ) logMessage($challenger_message);
-	if( isDebugEnabled(1) ) logMessage($challengee_message);
-	
-	mail("$var->challenger_fullname <$challenger->email>", "$clubfullname -- Ladder Match", $challenger_message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-	mail("$var->challengee_fullname <$challengee->email>", "$clubfullname -- Ladder Match", $challengee_message, "From: $challenger->email", "-f$challenger->email");
 }
 
 ?>

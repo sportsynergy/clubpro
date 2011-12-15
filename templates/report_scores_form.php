@@ -61,8 +61,9 @@ function onSubmitButtonClicked(){
 
         <tr>
 
-               			<td class="label">Winner:</td>
-                        <td>
+               			<td >
+               			<span class="label">Winner:</span>
+                        
 						<?
                        $residquery = "SELECT * from tblkpUserReservations
                                      WHERE reservationid='".$reservationid."'";
@@ -119,32 +120,22 @@ function onSubmitButtonClicked(){
             </td>
        </tr>
         <tr>
-        <td class="label">Score:</td>
-           <td>
-             <select name="score">
-                     <option value="0">3-0</option>
-                     <option value="1">3-1</option>
-                     <option value="2">3-2</option>
-             </select>
-           </td>
+	        <td>
+	        <span class="label">Score:</span>
+	             <select name="score">
+	                     <option value="0">3-0</option>
+	                     <option value="1">3-1</option>
+	                     <option value="2">3-2</option>
+	             </select>
+	           </td>
 
        </tr>
       
        <tr>
-       		<td class="italitcsm" colspan="2"><br><br>If these are not the player's that played click <a href="court_cancelation.php?time=<?=$restypearray[2]?>&courtid=<?=$restypearray[3]?>">here</a>.</td>
+       		<td class="italitcsm" >
+       		<br><br>If these are not the player's that played click <a href="court_cancelation.php?time=<?=$restypearray[2]?>&courtid=<?=$restypearray[3]?>">here</a>.</td>
        </tr>
-       <tr>
-           <td colspan="2">
-           		<input type="hidden" name="usertype" value="<?=$restypearray['usertype'] ?>">
-               <input type="hidden" name="Player1" value="<?=$userarray[0] ?>">
-			   <input type="hidden" name="Player2" value="<?=$userarray[1] ?>">
-			   <input type="hidden" name="reservationid" value="<?=$reservationid ?>">
-			   <input type="hidden" name="matchtype" value="<?=$restypearray['matchtype'] ?>">
-			   <input type="hidden" name="source" value="<?=$source ?>">
-			   <input type="hidden" name="submitme" value="submitme">
-           </td>
-
-       </tr>
+      
        <tr>
 	       <td>
 	           <input type="button" name="submit" value="Put this score in" id="submitbutton">
@@ -156,6 +147,14 @@ function onSubmitButtonClicked(){
 </td>
 </tr>
 </table>
+
+				<input type="hidden" name="usertype" value="<?=$restypearray['usertype'] ?>">
+               <input type="hidden" name="Player1" value="<?=$userarray[0] ?>">
+			   <input type="hidden" name="Player2" value="<?=$userarray[1] ?>">
+			   <input type="hidden" name="reservationid" value="<?=$reservationid ?>">
+			   <input type="hidden" name="matchtype" value="<?=$restypearray['matchtype'] ?>">
+			   <input type="hidden" name="source" value="<?=$source ?>">
+			   <input type="hidden" name="submitme" value="submitme">
 
 </form>
 

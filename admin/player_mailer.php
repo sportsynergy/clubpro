@@ -14,15 +14,17 @@ require_priv("2");
 if (match_referer() && isset($_POST['submitme'])) {
         $frm = $_POST;
         $errormsg = validate_form($frm, $errors);
-        $backtopage = $_SESSION["CFG"]["wwwroot"]."/admin/player_mailer.php";
-
+  
         if ( empty($errormsg) ){
              
-        	 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
-              $emailResult = send_message($frm['subject'], $frm['message'], get_siteid(), $frm['who'], $frm['sport'], $frm['ranking']);           
-              include($_SESSION["CFG"]["includedir"]."/include_mailsuc.php");
-              include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
-              die;
+              $emailResult = send_message($frm['subject'], $frm['message'], get_siteid(), $frm['who'], $frm['sport'], $frm['ranking']);  
+               if( mysql_num_rows($emailResult)> 0){ 
+               	$noticemsg = " Message sent to ".mysql_num_rows($emailResult)." people";  
+               	unset($frm);
+               } else {
+               	$errormsg = "Hey, nobody was found at your club like this";
+               }
+                      
         }
 
 
@@ -69,6 +71,8 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking){
 			$message=stripslashes($message);
 			$subject=stripslashes($subject);
 		}
+		
+		$message = nl2br($message);
 		
         if( isDebugEnabled(1) ) logMessage("playerMailer.send_message(): \n subject: $subject\n message: $message\n siteid: $siteid\n category: $category\n sport: $sport\n ranking: $ranking\n");
 
@@ -394,29 +398,23 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking){
        // run the query on the database
         $clubadminresult =  db_query($clubadminquery);
         $clubadminval = mysql_result($clubadminresult,0);
+        $to_emails = array();
 
-
-       while($emailidrow = db_fetch_row($emailidresult)) {
-
-		$to_email = $emailidrow[2];
-		$to_name = "$emailidrow[0] $emailidrow[1]";
-		$from_email = "$clubadminval";
-		$content = new Object;
-		$content->line1 = $message;
-		$content->clubname = $var->clubfullname;
-		$content->to_firstname = $emailidrow[0];
-		$template = get_sitecode()."-blank";
-	
-       	send_email($subject, $to_email, $to_name,$from_email, $content, $template);
-//          mail(
-//                "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>",
-//                "$subject",
-//                "$message",
-//                "From: $clubadminval");
-//
+        // Put all of the email addresses in an array
+        while($emailidrow = db_fetch_row($emailidresult)) {
+       		$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+        	$to_emails[$to_email] = array('name' => $emailidrow[0]);
+       		
          }
            
-           
+		$from_email = $clubadminval;
+		$content = new Object;
+		$content->line1 = $message;
+		$content->clubname = get_clubname();
+		$template = get_sitecode()."-blank";
+		
+		//Send the email
+        send_email($subject, $to_emails, $from_email, $content, $template);   
             
        return $emailidresult;
 	

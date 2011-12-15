@@ -1,11 +1,4 @@
 
-<?
-/*
- * $LastChangedRevision: 809 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-01-15 17:59:46 -0600 (Sat, 15 Jan 2011) $
- */
-?>
 
 <script language="Javascript">
 
@@ -156,7 +149,8 @@ function unsetplayers()
                 	<td> <span class="label">Match Type:</span></td>
                 	<td colspan="2">
 						  <select name="matchtype">
-						    <option value="challenge" <?=$challengeSelection?> >Challenge</option>
+						  <option value="practice"  >Practice</option>
+						    <option value="challenge" >Challenge</option>
 						  </select>
    					</td>
                 </tr>

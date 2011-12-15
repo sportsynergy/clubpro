@@ -163,7 +163,7 @@ function onCancelButtonClicked(){
 <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" onSubmit="SubDisable(this);" autocomplete="off">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
+<table cellspacing="0" cellpadding="20" width="450" class="generictable" id="formtable">
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -338,15 +338,20 @@ function onCancelButtonClicked(){
        <td>
 	       <br>
 	       <input type="button" name="submit" id="submitbutton" value="Update Court Reservation">
+	       <input type="button" id="cancelbutton" value="Back to Court Reservations" >
 	       <input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>">
 	       <input type="hidden" name="courtid" value="<?=$courtid?>">
 	       <input type="hidden" name="time" value="<?=$time?>">
        </td>
       </tr> 
-      <? } ?>  
-      <td>
-       		<input type="button" id="cancelbutton" value="Back to Court Reservations" >
-	   </td>     
+      <? } else { ?>  
+      <tr>
+      	<td>
+      		<input type="button" id="cancelbutton" value="Back to Court Reservations" >
+      	</td>
+      </tr>
+      <? } ?>
+          
 	</table>
 	
 	</td>

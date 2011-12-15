@@ -134,18 +134,15 @@ function email_players_about_lesson($resid) {
 		
 		if( isDebugEnabled(1) ) logMessage($message);
 			$subject = get_clubname()." - Lesson Available";
-			$to_email = $emailidrow[2];
+
+			$to_email = array($emailidrow[2] => array('name' => $emailidrow[0]) );
 			$to_name = "$emailidrow[0] $emailidrow[1]";
 			$from_email = "PlayerMailer@sportsynergy.net";
 			$content = new Object;
 			$content->line1 = $emailbody;
-			$content->line2 = "";
-			$content->line3 = "";
 			$content->clubname = get_clubname();
-			$content->to_firstname = $emailidrow[0];
 	
-		send_email($subject, $to_email, $to_name,$from_email, $content, $template);
-		//mail("$emailidrow[0] $emailidrow[1] <$emailidrow[2]>", "$clubfullname -- Lesson Available", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+		send_email($subject, $to_email, $from_email, $content, $template);
 
 	}
 

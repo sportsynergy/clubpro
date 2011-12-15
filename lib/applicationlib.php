@@ -8,9 +8,9 @@
  * @param $to_name
  * @param $content an array of line1, line2, line3
  */
-function send_email($subject, $to_email, $to_name, $from_email, $content, $template){
+function send_email($subject, $to_emails, $from_email, $content, $template){
 	
-	if( isDebugEnabled(1) ) logMessage("applicationlib.send_email: sending email with subject $subject to $to_email from $from_email");
+	if( isDebugEnabled(1) ) logMessage("applicationlib.send_email: sending email with subject $subject with a size ".count($to_emails)." from $from_email");
 	
 		
 	# Who's going to receive this email.
@@ -28,13 +28,10 @@ function send_email($subject, $to_email, $to_name, $from_email, $content, $templ
     #     'youremail@somewhere.com' => array('name' => 'Ann Johnson', ...),
     #     ...
     #   )
-    $to = array($to_email => array('name' => $to_name));
+   // $to = array($to_email => array('name' => $to_name));
     
 	$variables = array('line1' =>  $content->line1,
-						'line2' =>  $content->line2, 
-						'line3' =>  $content->line3, 
-						'clubname' =>  $content->clubname, 
-						'to_firstname' =>  $content->to_firstname);
+						'clubname' =>  $content->clubname);
     
     # Setup some headers
     $header = array(
@@ -44,7 +41,7 @@ function send_email($subject, $to_email, $to_name, $from_email, $content, $templ
     
 
     # Send it all
-    $response = PostageApp::mail($to, $subject, $template, $header, $variables);
+    $response = PostageApp::mail($to_emails, $subject, $template, $header, $variables);
     //return $response;
 }
 
@@ -653,8 +650,7 @@ function get_userfullname(){
  *  */
 function get_clubname(){
 	
-	if( isDebugEnabled(1) ) logMessage("applicationlib.get_clubname: ".$_SESSION["siteprefs"]["clubname"]);
-	
+
 	return $_SESSION["siteprefs"]["clubname"];
 }
 
@@ -952,10 +948,8 @@ function findSelfTeam($array) {
 function email_players($resid, $emailType) {
 
 
-	if( isDebugEnabled(1) ) logMessage("Emailing Players about reservation id: $resid for a $emailType kind of email");
+	if( isDebugEnabled(1) ) logMessage("applicationlib.emailplayers: emailing Players about reservation id: $resid for a $emailType kind of email");
 	
-	/* load up the reservation infomation   */
-
 	//Check to see if the reservation is for a doubles court
 	$usertypequery = "SELECT usertype FROM tblReservations WHERE reservationid=$resid";
 	$usertyperesult = db_query($usertypequery);
@@ -982,7 +976,7 @@ function email_players($resid, $emailType) {
 		$robj = mysql_fetch_object($rresult);
 		$var = new Object;
 
-		if( isDebugEnabled(1) ) logMessage("Courtid ".$robj->courtid);
+		if( isDebugEnabled(1) ) logMessage("applicationlib.emailplayers: courtid ".$robj->courtid);
 		/* email the user with the new account information    */
 
 		$var->userid = $robj->userid;
@@ -1004,13 +998,11 @@ function email_players($resid, $emailType) {
 		$var->support = $_SESSION["CFG"]["support"];
 		
 		//Set the URL
-		//sample: http://localhost/clubpro/users/court_reservation.php?time=1285430400&courtid=5&userid=3
-		$var->signupurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;
+		$rawurl  = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;
+		$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
 
-		$clubfullname = get_clubname();
-		$var->clubfullname = $clubfullname;
-		$var->clubadminemail = "PlayerMailer@sportsynergy.net";
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/singles_wanted.php", $var);
+		$emailbody = nl2br($emailbody);
 
 		if ($emailType == "3") {
 
@@ -1070,19 +1062,24 @@ function email_players($resid, $emailType) {
 
 		// run the query on the database
 		$emailidresult = db_query($emailidquery);
-
+		$to_emails = array();
+		
 		while ($emailidrow = db_fetch_row($emailidresult)) {
-
-			//Prepare the message
-			$message = "Hello $emailidrow[0],\n";
-			$message .= "$emailbody";
-
-			if( isDebugEnabled(1) ) logMessage($message);
-			mail("$emailidrow[0] $emailidrow[1] <$emailidrow[2]>", "$clubfullname -- Player's MarketPlace", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+			$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+			$to_emails[$to_email] = array('name' => $emailidrow[0]);
 
 		}
 
-
+		$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+		$content = new Object;
+		$content->line1 = $emailbody;
+		$content->clubname = get_clubname();
+		$template = get_sitecode();
+		$subject = get_clubname()." - Player's Market Place";
+		
+		//Send the email
+        send_email($subject, $to_emails, $from_email, $content, $template);   
+        
 	}
 
 	//email about a doubles court
@@ -1173,7 +1170,7 @@ function email_players($resid, $emailType) {
 
 		$clubfullname = get_clubname();
 		$var->clubfullname = $clubfullname;
-		$var->clubadminemail = "PlayerMailer@sportsynergy.net";
+		$var->clubadminemail = "Sportsynergy <player.mailer@sportsynergy.net>";
 		
 		
 
@@ -1217,8 +1214,8 @@ function email_players($resid, $emailType) {
 		
 		$var->single1 = $partnerobj->firstname . " " . $partnerobj->lastname;
 		
-		
-		$var->signupurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;	
+		$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;
+		$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/threePlayersWanted.php", $var);
 			
 		}
@@ -1259,7 +1256,8 @@ function email_players($resid, $emailType) {
 		
 		$var->single2 = $playerTwoobj->firstname . " " . $playerTwoobj->lastname;
 		
-		$var->signupurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$singlePlayerOne;
+		$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$singlePlayerOne;
+		$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/twoPlayersWanted.php", $var);
 			
 		}
@@ -1271,11 +1269,14 @@ function email_players($resid, $emailType) {
 			$partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
 			                           FROM tblUsers
 			                           WHERE (((tblUsers.userid)=$extraPlayerUserId))";
+			
 			$partnerResult = db_query($partnerQuery);
 			$partnerobj = mysql_fetch_object($partnerResult);
 
 			$var->partner = $partnerobj->firstname . " " . $partnerobj->lastname;
-			$var->signupurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$extraPlayerUserId;
+			
+			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$extraPlayerUserId;
+			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
 			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/partner_wanted.php", $var);
 
 		} 
@@ -1286,7 +1287,9 @@ function email_players($resid, $emailType) {
 			if( empty($var->timestamp) || empty($var->courtid) || empty($var->teamid) ){
 				return;
 			}
-			$var->signupurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->teamid;
+			
+			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->teamid;
+			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
 			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/doubles_wanted.php", $var);
 		}
 
@@ -1383,17 +1386,24 @@ function email_players($resid, $emailType) {
 		
 		// run the query on the database
 		$emailidresult = db_query($emailidquery);
-
+		$to_emails = array();
+		
 		while ($emailidrow = db_fetch_row($emailidresult)) {
-
-			//Prepare the message
-			$message = "Hello $emailidrow[0],\n";
-			$message .= "$emailbody";
-
+			
 			if( isDebugEnabled(1) ) logMessage($message);
-			mail("$emailidrow[0] $emailidrow[1] <$emailidrow[2]>", "$clubfullname -- Player's MarketPlace", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-
+			$to_emails[$emailidrow[2] = array('name' => $emailidrow[0]) ];
 		}
+
+		$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+		
+		$content = new Object;
+		$content->line1 = $emailbody;
+		$content->clubname = get_clubname();
+		$template = get_sitecode();
+		$subject = get_clubname()." - Player's Market Place";
+		
+		//Send the email
+        send_email($subject, $to_emails, $from_email, $content, $template);
 
 	}
 
@@ -1440,9 +1450,7 @@ function email_boxmembers($resid, $boxid) {
 	$var->fullname = $robj->firstname . " " . $robj->lastname;
 	$var->support = $_SESSION["CFG"]["support"];
 
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
+
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/singles_wanted.php", $var);
 
 	//Now get all boxmembers
@@ -1456,25 +1464,36 @@ function email_boxmembers($resid, $boxid) {
 
 	// run the query on the database
 	$emailidresult = db_query($emailidquery);
+	$to_emails = array();
+	
 	while ($emailidrow = mysql_fetch_array($emailidresult)) {
 
 		if (!hasPlayedBoxWith(get_userid(), $emailidrow[userid], $boxid)) {
-
-			//Prepare the message
-			$message = "Hello $emailidrow[1],\n";
-			$message .= "$emailbody";
 			
-			if( isDebugEnabled(1) ) logMessage($message);
-			mail("$emailidrow[1] $emailidrow[2] <$emailidrow[3]>", "$clubfullname -- Player's MarketPlace", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+			if( isDebugEnabled(1) ) logMessage($emailbody);
+			$to_emails[$emailidrow[3]] = array('name' => $emailidrow[1]);
 		}
 
 	}
+	
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+	$subject = get_clubname()." - Player's Market Place";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+		
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
+	
 }
 
 /************************************************************************************************************************/
 
 function confirm_singles($resid, $isNewReservation) {
 
+	if( isDebugEnabled(1) ) logMessage("applicationlib.confirm_singles: sending out emails for a singles reservation");
+	
 	$rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name, reservations.usertype
 			           FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblMatchType matchtype, tblClubUser clubuser
 			           WHERE courts.courtid = reservations.courtid
@@ -1512,10 +1531,6 @@ function confirm_singles($resid, $isNewReservation) {
 	$var->lastname2 = $robj->lastname;
 	$var->fullname2 = $robj->firstname . " " . $robj->lastname;
 
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
-
 	if (db_num_rows($rresult) == 1) {
 		
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_singles_looking.php", $var);
@@ -1532,28 +1547,35 @@ function confirm_singles($resid, $isNewReservation) {
 
 	// Set the Subject
 	if ($isNewReservation) {
-		$subject = "Court Reservation Notice";
+		$subject = get_clubname()." - Court Reservation Notice";
 	} else {
-		$subject = "Updated Court Reservation Notice";
+		$subject = get_clubname()." - Updated Court Reservation Notice";
 	}
 
 	//Reset the result pointer to the begining
 	mysql_data_seek($rresult, 0);
 
+	$to_emails = array();
+	 
 	while ($emailidrow = db_fetch_row($rresult)) {
 
 		//If they don't even bother to put in an email address
 		//don't waste your time trying to send them an email.
 		//print "This is my email: $emailidrow[4]\n";
 		if (!empty ($emailidrow[4])) {
-			//Prepare the message
-			$message = "Hello $emailidrow[2],\n";
-			$message .= "$emailbody";
-
-			mail("$emailidrow[2] $emailidrow[3] <$emailidrow[4]>", $subject, $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-
+			 $to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
 		}
 	}
+	
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+		
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
+      
 }
 
 /************************************************************************************************************************/
@@ -1598,10 +1620,6 @@ function cancel_singles($resid) {
 	$var->lastname2 = $robj->lastname;
 	$var->fullname2 = $robj->firstname . " " . $robj->lastname;
 
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
-
 	if (db_num_rows($rresult) == 1) {
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_singles_looking.php", $var);
 	} else
@@ -1616,18 +1634,25 @@ function cancel_singles($resid) {
 
 	//Reset the result pointer to the begining
 	mysql_data_seek($rresult, 0);
+	$to_emails = array();
 
 	while ($emailidrow = db_fetch_row($rresult)) {
 
-		//Prepare the message
-		$message = "Hello $emailidrow[2],\n";
-		$message .= "$emailbody";
-
 		if (!empty ($emailidrow[4])) {
-			mail("$emailidrow[2] $emailidrow[3] <$emailidrow[4]>", "Court Cancellation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+			$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
 		}
 
 	}
+	
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+	$subject = "Court Cancellation Notice";
+		
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
 
 }
 
@@ -1638,13 +1663,14 @@ function cancel_singles($resid) {
 	looking for partner.
 */
 
-
 function confirm_doubles($resid, $isNewReservation) {
-
 	
 	if( isDebugEnabled(1) ) logMessage("applicationlib.confirm_doubles: confirming reservation $resid isNewReservation $isNewReservation");
 	
 	$var = new Object;
+	$template = get_sitecode();
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+	
 
 	//Obtain the court and matchtype information
 	$timeQuery = "SELECT courts.courtname, matchtype.name, reservations.time 
@@ -1708,9 +1734,9 @@ function confirm_doubles($resid, $isNewReservation) {
 
 	// Set the Subject
 	if ($isNewReservation) {
-		$subject = "Court Reservation Notice";
+		$subject = get_clubname()." - Court Reservation Notice";
 	} else {
-		$subject = "Updated Court Reservation Notice";
+		$subject = get_clubname()." - Updated Court Reservation Notice";
 	}
 
 	//Check to see if there is a single wanting to play
@@ -1731,14 +1757,16 @@ function confirm_doubles($resid, $isNewReservation) {
 		
 		$var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_doubles_looking_for_three.php", $var);
-
-		//Prepare the message
-		$message = "Hello $extraPlayerobj->firstname,\n";
-		$message .= "$emailbody";
 		
 		if( isDebugEnabled(1) ) logMessage($emailbody);
-		mail("$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>", $subject, $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+
+		// Provide Content
+		$content = new Object;
+		$content->line1 = $emailbody;
+		$content->clubname = get_clubname();
 		
+		//Send the email
+	     send_email($subject, $to_emails, $from_email, $content, $template); 
 	}
 
 	//Prepare and send emails to single players where there is more than one person looking for a partner
@@ -1755,20 +1783,20 @@ function confirm_doubles($resid, $isNewReservation) {
 		//Reset Counter
 		if( mysql_num_rows($extraPlayerResult)>0) mysql_data_seek($extraPlayerResult, 0);
 		
-		//Get First Player
-		$message = "Hello $extraPlayerResult->firstname,\n";
-		$message .= "$emailbody";
-		
 		if( isDebugEnabled(1) ) logMessage($emailbody);
-		mail("$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>", $subject, $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-
+		$to_emails[$extraPlayerobj->email = array('name' => $extraPlayerobj->firstname)];
+		
 		//Get next player
 		$extraPlayerobj = mysql_fetch_object($extraPlayerResult);
-		$message = "Hello $extraPlayerResult->firstname,\n";
-		$message .= "$emailbody";
-		mail("$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>", $subject, $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+		$to_emails[$extraPlayerobj->email = array('name' => $extraPlayerobj->firstname)];
 		
+		// Provide Content
+		$content = new Object;
+		$content->line1 = $emailbody;
+		$content->clubname = get_clubname();
 		
+		//Send the email
+	     send_email($subject, $to_emails, $from_email, $content, $template); 
 	}
 	
 	//Prepare and send emails to single player where there is only one person needing a partner
@@ -1777,12 +1805,17 @@ function confirm_doubles($resid, $isNewReservation) {
 		$var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_double_for_player_looking.php", $var);
 
-		//Prepare the message
-		$message = "Hello $extraPlayerobj->firstname,\n";
-		$message .= "$emailbody";
 		if( isDebugEnabled(1) ) logMessage($emailbody);
-		mail("$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>", $subject, $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
 
+		$to_emails = array($extraPlayerobj->email);
+		
+		// Provide Content
+		$content = new Object;
+		$content->line1 = $emailbody;
+		$content->clubname = get_clubname();
+			
+		//Send the email
+	     send_email($subject, $to_emails, $from_email, $content, $template); 
 	}
 	
 	//Now Send emails out to players that acutally are in a team
@@ -1801,16 +1834,22 @@ function confirm_doubles($resid, $isNewReservation) {
 	//Send out emails to the teams
 	//Reset the result pointer to the begining
 	if( mysql_num_rows($playerResult)>0) mysql_data_seek($playerResult, 0);
-
+	
+	$to_emails = array();
+	
 	while ($playerObject = mysql_fetch_object($playerResult)) {
-
-		//Prepare the message
-		$message = "Hello $playerObject->firstname,\n";
-		$message .= "$emailbody";
+		
 		if(isDebugEnabled(1) ) logMessage($emailbody);
-		mail("$playerObject->firstname $playerObject->lastname <$playerObject->email>", $subject, $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+		$to_emails[$playerObject->email = array('name' => $playerObject->firstname)];
 	}
 	
+	
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+		
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
 
 
 }
@@ -1884,16 +1923,23 @@ function cancel_doubles($resid) {
 	//Reset the result pointer to the begining
 
 	mysql_data_seek($rresult, 0);
+	
+	$to_emails = array();
 
 	while ($emailidrow = db_fetch_row($rresult)) {
 
-		//Prepare the message
-		$message = "Hello $emailidrow[2],\n";
-		$message .= "$emailbody";
-
-		mail("$emailidrow[2] $emailidrow[3] <$emailidrow[4]>", "Court Cancellation Notice", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-
+		$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
 	}
+	
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+	$subject = get_clubname()." - Court Cancellation Notice";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+		
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
 	
 
 }
@@ -1930,9 +1976,9 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
 	$var->support = $_SESSION["CFG"]["support"];
 
 	$var->winnersold = $wor;
-	$var->winnersnew = $wnr;
+	$var->winnersnew = round($wnr,4);
 	$var->losersold = $lor;
-	$var->losersnew = $lnr;
+	$var->losersnew = round($lnr,4);
 
 	//Get the first player
 	$var->winnerfull = getFullNameForUserId($wUserid);	
@@ -1941,25 +1987,27 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
 	$var->loserfull = getFullNameForUserId($lUserid);	
 	$var->loserscore = $score;
 
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_singles_simple.php", $var);
-
+	$emailbody = nl2br($emailbody);
+	
 	//Reset the result pointer to the begining
 	mysql_data_seek($rresult, 0);
+	$to_emails = array();
 
 	while ($emailidrow = db_fetch_row($rresult)) {
-
-		//Prepare the message
-		$message = "Hello $emailidrow[0],\n";
-		$message .= "$emailbody";
-
-		mail("$emailidrow[0] $emailidrow[1] <$emailidrow[2]>", "$clubfullname -- Score Report", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-
+		$to_emails[$emailidrow[2]] = array('name' => $emailidrow[0]);
 	}
 	
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+	$subject = get_clubname()." - Score Report";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+		
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
+     
 	$description = "$var->winnerfull $var->howbad $var->loserfull in a $matchtype match 3-$score ";
 	logSiteActivity(get_siteid(), $description);
 
@@ -2026,9 +2074,9 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	$var->support = $_SESSION["CFG"]["support"];
 	$var->courtid = $robj->courtid;
 	$var->winnersold = $wor;
-	$var->winnersnew = $wnr;
+	$var->winnersnew = round($wnr,4);
 	$var->losersold = $lor;
-	$var->losersnew = $lnr;
+	$var->losersnew = round($lnr,4);
 
 	//Get the first player
 	$var->winnerfname = $robj->firstname;
@@ -2041,24 +2089,28 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	$var->loserfname = $robj->firstname;
 	$var->loserlname = $robj->lastname;
 	$var->loserfull = $robj->firstname . " " . $robj->lastname;
-
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_singles.php", $var);
+	
+	//convert newlines
+	$emailbody = nl2br($emailbody);
 
 	//Reset the result pointer to the begining
 	mysql_data_seek($rresult, 0);
 
+	$to_emails = array();
 	while ($emailidrow = db_fetch_row($rresult)) {
-
-		//Prepare the message
-		$message = "Hello $emailidrow[2],\n";
-		$message .= "$emailbody";
-
-		mail("$emailidrow[2] $emailidrow[3] <$emailidrow[4]>", "$clubfullname -- Score Report", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-
+		$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
 	}
+	
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+	$subject = get_clubname()." - Score Report";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+	
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
 	
 	$description = "$var->winnerfull defeated $var->loserfull in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
 	logSiteActivity(get_siteid(), $description);
@@ -2087,9 +2139,9 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
 	$var = new Object;
 	$var->support = $_SESSION["CFG"]["support"];
 	$var->winnersold = $wor;
-	$var->winnersnew = $wnr;
+	$var->winnersnew = round($wnr,4);
 	$var->losersold = $lor;
-	$var->losersnew = $lnr;
+	$var->losersnew = round($lnr,4);
 
 	//Get the winner user information
 	$var->winnerfname = $wobj->firstname;
@@ -2101,22 +2153,24 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
 	$var->loserlname = $lobj->lastname;
 	$var->loserfull = $lobj->firstname . " " . $lobj->lastname;
 
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_singlesbox.php", $var);
 
-	//Email the winner
-	$message = "Hello $wobj->firstname,\n";
-	$message .= "$emailbody";
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
 
-	mail("$wobj->firstname $wobj->lastname <$wobj->email>", "$clubfullname -- Score Report", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+	$template = get_sitecode();
+	$subject = get_clubname()." - Score Report";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+	$winner_email = array($wobj->email => array('name' => $wobj->firstname) );
 
-	//Email the loser
-	$message = "Hello $emailidrow[2],\n";
-	$message .= "$emailbody";
-
-	mail("$lobj->firstname $lobj->lastname <$lobj->email>", "$clubfullname -- Score Report", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
+	
+	//Send the email
+     send_email($subject, $winner_email, $from_email, $content, $template); 
+     
+     //Send the email
+     $loser_email = array($lobj->email => array('name' => $lobj->firstname));
+     send_email($subject, $loser_email, $from_email, $content, $template); 
 
 
 }
@@ -2160,9 +2214,9 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
 	$var->support = $_SESSION["CFG"]["support"];
 
 	$var->winnersold = $wor;
-	$var->winnersnew = $wnr;
+	$var->winnersnew = round($wnr,4);
 	$var->losersold = $lor;
-	$var->losersnew = $lnr;
+	$var->losersnew = round($lnr,4);
 
 	//Get the first player
 	$var->winner = getFullNamesForTeamId($wTeamid);
@@ -2174,24 +2228,27 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
 	
 	$var->loserscore = $score;
 
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_doubles_simple.php", $var);
+	$emailbody = nl2br($emailbody);
 
 	//Reset the result pointer to the begining
 	mysql_data_seek($rresult, 0);
+	$to_emails = array();
 
 	while ($emailidrow = db_fetch_row($rresult)) {
-
-		//Prepare the message
-		$message = "Hello $emailidrow[0],\n";
-		$message .= "$emailbody";
-
-		mail("$emailidrow[0] $emailidrow[1] <$emailidrow[2]>", "$clubfullname -- Score Report", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-
+		$to_emails[$emailidrow[2]] = array('name' => $emailidrow[0]);
 	}
+	
+	// Provide Content
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+	$subject = get_clubname()." - Score Report";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+		
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
 	
 	$description = "$var->winner $var->howbad $var->loser in a $matchtype match 3-$score ";
 	logSiteActivity(get_siteid(), $description);
@@ -2223,11 +2280,11 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	/* email the user with the new account information    */
 	$var = new Object;
 	if ($score == 0) {
-		$var->howbad = "pounded";
+		$var->howbad = "completely creamed";
 		$var->loserscore = 0;
 	}
 	elseif ($score == 2) {
-		$var->howbad = "edged out";
+		$var->howbad = "squeaked by";
 		$var->loserscore = 2;
 	} else {
 		$var->howbad = "defeated";
@@ -2243,9 +2300,9 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	$var->courtid = $robj->courtid;
 	$var->support = $_SESSION["CFG"]["support"];
 	$var->winnersold = $wor;
-	$var->winnersnew = $wnr;
+	$var->winnersnew = round($wnr,4);
 	$var->losersold = $lor;
-	$var->losersnew = $lnr;
+	$var->losersnew = round($lnr,4);
 	
 	$var->date = gmdate("l F j", $robj->time);
 	$var->hour = gmdate("g:i a", $robj->time);
@@ -2273,23 +2330,27 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	$var->lastname4 = $robj->lastname;
 	$var->fullname4 = $robj->firstname . " " . $robj->lastname;
 
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_doubles.php", $var);
+	$emailbody = nl2br($emailbody);
 
 	//Reset the result pointer to the begining
 	mysql_data_seek($rresult, 0);
+	$to_emails = array();
 
 	while ($emailidrow = db_fetch_row($rresult)) {
-
-		//Prepare the message
-		$message = "Hello $emailidrow[2],\n";
-		$message .= "$emailbody";
-
-		mail("$emailidrow[2] $emailidrow[3] <$emailidrow[4]>", "$clubfullname -- Score Report", $message, "From: PlayerMailer@sportsynergy.net", "-fPlayerMailer@sportsynergy.com");
-
+		$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
 	}
+	
+	// Provide Content
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+	$subject = get_clubname()." - Score Report";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+	
+	//Send the email
+     send_email($subject, $to_emails, $from_email, $content, $template); 
 	
 	$description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
 	logSiteActivity(get_siteid(), $description);
@@ -2580,7 +2641,16 @@ function record_score(&$frm, $source) {
 		$lteamnamearray = db_fetch_array($lteamnameresult);
 		echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by ". round($winnerAdjustment,4)."  to ".round($playerFourRanking,4)."</div>";
 	
-
+		?>
+		<div>
+		<? if( isset($source) && $source == "ladder"){ ?>
+			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back to the ladder</a>
+		<? } else { ?>
+			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back to the scheduler</a>
+		<? } ?>
+		</div>
+		
+		<?
 		//Send out the emails
 		report_scores_doubles($frm['reservationid'], $winnerRanking, $rankingArray['winner'], $loserRanking, $rankingArray['loser'], $frm['score']);
 
@@ -2590,8 +2660,8 @@ function record_score(&$frm, $source) {
 		<tr>
 		<td class="normal">
 		<font class="bigbanner"> Congratulations <?=$winneridarray[1]?> <?=$winneridarray[2] ?>!!</font><br><br>
-		<?= $winneridarray[1]?> <?=$winneridarray[2]?>'s rating rose from <?=$winneridarray[0]?> to <?=$newWinnerRanking?>  <br>
-		<?=$loseridarray[1]?>  <?=$loseridarray[2]?>'s rating fell from <?=$loseridarray[0]?> to <?=$newLoserRanking?> <br>
+		<?= $winneridarray[1]?> <?=$winneridarray[2]?>'s rating rose from <?=$winneridarray[0]?> to <?=round($newWinnerRanking,4)?>  <br>
+		<?=$loseridarray[1]?>  <?=$loseridarray[2]?>'s rating fell from <?=$loseridarray[0]?> to <?=round($newLoserRanking,4)?> <br>
 		<td>
 		<tr>
 		<tr>

@@ -1,15 +1,9 @@
 <?
 
-
-/*
- * $LastChangedRevision: 26 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2006-06-13 09:23:08 -0500 (Tue, 13 Jun 2006) $
- */
-
 include ("../application.php");
 require($_SESSION["CFG"]["libdir"]."/ladderlib.php");
 require($_SESSION["CFG"]["libdir"]."/courtlib.php");
+require($_SESSION["CFG"]["libdir"]."/postageapplib.php");
 
 $DOC_TITLE = "Record Scores";
 $ct = $_REQUEST["ct"];
