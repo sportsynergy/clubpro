@@ -271,7 +271,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	$from_email = "$var->challenger_fullname <$challenger->email>";
 		
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
+     send_email($subject, $challengee_email, $from_email, $content, $template); 
 	
 	
 }
