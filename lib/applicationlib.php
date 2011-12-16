@@ -1807,7 +1807,7 @@ function confirm_doubles($resid, $isNewReservation) {
 
 		if( isDebugEnabled(1) ) logMessage($emailbody);
 
-		$to_emails = array($extraPlayerobj->email);
+		$to_emails[$extraPlayerobj->email = array('name' => $extraPlayerobj->firstname)];
 		
 		// Provide Content
 		$content = new Object;
