@@ -13,7 +13,7 @@ if(mysql_num_rows($siteActivityResult) > 0){ ?>
 <hr class="hrline"/>
 
 <div>
-<ul class="recentavtivity" id="container">
+<ul class="recentavtivity" id="recentactivity">
 
 <?
 	
@@ -36,7 +36,7 @@ while($siteActivity = mysql_fetch_array($siteActivityResult)){ ?>
 
 
 <script>
-var div = document.getElementById('container');
+var div = document.getElementById('"recentactivity"');
 var recentActivity = '<?=formatDate($_SESSION["current_time"])?>';
 var siteid = '<?=get_siteid()?>';
 
