@@ -174,8 +174,9 @@ Nobody has signed up for the ladder yet.
 	<label for="to_email">E-mail:</label><input type="textbox" name="email" disabled="disabled" id="to_email" size="50"> 
 
 	<div class="clear"></div>
-	<label for="textarea">Message:</label><textarea name="textarea" cols="50" rows="10" onKeyDown="limitText(this.form.textarea,this.form.countdown,250);" 
-			onKeyUp="limitText(this.form.textarea,this.form.countdown,250);">Hello, I would like to challenge you in the ladder.  Please let me know what time works best for you. See you on the court.</textarea>
+	<label for="textarea">Message:</label>
+	<textarea id="challengemessage" name="textarea" cols="50" rows="10" onKeyDown="limitText(this.form.textarea,this.form.countdown,250);" 
+			onKeyUp="limitText(this.form.textarea,this.form.countdown,250);"></textarea>
 
 	<div class="clear"></div>
 	<span class="normalsm">
@@ -227,6 +228,8 @@ Nobody has signed up for the ladder yet.
 
 <script>
 
+		var allownewlines = false;
+		
 		YAHOO.namespace("clubladder.container");
 		
 		YAHOO.util.Event.onDOMReady(function () {
@@ -281,6 +284,8 @@ Nobody has signed up for the ladder yet.
 			YAHOO.clubladder.container.dialog1.render();
 		
 			YAHOO.util.Event.addListener("show", "click", YAHOO.clubladder.container.dialog1.show, YAHOO.clubladder.container.dialog1, true);
+			YAHOO.util.Event.addListener("show", "click", disablenewlines, false, true);
+			
 			
 		});
 		
@@ -334,7 +339,7 @@ Nobody has signed up for the ladder yet.
 			
 				if( !$playerlocked && isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){
 				?>
-			personObj_<?=$playerarray['ladderposition']?>={fullname:"<?=rtrim($playerarray['fullname'])?> ",email:"<?=$playerarray['email']?>",userid:<?=$playerarray['userid']?>};	
+			personObj_<?=$playerarray['ladderposition']?>={firstname:"<?=$playerarray['firstname']?>",fullname:"<?=rtrim($playerarray['fullname'])?> ",email:"<?=$playerarray['email']?>",userid:<?=$playerarray['userid']?>};	
 			YAHOO.util.Event.addListener("challenge-<?=$playerarray['ladderposition']?>", "click", YAHOO.clubladder.container.challengedialog.show, YAHOO.clubladder.container.challengedialog, true);
 			YAHOO.util.Event.addListener("challenge-<?=$playerarray['ladderposition']?>", "click", defaultChallengeDialog,personObj_<?=$playerarray['ladderposition']?>,true);
 			
@@ -350,9 +355,20 @@ Nobody has signed up for the ladder yet.
 		 */
 		function defaultChallengeDialog(e, obj){
 
+			allownewlines = true;
+			var msg = document.getElementById("challengemessage");
+			msg.value = 'Hello '+obj.firstname+',\n\nI would like to challenge you in the ladder.  Please let me know what time works best for you.\n\nSee you on the court.';
+			
+			
 			document.getElementById("to_name").value =  obj.fullname;
 			document.getElementById("to_email").value = obj.email;
 			document.getElementById("challengeeid").value = obj.userid;
+		}
+
+		function disablenewlines(){
+
+			allownewlines = false;
+			
 		}
 		
 		function removeFromLadder(userid){
@@ -369,7 +385,7 @@ Nobody has signed up for the ladder yet.
 		{
 		    if(!aEvent) aEvent=window.event;
 		  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
-		    if( key == 13 ) // enter key
+		    if( key == 13 && !allownewlines) // enter key
 		    {
 		        return false; // this will prevent bubbling ( sending it to children ) the event!
 		    }

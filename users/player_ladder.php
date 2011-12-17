@@ -219,7 +219,6 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	if( isDebugEnabled(1) ) logMessage("player_ladder.sendEmailsForLadderMatch: sending out emails to challenger $challengerid and challengee $challengeeid ");
 	
 	//Set some variables
-	$template = get_sitecode();
 	$subject = get_clubname()." - Ladder Match";
 
 	
@@ -245,13 +244,11 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	$var->challengee_firstname = $challengee->firstname;
 	$var->challengee_fullname = $challengee->firstname ." ". $challengee->lastname;
 	$var->support = $_SESSION["CFG"]["support"];
-	$var->message = $message;
+	$template = get_sitecode();
 		
 	$challenger_emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_ladder_match_challenger.php", $var);
 	$challenger_emailbody = nl2br($challenger_emailbody);
 	
-	$challengee_emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_ladder_match_challengee.php", $var);
-	$challengee_emailbody = nl2br($challengee_emailbody);
 	
 	// Provide Content for Challenger
 	$challenger_email = array($challenger->email => array('name' => $challenger->firstname) );
@@ -266,9 +263,11 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
      // Provide Content for Challengee
     $challengee_email = array($challengee->email => array('name' => $challengee->firstname) );
 	$content = new Object;
-	$content->line1 = $challengee_emailbody;
+	$message = nl2br($message);
+	$content->line1 = $message;
 	$content->clubname = get_clubname();
 	$from_email = "$var->challenger_fullname <$challenger->email>";
+	$template = get_sitecode()."-blank";
 		
 	//Send the email
      send_email($subject, $challengee_email, $from_email, $content, $template); 

@@ -1,7 +1,6 @@
 <?php
 
 
-
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/postageapplib.php");
 
