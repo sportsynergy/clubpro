@@ -5677,7 +5677,8 @@ function getFooterMessage(){
  */
 function getRecentSiteActivity($siteid){
 	
-	$query = "SELECT activity.description from tblSiteActivity activity 
+	$query = "SELECT activity.description, activity.activitydate
+	 			FROM tblSiteActivity activity 
 				WHERE siteid = $siteid AND enddate is NULL
 				ORDER BY activity.activitydate DESC LIMIT 3";
 	

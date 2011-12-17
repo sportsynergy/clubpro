@@ -13,15 +13,17 @@ if(mysql_num_rows($siteActivityResult) > 0){ ?>
 <hr class="hrline"/>
 
 <div>
-<ul class="recentavtivity" id="recentactivity">
+<ul class="recentavtivity" id="activityfeed">
 
 <?
-	
+$lastactivity = "";
 while($siteActivity = mysql_fetch_array($siteActivityResult)){ ?>
 	
 	<li><?=$siteActivity['description']?></li>
 	
-<? } ?>
+<? 
+	$lastactivity = $siteActivity['activitydate'];
+} ?>
 
 </ul>
 
@@ -36,8 +38,8 @@ while($siteActivity = mysql_fetch_array($siteActivityResult)){ ?>
 
 
 <script>
-var div = document.getElementById('"recentactivity"');
-var recentActivity = '<?=formatDate($_SESSION["current_time"])?>';
+var div = document.getElementById('activityfeed');
+var recentActivity = '<?=$lastactivity?>';
 var siteid = '<?=get_siteid()?>';
 
 var handleSuccess = function(o){
