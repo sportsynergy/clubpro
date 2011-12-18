@@ -9,7 +9,7 @@
 <table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
  <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
-    	<span class=whiteh1>
+    	<span class="whiteh1">
     		<div align="center"><? pv($DOC_TITLE) ?></div>
     	</span>
     </td>
@@ -31,7 +31,8 @@
        <tr>
            <td colspan="2">
 	           Search for the first or last name of a member. *Note partial string are supported.
-	            <span style="font-style: italic;"> i.e. Smi for Smith or Pet for Peter</span>
+	            <span style="font-style: italic;"> i.e. Smi for Smith or Pet for Peter.</span> To display all 
+	            of the members on file, just leave the box empty and click the search button.
            </td>
 
 

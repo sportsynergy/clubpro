@@ -180,7 +180,7 @@ Nobody has signed up for the ladder yet.
 
 	<div class="clear"></div>
 	<span class="normalsm">
-				You have <input readonly type="text" name="countdown" size="3" value="127"> characters left.
+				You have <input readonly type="text" name="countdown" size="3" value="120"> characters left.
 	</span>	
 	<input type="hidden" name="cmd" value="challengeplayer">
    	<input type="hidden" name="challengeeid" id="challengeeid">
@@ -199,8 +199,20 @@ Nobody has signed up for the ladder yet.
 <div class="bd">
 
 <form method="POST" action="<?=$ME?>">
-	<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
-             <input id="id1" name="userid" type="hidden" />
+	<div>
+		<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
+        <input id="id1" name="userid" type="hidden" />
+      </div>    
+       <div>
+       	Spot: <select name="placement">
+             	<?
+             	mysql_data_seek($ladderplayers,0);	
+             	for ( $i = 1; $i<= mysql_num_rows($ladderplayers)+1; ++$i){ ?>
+			 			<option value="<?=$i?>"><?=$i?></option>	 	
+					<? } ?>
+             	
+             </select> 
+             </div>
                 <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
    				<input type="hidden" name="cmd" value="addtoladder">
    				<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
@@ -262,7 +274,7 @@ Nobody has signed up for the ladder yet.
 									  buttons : [ { text:"Add Player", handler:handleSubmit, isDefault:true } ]
 									});
 		
-			YAHOO.clubladder.container.dialog1.setHeader('Pick A Player');
+			YAHOO.clubladder.container.dialog1.setHeader('Add Player to Ladder');
 		
 			// Validate the entries in the form to require that both first and last name are entered
 			YAHOO.clubladder.container.dialog1.validate = function() {

@@ -36,9 +36,9 @@ if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
         	
         	if( $exists==0){
         		
-	        	$query = "SELECT count(*) from tblClubLadder where clubid = $clubid and courttypeid = $courttypeid AND enddate IS NULL";
-	        	$result = db_query($query);
-	        	$position = mysql_result($result, 0) + 1;
+	        	$position = $frm['placement'];
+	        	
+        		moveEveryOneInClubLadderDown($courttypeid, $clubid,  $position );
 	        	
 	        	if(isDebugEnabled(2) ) logMessage("player_rankings: adding user $userid to club ladder for club $clubid for courttypeid $courttypeid in position $position");
 	

@@ -431,7 +431,8 @@ function moveEveryOneInClubLadderUp($courttypeid, $clubid, $ladderposition){
 				FROM tblClubLadder ladder
 				WHERE ladder.courttypeid = $courttypeid
 				AND ladder.clubid = $clubid
-				AND ladder.ladderposition >= $ladderposition";
+				AND ladder.ladderposition >= $ladderposition
+				AND ladder.enddate IS NULL";
 				
 	$result = db_query($query);
 	$count = 0;
@@ -454,6 +455,42 @@ function moveEveryOneInClubLadderUp($courttypeid, $clubid, $ladderposition){
 	if( isDebugEnabled(2) ) logMessage("ladderlib: moveEveryOneInClubLadderUp.  Starting with position $ladderposition moved $count people up in courttype id $courttypeid ladder for club $clubid");
 	
 }
+
+/**
+ * Starting with the position, moves everyone in the ladder up.  This is used
+ * when someone is added to the ladder
+ */
+function moveEveryOneInClubLadderDown($courttypeid, $clubid, $ladderposition){
+	
+	$query = "SELECT ladder.* 
+				FROM tblClubLadder ladder
+				WHERE ladder.courttypeid = $courttypeid
+				AND ladder.clubid = $clubid
+				AND ladder.ladderposition >= $ladderposition
+				AND ladder.enddate IS NULL";
+				
+	$result = db_query($query);
+	$count = 0;
+	
+	while($array = db_fetch_array($result)){
+		
+		$position = $array['ladderposition'];
+		$clubladderid = $array['id'];
+		$newposition = $position + 1 ;
+		
+		$updateQuery = "UPDATE tblClubLadder 
+			SET ladderposition = $newposition 
+			WHERE id = $clubladderid";
+			
+		db_query($updateQuery);
+		++$count;
+		
+	}
+	
+	if( isDebugEnabled(2) ) logMessage("ladderlib: moveEveryOneInClubLadderDown.  Starting with position $ladderposition moved $count people up in courttype id $courttypeid ladder for club $clubid");
+	
+}
+
 
 /**
  * Used by club administrators when moving people up one in the club ladder. Quietly exits if there is a problem.
@@ -728,3 +765,5 @@ function loadLadderMatch($challengeMatchId){
 	return db_query($curresidquery);
 	
 }
+
+
