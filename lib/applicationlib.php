@@ -1764,6 +1764,8 @@ function confirm_doubles($resid, $isNewReservation) {
 		$content = new Object;
 		$content->line1 = $emailbody;
 		$content->clubname = get_clubname();
+		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+		$to_emails = array( $to_email => array('name' => $extraPlayerobj->firstname) );
 		
 		//Send the email
 	     send_email($subject, $to_emails, $from_email, $content, $template); 
@@ -1771,6 +1773,7 @@ function confirm_doubles($resid, $isNewReservation) {
 
 	//Prepare and send emails to single players where there is more than one person looking for a partner
 	elseif(mysql_num_rows($extraPlayerResult)==2){
+		
 		
 		$var->fullname1 = getFullNameForUserId($extraPlayerobj->userid);
 		
@@ -1782,13 +1785,17 @@ function confirm_doubles($resid, $isNewReservation) {
 		
 		//Reset Counter
 		if( mysql_num_rows($extraPlayerResult)>0) mysql_data_seek($extraPlayerResult, 0);
+		$to_emails = array();
 		
 		if( isDebugEnabled(1) ) logMessage($emailbody);
-		$to_emails[$extraPlayerobj->email = array('name' => $extraPlayerobj->firstname)];
+		
+		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+		$to_emails[$to_email] = array('name' => $extraPlayerobj->firstname);
 		
 		//Get next player
 		$extraPlayerobj = mysql_fetch_object($extraPlayerResult);
-		$to_emails[$extraPlayerobj->email = array('name' => $extraPlayerobj->firstname)];
+		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+		$to_emails[$to_email] = array('name' => $extraPlayerobj->firstname);
 		
 		// Provide Content
 		$content = new Object;
@@ -1807,6 +1814,7 @@ function confirm_doubles($resid, $isNewReservation) {
 
 		if( isDebugEnabled(1) ) logMessage($emailbody);
 
+		$to_emails = array();
 		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
 		$to_emails = array($to_email => array('name' => $extraPlayerobj->firstname) ) ;
 	
@@ -1841,7 +1849,8 @@ function confirm_doubles($resid, $isNewReservation) {
 	while ($playerObject = mysql_fetch_object($playerResult)) {
 		
 		if(isDebugEnabled(1) ) logMessage($emailbody);
-		$to_emails[$playerObject->email = array('name' => $playerObject->firstname)];
+		$to_email = "$playerObject->firstname $playerObject->lastname <$playerObject->email>";
+		$to_emails[$to_email] = array('name' => $playerObject->firstname);
 	}
 	
 	

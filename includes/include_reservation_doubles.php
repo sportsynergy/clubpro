@@ -6,9 +6,7 @@
 <form name="doublesform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
  
 <table cellspacing="5" cellpadding="0" width="540" class="tabtable" id="doubles-formtable">
- 		<tr>
-            <td class="biglabel" colspan="2">Team 1</td>
-        </tr>
+ 		
         <tr>
             
             <td>
@@ -70,11 +68,6 @@
        </tr>
 
 
-
-
-       <tr>
-            <td class="biglabel" colspan="2"><br>Team 2</td>
-        </tr>
         <tr>
 
              <td>  
@@ -132,7 +125,7 @@
         </td>
     </tr>
     <tr>
-         <td height="15" colspan="2"><hr></td>
+         <td height="3" colspan="2"><hr></td>
     </tr>
     <tr>
     	  <td > <span  class="biglabel">Match Type:</span>
