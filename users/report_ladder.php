@@ -134,7 +134,7 @@ function emailDoublesLadderMatch($winnerid, $loserid, $score, $details, $challen
 	$var->clubfullname = $clubfullname;
 	
 	$var->score = 3-$score;
-	$var-verb = "were";
+	$var->verb = "were";
 		
 	// If the guy who got challenged won, then no change in the ladder
 	if( $challengeeid == $winnerid){
