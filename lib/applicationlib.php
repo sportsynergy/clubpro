@@ -59,7 +59,7 @@ function formatDate($dateString){
  * Logs in user
  * 
  * One very interesting thing here is that anyone can use a superpassword to login. This password is
- * wramijirap and is MD5 encoded as 25a694bd7f0a3f48e078f30c3afce1e5
+ *  MD5 encoded as 25a694bd7f0a3f48e078f30c3afce1e5
  */
 function verify_login($username, $password, $encodedpassword) {
 /* verify the username and password.  if it is a valid login, return an array
@@ -637,11 +637,25 @@ function get_userid() {
 
 }
 
+function get_email() {
+	/* this function simply returns the email. */
+
+	return $_SESSION["user"]["email"];
+
+}
+
 function get_userfullname(){
 	
 	/* this function simply returns the logged in users first and last name. */
 	
 	return $_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"];
+}
+
+function get_userfirstname(){
+	
+	/* this function simply returns the logged in users first and last name. */
+	
+	return $_SESSION["user"]["firstname"];
 }
 
 /* 
@@ -3021,6 +3035,38 @@ function getTeamIDForCurrentUser($sportid, $partner) {
 
 }
 
+/**
+ * Returns the player names for a team
+ * 
+ * @param $teamid
+ */
+function getFullnameForTeamPlayers($teamid){
+	
+	$query = "SELECT users.firstname, users.lastname, users.userid, users.email,
+			concat_ws(' ', users.firstname, users.lastname) AS fullname
+					      FROM tblUsers users,  tblkpTeams teams
+					   WHERE users.userid = teams.userid
+					   AND teams.teamid=$teamid";
+	
+	$result = db_query($query);
+	
+	$teamnames = array();
+	
+	while( $playerarray = mysql_fetch_array($result) ){
+	
+	 $player = array('firstname' => $playerarray['firstname'], 
+	 				'lastname' => $playerarray['lastname'], 
+	 				'email' => $playerarray['email'], 
+	 				'userid' => $playerarray['userid'], 
+	 				'fullname' => $playerarray['fullname']);
+	 
+	 $teamnames[] = $player;
+	}
+	
+	return $teamnames;
+	
+}
+
 /*
 *******************************************************************************************************
 **   getTeamIDForPlayers
@@ -4420,7 +4466,9 @@ function countNumberOfAllResevationsMadeToday($time) {
 	$totalReservations = 0;
 	
 	//Get Teams
-	$teams = getTeamsForCurrentUser();
+	$userid = get_userid();
+	$teams = getTeamsForUser($userid);
+
 	
 	while($courtidArray = mysql_fetch_array($courtResult)){
 	
@@ -4523,7 +4571,8 @@ function countNumberOfAllResevationsMadeTodayInWindow($starthour, $endhour, $tim
 	*/
 
 	$teamINClause = "";
-	$teams = getTeamsForCurrentUser();
+	$userid = get_userid();
+	$teams = getTeamsForUser($userid);
 	$rows = mysql_num_rows($teams);
 
 	for ($i = 0; $i < $rows; ++ $i) {
@@ -4590,7 +4639,8 @@ function countNumberOfCourtResevationsMadeToday($courtid, $time) {
 	*/
 
 	$teamINClause = "";
-	$teams = getTeamsForCurrentUser();
+	$userid = get_userid();
+	$teams = getTeamsForUser($userid);
 	$rows = mysql_num_rows($teams);
 
 	for ($i = 0; $i < $rows; ++ $i) {
@@ -4657,7 +4707,8 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 	*/
 
 	$teamINClause = "";
-	$teams = getTeamsForCurrentUser();
+	$userid = get_userid();
+	$teams = getTeamsForUser($userid);
 	$rows = mysql_num_rows($teams);
 
 	for ($i = 0; $i < $rows; ++ $i) {
@@ -4696,7 +4747,7 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 
 */
 
-function getTeamsForCurrentUser() {
+function getTeamsForUser($userid) {
 
 	/*
 	  1.) Get the the court type ids for the site doubles or multi reservationtype
@@ -4706,7 +4757,7 @@ function getTeamsForCurrentUser() {
 
 	$teamsQuery = "SELECT teamdetails.teamid
 	                           FROM tblkpTeams teamdetails
-	                           WHERE teamdetails.userid = " . get_userid();
+	                           WHERE teamdetails.userid = $userid";
 
 	return db_query($teamsQuery);;
 
@@ -4994,6 +5045,30 @@ function isSystemAdministrationConsole(){
 	}
 }
 
+/**
+ * Returns the club site ladders for a given siteid
+ * 
+ * @param unknown_type $siteid
+ */
+function getClubSiteLadders($siteid){
+	
+	if( isDebugEnabled(1) ) logMessage("applicationlib.getClubSiteLadders: getting the ladders configured for site for court: $siteid");	
+	
+	$array = array();
+	
+	$query = "SELECT ladders.name, ladders.courttypeid
+				FROM tblClubSiteLadders ladders
+				WHERE ladders.siteid = $siteid
+				AND ladders.enddate IS NULL";
+	
+	$qid = db_query($query);
+	 while( $ladder = db_fetch_array($qid) ){
+	 	$array[] = $ladder;
+	 }
+	  
+	 return $array;
+	
+}
 /*****************************************************************/
 /*
      Retreives all site preferences

@@ -2,36 +2,48 @@
 
 <?
 
-	//Set some important variables	
+	//Initialize some important variables	
 
  	$playerposition = 0;
 	$playerlocked = false;
-			 
-	while ( $playerarray = db_fetch_array($ladderplayers)){
-			 	
-		if($playerarray['userid']==get_userid()){
-			 	$playerposition = $playerarray['ladderposition'];
-			 		
-			 	if($playerarray['locked']=='y'){
-			 		$playerlocked = true;
-			 	}
-			 		
-			 	break;
-			}
-			 	
-	}
+	$myteamid =0;
+	$userid = get_userid();
+	$teams = getTeamsForUser($userid);
+	$teamrows = mysql_num_rows($teams);
+	$teamINClause = "";
 	
-	// Rest the pointer
-	mysql_data_seek($ladderplayers,0);
-			 
+		//build in clause
+		for ($i = 0; $i < $teamrows; ++$i) {
+	
+			$team = mysql_fetch_array($teams);
+	
+			if ($i != 0) {
+				$teamINClause .= ",";
+			}
+			$teamINClause .= "$team[teamid]";
+	
+		}
+		
+		$query = "SELECT ladder.ladderposition, ladder.locked, ladder.userid  
+						FROM tblClubLadder ladder
+						WHERE ladder.userid IN ($teamINClause) 
+						AND ladder.courttypeid = $courttypeid 
+						AND ladder.clubid = ".get_clubid() ." 
+						AND enddate IS NULL";
+	    
+		$result = db_query($query);
+		if( mysql_num_rows($result) > 0 ){
+			$ladderplayer = mysql_fetch_array($result);
+			$playerposition = $ladderplayer['ladderposition'];
+			$playerlocked = $ladderplayer['locked']=="y" ? true : false;
+			$myteamid = $ladderplayer['userid'];
+		}
+	
+				 
 ?>
 
 
- <form name="addmetoladderform" method="post" action="<?=$ME?>">
-     <input type="hidden" name="userid" value="<?=get_userid()?>">
-     <input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-     <input type="hidden" name="cmd" value="addtoladder">
-</form>
+
 
  <form name="deleteform" method="post" action="<?=$ME?>">
 	<input type="hidden" name="userid" value="<?=get_userid()?>">
@@ -40,28 +52,26 @@
 </form>
 
  <form name="moveform" method="post" action="<?=$ME?>">
-	<input type="hidden" name="userid" value="<?=get_userid()?>">
+	<input type="hidden" name="userid" value="">
 	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
 	<input type="hidden" name="cmd" value="moveupinladder">
 </form>
 
 
 <? 
-$numrows = mysql_num_rows($ladderplayers);
+$numrows = count($ladderplayers);
 if($numrows ==0) { ?>
 
 Nobody has signed up for the ladder yet.
 	<?  if(get_roleid()==2 || get_roleid==4){ ?>
 		 
-
-		  Click <span id="show"><a style="text-decoration: underline; cursor: pointer">here</a></span> to add somone now.
-
+		Click <span id="show"><a style="text-decoration: underline; cursor: pointer">here</a></span> to add the first team now.
+		
 
 	<? } else {?>
 		 
-		 
-		 	Click <a href="javascript:submitForm('addmetoladderform')">here</a> to add your name now.
-
+		 	Ask your club pro to get the ball rolling with this.
+		
 
 	<? } ?>
 
@@ -71,8 +81,7 @@ Nobody has signed up for the ladder yet.
 <span class="normal">
  <a href=javascript:newWindow('../help/club_ladders.html')> Ladders explained</a> 
 <?  if(get_roleid()==2 || get_roleid()==4){ ?>
-	 | <span class="normal" id="show"><a style="text-decoration: underline; cursor: pointer"> Add Player</a></span>
-
+	 | <span class="normal" id="show"><a style="text-decoration: underline; cursor: pointer">Add Team</a></span>
 <? } ?>
 
 </span>
@@ -103,20 +112,16 @@ Nobody has signed up for the ladder yet.
 			 <?
 
 			 //Reset pointer
-			 mysql_data_seek($ladderplayers,0);
+
 			 
-			 $numrows = mysql_num_rows($ladderplayers);
-                while ( $playerarray = db_fetch_array($ladderplayers)){
-                	$rc = (($numrows/2 - intval($numrows/2)) > .1) ? "lightrow_plain" : "darkrow_plain"; 
+			 $numrows = count($ladderplayers);
+			 for($i=0; $i< count($ladderplayers); ++$i){
+                	
+			 	$playerarray = $ladderplayers[$i];
+			 	$rc = (($numrows/2 - intval($numrows/2)) > .1) ? "lightrow_plain" : "darkrow_plain"; 
                  	
                    ?>
-                 	
-                 	<form name="playerform<?=$numrows?>" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php" >
-                            <input type="hidden" name="userid" value="<?=$playerarray['userid']?>">
-                       		<input type="hidden" name="origin" value="ladder">
-                     </form>
-                     
-                                   
+                 	              
                  	<tr class="<?=$rc?>">
                  		<td ><?=$playerarray['ladderposition']?>
                  			<? if($playerarray['going']=="up"){ ?>
@@ -126,18 +131,18 @@ Nobody has signed up for the ladder yet.
                  			<? } ?>
                  		</td>
                  		<td >
-                 		<a href="javascript:submitForm('playerform<?=$numrows?>')"><?=$playerarray['firstname']?> <?=$playerarray['lastname']?></a>
+                 		<?=$playerarray['firstplayer']?> and <?=$playerarray['secondplayer']?>
                  		<? if(get_roleid()==2 || get_roleid()==4){?>
                  		
-                 		<a href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" title="remove this chump from the ladder" /></a>
+                 		<a href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" title="remove these chumpts from the ladder" /></a>
 						
-                 		<a href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);"><img src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png" title="bump this guy up one spot" ></a>
+                 		<a href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);"><img src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png" title="bump these guys up one spot" ></a>
 
 						<?}?>
 						
 						<? if($playerarray['locked']=='y') {?>
-						<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png" title="I am locked because I am currently being challenged or I am challenging someone else. In any event, once the scores have been put in, the lock will be removed." />
-						<? } else if( !$playerlocked && isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){?>
+						<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png" title="We are locked because we are currently being challenged or we are challenging another team. In any event, once the scores have been put in, the lock will be removed." />
+						<? } else if(  isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){?>
 						<span id="challenge-<?=$playerarray['ladderposition']?>"> <img src="<?=$_SESSION["CFG"]["imagedir"]?>/add_small.png" title="click me to challenge" /></span>
 						<?} ?>
                  		</td>
@@ -156,7 +161,7 @@ Nobody has signed up for the ladder yet.
 
 </td>
 	<td valign="top" >
-		<div style="padding-left: 3em;"><? include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php"); ?></div>
+		<div style="padding-left: 3em;"><? include($_SESSION["CFG"]["includedir"]."/include_doubles_ladder_activity.php"); ?></div>
 	 				  		
 	</td>
 </tr>
@@ -170,7 +175,7 @@ Nobody has signed up for the ladder yet.
 <div class="bd">
 <form method="POST" action="<?=$ME?>">
 	<label for="from_name">From:</label><input type="textbox" name="firstname" value="<?=get_userfullname()?>" disabled="disabled"/>
-	<label for="to_name">To:</label><input type="textbox" name="lastname" disabled="disabled" id="to_name"/>
+	<label for="to_name">To:</label><input type="textbox" name="lastname" disabled="disabled" id="to_name" size="38"/>
 	<label for="to_email">E-mail:</label><input type="textbox" name="email" disabled="disabled" id="to_email" size="50"> 
 
 	<div class="clear"></div>
@@ -180,10 +185,17 @@ Nobody has signed up for the ladder yet.
 
 	<div class="clear"></div>
 	<span class="normalsm">
-				You have <input readonly type="text" name="countdown" size="3" value="120"> characters left.
+				You have <input readonly type="text" name="countdown" size="3" value="85"> characters left.
 	</span>	
 	<input type="hidden" name="cmd" value="challengeplayer">
    	<input type="hidden" name="challengeeid" id="challengeeid">
+   	<input type="hidden" name="challengerid" id="challengerid">
+   	
+    <input type="hidden" name="firstplayer" id="firstplayer">
+   	<input type="hidden" name="firstemail" id="firstemail">
+   	<input type="hidden" name="secondplayer" id="secondplayer">
+   	<input type="hidden" name="secondemail" id="secondemail">
+   		
    	<script>
    
    	</script>
@@ -202,12 +214,15 @@ Nobody has signed up for the ladder yet.
 	<div>
 		<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
         <input id="id1" name="userid" type="hidden" />
-      </div>    
+        and 
+        <input id="name2" name="playertwoname" type="text" size="30" class="form-autocomplete" />
+        <input id="id2" name="userid2" type="hidden" />
+   </div>    
        <div>
        	Spot: <select name="placement">
              	<?
-             	mysql_data_seek($ladderplayers,0);	
-             	for ( $i = 1; $i<= mysql_num_rows($ladderplayers)+1; ++$i){ ?>
+             	
+             	for ( $i = 1; $i<= count($ladderplayers)+1; ++$i){ ?>
 			 			<option value="<?=$i?>"><?=$i?></option>	 	
 					<? } ?>
              	
@@ -228,10 +243,22 @@ Nobody has signed up for the ladder yet.
 						'progressStyle'=>'throbbing',
 						'minimumCharacters'=>3,
 						));
+						
+				 pat_autocomplete( array(
+						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+						'source'=>'name2',
+						'target'=>'id2',
+						'className'=>'autocomplete',
+						'parameters'=> "action=autocomplete&name={name2}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+						'progressStyle'=>'throbbing',
+						'minimumCharacters'=>3,
+						));		
            
                  ?>
 
                 </script>
+
+	
 
  </form>
  </div>
@@ -265,24 +292,29 @@ Nobody has signed up for the ladder yet.
 		
 			// Instantiate the Dialog
 			YAHOO.clubladder.container.dialog1 = new YAHOO.widget.Dialog("dialog1", 
-									{ width : "30em",
+									{ width : "40em",
 									  fixedcenter : true,
 									  modal: true,
 									  visible : false, 
 									  constraintoviewport : true,
-									  buttons : [ { text:"Add Player", handler:handleSubmit, isDefault:true } ]
+									  buttons : [ { text:"Add Team", handler:handleSubmit, isDefault:true } ]
 									});
 		
-			YAHOO.clubladder.container.dialog1.setHeader('Add Player to Ladder');
+			YAHOO.clubladder.container.dialog1.setHeader('Add Team to Ladder');
 		
 			// Validate the entries in the form to require that both first and last name are entered
 			YAHOO.clubladder.container.dialog1.validate = function() {
 				var data = this.getData();
 		
-				if (data.userid == "" ) {
+				if (data.userid == "" || data.userid2 == "" ) {
 					alert("Please pick a name from the list.");
 					return false;
-				} else {
+				} 
+				else if(data.userid == data.userid2){
+					alert("Please pick seperate from the list.");
+					return false;
+				}
+				else {
 					return true;
 				}
 			};
@@ -300,27 +332,28 @@ Nobody has signed up for the ladder yet.
 			
 		});
 
-		YAHOO.clubladder.container.wait = 
-            new YAHOO.widget.Panel("wait",  
-                                            { width: "240px", 
-                                              fixedcenter: true, 
-                                              close: false, 
-                                              draggable: false, 
-                                              zindex:4,
-                                              modal: true,
-                                              visible: false
-                                            } 
-                                        );
-
-	    YAHOO.clubladder.container.wait.setHeader("Loading, please wait...");
-	    YAHOO.clubladder.container.wait.setBody("<img src=\"http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif\"/>");
-	    YAHOO.clubladder.container.wait.render(document.body);
-	    
+			YAHOO.clubladder.container.wait = 
+	            new YAHOO.widget.Panel("wait",  
+	                                            { width: "240px", 
+	                                              fixedcenter: true, 
+	                                              close: false, 
+	                                              draggable: false, 
+	                                              zindex:4,
+	                                              modal: true,
+	                                              visible: false
+	                                            } 
+	                                        );
+	
+		    YAHOO.clubladder.container.wait.setHeader("Loading, please wait...");
+		    YAHOO.clubladder.container.wait.setBody("<img src=\"http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif\"/>");
+		    YAHOO.clubladder.container.wait.render(document.body);
+		
 		YAHOO.util.Event.onDOMReady(function () {
+
 			
 			// Define various event handlers for Dialog
 			var handleSubmit = function() {
-				YAHOO.clubladder.container.wait.show();
+				 YAHOO.clubladder.container.wait.show();
 				this.submit();
 			};
 			var handleCancel = function() {
@@ -357,17 +390,15 @@ Nobody has signed up for the ladder yet.
 			YAHOO.clubladder.container.challengedialog.render();
 
 			<? 
-			//TODO make this better
-			
-			//Reset pointer
-			 mysql_data_seek($ladderplayers,0);
-			
+	
 			//build javascript for event listeners
-			while ( $playerarray = db_fetch_array($ladderplayers)){ 
+			for($i=0; $i< count($ladderplayers); ++$i){
 			
+				$playerarray = $ladderplayers[$i];
+				
 				if( !$playerlocked && isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){
 				?>
-			personObj_<?=$playerarray['ladderposition']?>={firstname:"<?=$playerarray['firstname']?>",fullname:"<?=rtrim($playerarray['fullname'])?> ",email:"<?=$playerarray['email']?>",userid:<?=$playerarray['userid']?>};	
+			personObj_<?=$playerarray['ladderposition']?>={firstplayer:"<?=rtrim($playerarray['firstplayer'])?>",firstemail:"<?=$playerarray['firstemail']?>",secondplayer:"<?=rtrim($playerarray['secondplayer'])?>",secondemail:"<?=$playerarray['secondemail']?>",userid:<?=$playerarray['userid']?>,myteamid:<?=$myteamid?>};	
 			YAHOO.util.Event.addListener("challenge-<?=$playerarray['ladderposition']?>", "click", YAHOO.clubladder.container.challengedialog.show, YAHOO.clubladder.container.challengedialog, true);
 			YAHOO.util.Event.addListener("challenge-<?=$playerarray['ladderposition']?>", "click", defaultChallengeDialog,personObj_<?=$playerarray['ladderposition']?>,true);
 			
@@ -385,12 +416,19 @@ Nobody has signed up for the ladder yet.
 
 			allownewlines = true;
 			var msg = document.getElementById("challengemessage");
-			msg.value = 'Hello '+obj.firstname+',\n\nI would like to challenge you in the ladder.  Please let me know what time works best for you.\n\nSee you on the court.';
+			msg.value = 'Hello,\n\nMy partner and I would like to challenge you and your partner on the doubles ladder.  Please let me know what time works best for you.\n\nSee you on the court.';
 			
 			
-			document.getElementById("to_name").value =  obj.fullname;
-			document.getElementById("to_email").value = obj.email;
+			document.getElementById("to_name").value =  obj.firstplayer+", "+obj.secondplayer;
+			document.getElementById("to_email").value = obj.firstemail + ", "+obj.secondemail;
 			document.getElementById("challengeeid").value = obj.userid;
+			document.getElementById("challengerid").value = obj.myteamid;
+
+			document.getElementById("firstplayer").value = obj.firstplayer;
+			document.getElementById("firstemail").value = obj.firstemail;
+			document.getElementById("secondplayer").value = obj.secondplayer;
+			document.getElementById("secondemail").value = obj.secondemail;
+			
 		}
 
 		function disablenewlines(){

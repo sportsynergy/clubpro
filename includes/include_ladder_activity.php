@@ -8,7 +8,7 @@
 
 //hard coding courttype id for now
 
-$challengeMatchResult = getChallengeMatches( get_siteid(), 2, 10 );
+$challengeMatchResult = getChallengeMatches( get_siteid(), $courttypeid, 10 );
 
 if(mysql_num_rows($challengeMatchResult) > 0){ ?>
 	
@@ -25,13 +25,11 @@ while($challengeMatch = mysql_fetch_array($challengeMatchResult)){
 		$challenger =  $challengeMatch['challenger_first']." ". $challengeMatch['challenger_last'];
 		$challengee =  $challengeMatch['challengee_first']." ". $challengeMatch['challengee_last'];
 		$inreservation = get_userid() == $challengeMatch['challenger_id'] || get_userid() == $challengeMatch['challengee_id'] ? true : false;
-		$challengerLocked = $challengeMatch['challenger_id']=='y' ? true : false;
-		$challengeeLocked = $challengeMatch['challengee_id']=='y' ? true : false;
 		
 		//don't include timestamp
 		$challengeDate = explode(" ",$challengeMatch['date']);
 		
-		printLadderEvent($challengeMatch['id'], $challenger, $challengee, $challengeDate[0], $scored, $inreservation);
+		printLadderEvent($challengeMatch['id'], $challenger, $challengee, $challengeDate[0], $scored, $inreservation, true);
 	    
 
 

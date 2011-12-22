@@ -7,6 +7,13 @@ require($_SESSION["CFG"]["libdir"]."/courtlib.php");
 $_SESSION["wantsurl"] = qualified_mewithq();
 $siteprefs = getSitePreferences($siteid);
 $_SESSION["siteprefs"] = $siteprefs;
+
+//Only load the site ladders if the ranking scheme is configured as such
+if( isLadderRankingScheme() ){
+	$ladders = getClubSiteLadders($siteid);
+	$_SESSION["ladders"] = $ladders;
+}
+
 $wwwroot = $_SESSION["CFG"]["wwwroot"];
 
 $username = $_REQUEST['username'];

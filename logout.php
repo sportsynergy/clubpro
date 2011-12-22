@@ -1,10 +1,5 @@
 <?
-/*
- * $LastChangedRevision: 642 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2008-12-28 20:32:46 -0600 (Sun, 28 Dec 2008) $
 
-*/
 
 include("./application.php");
 
@@ -17,6 +12,10 @@ $role = get_roleid();
 unset($_SESSION["user"]);
 unset($_SESSION["view"]);
 unset($_SESSION["courtWindowStart"]);
+unset($_SESSION["ladder_courttype"]);
+unset($_SESSION["ladders"]);
+unset($_SESSION["courtGroup"]);
+
 $wwwroot = $_SESSION["CFG"]["wwwroot"];
 
 if($role==3){

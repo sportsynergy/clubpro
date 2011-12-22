@@ -1,19 +1,21 @@
-<?
 
-/*
- * $LastChangedRevision: 836 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-22 17:35:17 -0600 (Tue, 22 Feb 2011) $
-
-*/
-?>
 				<div id="productsandservices" class="yuimenubar yuimenubarnav"> 
                             <div class="bd"> 
                                 <ul class="first-of-type"> 
                                     <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">Member Directory</a></li> 
                                     <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/">Reservations</a></li> 
                                     <? if(isLadderRankingScheme() ) {?>
-                                    <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Club Ladder</a></li> 
+                                   <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#">Club Ladder</a> 
+                                    		<div id="account" class="yuimenu"> 
+												<div class="bd"> 
+												<ul class="first-of-type">
+												<? for ($i=0; $i < count($_SESSION["ladders"]); ++$i) {?>
+		                                           <li class="yuimenuitem"><a class="yuimenuitemlabel" href="javascript:submitLadderForm('<?=$_SESSION["ladders"][$i]['courttypeid']?>')"><?=$_SESSION["ladders"][$i]['name']?></a></li>  
+		                                         <? } ?>
+		                                         </ul>	
+		                                    </div> 
+		                                </div>      
+		                            </li> 
                                     <? } else { ?>
                                      <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Rankings</a></li> 
                                     <? }?>
@@ -63,6 +65,24 @@
                         </div>
                      </div> 
                      
+<form name="ladder_form" method="POST" >
+	<input type="hidden" name="courttypeid">
+</form>
 
+<script type="text/javascript" >
+
+function submitLadderForm(courttypeid){
+
+	if(courttypeid == 3){
+		document.ladder_form.action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/team_ladder.php"
+	}else {
+		document.ladder_form.action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php"
+	}
+	
+	 document.ladder_form.courttypeid.value = courttypeid;
+     document.ladder_form.submit();
+}
+
+</script>
                      
                       

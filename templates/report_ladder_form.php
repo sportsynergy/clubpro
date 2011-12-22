@@ -65,8 +65,8 @@ function onCancelButtonClicked(){
 						<td class="label">Winner:</td>
 			            <td>		
 			                <select name="winner">
-			                 <option value="challenger"><?=$ladderMatchArray['challenger_first']." ".$ladderMatchArray['challenger_last']?></option>   
-			                  <option value="challengee"><?=$ladderMatchArray['challengee_first']." ".$ladderMatchArray['challengee_last']?></option>   
+			                 <option value="challenger"><?=$ladderMatchArray['challenger_full']?></option>   
+			                  <option value="challengee"><?=$ladderMatchArray['challengee_full']?></option>   
 			                </select>
 			            </td>
 			       </tr>
@@ -102,6 +102,7 @@ function onCancelButtonClicked(){
 	</table>
 
 	<input type="hidden" name="challengematchid" value="<?=$ladderMatchArray['id'] ?>">
+	<input type="hidden" name="laddertype" value="<?=$laddertype ?>">
 	<input type="hidden" name="challengerid" value="<?=$ladderMatchArray['challenger_id'] ?>">
 	<input type="hidden" name="challengeeid" value="<?=$ladderMatchArray['challengee_id'] ?>">
 	<input type="hidden" name="courttypeid" value="<?=$ladderMatchArray['courttypeid'] ?>">

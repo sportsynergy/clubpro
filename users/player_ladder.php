@@ -8,8 +8,11 @@ $DOC_TITLE = "Player Ladder";
 require_loginwq();
 
 
-//TODO hardcoding for now
-$courttypeid = 2;
+
+if( !empty($_POST['courttypeid']) ){
+	$_SESSION["ladder_courttype"] = $_POST['courttypeid'];
+}
+$courttypeid = $_SESSION["ladder_courttype"];
 
 
 /* form has been submitted */   
@@ -60,7 +63,7 @@ if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
 		
         else if($frm['cmd']=='moveupinladder' ){
         	
-        	if(isDebugEnabled(2) ) logMessage("player_ladder: moving user $userid up in ladder $courttypeid ");
+        	if(isDebugEnabled(1) ) logMessage("player_ladder: moving user $userid up in ladder $courttypeid ");
         	
         	moveUpOneInClubLadder($courttypeid, $clubid, $userid);
         }
@@ -108,6 +111,9 @@ if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
 
 $availbleSports = load_avail_sports();
 $ladderplayers = getLadder($courttypeid);
+
+
+
 $playingInLadder = isPlayingInLadder(get_userid(), $courttypeid);
 
 include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
@@ -185,7 +191,7 @@ function getLadder($courttypeid){
 						users.userid = ladder.userid
                     AND ladder.clubid=".get_clubid()."
                     AND ladder.courttypeid=$courttypeid
-					AND ladder.enddate is NULL
+					AND ladder.enddate IS NULL
                     ORDER BY ladder.ladderposition";
 	
 	return db_query($rankquery);
@@ -197,15 +203,18 @@ function getLadder($courttypeid){
  */
 function isPlayingInLadder($userid, $courttypeid){
 	
-	$query = "SELECT 1 FROM tblClubLadder WHERE userid = $userid AND courttypeid = $courttypeid AND clubid = ".get_clubid() ." AND enddate IS NULL";
-    $result = db_query($query);
-    $rows = mysql_num_rows($result);
-    
-    if($rows>0){
-    	return true;
-    } else{
-    	return false;
-    }
+
+		$query = "SELECT 1 FROM tblClubLadder WHERE userid = $userid AND courttypeid = $courttypeid AND clubid = ".get_clubid() ." AND enddate IS NULL";
+	    $result = db_query($query);
+	    $rows = mysql_num_rows($result);
+	    
+	    if($rows>0){
+	    	return true;
+	    } else{
+	    	return false;
+	    }
+	
+	
 }
 
 /**
@@ -219,7 +228,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	if( isDebugEnabled(1) ) logMessage("player_ladder.sendEmailsForLadderMatch: sending out emails to challenger $challengerid and challengee $challengeeid ");
 	
 	//Set some variables
-	$subject = get_clubname()." - Ladder Match";
+	$subject = get_clubname()." - Ladder Match Confirmation";
 
 	
 	/* load up the user record for the winner */
@@ -268,6 +277,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message){
 	$content->clubname = get_clubname();
 	$from_email = "$var->challenger_fullname <$challenger->email>";
 	$template = get_sitecode()."-blank";
+	$subject = get_clubname()." - You've been challenged in a ladder match";
 		
 	//Send the email
      send_email($subject, $challengee_email, $from_email, $content, $template); 

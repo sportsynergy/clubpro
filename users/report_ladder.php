@@ -12,11 +12,15 @@ $DOC_TITLE = "Report Ladder Match";
 
 //Set the http variables
 $challengematchid = $_REQUEST["challengematchid"];
+$laddertype = $_REQUEST["laddertype"];
+
 $source = $_REQUEST["source"];
 
-$ladderMatchResult = loadLadderMatch($challengematchid);
-$ladderMatchArray = mysql_fetch_array($ladderMatchResult);
-
+if($laddertype=="player"){
+	$ladderMatchArray = loadLadderMatch($challengematchid);
+} else{
+	$ladderMatchArray = loadDoublesLadderMatch($challengematchid);
+}
 
 
 /* form has been submitted, now reserve court */
@@ -46,15 +50,20 @@ if (match_referer() && isset($_POST["submitme"])) {
 			
         	// Update the ladder
         	$details = adjustClubLadder($winneruserid,$loseruserid, $frm['courttypeid'], get_clubid() );
-        	
-        	//Send out emails
-        	emailLadderMatch($winneruserid, $loseruserid, abs($score),  $details, $frm['challengeeid']);
+
         	
         	//Unlock the players
         	unlockPlayers($winneruserid, $loseruserid, $frm['courttypeid'] );
         	
         	//redirect the person back to the club ladder
-        	header ("Location: $wwwroot/users/player_ladder.php");
+        	if($frm['laddertype']=="player"){
+        		emailLadderMatch($winneruserid, $loseruserid, abs($score),  $details, $frm['challengeeid'],$frm['laddertype']);
+        		header ("Location: $wwwroot/users/player_ladder.php");
+        	} else{
+        		emailDoublesLadderMatch($winneruserid, $loseruserid, abs($score),  $details, $frm['challengeeid'],$frm['laddertype']);
+        		header ("Location: $wwwroot/users/team_ladder.php");
+        	}
+        	
                
 
 					
@@ -94,13 +103,84 @@ function scoreChallengeMatch($score, $challengematchid){
 }
 
 /**
+ * 
+ * For doubles
+ * 
+ * @param unknown_type $winnerid
+ * @param unknown_type $loserid
+ * @param unknown_type $score
+ * @param unknown_type $details
+ * @param unknown_type $challengeeid
+ */
+function emailDoublesLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
+	
+	if( isDebugEnabled(1) ) logMessage("report_ladder.emailDoublesLadderMatch: sending out emails to winner $winnerid and loser $loserid about the score $score and challengeeid $challengeeid");
+	
+	$winner = getFullnameForTeamPlayers($winnerid);
+	$loser = getFullnameForTeamPlayers($loserid);
+	
+	/* email the user with the new account information */
+	$var = new Object;
+	$var->w_fullname = $winner[0]['fullname'] ." and ".$winner[1]['fullname'];
+	$var->l_fullname = $loser[0]['fullname'] ." and ".$loser[1]['fullname'];
+	$var->support = $_SESSION["CFG"]["support"];
+	
+	$var->w_oldspot = $details->winneroldspot;
+	$var->w_newspot = $details->winnernewspot;
+	$var->l_oldspot = $details->loseroldspot;
+	$var->l_newspot = $details->losernewspot;
+
+	$clubfullname = get_clubname();
+	$var->clubfullname = $clubfullname;
+	
+	$var->score = 3-$score;
+	$var-verb = "were";
+		
+	// If the guy who got challenged won, then no change in the ladder
+	if( $challengeeid == $winnerid){
+		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_ladder_match_nochange.php", $var);
+	} else {
+		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_ladder_match.php", $var);
+	}
+	
+	$emailbody = nl2br($emailbody);
+	
+	// Provide Content
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = get_clubname();
+	$template = get_sitecode();
+	$subject = get_clubname()." - Ladder Match Report";
+	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+	
+ 	$to_emails = array();
+
+    // Put all of the email addresses in an array
+    for($i=0;$i<count($winner);++$i){
+       	$to_email = $winner[$i]['firstname']." ".$winner[$i]['lastname']." <".$winner[$i]['email'].">";
+        $to_emails[$to_email] = array('name' => $winner[$i]['firstname']);
+     }
+     
+	for($i=0;$i<count($loser);++$i){
+       	$to_email = $loser[$i]['firstname']." ".$loser[$i]['lastname']." <".$loser[$i]['email'].">";
+        $to_emails[$to_email] = array('name' => $loser[$i]['firstname']);
+     }
+         	
+    //Send the email to the loser
+	send_email($subject, $to_emails, $from_email, $content, $template); 
+	
+}
+
+/**
  * Emails the users the results.  If the challengee wins that means that the ladder stays the same.
+ * 
+ * laddertype can be player or team
  * 
  * @param $winnerid
  * @param $loserid
  * @param $score
  */
-function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
+function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid, $laddertype){
 	
 	if( isDebugEnabled(1) ) logMessage("report_ladder.emailLadderMatch: sending out emails to winner $winnerid and loser $loserid about the score $score and challengeeid $challengeeid");
 	
@@ -136,6 +216,7 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
 	$var->clubfullname = $clubfullname;
 	
 	$var->score = 3-$score;
+	$var-verb = "was";
 		
 	// If the guy who got challenged won, then no change in the ladder
 	if( $challengeeid == $winnerid){
@@ -153,7 +234,6 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid){
 	$template = get_sitecode();
 	$subject = get_clubname()." - Ladder Match Report";
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-	
 	
 		
 	//Send the email to the winner
