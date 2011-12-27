@@ -3,6 +3,8 @@
 
 <div>
 
+<h2 >Recent Challenge Matches</h2>
+<hr class="hrline"/>
 
 <?
 
@@ -12,10 +14,13 @@ $challengeMatchResult = getChallengeMatches( get_siteid(), $courttypeid, 10 );
 
 if(mysql_num_rows($challengeMatchResult) > 0){ ?>
 	
-
-<h2 style="padding-top: 15px">Recent Challenge Matches</h2>
-<hr class="hrline"/>
-<ul class="ladderactivity">	
+<table class="activitytable" width="450">
+<tr>
+	<th>Date</th>
+	<th>Challenger</th>
+	<th>Challengee</th>
+	<th>Score</th>
+</tr>
 
 <?
 	
@@ -29,18 +34,20 @@ while($challengeMatch = mysql_fetch_array($challengeMatchResult)){
 		//don't include timestamp
 		$challengeDate = explode(" ",$challengeMatch['date']);
 		
-		printLadderEvent($challengeMatch['id'], $challenger, $challengee, $challengeDate[0], $scored, $inreservation, true);
+		printLadderEventRow($challengeMatch['id'], $challenger, $challengee, $challengeDate[0], $scored, $inreservation, true);
 	    
 
 
   } ?>
 	
-</ul>
+</table>
+
+<? } else { ?>
+
+
+No challenge matches found.
 
 <? } ?>
-
-
-
 
 
 </div>

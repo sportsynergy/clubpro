@@ -5891,6 +5891,24 @@ function formatDateString($dateString){
 	
 }
 
+/**
+ * 
+ * @param $dateString
+ * The string is in this format yyyy-dd-mm
+ */
+function formatDateStringSimple($dateString){
+	
+	date_default_timezone_set('GMT');
+	$dates = explode("-",$dateString);
+	$day = $dates[2];
+	$month = $dates[1];
+	$year = $dates[0];
+	
+	$time = mktime(0,0,0,$month,$day,$year);
+	
+	return date("n/j/Y", $time);
+	
+}
 
 /**
  * 

@@ -136,10 +136,14 @@ function emailDoublesLadderMatch($winnerid, $loserid, $score, $details, $challen
 	$var->score = 3-$score;
 	$var->verb = "were";
 		
+	
+	
 	// If the guy who got challenged won, then no change in the ladder
 	if( $challengeeid == $winnerid){
+		if( isDebugEnabled(1) ) logMessage("report_ladder.emailDoublesmatch: the guy who got challenged won");
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_ladder_match_nochange.php", $var);
 	} else {
+		if( isDebugEnabled(1) ) logMessage("report_ladder.emailDoublesmatch: variables the guy who got challenged lost");
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_ladder_match.php", $var);
 	}
 	

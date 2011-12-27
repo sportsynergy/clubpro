@@ -79,11 +79,11 @@ Nobody has signed up for the ladder yet.
 </div>
 
 
-<table>
+<table width="650">
 	<tr>
 	<td valign="top">
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
+<table cellspacing="0" cellpadding="20" width="300" class="generictable" id="formtable">
  <tr>
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -95,7 +95,7 @@ Nobody has signed up for the ladder yet.
  <tr>
     <td >
 
-     <table cellspacing="1" cellpadding="5" width="400" class="borderless" >
+     <table cellspacing="1" cellpadding="5" width="300" class="borderless" >
  		<tr>
                  <td ><span class="bold">Place</span></th>
                  <td><span class="bold">Name</span></th>
@@ -156,7 +156,7 @@ Nobody has signed up for the ladder yet.
 
 </td>
 	<td valign="top" >
-		<div style="padding-left: 3em;"><? include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php"); ?></div>
+		<div style="padding-left: 1em;"><? include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php"); ?></div>
 	 				  		
 	</td>
 </tr>

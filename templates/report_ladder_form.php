@@ -38,7 +38,12 @@ function onSubmitButtonClicked(){
 }
 
 function onCancelButtonClicked(){
-	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php'
+
+	<? if($laddertype=="player"){ ?>
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php';
+	<? } else{ ?>
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/users/team_ladder.php';
+	<? } ?>
 	
  }
 </script>

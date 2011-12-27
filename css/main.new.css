@@ -172,6 +172,18 @@ th{
 
 
 /********* For Tables *********************************************************/
+table.activitytable {
+	border-collapse: collapse;
+	border: 0px solid #000000;
+
+		
+}
+table.activitytable td{
+ padding: 0px;	
+ text-align: center;
+}
+
+
 table.scheduletable {
 	border-collapse: collapse;
 	border: 1px solid #000000;

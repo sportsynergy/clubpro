@@ -3,7 +3,7 @@
 
 <div>
 
-<h2 style="padding-top: 15px">Recent Challenge Matches</h2>
+<h2>Recent Challenge Matches</h2>
 <hr class="hrline"/>
 
 <?
@@ -15,7 +15,13 @@ if( count($challengeMatchArray) > 0){ ?>
 	
 
 
-<ul class="ladderactivity">	
+<table class="activitytable" width="450">
+<tr>
+	<th>Date</th>
+	<th>Challenger</th>
+	<th>Challengee</th>
+	<th>Score</th>
+</tr>
 
 <?
 	
@@ -29,21 +35,18 @@ for($i=0; $i < count($challengeMatchArray); ++$i){
 	//don't include timestamp
 	$challengeDate = explode(" ",$challengeMatch['date']);
 	
-	printLadderEvent($challengeMatch['id'], $challengeMatch['challenger_team'], $challengeMatch['challengee_team'], $challengeDate[0], $scored, $inreservation, false);
+	printLadderEventRow($challengeMatch['id'], $challengeMatch['challenger_team'], $challengeMatch['challengee_team'], $challengeDate[0], $scored, $inreservation, false);
 	
 } ?>
 
 
-</ul>
+</table>
 
 <? } else{ ?>
 	
 	No challenge matches found.
 	
 <? } ?>
-
-
-
 
 
 </div>

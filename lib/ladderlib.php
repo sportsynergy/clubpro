@@ -678,6 +678,66 @@ function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate,
 }
 
 /**
+ * 
+ * @param $id
+ * @param $challengerName
+ * @param $challengeeName
+ * @param $challengeDate
+ * @param $scored
+ * @param $inreservation
+ * @param $singles
+ */
+function printLadderEventRow($id, $challengerName, $challengeeName, $challengeDate, $scored, $inreservation, $singles){
+	
+	$isscored = empty($scored) ? false : true;
+	$isinreservation = $inreservation ? true : false;
+	$loserscore = 3 - abs($scored);
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.printChallengeMatch: challengerName: $challengerName challengeeName $challengeeName scored: $isscored isinreservation: $isinreservation");
+	
+	?>
+	
+	<tr>
+		<td>
+			<?=formatDateStringSimple( $challengeDate)?>
+		</td>
+		<td>
+			<?=$challengerName ?>
+		</td>
+		
+		<td>
+			<?=$challengeeName ?>
+		</td>
+		<? if($isscored && $scored > 0 ){ ?>
+		<td align="center">
+			3-<?=$loserscore ?>
+		</td>
+		<? } elseif( $isscored && $scored < 0){?>
+		<td align="center">
+			<?=$loserscore ?>-3
+		</td>
+		
+		<? } elseif(!$isscored  && (get_roleid() == 2 || get_roleid() == 4 || $inreservation) ) {?>
+			  <td align="center">
+			  	<a title="Click on me to record the score" href="javascript:submitForm('recordScoreForm<?=$id?>')">enter score</a> 
+			  </td>
+		<? } else { ?>
+		<td align="center">
+			--
+		</td>
+		<? } ?>
+	</tr>
+	
+	 <form name="recordScoreForm<?=$id?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder.php" method="post">
+           <input type="hidden" name="laddertype" value="<?=$singles?"player":"team"?>">
+           <input type="hidden" name="source" value="ladder">
+           <input type="hidden" name="challengematchid" value="<?=$id?>">
+     </form>
+     
+	<?
+}
+
+/**
  * Determines whether or not the person can challenge or now
  */
 function isLadderChallengable($myposition, $playerposition){
@@ -773,19 +833,19 @@ function getDoublesChallengeMatches($siteid, $courttypeid, $limit){
 		$challengerarray = getFullnameForTeamPlayers($ladder['challengerid']);
 		$challengeearray = getFullnameForTeamPlayers($ladder['challengeeid']);
 		
-		$challenger1 = $challengerarray[0]['firstname']." ".$challengerarray[0]['lastname'];
-		$challenger2 = $challengerarray[1]['firstname']." ".$challengerarray[1]['lastname'];
+		$challenger1 = $challengerarray[0]['lastname'];
+		$challenger2 = $challengerarray[1]['lastname'];
 		
-		$challengee1 = $challengeearray[0]['firstname']." ".$challengeearray[0]['lastname'];
-		$challengee2 = $challengeearray[1]['firstname']." ".$challengeearray[1]['lastname'];
+		$challengee1 = $challengeearray[0]['lastname'];
+		$challengee2 = $challengeearray[1]['lastname'];
 		
 		$playerids = array($challengerarray[0]['userid'],$challengerarray[1]['userid'],$challengeearray[0]['userid'],$challengeearray[1]['userid']);
 
 		$item = array('id' => $ladder['id'], 
 					'score' => $ladder['score'], 
 					'date' => $ladder['date'], 
-					'challenger_team' => $challenger1." and ".$challenger2,
-					'challengee_team' => $challengee1." and ".$challengee2,
+					'challenger_team' => $challenger1."/".$challenger2,
+					'challengee_team' => $challengee1."/".$challengee2,
 					'ids' => $playerids);
 		$array[] = $item;
 	}
@@ -844,11 +904,9 @@ function loadLadderMatch($challengeMatchId){
 		
 	$array = array('id' => $ladder['id'], 
 				'score' => $ladder['score'], 
-				'going' => $ladder['going'], 
 				'date' => $ladder['date'], 
 				'challenger_full' => $ladder['challenger_full'],
 				'challengee_full' => $ladder['challengee_full'],
-				'locked' => $ladder['locked'],
 				'courttypeid' => $ladder['courttypeid'],
 				'challengee_id' => $ladder['challengee_id'],
 				'challenger_id' => $ladder['challenger_id']);
@@ -900,11 +958,9 @@ function loadDoublesLadderMatch($challengeMatchId){
 
 	$array = array('id' => $ladder['id'], 
 				'score' => $ladder['score'], 
-				'going' => $ladder['going'], 
 				'date' => $ladder['date'], 
 				'challenger_full' => $challenger1." and ".$challenger2,
 				'challengee_full' => $challengee1." and ".$challengee2,
-				'locked' => $ladder['locked'],
 				'courttypeid' => $ladder['courttypeid'],
 				'challengee_id' => $ladder['challengeeid'],
 				'challenger_id' => $ladder['challengerid'],

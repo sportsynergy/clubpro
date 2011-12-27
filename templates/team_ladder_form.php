@@ -88,11 +88,11 @@ Nobody has signed up for the ladder yet.
 </div>
 
 
-<table>
+<table  width="650">
 	<tr>
 	<td valign="top">
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
+<table cellspacing="0" cellpadding="20" width="300" class="generictable" id="formtable">
  <tr>
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -104,7 +104,7 @@ Nobody has signed up for the ladder yet.
  <tr>
     <td >
 
-     <table cellspacing="1" cellpadding="5" width="400" class="borderless" >
+     <table cellspacing="1" cellpadding="5" width="300" class="borderless" >
  		<tr>
                  <td ><span class="bold">Place</span></th>
                  <td><span class="bold">Name</span></th>
@@ -142,7 +142,7 @@ Nobody has signed up for the ladder yet.
 						
 						<? if($playerarray['locked']=='y') {?>
 						<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png" title="We are locked because we are currently being challenged or we are challenging another team. In any event, once the scores have been put in, the lock will be removed." />
-						<? } else if(  isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){?>
+						<? } else if(  !$playerlocked && isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){?>
 						<span id="challenge-<?=$playerarray['ladderposition']?>"> <img src="<?=$_SESSION["CFG"]["imagedir"]?>/add_small.png" title="click me to challenge" /></span>
 						<?} ?>
                  		</td>
@@ -161,7 +161,7 @@ Nobody has signed up for the ladder yet.
 
 </td>
 	<td valign="top" >
-		<div style="padding-left: 3em;"><? include($_SESSION["CFG"]["includedir"]."/include_doubles_ladder_activity.php"); ?></div>
+		<div style="padding-left: 1em;"><? include($_SESSION["CFG"]["includedir"]."/include_doubles_ladder_activity.php"); ?></div>
 	 				  		
 	</td>
 </tr>
@@ -269,6 +269,22 @@ Nobody has signed up for the ladder yet.
 		var allownewlines = false;
 		
 		YAHOO.namespace("clubladder.container");
+
+		YAHOO.clubladder.container.wait = 
+            new YAHOO.widget.Panel("wait",  
+                                            { width: "240px", 
+                                              fixedcenter: true, 
+                                              close: false, 
+                                              draggable: false, 
+                                              zindex:4,
+                                              modal: true,
+                                              visible: false
+                                            } 
+                                        );
+
+	    YAHOO.clubladder.container.wait.setHeader("Loading, please wait...");
+	    YAHOO.clubladder.container.wait.setBody("<img src=\"http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif\"/>");
+	    YAHOO.clubladder.container.wait.render(document.body);
 		
 		YAHOO.util.Event.onDOMReady(function () {
 			
@@ -333,28 +349,14 @@ Nobody has signed up for the ladder yet.
 			
 		});
 
-			YAHOO.clubladder.container.wait = 
-	            new YAHOO.widget.Panel("wait",  
-	                                            { width: "240px", 
-	                                              fixedcenter: true, 
-	                                              close: false, 
-	                                              draggable: false, 
-	                                              zindex:4,
-	                                              modal: true,
-	                                              visible: false
-	                                            } 
-	                                        );
-	
-		    YAHOO.clubladder.container.wait.setHeader("Loading, please wait...");
-		    YAHOO.clubladder.container.wait.setBody("<img src=\"http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif\"/>");
-		    YAHOO.clubladder.container.wait.render(document.body);
+			
 		
 		YAHOO.util.Event.onDOMReady(function () {
 
 			
 			// Define various event handlers for Dialog
 			var handleSubmit = function() {
-				 YAHOO.clubladder.container.wait.show();
+				YAHOO.clubladder.container.wait.show();
 				this.submit();
 			};
 			var handleCancel = function() {
