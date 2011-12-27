@@ -24,10 +24,27 @@
 
 YAHOO.namespace("clubevent.container");
 
+YAHOO.clubevent.container.wait = 
+    new YAHOO.widget.Panel("wait",  
+                                    { width: "240px", 
+                                      fixedcenter: true, 
+                                      close: false, 
+                                      draggable: false, 
+                                      zindex:4,
+                                      modal: true,
+                                      visible: false
+                                    } 
+                                );
+
+YAHOO.clubevent.container.wait.setHeader("Loading, please wait...");
+YAHOO.clubevent.container.wait.setBody("<img src=\"http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif\"/>");
+YAHOO.clubevent.container.wait.render(document.body);
+
 YAHOO.util.Event.onDOMReady(function () {
 	
 	// Define various event handlers for Dialog
 	var handleSubmit = function() {
+		YAHOO.clubevent.container.wait.show();
 		this.submit();
 	};
 	var handleCancel = function() {
@@ -88,6 +105,7 @@ function addToReservation(userid)
 
 function removeFromReservation(userid)
 {
+	  YAHOO.clubevent.container.wait.show();		
       document.manageform.action.value = 'remove';
       document.manageform.userid.value = userid;
       document.manageform.submit();

@@ -3,6 +3,8 @@
 
 <div>
 
+<h2 style="padding-top: 15px">Recent Challenge Matches</h2>
+<hr class="hrline"/>
 
 <?
 
@@ -12,8 +14,7 @@ $challengeMatchArray = getDoublesChallengeMatches( get_siteid(), $courttypeid, 1
 if( count($challengeMatchArray) > 0){ ?>
 	
 
-<h2 style="padding-top: 15px">Recent Challenge Matches</h2>
-<hr class="hrline"/>
+
 <ul class="ladderactivity">	
 
 <?

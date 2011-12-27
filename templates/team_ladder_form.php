@@ -274,6 +274,7 @@ Nobody has signed up for the ladder yet.
 			
 			// Define various event handlers for Dialog
 			var handleSubmit = function() {
+				YAHOO.clubladder.container.wait.show();
 				this.submit();
 			};
 			var handleCancel = function() {
@@ -438,11 +439,13 @@ Nobody has signed up for the ladder yet.
 		}
 		
 		function removeFromLadder(userid){
+			YAHOO.clubladder.container.wait.show();
 			document.deleteform.userid.value = userid;
 			document.deleteform.submit();
 		}
 		
 		function moveUpInLadder(userid){
+			YAHOO.clubladder.container.wait.show();
 			document.moveform.userid.value = userid;
 			document.moveform.submit();
 		}
