@@ -527,7 +527,7 @@ function printDoublesReservationFull($teamid1, $teamid2, $lock, $matchType, $tim
 		          				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">
 		    			<? } 
 		    			
-			            if($locked=="y"){ ?>
+			            if($lock=="y"){ ?>
 							<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
 						<? }?>
 					     
@@ -682,7 +682,7 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
                 <?=printPlayer($user1Array[0], $user1Array[1], $userid1, $creator)?><br/>
                 <?=printPlayer($user2Array[0], $user2Array[1], $userid2, $creator)?><br/>
                 
-                 <? if(!$inpast && !$scored && ($matchType==0 || $matchType==1 || $matchType==2 || $matchType==3)) { ?>
+                 <? if(!$inpast && !$scored && ($matchtype==0 || $matchtype==1 || $matchtype==2 || $matchtype==3)) { ?>
                        </a>
                  <? } ?>	
                   

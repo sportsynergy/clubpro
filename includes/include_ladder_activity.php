@@ -10,7 +10,7 @@
 
 //hard coding courttype id for now
 
-$challengeMatchResult = getChallengeMatches( get_siteid(), $courttypeid, 10 );
+$challengeMatchResult = getChallengeMatches( get_siteid(), $courttypeid, 15 );
 
 if(mysql_num_rows($challengeMatchResult) > 0){ ?>
 	

@@ -742,13 +742,13 @@ function printLadderEventRow($id, $challengerName, $challengeeName, $challengeDa
  */
 function isLadderChallengable($myposition, $playerposition){
 	
-	if( isDebugEnabled(1) ) logMessage("ladderlib: isLadderChallengable myposition: $myposition playerposition $playerposition");
+	//if( isDebugEnabled(1) ) logMessage("ladderlib: isLadderChallengable myposition: $myposition playerposition $playerposition");
 	
 	$range = getChallengeRange();
 	
 	$value = $myposition-$range;
 	
-	if( isDebugEnabled(1) ) logMessage("ladderlib: isLadderChallengable checking range: $range is ". $value);
+	//if( isDebugEnabled(1) ) logMessage("ladderlib: isLadderChallengable checking range: $range is ". $value);
 	
 	if($playerposition >= $myposition-$range && $playerposition < $myposition){
 		return true;

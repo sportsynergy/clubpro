@@ -207,8 +207,13 @@ Nobody has signed up for the ladder yet.
        	Spot: <select name="placement">
              	<?
              	mysql_data_seek($ladderplayers,0);	
-             	for ( $i = 1; $i<= mysql_num_rows($ladderplayers)+1; ++$i){ ?>
-			 			<option value="<?=$i?>"><?=$i?></option>	 	
+             	for ( $i = 1; $i<= mysql_num_rows($ladderplayers)+1; ++$i){ 
+             		
+             		if($i == count($ladderplayers)+1 ){
+             			$selected = "selected=\"selected\"";
+             		}
+             		?>
+			 			<option value="<?=$i?>" <?=$selected?>><?=$i?></option>	 	
 					<? } ?>
              	
              </select> 
@@ -280,7 +285,7 @@ Nobody has signed up for the ladder yet.
 				var data = this.getData();
 		
 				if (data.userid == "" ) {
-					alert("Please pick a name from the list.");
+					alert("Dude, seriously please pick a name from the list.");
 					return false;
 				} else {
 					return true;

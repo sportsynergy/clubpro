@@ -222,8 +222,14 @@ Nobody has signed up for the ladder yet.
        	Spot: <select name="placement">
              	<?
              	
-             	for ( $i = 1; $i<= count($ladderplayers)+1; ++$i){ ?>
-			 			<option value="<?=$i?>"><?=$i?></option>	 	
+             	for ( $i = 1; $i<= count($ladderplayers)+1; ++$i){ 
+             	
+             		if($i == count($ladderplayers)+1 ){
+             			$selected = "selected=\"selected\"";
+             		}
+             		
+             		?>
+			 			<option value="<?=$i?>"  <?=$selected?>><?=$i?></option>	 	
 					<? } ?>
              	
              </select> 
