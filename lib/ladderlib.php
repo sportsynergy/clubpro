@@ -687,13 +687,13 @@ function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate,
  * @param $inreservation
  * @param $singles
  */
-function printLadderEventRow($id, $challengerName, $challengeeName, $challengeDate, $scored, $inreservation, $singles){
+function printLadderEventRow($id, $challenger, $challengee, $challengeDate, $scored, $inreservation, $singles){
 	
 	$isscored = empty($scored) ? false : true;
 	$isinreservation = $inreservation ? true : false;
 	$loserscore = 3 - abs($scored);
 	
-	if( isDebugEnabled(1) ) logMessage("ladderlib.printChallengeMatch: challengerName: $challengerName challengeeName $challengeeName scored: $isscored isinreservation: $isinreservation");
+	if( isDebugEnabled(1) ) logMessage("ladderlib.printChallengeMatch: challengerName: $challenger->fullname challengeeName $challengee->fullname scored: $isscored isinreservation: $isinreservation");
 	
 	?>
 	
@@ -702,24 +702,30 @@ function printLadderEventRow($id, $challengerName, $challengeeName, $challengeDa
 			<?=formatDateStringSimple( $challengeDate)?>
 		</td>
 		<td>
-			<?=$challengerName ?>
+			<?=$challenger->fullname ?>
 		</td>
 		
 		<td>
-			<?=$challengeeName ?>
+			<?=$challengee->fullname ?>
 		</td>
 		<? if($isscored && $scored > 0 ){ ?>
 		<td align="center">
-			<span title="<?="3-".$loserscore?>"><?=$challengerName ?></span>
+			<span title="<?="3-".$loserscore?>"><?=$challenger->fullname ?></span>
 		</td>
 		<? } elseif( $isscored && $scored < 0){?>
 		<td align="center">
-			<span title="<?="3-".$loserscore?>"><?=$challengeeName ?></span>
+			<span title="<?="3-".$loserscore?>"><?=$challengee->fullname ?></span>
 		</td>
 		
 		<? } elseif(!$isscored  && (get_roleid() == 2 || get_roleid() == 4 || $inreservation) ) {?>
 			  <td align="center">
 			  	<a title="Click on me to record the score" href="javascript:submitForm('recordScoreForm<?=$id?>')">enter score</a> 
+
+			  	<? if(get_roleid() == 2 || get_roleid() == 4){ ?>
+			  		<a title="Click on me to remove this challenge" href="javascript:removeChallengeMatch('<?=$id?>', '<?=$challenger->id?>', '<?=$challengee->id?>')"> 
+			  			<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" title="remove this challenge"/>
+			  		</a> 
+			  	<?}?>
 			  </td>
 		<? } else { ?>
 		<td align="center">
@@ -728,11 +734,9 @@ function printLadderEventRow($id, $challengerName, $challengeeName, $challengeDa
 		<? } ?>
 	</tr>
 	
-	 <form name="recordScoreForm<?=$id?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder.php" method="post">
-           <input type="hidden" name="laddertype" value="<?=$singles?"player":"team"?>">
-           <input type="hidden" name="source" value="ladder">
-           <input type="hidden" name="challengematchid" value="<?=$id?>">
-     </form>
+
+     
+
      
 	<?
 }
@@ -844,7 +848,9 @@ function getDoublesChallengeMatches($siteid, $courttypeid, $limit){
 		$item = array('id' => $ladder['id'], 
 					'score' => $ladder['score'], 
 					'date' => $ladder['date'], 
+					'challenger_team_id' => $ladder['challengerid'],
 					'challenger_team' => $challenger1."/".$challenger2,
+					'challengee_team_id' => $ladder['challengeeid'],
 					'challengee_team' => $challengee1."/".$challengee2,
 					'ids' => $playerids);
 		$array[] = $item;
@@ -971,4 +977,29 @@ function loadDoublesLadderMatch($challengeMatchId){
 	
 }
 
+function unlockLadderPlayers($challengerid, $challengeeid, $courttypeid){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.unlockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on courttypeid $courttypeid");
+	
+	$query = "UPDATE tblClubLadder ladder SET ladder.locked = 'n' WHERE ladder.userid = $challengerid OR ladder.userid = $challengeeid
+				AND ladder.enddate IS NULL and ladder.courttypeid = $courttypeid and ladder.clubid = ".get_clubid();
+	
+	db_query($query);
+	
+}
 
+/**
+ * Locks the players in the ladder
+ * 
+ * @param $challengerid
+ * @param $challengeeid
+ */
+function lockLadderPlayers($challengerid, $challengeeid, $courttypeid){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.lockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on courttypeid $courttypeid");
+	
+	$query = "UPDATE tblClubLadder ladder SET ladder.locked = 'y' WHERE ladder.userid = $challengerid OR ladder.userid = $challengeeid
+				AND ladder.enddate IS NULL and ladder.courttypeid = $courttypeid and ladder.clubid = ".get_clubid();
+	
+	db_query($query);
+}

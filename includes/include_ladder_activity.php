@@ -1,4 +1,27 @@
 
+<script type="text/javascript">
+
+function removeChallengeMatch(matchid,challengerid, challengeeid){
+
+	var answer = confirm ("Do you really want to remove this challenge");
+	
+	if (answer){
+		document.removeChallengeMatchForm.challengematchid.value = matchid;
+		document.removeChallengeMatchForm.challengerid.value = challengerid;
+		document.removeChallengeMatchForm.challengeeid.value = challengeeid;
+		document.removeChallengeMatchForm.submit();
+	}
+	
+}
+
+</script>
+
+ <form name="removeChallengeMatchForm" action="<?=$ME?>" method="post">
+       <input type="hidden" name="cmd" value="removechallenge">
+       <input type="hidden" name="challengematchid" value="">
+       <input type="hidden" name="challengerid" value="">
+       <input type="hidden" name="challengeeid" value="">
+</form>
 
 
 <div>
@@ -27,8 +50,15 @@ if(mysql_num_rows($challengeMatchResult) > 0){ ?>
 while($challengeMatch = mysql_fetch_array($challengeMatchResult)){ 
 		
 		$scored = $challengeMatch['score'];
-		$challenger =  $challengeMatch['challenger_first']." ". $challengeMatch['challenger_last'];
-		$challengee =  $challengeMatch['challengee_first']." ". $challengeMatch['challengee_last'];
+		
+		$challenger = new Object;
+		$challenger->fullname =  $challengeMatch['challenger_first']." ". $challengeMatch['challenger_last'];
+		$challenger->id = $challengeMatch['challenger_id'];
+		
+		$challengee = new Object;
+		$challengee->fullname =  $challengeMatch['challengee_first']." ". $challengeMatch['challengee_last'];
+		$challengee->id = $challengeMatch['challengee_id'];
+		
 		$inreservation = get_userid() == $challengeMatch['challenger_id'] || get_userid() == $challengeMatch['challengee_id'] ? true : false;
 		
 		//don't include timestamp

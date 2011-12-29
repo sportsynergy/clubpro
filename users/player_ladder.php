@@ -105,6 +105,25 @@ if ( isset($_POST['submit']) || isset($_POST['cmd'])   ) {
 			
 			
 		}
+		
+		else if($frm['cmd']=='removechallenge'){
+			
+			$challengematchid = $frm['challengematchid'];
+			$challengerid = $frm['challengerid'];
+			$challengeeid = $frm['challengeeid'];
+			
+			if(isDebugEnabled(2) ) logMessage("player_ladder: removing challenge match $challengematchid");
+			
+			//enddate the challenge match
+			$query = "UPDATE tblChallengeMatch SET enddate = NOW() WHERE id = $challengematchid";
+			db_query($query);
+			
+			//unlock the players
+			unlockLadderPlayers($challengerid, $challengeeid, $courttypeid);
+			
+			//send emails
+			//TODO create emails for removing challenge ladder
+		}
 }
 
 // Initialize view with data    
@@ -125,21 +144,8 @@ include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
  *****************************************************************************/
 
 
-/**
- * Locks the players in the ladder
- * 
- * @param $challengerid
- * @param $challengeeid
- */
-function lockLadderPlayers($challengerid, $challengeeid, $courttypeid){
-	
-	if( isDebugEnabled(1) ) logMessage("player_ladder.lockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on courttypeid $courttypeid");
-	
-	$query = "UPDATE tblClubLadder ladder SET ladder.locked = 'y' WHERE ladder.userid = $challengerid OR ladder.userid = $challengeeid
-				AND ladder.enddate IS NULL and ladder.courttypeid = $courttypeid and ladder.clubid = ".get_clubid();
-	
-	db_query($query);
-}
+
+
 
 
 /**

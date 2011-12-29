@@ -57,6 +57,12 @@
 	<input type="hidden" name="cmd" value="moveupinladder">
 </form>
 
+ <form name="moveform" method="post" action="<?=$ME?>">
+	<input type="hidden" name="userid" value="">
+	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
+	<input type="hidden" name="cmd" value="removechallenge">
+</form>
+
 
 <? 
 $numrows = count($ladderplayers);
@@ -221,6 +227,7 @@ Nobody has signed up for the ladder yet.
        <div>
        	Spot: <select name="placement">
              	<?
+             	$selected = "";
              	
              	for ( $i = 1; $i<= count($ladderplayers)+1; ++$i){ 
              	
