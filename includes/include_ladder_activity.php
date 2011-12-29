@@ -19,7 +19,7 @@ if(mysql_num_rows($challengeMatchResult) > 0){ ?>
 	<th>Date</th>
 	<th>Challenger</th>
 	<th>Challengee</th>
-	<th>Score</th>
+	<th>Winner</th>
 </tr>
 
 <?
@@ -41,6 +41,10 @@ while($challengeMatch = mysql_fetch_array($challengeMatchResult)){
   } ?>
 	
 </table>
+<div style="margin-top: 20px">
+	<span class="smallbold">note:</span>
+	<span class="normalsm">mouse over winner's name to see the score</span>
+</div>
 
 <? } else { ?>
 

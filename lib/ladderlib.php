@@ -710,11 +710,11 @@ function printLadderEventRow($id, $challengerName, $challengeeName, $challengeDa
 		</td>
 		<? if($isscored && $scored > 0 ){ ?>
 		<td align="center">
-			3-<?=$loserscore ?>
+			<span title="<?="3-".$loserscore?>"><?=$challengerName ?></span>
 		</td>
 		<? } elseif( $isscored && $scored < 0){?>
 		<td align="center">
-			<?=$loserscore ?>-3
+			<span title="<?="3-".$loserscore?>"><?=$challengeeName ?></span>
 		</td>
 		
 		<? } elseif(!$isscored  && (get_roleid() == 2 || get_roleid() == 4 || $inreservation) ) {?>

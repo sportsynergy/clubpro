@@ -20,7 +20,7 @@ if( count($challengeMatchArray) > 0){ ?>
 	<th>Date</th>
 	<th>Challenger</th>
 	<th>Challengee</th>
-	<th>Score</th>
+	<th>Winner</th>
 </tr>
 
 <?
@@ -41,6 +41,11 @@ for($i=0; $i < count($challengeMatchArray); ++$i){
 
 
 </table>
+
+<div style="margin-top: 20px">
+	<span class="smallbold">note:</span>
+	<span class="normalsm">mouse over winner's name to see the score</span>
+</div>
 
 <? } else{ ?>
 	
