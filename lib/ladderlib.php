@@ -719,7 +719,7 @@ function printLadderEventRow($id, $challenger, $challengee, $challengeDate, $sco
 		
 		<? } elseif(!$isscored  && (get_roleid() == 2 || get_roleid() == 4 || $inreservation) ) {?>
 			  <td align="center">
-			  	<a title="Click on me to record the score" href="javascript:submitForm('recordScoreForm<?=$id?>')">enter score</a> 
+			  	<a title="Click on me to record the score" href="javascript:recordScore('<?=$id?>','<?=$singles?"player":"team"?>')">enter score</a> 
 
 			  	<? if(get_roleid() == 2 || get_roleid() == 4){ ?>
 			  		<a title="Click on me to remove this challenge" href="javascript:removeChallengeMatch('<?=$id?>', '<?=$challenger->id?>', '<?=$challengee->id?>')"> 

@@ -14,6 +14,13 @@ function removeChallengeMatch(matchid,challengerid, challengeeid){
 	
 }
 
+function recordScore(matchid,laddertype){
+
+	document.recordScoreForm.challengematchid.value = matchid;
+	document.recordScoreForm.laddertype.value = laddertype;
+	document.recordScoreForm.submit();
+}
+
 </script>
 
  <form name="removeChallengeMatchForm" action="<?=$ME?>" method="post">
@@ -21,6 +28,12 @@ function removeChallengeMatch(matchid,challengerid, challengeeid){
        <input type="hidden" name="challengematchid" value="">
        <input type="hidden" name="challengerid" value="">
        <input type="hidden" name="challengeeid" value="">
+</form>
+
+<form name="recordScoreForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder.php" method="post">
+	<input type="hidden" name="laddertype" value="">
+  	<input type="hidden" name="source" value="ladder">
+	<input type="hidden" name="challengematchid" value="">
 </form>
 
 <div>
