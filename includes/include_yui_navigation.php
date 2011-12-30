@@ -6,7 +6,7 @@
                                     <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/">Reservations</a></li> 
                                     <? if(isLadderRankingScheme() ) {?>
                                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#">Club Ladder</a> 
-                                    		<div id="account" class="yuimenu"> 
+                                    		<div id="ladder" class="yuimenu"> 
 												<div class="bd"> 
 												<ul class="first-of-type">
 												<? for ($i=0; $i < count($_SESSION["ladders"]); ++$i) {?>
