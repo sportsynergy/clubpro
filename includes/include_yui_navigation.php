@@ -38,7 +38,7 @@
 		                            </li> 
 		                            <? if( get_roleid() == 2 ) { ?>
 		                            
-		                            <li class="yuimenubaritem"><a class="yuimenubaritemlabel" href="#">Administration</a> 
+		                            <li class="yuimenubaritem"><a class="yuimenubaritemlabel" href="#">Tools</a> 
                 
                                         <div id="administration" class="yuimenu"> 
                                             <div class="bd">                    
