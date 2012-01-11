@@ -1,23 +1,46 @@
-
 <html>
 <head>
-<title><? pv($DOC_TITLE) ?></title>
-
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css"> 
+<title>
+<? pv($DOC_TITLE) ?>
+</title>
+<!--
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css">
 <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
-
 <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
-<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" />
+<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" /> -->
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
-
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/button-min.js"></script>
-
+<style type="text/css">
+body {
+	margin:0;
+	padding:0;
+	/* TODO: Replace with club logo - So users are not confused */
+	background-image: url(images/squash-scotstoun.jpg);
+	background-repeat: no-repeat;
+	background-position: -650px -670px;
+}
+#overlayHld {
+	height:100%;
+	background-color:rgba(255,255,255,0.2);
+}
+#contentHld {
+	padding-top:250px;
+}
+#loginWindow {
+	width:400px;
+	background-color:rgba(0,0,0,0.8);
+	color:#FFF;
+	text-align: left;
+	padding:10px;
+}
+a {
+	color:#FFF;
+}
+</style>
 </head>
-
-
-
-<?
+<?php
 	$rememberLast = $_COOKIE["remembercookie"];
 	$checked = "";
 	if( isset($rememberLast) ){
@@ -29,10 +52,44 @@
 	
 ?>
 
-
-<body style="margin-left: 1.5em"  OnLoad="document.entryform.username.focus();" class="yui-skin-sam">
-
-
+<body OnLoad="document.entryform.username.focus();">
+<div id="overlayHld">
+  <div id="contentHld" align="center">
+    <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/login.php" autocomplete="off">
+      <div id="loginWindow">
+        <h1 align="center">
+          <? pv($DOC_TITLE) ?>
+        </h1>
+        <div style="height:15px;"> <!-- Spacer --> </div>
+        <? if (! empty($errormsg)) { ?>
+        <div align="center">
+          <? pv($errormsg) ?>
+        </div>
+        <? } ?>
+        Username:
+        <input id="username" type="text" name="username" value="<?=$_COOKIE["username"]; ?>" style="width:100%;">
+        <br />
+        Password:
+        <input type="password" name="password" value="<?=$_COOKIE["pass"]; ?>" style="width:100%;">
+        <br />
+        <div style="text-align:center;"> Remember Me:
+          <input type="checkbox" name="remember" <?=$checked?> >
+        </div>
+        <div style="height:15px;"> <!-- Spacer --> </div>
+        <div style="text-align:center;">
+          <input type="submit" value="Login" id="submitbutton1" style="font-size:26px;">
+          <input type="button" value="Cancel" onClick="javascript: history.go(-1)" id="cancelbutton1" style="font-size:26px;">
+        </div>
+        <div style="height:15px;"> <!-- Spacer --> </div>
+        <span style="float:right;">Powered by<br />
+        <img src="images/01.gif" width="88" height="15"></span>
+        <? if(!isSiteAutoLogin()){ ?>
+        <div class="normal" style="margin-top: 15px"> <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/forgot_password.php">Forgot my password</a> </div>
+        <? } ?>
+      </div>
+    </form>
+  </div>
+</div>
 <script type="text/javascript">
 
     YAHOO.example.init = function () {
@@ -50,59 +107,5 @@
     } ();
 
     </script>
-
-
- <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/login.php" autocomplete="off">
-
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
- <tr class="borderow loginth">
-    <td>
-    	<span class="whiteh1">
-    		<div align="center"><? pv($DOC_TITLE) ?></div>
-    	</span>
-    </td>
- </tr>
-
- <tr>
-    <td>
-        <? if (! empty($errormsg)) { ?>
-                <div class=warning align=center ><? pv($errormsg) ?></div>
-        <? } ?>
-
-       
-        
-        <table>
-        <tr>
-                <td class="label">Username:</td>
-                <td><input id="username" type="text" name="username" size=20 value="<?=$_COOKIE["username"]; ?>">  </td>
-        </tr>
-        <tr>
-                <td class=label>Password:</td>
-                <td><input type="password" name="password" size=20 value="<?=$_COOKIE["pass"]; ?>"> </td>
-        </tr>
-       
-        <tr>
-                <td></td>
-                <td align="center"><input type="submit" value="Login" id="submitbutton1">
-                        <input type="button" value="Cancel" onClick="javascript: history.go(-1)" id="cancelbutton1">
-                       <? if(!isSiteAutoLogin()){ ?>
-                        <div class="normal" style="margin-top: 15px">
-                        	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/forgot_password.php">Forgot my password</a>
-                        </div>
-                        <? } ?>
-                </td>
-          </tr>
-           <tr>
-            	<td></td>
-                <td class=normal align="center">Remember Me: <input type="checkbox" name="remember" <?=$checked?> ></td>
-        </tr>
-        </table>
-      
-</td>
-</tr>
-</table>
-
-  </form>
-  
 </body>
 </html>

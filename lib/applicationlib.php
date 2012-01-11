@@ -72,7 +72,8 @@ function verify_login($username, $password, $encodedpassword) {
 		$password = md5($password);
 	}
 	 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.verify_login: Logging in $username");
+	if( isDebugEnabled(1) ) 
+		logMessage("applicationlib.verify_login: Logging in $username");
 
 	$loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
         			   FROM tblUsers users, tblClubUser clubuser, tblClubs club
@@ -83,7 +84,8 @@ function verify_login($username, $password, $encodedpassword) {
 					   AND users.password = '$password'
         			   AND clubuser.enable='y' 
 					   AND clubuser.enddate IS NULL";
-
+	if( isDebugEnabled(1) ) 
+		logMessage("applicationlib.verify_login:". $loginQuery);
 
 	$loginResult = db_query($loginQuery);
 
