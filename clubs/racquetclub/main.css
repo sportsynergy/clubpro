@@ -1,0 +1,67 @@
+/********* Racque Club ***************************************************/
+
+.ct2cl18   {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #005B88
+}
+
+.ct3cl18    {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	background : #005B88
+}
+
+
+
+.preopencourtcl18 { 
+	background-color : #DBDDDD; 
+}
+
+.reportscorecl18 {
+	background-color : #99cccc;
+}
+
+.reservecourtcl18 {
+	background-color : #B8DEF2;
+}
+
+.clubid18th {
+	background-color : #005B88;
+}
+
+
+.reportedcourtcl18 {
+	background-color : Silver;
+}
+
+.seekingmatchcl18, .seekingmatchcl18 * a:link, .seekingmatchcl18 * a:visited {
+	color:#FFFFFF;
+	background-color : #0099cc;
+}
+
+
+
+hr.hrline{
+background-color:  #005B88;
+height: 5px;	
+}
+
+/*  For Tabs */
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover {
+background:#005B88 url(../../../../assets/skins/sam/sprite.png) repeat-x scroll left -1400px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav {
+border-color:#005B88;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
+border-color: #005B88;
+}

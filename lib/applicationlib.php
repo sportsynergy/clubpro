@@ -5150,7 +5150,7 @@ function getSitePreferences($siteid) {
 					sites.challengerange,
 					sites.facebookurl,
 					clubs.clubname
-	        FROM tblClubSites sites, tblBoxLeagues box, tblClubs clubs
+	        FROM tblClubSites sites, tblClubs clubs
 			WHERE sites.siteid = '$siteid'
 			AND sites.clubid = clubs.clubid";
 

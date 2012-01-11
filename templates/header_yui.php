@@ -74,6 +74,9 @@
   		           <?
                 //When site is disabled display the gone fishing sign, but not for the system administration console.
                 if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){ 
+                	
+                	if( isDebugEnabled(1) ) logMessage("header_yui: This site is not enabled");
+                	
                 	include($_SESSION["CFG"]["includedir"]."/include_gonefishin.php");
                		include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
                		die;
