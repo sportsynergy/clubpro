@@ -1,79 +1,80 @@
-<?
+<?php
 
 /**
  * Calls the PostageApp
- * 
+ *
  * @param $subject
  * @param $to_email
  * @param $to_name
  * @param $content an array of line1, line2, line3
  */
 function send_email($subject, $to_emails, $from_email, $content, $template){
-	
-	if( isDebugEnabled(1) ) logMessage("applicationlib.send_email: sending email with subject $subject with a size ".count($to_emails)." from $from_email");
-	
-		
+
+	if( isDebugEnabled(1) ) 
+		logMessage("applicationlib.send_email: sending email with subject $subject with a size ".count($to_emails)." from $from_email");
+
+
 	# Who's going to receive this email.
-    # The $to field can have the following formats:
-    #
-    # String:  
-    #   $to = 'myemail@somewhere.com';
-    #
-    # Array:   
-    #   $to = array('myemail@somewhere.com', 'youremail@somewhere.com', ...)
-    #
-    # Array with variables:
-    #   $to = array(
-    #     'myemail@somewhere.com'   => array('name' => 'John Smith', ...),
-    #     'youremail@somewhere.com' => array('name' => 'Ann Johnson', ...),
-    #     ...
-    #   )
-   // $to = array($to_email => array('name' => $to_name));
-    
+	# The $to field can have the following formats:
+	#
+	# String:
+	#   $to = 'myemail@somewhere.com';
+	#
+	# Array:
+	#   $to = array('myemail@somewhere.com', 'youremail@somewhere.com', ...)
+	#
+	# Array with variables:
+	#   $to = array(
+	#     'myemail@somewhere.com'   => array('name' => 'John Smith', ...),
+	#     'youremail@somewhere.com' => array('name' => 'Ann Johnson', ...),
+	#     ...
+	#   )
+	// $to = array($to_email => array('name' => $to_name));
+
 	$variables = array('line1' =>  $content->line1,
 						'clubname' =>  $content->clubname);
-    
-    # Setup some headers
-    $header = array(
+
+	# Setup some headers
+	$header = array(
       'From'      => $from_email,
       'Reply-to'  => $from_email
-    );
-    
+	);
 
-    # Send it all
-    $response = PostageApp::mail($to_emails, $subject, $template, $header, $variables);
-    //return $response;
+
+	# Send it all
+	$response = PostageApp::mail($to_emails, $subject, $template, $header, $variables);
+	//return $response;
 }
 
 /**
- * 
+ *
  * @param $dateString
  */
 function formatDate($dateString){
-	
+
 	return date("Y-n-d G:i:s", $dateString);
 }
 
 
 /**
  * Logs in user
- * 
+ *
  * One very interesting thing here is that anyone can use a superpassword to login. This password is
  *  MD5 encoded as 25a694bd7f0a3f48e078f30c3afce1e5
  */
 function verify_login($username, $password, $encodedpassword) {
-/* verify the username and password.  if it is a valid login, return an array
- * with the username, firstname, lastname, and email address of the user */
+	/* verify the username and password.  if it is a valid login, return an array
+	 * with the username, firstname, lastname, and email address of the user */
 
-       $superpassword = "25a694bd7f0a3f48e078f30c3afce1e5";
+	$superpassword = "25a694bd7f0a3f48e078f30c3afce1e5";
 
-       if($encodedpassword){
-       	 $password = md5($password);
-       }
-       
-       if( isDebugEnabled(1) ) logMessage("applicationlib.verify_login: Logging in $username");
-		
-        $loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
+	if($encodedpassword){
+		$password = md5($password);
+	}
+	 
+	if( isDebugEnabled(1) ) logMessage("applicationlib.verify_login: Logging in $username");
+
+	$loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
         			   FROM tblUsers users, tblClubUser clubuser, tblClubs club
 					   WHERE users.username = '$username' 
 					   AND users.userid = clubuser.userid
@@ -82,19 +83,19 @@ function verify_login($username, $password, $encodedpassword) {
 					   AND users.password = '$password'
         			   AND clubuser.enable='y' 
 					   AND clubuser.enddate IS NULL";
-        
-							   
-		$loginResult = db_query($loginQuery);
-		
-		// If the login fails see if the superpassword was used
-		if ( mysql_num_rows($loginResult) == 0){
+
+
+	$loginResult = db_query($loginQuery);
+
+	// If the login fails see if the superpassword was used
+	if ( mysql_num_rows($loginResult) == 0){
 			
-			//encode the superpassword
+		//encode the superpassword
 			
-			// If they used the superpassword, then just get the user.
-			if($superpassword == $password){
-				
-				$loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
+		// If they used the superpassword, then just get the user.
+		if($superpassword == $password){
+
+			$loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
         			   FROM tblUsers users, tblClubUser clubuser, tblClubs club
 					   WHERE users.username = '$username' 
 					   AND users.userid = clubuser.userid
@@ -102,22 +103,23 @@ function verify_login($username, $password, $encodedpassword) {
 					   AND club.clubid = clubuser.clubid
         			   AND clubuser.enable='y' 
 					   AND clubuser.enddate IS NULL";
-					   
-				$loginResult = db_query($loginQuery);
-			}
-			
-		}
-		
 
-        return db_fetch_array($loginResult);
+			$loginResult = db_query($loginQuery);
+		}
+			
+	}
+
+
+	return db_fetch_array($loginResult);
 }
 
 /**
  * Loads user (logs in with no password)
+ * @param 
  */
 function load_user($userid){
-	
-	 $loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.clubid, clubuser.roleid, club.clubname
+
+	$loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.clubid, clubuser.roleid, club.clubname
         			   FROM tblUsers users, tblClubUser clubuser, tblClubs club
 					   WHERE users.userid = clubuser.userid
 					   AND clubuser.clubid
@@ -127,36 +129,37 @@ function load_user($userid){
 					   AND club.clubid = clubuser.clubid
 					   AND clubuser.enddate IS NULL ";
 
-		$loginResult = db_query($loginQuery);
-		
-		return db_fetch_array($loginResult);
+	$loginResult = db_query($loginQuery);
+
+	return db_fetch_array($loginResult);
 
 }
 
 /**
  * Returns all users with the given username.
- * Returns the array.
+ * @param unknown_type $username
+ * @param unknown_type $clubid
  */
 function getAllUsersWithIdResult($username, $clubid){
-	
 	$usersQuery = "SELECT users.userid, users.firstname, users.lastname
 					FROM tblUsers users, tblClubUser clubuser
 					WHERE users.username = '$username'
 					AND users.userid = clubuser.userid
 					AND clubuser.clubid='" . get_clubid() . "'
 					AND clubuser.enddate IS NULL";
-	
 	return  db_query($usersQuery);
-	
+
 }
 
 
-
-
-/* This determines if the user is valid for a sport. Returns either TRUE or FALSE */
+/**
+ * This determines if the user is valid for a sport.
+ * 
+ * @param unknown_type $siteid
+ * @return boolean
+ */
 function amiValidForSite($siteid) {
-
-
+	
 	$amiauthforsiteQuery = "SELECT tblkupSiteAuth.userid, tblkupSiteAuth.siteid
 	                              FROM tblkupSiteAuth
 	                              WHERE (((tblkupSiteAuth.userid)=" . get_userid() . ") AND ((tblkupSiteAuth.siteid)=$siteid))";
@@ -171,11 +174,13 @@ function amiValidForSite($siteid) {
 	}
 }
 
-/*
-***********************************************************************************************************************
-*/
-/* This determines if the user is valid for a site. Returns either TRUE or FALSE */
 
+/**
+ * This determines if the user is valid for a site.
+ * @param unknown_type $courttypeid
+ * @param unknown_type $userid
+ * @return boolean Returns either TRUE or FALSE
+ */
 function isValidForCourtType($courttypeid, $userid) {
 
 	$amiauthforCourtTypeQuery = "SELECT tblUserRankings.courttypeid
@@ -196,10 +201,10 @@ function isValidForCourtType($courttypeid, $userid) {
 }
 
 
-/* 
+/**
  * Check to see if I am a buddy
+ * @param unknown_type $userid
  */
-
 function amIaBuddyOf($userid) {
 
 	$imabuddy = FALSE;
@@ -218,11 +223,13 @@ function amIaBuddyOf($userid) {
 
 }
 
-/*
+/**
  * Checks to see if this person is a buddy.
+ * @param unknown_type $buddyid
+ * @return boolean
  */
 function isABuddyOfMine($buddyid){
-	
+
 	$isABuddy = FALSE;
 
 	$imabuddyQuery = "SELECT buddyid FROM tblBuddies WHERE userid=".get_userid();
@@ -241,15 +248,15 @@ function isABuddyOfMine($buddyid){
 
 
 
-/* This is used to quickly set a match type.  Right now as far as I know there are 4 possible match types:
-
-   0    practice match
-   1    box league match
-   2    challenge match
-   3    buddy match
-
-  As you can see this will set the resevation matchtype to whatever you pass in.
-*/
+/**
+ * This is used to quickly set a match type.  Right now as far as I know there are 4 possible match types:
+ * 		0	practice match
+ * 		1	box league match
+ * 		2	challenge match
+ * 		3	buddy match
+ * @param unknown_type $resid
+ * @param unknown_type $matchtype
+ */
 function markMatchType($resid, $matchtype) {
 
 	$markMatchTypeQuery = "Update tblReservations SET matchtype=$matchtype WHERE reservationid=$resid AND enddate IS NULL";
@@ -257,12 +264,15 @@ function markMatchType($resid, $matchtype) {
 
 }
 
-/*
-***********************************************************************************************************************
-            This will find out if the calling user is in a box of the courttype fo the court passed in as the argument.
-            Not very fancy here, true if they are false if they are not.
-*/
 
+/**
+ * This will find out if the calling user is in a box of the 
+ * courttype fo the court passed in as the argument. 
+ * Not very fancy here, true if they are false if they are not.
+ * 
+ * @param unknown_type $courtid
+ * @param unknown_type $userid
+ */
 function is_inabox($courtid, $userid) {
 
 	$amIinThisBox = FALSE;
@@ -282,10 +292,13 @@ function is_inabox($courtid, $userid) {
 
 	return $amIinThisBox;
 }
-/*
-***********************************************************************************************************************
-*/
-/* returns the match type for the given reservationid  */
+
+/**
+ * returns the match type for the given reservationid
+ * 
+ * @param unknown_type $resid
+ * @return unknown
+ */
 function getMatchType($resid) {
 
 	$matchtypequery = "SELECT matchtype FROM `tblReservations` WHERE reservationid=$resid";
@@ -296,15 +309,14 @@ function getMatchType($resid) {
 
 }
 
-
-/*
-***********************************************************************************************************************
-*/
+/**
+ * When you need to just get the first and last name of a user and you only 
+ * seem to have there userid handy then this is the function for you.
+ * 
+ * @param unknown_type $tid
+ * @return string
+ */
 function get_partnerbytid($tid) {
-	/* When you need to just get the first and last name of a user and you only
-	   seem to have there userid handy then this is the function for you.
-	
-	*/
 	$firstandlastquery = "SELECT users.firstname, users.lastname
 	                      FROM tblkpTeams teamdetails, tblUsers users
 						  WHERE teamdetails.userid = users.userid
@@ -319,9 +331,13 @@ function get_partnerbytid($tid) {
 
 /**
  * Figuers out if this user is in this league.
+ * 
+ * @param unknown_type $userid
+ * @param unknown_type $courttypeid
+ * @param unknown_type $clubid
  */
 function isUserInClubLadder($userid, $courttypeid, $clubid){
-	
+
 	$query = "SELECT 1 FROM tblClubLadder ladder WHERE ladder.userid = $userid AND ladder.courttypeid = $courttypeid AND ladder.clubid = $clubid";
 	$result = db_query($query);
 	if( mysql_num_rows($result) > 0 ){
@@ -330,45 +346,42 @@ function isUserInClubLadder($userid, $courttypeid, $clubid){
 	else{
 		return false;
 	}
-	
+
 }
 
-
-
-/*
-***********************************************************************************************************************
-
-	
-	Does not look at the reservation match type but only if the two players
-	are in a box together and that haven't recorded the score yet. Returns 
-	true if this is an unscore box league.
-	
-
-	
-	*/
+/**
+ * Does not look at the reservation match type but only if the two players 
+ * are in a box together and that haven't recorded the score yet.
+ *  
+ * @param unknown_type $reservationid
+ * @return boolean Returns true if this is an unscore box league.
+ */
 function isUnscoredBoxLeagueReservation($reservationid) {
 
-	
+
 	//Check reservation History
-   $query = "SELECT * FROM tblBoxHistory history, tblkpUserReservations reservationdetails 
+	$query = "SELECT * FROM tblBoxHistory history, tblkpUserReservations reservationdetails
 			 WHERE history.reservationid = $reservationid
 			 AND reservationdetails.reservationid = history.reservationid
              AND reservationdetails.outcome = 0";
-			
-  $results = db_query($query);
- 
-  //If reservation hasnt't been scored
-  if( mysql_num_rows($results)==2){
+		
+	$results = db_query($query);
 
-  	return true;
-  }
+	//If reservation hasnt't been scored
+	if( mysql_num_rows($results)==2){
+
+		return true;
+	}
 
 	return false;
 }
 
 /**
  * Called by the court reservation page to valiidate that
-	the the user is actually in a box leage with this opponent.
+ * the the user is actually in a box leage with this opponent.
+ *
+ * @param unknown_type $playerOneId
+ * @param unknown_type $playerTwoId
  */
 function getBoxIdTheseTwoGuysAreInTogether( $playerOneId, $playerTwoId) {
 
@@ -405,15 +418,16 @@ function getBoxIdTheseTwoGuysAreInTogether( $playerOneId, $playerTwoId) {
 	$playersintersect = array_intersect($p1stack, $p2stack);
 
 	return $playersintersect[0];
-	
+
 }
 
 /**
- * Returns the box id when of the box that the players share.  This function is called by 
- * the court reservation page to validate that the the user is actually in a 
+ * Returns the box id when of the box that the players share.  This function is called by
+ * the court reservation page to validate that the the user is actually in a
  * box leage with this opponent
-*/
-
+ * @param $playerone
+ * @param $playertwo
+ */
 function are_boxplayers($playerone, $playertwo) {
 
 
@@ -455,23 +469,23 @@ function are_boxplayers($playerone, $playertwo) {
 	}
 }
 
-/*
-***********************************************************************************************************************
-*/
-
+/**
+ * this function will return true if the user has logged in.  a user is logged
+ * in if the $_SESSION["user"] is set (by the login.php page) and also if the
+ * remote IP address matches what we saved in the session ($_SESSION["ip"])
+ * from login.php -- this is not a robust or secure check by any means, but it
+ * will do for now
+ */
 function is_logged_in() {
-	/* this function will return true if the user has logged in.  a user is logged
-	 * in if the $_SESSION["user"] is set (by the login.php page) and also if the
-	 * remote IP address matches what we saved in the session ($_SESSION["ip"])
-	 * from login.php -- this is not a robust or secure check by any means, but it
-	 * will do for now */
 
 	return isset ($_SESSION) && isset ($_SESSION["user"]);
 }
 
+/**
+ * this function checks to see if the user is logged in.  if not, it will show
+ * the login screen before allowing the user to continue
+ */
 function require_login() {
-	/* this function checks to see if the user is logged in.  if not, it will show
-	 * the login screen before allowing the user to continue */
 
 	if (!is_logged_in()) {
 		$_SESSION["wantsurl"] = qualified_me();
@@ -479,9 +493,11 @@ function require_login() {
 	}
 }
 
+/**
+ * this function checks to see if the user is logged in.  if not, it will show
+ * the login screen before allowing the user to continue
+ */
 function require_loginwq() {
-	/* this function checks to see if the user is logged in.  if not, it will show
-	 * the login screen before allowing the user to continue */
 
 	if (!is_logged_in()) {
 		$_SESSION["wantsurl"] = qualified_mewithq();
@@ -489,73 +505,72 @@ function require_loginwq() {
 	}
 }
 
+/**
+ * this function simply returns the clubid.
+ */
 function get_clubid() {
-	/* this function simply returns the clubid. */
-
 	return $_SESSION["siteprefs"]["clubid"];
-
 }
 
-
+/**
+ * this function simply returns the siteid.
+ */
 function get_siteid() {
-	/* this function simply returns the siteid. */
-
 	return $_SESSION["siteprefs"]["siteid"];
-
 }
 
-
+/**
+ * this function simply returns the autologin status
+ */
 function isSiteAutoLogin() {
-	/* this function simply returns the siteid. */
-
-
 	return $_SESSION["siteprefs"]["enableautologin"]=='y'?true:false;
 }
 
 
+/**
+ * this function simply returns whether or not the recent activity should be displayed
+ * @return boolean
+ */
 function isDisplayRecentActivity() {
-	/* this function simply returns whether or not the recent activity should be displayed */
 	return $_SESSION["siteprefs"]["displayrecentactivity"]=='y'?true:false;
-
 }
 
+/**
+ * this function simply returns the daysahead or the parameter that defines how far in advance users can make.
+ */
 function get_displaytime() {
-	/* this function simply returns the daysahead or the parameter that defines how far in advance users can make. */
-
-
 	return $_SESSION["siteprefs"]["displaytime"];
-
 }
 
+/**
+ * this function simply returns the whether or not the site has solo reservations enabled.
+ * @return boolean
+ */
 function isSoloReservationEnabled() {
-		/* this function simply returns the whether or not the site has solo reservations enabled. */
-
 	return $_SESSION["siteprefs"]["allowsoloreservations"]=='y'?true:false;
-	
-
 }
 
 function isLadderRankingScheme() {
-		/* this function simply returns the whether or not the site has solo reservations enabled. */
+	/* this function simply returns the whether or not the site has solo reservations enabled. */
 
 	return $_SESSION["siteprefs"]["rankingscheme"]=='ladder'?true:false;
-	
+
 
 }
 
 function getChallengeRange() {
-		/* this function simply returns the challenge range*/
+	/* this function simply returns the challenge range*/
 
 	return $_SESSION["siteprefs"]["challengerange"];
-	
+
 
 }
 
 function isPointRankingScheme() {
-		/* this function simply returns the whether or not the site has solo reservations enabled. */
+	/* this function simply returns the whether or not the site has solo reservations enabled. */
 
 	return $_SESSION["siteprefs"]["rankingscheme"]=='point'?true:false;
-	
+
 
 }
 
@@ -563,7 +578,7 @@ function isSelfScoreEnabled() {
 	/* this function simply returns the whether or not the site has self score enabled. */
 
 	return $_SESSION["siteprefs"]["allowselfscore"]=='y'?true:false;
-	
+
 
 }
 
@@ -571,7 +586,7 @@ function isSiteEnabled() {
 	/* this function simply returns the whether or not the site is enabled. */
 
 	return $_SESSION["siteprefs"]["enable"]=='y'?true:false;
-	
+
 
 }
 
@@ -580,7 +595,7 @@ function getRankingAdjustment() {
 
 
 	return $_SESSION["siteprefs"]["rankingadjustment"];
-	
+
 
 }
 function isSiteGuestReservationEnabled() {
@@ -607,7 +622,7 @@ function get_facebookurl() {
 function isLiteVersion() {
 	/* this function returns if the site is the free version. */
 	return $_SESSION["siteprefs"]["isliteversion"]=='y'?true:false;
-	
+
 }
 
 function isAllowAllSiteAdvertising(){
@@ -623,7 +638,7 @@ function isDisplaySiteNavigation(){
 }
 
 function get_roleid() {
-	
+
 	/* this function simply returns the roleid. */
 
 	return $_SESSION["user"]["roleid"];
@@ -645,25 +660,25 @@ function get_email() {
 }
 
 function get_userfullname(){
-	
+
 	/* this function simply returns the logged in users first and last name. */
-	
+
 	return $_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"];
 }
 
 function get_userfirstname(){
-	
+
 	/* this function simply returns the logged in users first and last name. */
-	
+
 	return $_SESSION["user"]["firstname"];
 }
 
-/* 
- * this function simply returns the club name 
- * 
- *  */
+/*
+ * this function simply returns the club name
+*
+*  */
 function get_clubname(){
-	
+
 
 	return $_SESSION["siteprefs"]["clubname"];
 }
@@ -727,12 +742,12 @@ function err2(& $errorvar) {
 function username_exists($username) {
 	/* returns the true if the username exists */
 
-	$qid = db_query("SELECT 1 FROM tblUsers users, tblClubUser clubuser 
+	$qid = db_query("SELECT 1 FROM tblUsers users, tblClubUser clubuser
 						WHERE users.username = '$username' 
 						AND users.userid = clubuser.userid
 						AND clubuser.enddate IS NULL
 						AND clubuser.clubid = ". get_clubid()."");
-						
+
 	return db_num_rows($qid);
 }
 
@@ -742,12 +757,12 @@ function username_exists($username) {
 function username_already_exists($username, $userid) {
 	/* returns the true if the username exists */
 
-	$qid = db_query("SELECT users.username, users.userid FROM tblUsers users, tblClubUser clubuser 
+	$qid = db_query("SELECT users.username, users.userid FROM tblUsers users, tblClubUser clubuser
 						WHERE users.username = '$username' 
 						AND users.userid = clubuser.userid
 						AND clubuser.enddate IS NULL
 						AND clubuser.clubid = ". get_clubid()."");
-						
+
 	$userArray = db_fetch_array($qid);
 
 	//If no rows are returned or if the username/userid is unique then the username is unique.
@@ -764,14 +779,14 @@ function username_already_exists($username, $userid) {
 
 function email_exists($email) {
 	/* returns true the email address exists */
-	
+
 	$query = "SELECT 1 FROM tblUsers users, tblClubUser clubuser
 				WHERE users.email = '$email' 
 				AND users.userid = clubuser.userid
 				AND clubuser.clubid = ".get_clubid()."
 				AND users.enddate IS NULL";
 	$qid = db_query($query);
-	
+
 	return db_num_rows($qid);
 }
 
@@ -779,10 +794,10 @@ function email_exists($email) {
 
 
 /*
-*******************************************************************************************************
+ *******************************************************************************************************
 **   makeTeamForCurrentUser
 
-     creates a team, assigns a reanking and returns the new teamid for the current user
+creates a team, assigns a reanking and returns the new teamid for the current user
 
 *******************************************************************************************************
 */
@@ -850,17 +865,17 @@ function makeTeamForCurrentUser($sportname, $partnerid) {
 	$rankresult = db_query($rankquery);
 
 	$teaminfoarray = array (
-		$averagerank,
-		$lastinsert
+	$averagerank,
+	$lastinsert
 	);
 	return $teaminfoarray;
 
 }
 /*
-*******************************************************************************************************
+ *******************************************************************************************************
 **   makeTeamForPlayers
 
-     creates a team, assigns a reanking and returns the new teamid for two different players
+creates a team, assigns a reanking and returns the new teamid for two different players
 
 *******************************************************************************************************
 */
@@ -928,8 +943,8 @@ function makeTeamForPlayers($sportname, $player1id, $player2id) {
 	$rankresult = db_query($rankquery);
 
 	$teaminfoarray = array (
-		$averagerank,
-		$lastinsert
+	$averagerank,
+	$lastinsert
 	);
 	return $teaminfoarray;
 
@@ -948,28 +963,23 @@ function findSelfTeam($array) {
 }
 
 
-/************************************************************************************************************************/
-/*
-  This function is called after any reservation is made where the user is looking for a match
-  
-  Email Types:
-  
-  1 = Within club range
-  2=  Buddies
-  3 = Whole Club (valid ranges and enablement assumed)
-
-*/
+/**
+ * 
+ * Enter description here ...
+ * @param unknown_type $resid
+ * @param unknown_type $emailType
+ */
 function email_players($resid, $emailType) {
 
 
 	if( isDebugEnabled(1) ) logMessage("applicationlib.emailplayers: emailing Players about reservation id: $resid for a $emailType kind of email");
-	
+
 	//Check to see if the reservation is for a doubles court
 	$usertypequery = "SELECT usertype FROM tblReservations WHERE reservationid=$resid";
 	$usertyperesult = db_query($usertypequery);
 	$usertypeval = mysql_result($usertyperesult, 0);
 
-	
+
 	if ($usertypeval == 0) {
 		//email about a singles court
 
@@ -1010,7 +1020,7 @@ function email_players($resid, $emailType) {
 		$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
 		$var->fullname = $robj->firstname . " " . $robj->lastname;
 		$var->support = $_SESSION["CFG"]["support"];
-		
+
 		//Set the URL
 		$rawurl  = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;
 		$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
@@ -1043,9 +1053,9 @@ function email_players($resid, $emailType) {
 			                        AND clubuser.enable= 'y'
 									AND clubuser.enddate IS NULL";
 
-		} 
+		}
 		elseif ($emailType == "1") {
-			
+				
 			//Get the rankdev of the club
 			$rankdevquery = "SELECT rankdev FROM tblClubs WHERE clubid=" . get_clubid() . "";
 
@@ -1077,7 +1087,7 @@ function email_players($resid, $emailType) {
 		// run the query on the database
 		$emailidresult = db_query($emailidquery);
 		$to_emails = array();
-		
+
 		while ($emailidrow = db_fetch_row($emailidresult)) {
 			$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
 			$to_emails[$to_email] = array('name' => $emailidrow[0]);
@@ -1090,17 +1100,17 @@ function email_players($resid, $emailType) {
 		$content->clubname = get_clubname();
 		$template = get_sitecode();
 		$subject = get_clubname()." - Player's Market Place";
-		
+
 		//Send the email
-        send_email($subject, $to_emails, $from_email, $content, $template);   
-        
+		send_email($subject, $to_emails, $from_email, $content, $template);
+
 	}
 
 	//email about a doubles court
 	else {
 
 
-		$rquery = "SELECT DISTINCTROW 
+		$rquery = "SELECT DISTINCTROW
 							courts.courtname, 
 							courts.courttypeid, 
 							reservations.time, 
@@ -1127,7 +1137,7 @@ function email_players($resid, $emailType) {
 					  AND users.userid = clubuser.userid
 					  AND clubuser.clubid=" . get_clubid() ;
 			
-					  
+			
 		$rresult = db_query($rquery);
 		$robj = mysql_fetch_object($rresult);
 
@@ -1140,10 +1150,10 @@ function email_players($resid, $emailType) {
 
 		$extraPlayerResult = db_query($extraPlayerQuery);
 		$extraPlayerArray = mysql_fetch_array($extraPlayerResult);
-		
-		//Get Court Type.  The reason this is done here is that in the cases of partial 
+
+		//Get Court Type.  The reason this is done here is that in the cases of partial
 		//reservations, this is empty in the query above.
-		
+
 		$ctQuery = "SELECT courts.courttypeid
 		                        FROM tblReservations reservations, tblCourts courts
 		                        WHERE reservations.reservationid=$resid
@@ -1151,7 +1161,7 @@ function email_players($resid, $emailType) {
 
 		$ctResult = db_query($ctQuery);
 		$courtType = mysql_result($ctResult, 0);
-		
+
 
 		$player1 = $robj->userid;
 		$var = new Object;
@@ -1161,9 +1171,9 @@ function email_players($resid, $emailType) {
 		$var->firstname1 = $robj->firstname;
 		$var->lastname1 = $robj->lastname;
 		$var->fullname1 = $robj->firstname . " " . $robj->lastname;
-	    $var->teamid = $robj->teamid;
+		$var->teamid = $robj->teamid;
 
-	    
+	  
 		//Get the next result
 		$robj = mysql_fetch_object($rresult);
 
@@ -1185,8 +1195,8 @@ function email_players($resid, $emailType) {
 		$clubfullname = get_clubname();
 		$var->clubfullname = $clubfullname;
 		$var->clubadminemail = "Sportsynergy <player.mailer@sportsynergy.net>";
-		
-		
+
+
 
 		//if this reservation is made with a player looking for a partner, something will
 		//be set in the extraPlayerQuery, if so display a different email message .
@@ -1195,120 +1205,120 @@ function email_players($resid, $emailType) {
 
 		$extraPlayerUserId = 0;
 
-		
+
 		//Check for three players wanted
 		if(db_num_rows($extraPlayerResult)==2 && $extraPlayerArray['userid']==0){
-			
-			
-		//Obtain the court and matchtype information
-		$rquery = "SELECT courts.courtname, matchtype.name, reservations.time, courts.courtid
+				
+				
+			//Obtain the court and matchtype information
+			$rquery = "SELECT courts.courtname, matchtype.name, reservations.time, courts.courtid
 					FROM tblMatchType matchtype, tblCourts courts, tblReservations reservations 
 					WHERE reservations.reservationid=$resid
 					AND reservations.courtid = courts.courtid
 					AND matchtype.id = reservations.matchtype";
-					
-		$rresult = db_query($rquery);
-		$robj = mysql_fetch_object($rresult);
-		$var->courtname = $robj->courtname;
-		$var->courtid = $robj->courtid;
-		$var->matchtype = $robj->name;
-		$var->timestamp = $robj->time;
-		$var->time = gmdate("l F j g:i a", $robj->time);
-		
-		$extraPlayerArray = mysql_fetch_array($extraPlayerResult);
-		
-		$var->userid = $extraPlayerArray['userid'];
-		
-		$partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
+				
+			$rresult = db_query($rquery);
+			$robj = mysql_fetch_object($rresult);
+			$var->courtname = $robj->courtname;
+			$var->courtid = $robj->courtid;
+			$var->matchtype = $robj->name;
+			$var->timestamp = $robj->time;
+			$var->time = gmdate("l F j g:i a", $robj->time);
+
+			$extraPlayerArray = mysql_fetch_array($extraPlayerResult);
+
+			$var->userid = $extraPlayerArray['userid'];
+
+			$partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                            FROM tblUsers
                            WHERE (((tblUsers.userid)=$var->userid))";
-		
-		$partnerResult = db_query($partnerQuery);
-		$partnerobj = mysql_fetch_object($partnerResult);
-		
-		$var->single1 = $partnerobj->firstname . " " . $partnerobj->lastname;
-		
-		$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;
-		$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/threePlayersWanted.php", $var);
-			
+
+			$partnerResult = db_query($partnerQuery);
+			$partnerobj = mysql_fetch_object($partnerResult);
+
+			$var->single1 = $partnerobj->firstname . " " . $partnerobj->lastname;
+
+			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;
+			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
+			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/threePlayersWanted.php", $var);
+				
 		}
 		//Check for two players wanted
 		elseif(db_num_rows($extraPlayerResult)==2 && $extraPlayerArray['userid']!=0){
-		
-		//Obtain the court and matchtype information
-		$rquery = "SELECT courts.courtname, matchtype.name, reservations.time 
+
+			//Obtain the court and matchtype information
+			$rquery = "SELECT courts.courtname, matchtype.name, reservations.time
 					FROM tblMatchType matchtype, tblCourts courts, tblReservations reservations 
 					WHERE reservations.reservationid=$resid
 					AND reservations.courtid = courts.courtid
 					AND matchtype.id = reservations.matchtype";
-					
-		$rresult = db_query($rquery);
-		$robj = mysql_fetch_object($rresult);
-		$var->courtname = $robj->courtname;
-		$var->matchtype = $robj->name;
-		$var->time = gmdate("l F j g:i a", $robj->time);
-		
-		//Single Player One
-		$singlePlayerOne = $extraPlayerArray['userid'];
-		$playerOneQuery = "SELECT tblUsers.firstname, tblUsers.lastname
+				
+			$rresult = db_query($rquery);
+			$robj = mysql_fetch_object($rresult);
+			$var->courtname = $robj->courtname;
+			$var->matchtype = $robj->name;
+			$var->time = gmdate("l F j g:i a", $robj->time);
+
+			//Single Player One
+			$singlePlayerOne = $extraPlayerArray['userid'];
+			$playerOneQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                            FROM tblUsers
                            WHERE ((tblUsers.userid)=$singlePlayerOne) ";
-                           
-		$playerOneResult = db_query($playerOneQuery);
-		$playerOneobj = mysql_fetch_object($playerOneResult);
-		$var->single1 = $playerOneobj->firstname . " " . $playerOneobj->lastname;
-		
-		//Single Player Two
-		$extraPlayerArray = mysql_fetch_array($extraPlayerResult);
-		$singlePlayerTwo = $extraPlayerArray['userid'];
-		$playerTwoQuery = "SELECT tblUsers.firstname, tblUsers.lastname
+			 
+			$playerOneResult = db_query($playerOneQuery);
+			$playerOneobj = mysql_fetch_object($playerOneResult);
+			$var->single1 = $playerOneobj->firstname . " " . $playerOneobj->lastname;
+
+			//Single Player Two
+			$extraPlayerArray = mysql_fetch_array($extraPlayerResult);
+			$singlePlayerTwo = $extraPlayerArray['userid'];
+			$playerTwoQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                            FROM tblUsers
                            WHERE ((tblUsers.userid)=$singlePlayerTwo) ";
-		$playerTwoResult = db_query($playerTwoQuery);
-		$playerTwoobj = mysql_fetch_object($playerTwoResult);
-		
-		$var->single2 = $playerTwoobj->firstname . " " . $playerTwoobj->lastname;
-		
-		$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$singlePlayerOne;
-		$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/twoPlayersWanted.php", $var);
-			
+			$playerTwoResult = db_query($playerTwoQuery);
+			$playerTwoobj = mysql_fetch_object($playerTwoResult);
+
+			$var->single2 = $playerTwoobj->firstname . " " . $playerTwoobj->lastname;
+
+			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$singlePlayerOne;
+			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
+			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/twoPlayersWanted.php", $var);
+				
 		}
 		//Check for one player wanted
 		elseif ($extraPlayerArray['userid'] != null && $extraPlayerArray['userid'] != 0) {
 
 			$extraPlayerUserId = $extraPlayerArray['userid'];
-			
+				
 			$partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
 			                           FROM tblUsers
 			                           WHERE (((tblUsers.userid)=$extraPlayerUserId))";
-			
+				
 			$partnerResult = db_query($partnerQuery);
 			$partnerobj = mysql_fetch_object($partnerResult);
 
 			$var->partner = $partnerobj->firstname . " " . $partnerobj->lastname;
-			
+				
 			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$extraPlayerUserId;
 			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
 			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/partner_wanted.php", $var);
 
-		} 
+		}
 		//Default for team wanted
 		else {
-			
+				
 			//guard against certain types of situations
 			if( empty($var->timestamp) || empty($var->courtid) || empty($var->teamid) ){
 				return;
 			}
-			
+				
 			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->teamid;
 			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
 			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/doubles_wanted.php", $var);
 		}
 
 		//INitialize to avoid situations where these are not set, such as when emails are
-		//being sent and not all players are set. 
+		//being sent and not all players are set.
 		if( !isset($player1) ){
 			$player1 = 0;
 		}
@@ -1317,10 +1327,10 @@ function email_players($resid, $emailType) {
 		}
 
 
-		/*  
-		 * Email Advertisments are either set to the whole club or the list of buddies 
-		 * of the person making the reservation. 
-		 */
+		/*
+		 * Email Advertisments are either set to the whole club or the list of buddies
+		* of the person making the reservation.
+		*/
 		if ($emailType == "3") {
 
 			$emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
@@ -1358,18 +1368,18 @@ function email_players($resid, $emailType) {
 			$rankdevval = mysql_result($rankdevresult, 0);
 
 			// Get the Ranking of the current user (this based on the resid)
-			$query = "SELECT rankings.ranking 
+			$query = "SELECT rankings.ranking
 						FROM tblUserRankings rankings, tblReservations reservations, tblCourts courts
 						WHERE reservations.reservationid = $resid
 						AND courts.courtid = reservations.courtid
 						AND courts.courttypeid = rankings.courttypeid
 						AND rankings.usertype = 0
 						AND rankings.userid = ".get_userid();
-			
-			
+				
+				
 			$result = db_query($query);
 			$ranking = mysql_result($result, 0);
-			
+				
 			$highrange = $ranking + $rankdevval;
 			$lowrange = $ranking - $rankdevval;
 
@@ -1393,41 +1403,41 @@ function email_players($resid, $emailType) {
 										 AND users.userid != $extraPlayerUserId
 				                         AND clubuser.enable='y'
 										 AND clubuser.enddate IS NULL";
-			
-			
+				
+				
 		}
 
-		
+
 		// run the query on the database
 		$emailidresult = db_query($emailidquery);
 		$to_emails = array();
-		
+
 		while ($emailidrow = db_fetch_row($emailidresult)) {
-			
+				
 			if( isDebugEnabled(1) ) logMessage($message);
 			$to_emails[$emailidrow[2] = array('name' => $emailidrow[0]) ];
 		}
 
 		$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-		
+
 		$content = new Object;
 		$content->line1 = $emailbody;
 		$content->clubname = get_clubname();
 		$template = get_sitecode();
 		$subject = get_clubname()." - Player's Market Place";
-		
+
 		//Send the email
-        send_email($subject, $to_emails, $from_email, $content, $template);
+		send_email($subject, $to_emails, $from_email, $content, $template);
 
 	}
 
 }
 
-/************************************************************************************************************************/
-/*
-    This will advertise the reservation to box memebers (who haven't already played the current user)
-*/
-
+/**
+ * This will advertise the reservation to box memebers (who haven't already played the current user)
+ * @param unknown_type $resid
+ * @param unknown_type $boxid
+ */
 function email_boxmembers($resid, $boxid) {
 
 	/* load up the reservation infomation   */
@@ -1479,35 +1489,39 @@ function email_boxmembers($resid, $boxid) {
 	// run the query on the database
 	$emailidresult = db_query($emailidquery);
 	$to_emails = array();
-	
+
 	while ($emailidrow = mysql_fetch_array($emailidresult)) {
 
 		if (!hasPlayedBoxWith(get_userid(), $emailidrow[userid], $boxid)) {
-			
+				
 			if( isDebugEnabled(1) ) logMessage($emailbody);
 			$to_emails[$emailidrow[3]] = array('name' => $emailidrow[1]);
 		}
 
 	}
-	
+
 	$content = new Object;
 	$content->line1 = $emailbody;
 	$content->clubname = get_clubname();
 	$template = get_sitecode();
 	$subject = get_clubname()." - Player's Market Place";
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-		
+
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
-	
+	send_email($subject, $to_emails, $from_email, $content, $template);
+
 }
 
-/************************************************************************************************************************/
-
+/**
+ * 
+ * Enter description here ...
+ * @param unknown_type $resid
+ * @param unknown_type $isNewReservation
+ */
 function confirm_singles($resid, $isNewReservation) {
 
 	if( isDebugEnabled(1) ) logMessage("applicationlib.confirm_singles: sending out emails for a singles reservation");
-	
+
 	$rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name, reservations.usertype
 			           FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblMatchType matchtype, tblClubUser clubuser
 			           WHERE courts.courtid = reservations.courtid
@@ -1546,9 +1560,9 @@ function confirm_singles($resid, $isNewReservation) {
 	$var->fullname2 = $robj->firstname . " " . $robj->lastname;
 
 	if (db_num_rows($rresult) == 1) {
-		
+
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_singles_looking.php", $var);
-	
+
 	}
 	elseif ($robj->matchtype == 4) {
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_lesson.php", $var);
@@ -1570,30 +1584,34 @@ function confirm_singles($resid, $isNewReservation) {
 	mysql_data_seek($rresult, 0);
 
 	$to_emails = array();
-	 
+
 	while ($emailidrow = db_fetch_row($rresult)) {
 
 		//If they don't even bother to put in an email address
 		//don't waste your time trying to send them an email.
 		//print "This is my email: $emailidrow[4]\n";
 		if (!empty ($emailidrow[4])) {
-			 $to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
+			$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
 		}
 	}
-	
+
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 	$content = new Object;
 	$content->line1 = $emailbody;
 	$content->clubname = get_clubname();
 	$template = get_sitecode();
-		
+
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
-      
+	send_email($subject, $to_emails, $from_email, $content, $template);
+
 }
 
-/************************************************************************************************************************/
 
+/**
+ * 
+ * Enter description here ...
+ * @param unknown_type $resid
+ */
 function cancel_singles($resid) {
 
 	$rquery = "SELECT DISTINCTROW courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name
@@ -1637,9 +1655,9 @@ function cancel_singles($resid) {
 	if (db_num_rows($rresult) == 1) {
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_singles_looking.php", $var);
 	} else
-		if ($robj->matchtype == 4) {
-			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_lesson.php", $var);
-		}
+	if ($robj->matchtype == 4) {
+		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_lesson.php", $var);
+	}
 	elseif ($robj->matchtype == 5) {
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_solo.php", $var);
 	} else {
@@ -1657,51 +1675,53 @@ function cancel_singles($resid) {
 		}
 
 	}
-	
+
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 	$content = new Object;
 	$content->line1 = $emailbody;
 	$content->clubname = get_clubname();
 	$template = get_sitecode();
 	$subject = "Court Cancellation Notice";
-		
+
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
+	send_email($subject, $to_emails, $from_email, $content, $template);
 
 }
 
 
-/********************************************************************************************
-	This function only sends out emails to those players who are currently in the
-	reservation, this includes players in a team or singles players who are still 
-	looking for partner.
-*/
 
+/**
+ * This function only sends out emails to those players who are currently in the
+ * reservation, this includes players in a team or singles players who are still
+ * looking for partner.
+ * @param unknown_type $resid
+ * @param unknown_type $isNewReservation
+ */
 function confirm_doubles($resid, $isNewReservation) {
-	
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.confirm_doubles: confirming reservation $resid isNewReservation $isNewReservation");
-	
+
 	$var = new Object;
 	$template = get_sitecode();
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-	
+
 
 	//Obtain the court and matchtype information
-	$timeQuery = "SELECT courts.courtname, matchtype.name, reservations.time 
+	$timeQuery = "SELECT courts.courtname, matchtype.name, reservations.time
 				FROM tblMatchType matchtype, tblCourts courts, tblReservations reservations 
 				WHERE reservations.reservationid=$resid
 				AND reservations.courtid = courts.courtid
 				AND matchtype.id = reservations.matchtype";
-	
+
 	$timeResult = db_query($timeQuery);
 	$timeObject = mysql_fetch_object($timeResult);
-	
+
 	$var->courtname = $timeObject->courtname;
 	$var->matchtype = $timeObject->name;
 	$var->time = gmdate("l F j g:i a", $timeObject->time);
 
 
-	//Obtain player information  
+	//Obtain player information
 	$playerQuery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 	            FROM tblReservations reservations, tblUsers users, tblkpTeams teamdetails, tblkpUserReservations reservationdetails
 				WHERE reservationdetails.reservationid = reservations.reservationid
@@ -1709,7 +1729,7 @@ function confirm_doubles($resid, $isNewReservation) {
 	            AND users.userid = teamdetails.userid
 	            AND reservationdetails.reservationid=$resid
 				AND reservationdetails.usertype = 1";
-	            
+	 
 	$playerResult = db_query($playerQuery);
 	$playerObject = mysql_fetch_object($playerResult);
 	$numofrows = mysql_num_rows($playerResult);
@@ -1768,10 +1788,10 @@ function confirm_doubles($resid, $isNewReservation) {
 
 	//Prepare and send emails to single player where there is just one player in the whole reservation
 	if(mysql_num_rows($extraPlayerResult)==1 && mysql_num_rows($playerResult)==0){
-		
+
 		$var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_doubles_looking_for_three.php", $var);
-		
+
 		if( isDebugEnabled(1) ) logMessage($emailbody);
 
 		// Provide Content
@@ -1780,46 +1800,46 @@ function confirm_doubles($resid, $isNewReservation) {
 		$content->clubname = get_clubname();
 		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
 		$to_emails = array( $to_email => array('name' => $extraPlayerobj->firstname) );
-		
+
 		//Send the email
-	     send_email($subject, $to_emails, $from_email, $content, $template); 
+		send_email($subject, $to_emails, $from_email, $content, $template);
 	}
 
 	//Prepare and send emails to single players where there is more than one person looking for a partner
 	elseif(mysql_num_rows($extraPlayerResult)==2){
-		
-		
+
+
 		$var->fullname1 = getFullNameForUserId($extraPlayerobj->userid);
-		
+
 		//Get the next player
 		$extraPlayerobj = mysql_fetch_object($extraPlayerResult);
 		$var->fullname2 = getFullNameForUserId($extraPlayerobj->userid);
-		
+
 		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_doubles_for_players_looking.php", $var);
-		
+
 		//Reset Counter
 		if( mysql_num_rows($extraPlayerResult)>0) mysql_data_seek($extraPlayerResult, 0);
 		$to_emails = array();
-		
+
 		if( isDebugEnabled(1) ) logMessage($emailbody);
-		
+
 		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
 		$to_emails[$to_email] = array('name' => $extraPlayerobj->firstname);
-		
+
 		//Get next player
 		$extraPlayerobj = mysql_fetch_object($extraPlayerResult);
 		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
 		$to_emails[$to_email] = array('name' => $extraPlayerobj->firstname);
-		
+
 		// Provide Content
 		$content = new Object;
 		$content->line1 = $emailbody;
 		$content->clubname = get_clubname();
-		
+
 		//Send the email
-	     send_email($subject, $to_emails, $from_email, $content, $template); 
+		send_email($subject, $to_emails, $from_email, $content, $template);
 	}
-	
+
 	//Prepare and send emails to single player where there is only one person needing a partner
 	elseif(mysql_num_rows($extraPlayerResult)==1) {
 
@@ -1831,55 +1851,58 @@ function confirm_doubles($resid, $isNewReservation) {
 		$to_emails = array();
 		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
 		$to_emails = array($to_email => array('name' => $extraPlayerobj->firstname) ) ;
-	
+
 		// Provide Content
 		$content = new Object;
 		$content->line1 = $emailbody;
 		$content->clubname = get_clubname();
 			
 		//Send the email
-	     send_email($subject, $to_emails, $from_email, $content, $template); 
+		send_email($subject, $to_emails, $from_email, $content, $template);
 	}
-	
+
 	//Now Send emails out to players that acutally are in a team
 	else{
-		
+
 		// when only two rows returned this is a team looking for another team.
 		if ($numofrows == 2) {
 			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_doubles_for_team_looking.php", $var);
-		} 
+		}
 		//Send out emails to four players, the variables were set earlier in this function
 		else {
 			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_doubles.php", $var);
 		}
 	}
-	
+
 	//Send out emails to the teams
 	//Reset the result pointer to the begining
 	if( mysql_num_rows($playerResult)>0) mysql_data_seek($playerResult, 0);
-	
+
 	$to_emails = array();
-	
+
 	while ($playerObject = mysql_fetch_object($playerResult)) {
-		
+
 		if(isDebugEnabled(1) ) logMessage($emailbody);
 		$to_email = "$playerObject->firstname $playerObject->lastname <$playerObject->email>";
 		$to_emails[$to_email] = array('name' => $playerObject->firstname);
 	}
-	
-	
+
+
 	$content = new Object;
 	$content->line1 = $emailbody;
 	$content->clubname = get_clubname();
-		
+
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
+	send_email($subject, $to_emails, $from_email, $content, $template);
 
 
 }
 
-/************************************************************************************************************************/
-
+/**
+ * 
+ * Enter description here ...
+ * @param unknown_type $resid
+ */
 function cancel_doubles($resid) {
 
 	$rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name
@@ -1947,39 +1970,46 @@ function cancel_doubles($resid) {
 	//Reset the result pointer to the begining
 
 	mysql_data_seek($rresult, 0);
-	
+
 	$to_emails = array();
 
 	while ($emailidrow = db_fetch_row($rresult)) {
 
 		$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
 	}
-	
+
 	$content = new Object;
 	$content->line1 = $emailbody;
 	$content->clubname = get_clubname();
 	$template = get_sitecode();
 	$subject = get_clubname()." - Court Cancellation Notice";
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-		
+
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
-	
+	send_email($subject, $to_emails, $from_email, $content, $template);
+
 
 }
 
+
 /**
  * Sends out emails to the players involved.
-*/
-
-
+ * @param unknown_type $wUserid
+ * @param unknown_type $lUserid
+ * @param unknown_type $wor
+ * @param unknown_type $wnr
+ * @param unknown_type $lor
+ * @param unknown_type $lnr
+ * @param unknown_type $score
+ * @param unknown_type $matchtype
+ */
 function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr, $score, $matchtype) {
 
 	$rquery = "SELECT users.firstname, users.lastname, users.email
 				FROM tblUsers users
 				WHERE users.userid = $wUserid
 				OR users.userid = $lUserid";
-							
+		
 	$rresult = db_query($rquery);
 	$robj = mysql_fetch_object($rresult);
 
@@ -2005,15 +2035,15 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
 	$var->losersnew = round($lnr,4);
 
 	//Get the first player
-	$var->winnerfull = getFullNameForUserId($wUserid);	
+	$var->winnerfull = getFullNameForUserId($wUserid);
 
 	//Get the next One
-	$var->loserfull = getFullNameForUserId($lUserid);	
+	$var->loserfull = getFullNameForUserId($lUserid);
 	$var->loserscore = $score;
 
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_singles_simple.php", $var);
 	$emailbody = nl2br($emailbody);
-	
+
 	//Reset the result pointer to the begining
 	mysql_data_seek($rresult, 0);
 	$to_emails = array();
@@ -2021,24 +2051,32 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
 	while ($emailidrow = db_fetch_row($rresult)) {
 		$to_emails[$emailidrow[2]] = array('name' => $emailidrow[0]);
 	}
-	
+
 	$content = new Object;
 	$content->line1 = $emailbody;
 	$content->clubname = get_clubname();
 	$template = get_sitecode();
 	$subject = get_clubname()." - Score Report";
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-		
+
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
-     
+	send_email($subject, $to_emails, $from_email, $content, $template);
+	 
 	$description = "$var->winnerfull $var->howbad $var->loserfull in a $matchtype match 3-$score ";
 	logSiteActivity(get_siteid(), $description);
 
 }
 
-/************************************************************************************************************************/
-
+/**
+ * 
+ * Enter description here ...
+ * @param unknown_type $resid
+ * @param unknown_type $wor
+ * @param unknown_type $wnr
+ * @param unknown_type $lor
+ * @param unknown_type $lnr
+ * @param unknown_type $score
+ */
 function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
 
 	$rquery = "SELECT DISTINCTROW courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservationdetails.outcome, reservations.matchtype, users.gender, matchtype.name
@@ -2114,7 +2152,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	$var->loserlname = $robj->lastname;
 	$var->loserfull = $robj->firstname . " " . $robj->lastname;
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_singles.php", $var);
-	
+
 	//convert newlines
 	$emailbody = nl2br($emailbody);
 
@@ -2125,24 +2163,32 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	while ($emailidrow = db_fetch_row($rresult)) {
 		$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
 	}
-	
+
 	$content = new Object;
 	$content->line1 = $emailbody;
 	$content->clubname = get_clubname();
 	$template = get_sitecode();
 	$subject = get_clubname()." - Score Report";
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-	
+
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
-	
+	send_email($subject, $to_emails, $from_email, $content, $template);
+
 	$description = "$var->winnerfull defeated $var->loserfull in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
 	logSiteActivity(get_siteid(), $description);
 
 }
 
-/************************************************************************************************************************/
-
+/**
+ * 
+ * Enter description here ...
+ * @param unknown_type $wid
+ * @param unknown_type $lid
+ * @param unknown_type $wor
+ * @param unknown_type $wnr
+ * @param unknown_type $lor
+ * @param unknown_type $lnr
+ */
 function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
 
 	$winnernamequery = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.email
@@ -2188,26 +2234,29 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 	$winner_email = array($wobj->email => array('name' => $wobj->firstname) );
 
-	
+
 	//Send the email
-     send_email($subject, $winner_email, $from_email, $content, $template); 
-     
-     //Send the email
-     $loser_email = array($lobj->email => array('name' => $lobj->firstname));
-     send_email($subject, $loser_email, $from_email, $content, $template); 
+	send_email($subject, $winner_email, $from_email, $content, $template);
+	 
+	//Send the email
+	$loser_email = array($lobj->email => array('name' => $lobj->firstname));
+	send_email($subject, $loser_email, $from_email, $content, $template);
 
 
 }
 
 /**
  * Sends out emails to the players involved.
- * 
  * This is used for the admin records scores when there isn't a reservation id involved
- * 
- * 
-*/
-
-
+ * @param unknown_type $wTeamid
+ * @param unknown_type $lTeamid
+ * @param unknown_type $wor
+ * @param unknown_type $wnr
+ * @param unknown_type $lor
+ * @param unknown_type $lnr
+ * @param unknown_type $score
+ * @param unknown_type $matchtype
+ */
 function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr, $score, $matchtype) {
 
 	$rquery = "SELECT users.firstname, users.lastname, users.email
@@ -2216,7 +2265,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
 				AND users.enddate IS NULL
 				AND (teamdetails.teamid = $wTeamid
 				OR teamdetails.teamid = $lTeamid)";
-				
+
 	$rresult = db_query($rquery);
 	$robj = mysql_fetch_object($rresult);
 
@@ -2249,7 +2298,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
 	$robj = mysql_fetch_object($rresult);
 
 	$var->loser = getFullNamesForTeamId($lTeamid);
-	
+
 	$var->loserscore = $score;
 
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_doubles_simple.php", $var);
@@ -2262,7 +2311,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
 	while ($emailidrow = db_fetch_row($rresult)) {
 		$to_emails[$emailidrow[2]] = array('name' => $emailidrow[0]);
 	}
-	
+
 	// Provide Content
 	$content = new Object;
 	$content->line1 = $emailbody;
@@ -2270,18 +2319,26 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
 	$template = get_sitecode();
 	$subject = get_clubname()." - Score Report";
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-		
+
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
-	
+	send_email($subject, $to_emails, $from_email, $content, $template);
+
 	$description = "$var->winner $var->howbad $var->loser in a $matchtype match 3-$score ";
 	logSiteActivity(get_siteid(), $description);
-	
+
 
 }
 
-/************************************************************************************************************************/
-
+/**
+ * 
+ * Enter description here ...
+ * @param unknown_type $resid
+ * @param unknown_type $wor
+ * @param unknown_type $wnr
+ * @param unknown_type $lor
+ * @param unknown_type $lnr
+ * @param unknown_type $score
+ */
 function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 
 	$rquery = "SELECT DISTINCT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservationdetails.outcome, reservations.matchtype, matchtype.name
@@ -2327,7 +2384,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	$var->winnersnew = round($wnr,4);
 	$var->losersold = $lor;
 	$var->losersnew = round($lnr,4);
-	
+
 	$var->date = gmdate("l F j", $robj->time);
 	$var->hour = gmdate("g:i a", $robj->time);
 
@@ -2364,7 +2421,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	while ($emailidrow = db_fetch_row($rresult)) {
 		$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
 	}
-	
+
 	// Provide Content
 	$content = new Object;
 	$content->line1 = $emailbody;
@@ -2372,26 +2429,26 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	$template = get_sitecode();
 	$subject = get_clubname()." - Score Report";
 	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-	
+
 	//Send the email
-     send_email($subject, $to_emails, $from_email, $content, $template); 
-	
+	send_email($subject, $to_emails, $from_email, $content, $template);
+
 	$description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
 	logSiteActivity(get_siteid(), $description);
 
 }
 
-/***********************************************************************************************************************
- * required parameters:
- * 	reservationid
- * 	score
- */
 
+/**
+ * ??? required parameters:	reservationid 	score
+ * @param unknown_type $frm
+ * @param unknown_type $source
+ */
 function record_score(&$frm, $source) {
 
-	 if(isDebugEnabled(1) ) logMessage("applicationlib.record_score: source is $source");
-	 
-	
+	if(isDebugEnabled(1) ) logMessage("applicationlib.record_score: source is $source");
+
+
 	/* Record score */
 	//The winner userid is passed in the post vars, the loser is passed
 	//in either the player1 or player2 post vars.  Also, the outcome is
@@ -2447,28 +2504,28 @@ function record_score(&$frm, $source) {
 
 		// Look up the individuals ranking for members of winning team
 		// (this will be averaged to calculate
-		
+
 		$winnerResult = getUserIdsForTeamIdWithCourtType($winner, $ctidarray[0]);
 		$playerRow = mysql_fetch_array($winnerResult);
-        $winnerRanking = $playerRow['ranking'];
-        $playerRow = mysql_fetch_array($winnerResult);
-        $winnerRanking  += $playerRow['ranking'];
-        $winnerRanking = $winnerRanking/2; 
-         
-        if(isDebugEnabled(1) ) logMessage("applicationlib.record_scores: Team Id $winner has a ranking of $winnerRanking");
-	
+		$winnerRanking = $playerRow['ranking'];
+		$playerRow = mysql_fetch_array($winnerResult);
+		$winnerRanking  += $playerRow['ranking'];
+		$winnerRanking = $winnerRanking/2;
+		 
+		if(isDebugEnabled(1) ) logMessage("applicationlib.record_scores: Team Id $winner has a ranking of $winnerRanking");
 
-         $loserResult = getUserIdsForTeamIdWithCourtType($loser, $ctidarray[0]);
-		 $playerRow = mysql_fetch_array($loserResult);
-         $loserRanking = $playerRow['ranking'];
-         $playerRow = mysql_fetch_array($loserResult);
-         $loserRanking  += $playerRow['ranking'];
-         $loserRanking = $loserRanking/2; 
-		
-         if(isDebugEnabled(1) ) logMessage("applicationlib.record_scores: Team Id $loser has a ranking of $loserRanking");
-	
-		 // Calculate the Rankings
-		 $rankingArray = calculateRankings($winnerRanking, $loserRanking);
+
+		$loserResult = getUserIdsForTeamIdWithCourtType($loser, $ctidarray[0]);
+		$playerRow = mysql_fetch_array($loserResult);
+		$loserRanking = $playerRow['ranking'];
+		$playerRow = mysql_fetch_array($loserResult);
+		$loserRanking  += $playerRow['ranking'];
+		$loserRanking = $loserRanking/2;
+
+		if(isDebugEnabled(1) ) logMessage("applicationlib.record_scores: Team Id $loser has a ranking of $loserRanking");
+
+		// Calculate the Rankings
+		$rankingArray = calculateRankings($winnerRanking, $loserRanking);
 
 		//If the match type is a two (challenge match) count the match two times
 		if ($ctidarray[3] == 2) {
@@ -2478,23 +2535,23 @@ function record_score(&$frm, $source) {
 		//For winner team
 		mysql_data_seek($winnerResult,0);
 		mysql_data_seek($loserResult,0);
-		
 
-		$winners = array();          		          		
-        $playerRow = mysql_fetch_array($winnerResult);
-        array_push($winners, $playerRow['userid']);
-        $playerRow = mysql_fetch_array($winnerResult);
-        array_push($winners, $playerRow['userid']);
-                     		
-                     		
+
+		$winners = array();
+		$playerRow = mysql_fetch_array($winnerResult);
+		array_push($winners, $playerRow['userid']);
+		$playerRow = mysql_fetch_array($winnerResult);
+		array_push($winners, $playerRow['userid']);
+		 
+		 
 		$winnerAdjustment = $rankingArray['winner'] - $winnerRanking;
-		
-		$playerOneRankQuery = "SELECT rankings.ranking 
+
+		$playerOneRankQuery = "SELECT rankings.ranking
 							   FROM tblUserRankings rankings 
 							   WHERE rankings.userid = $winners[0] 
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
-						
+
 		$playerOneRankResult = db_query($playerOneRankQuery);
 		$playerOneRanking = mysql_result($playerOneRankResult, 0);
 		$playerOneNewRanking = 	$playerOneRanking + $winnerAdjustment;
@@ -2504,13 +2561,13 @@ function record_score(&$frm, $source) {
 						           SET ranking = $playerOneNewRanking
 						           WHERE userid = '$winners[0]'
 						           AND courttypeid = '$ctidarray[0]'");	
-							
-	   $playerTwoRankQuery = "SELECT rankings.ranking 
+			
+		$playerTwoRankQuery = "SELECT rankings.ranking
 							   FROM tblUserRankings rankings 
 							   WHERE rankings.userid = $winners[1] 
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
-						
+
 		$playerTwoRankResult = db_query($playerTwoRankQuery);
 		$playerTwoRanking = mysql_result($playerTwoRankResult, 0);
 		$playerTwoNewRanking = 	$playerTwoRanking + $winnerAdjustment;
@@ -2520,23 +2577,23 @@ function record_score(&$frm, $source) {
 						           SET ranking = $playerTwoNewRanking
 						           WHERE userid = '$winners[1]'
 						           AND courttypeid = '$ctidarray[0]'");	
-		
-		
+
+
 		//For loser team
-		$losers = array();          		          		
-        $playerRow = mysql_fetch_array($loserResult);
-        array_push($losers, $playerRow['userid']);
-        $playerRow = mysql_fetch_array($loserResult);
-        array_push($losers, $playerRow['userid']);
-		
-		$loserAdjustment = $loserRanking - $rankingArray['loser'];	  
-		
-		$playerThreeRankQuery = "SELECT rankings.ranking 
+		$losers = array();
+		$playerRow = mysql_fetch_array($loserResult);
+		array_push($losers, $playerRow['userid']);
+		$playerRow = mysql_fetch_array($loserResult);
+		array_push($losers, $playerRow['userid']);
+
+		$loserAdjustment = $loserRanking - $rankingArray['loser'];
+
+		$playerThreeRankQuery = "SELECT rankings.ranking
 							   FROM tblUserRankings rankings 
 							   WHERE rankings.userid = $losers[0] 
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
-						
+
 		$playerThreeRankResult = db_query($playerThreeRankQuery);
 		$playerThreeRanking = mysql_result($playerThreeRankResult, 0);
 		$playerThreeNewRanking = 	$playerThreeRanking - $loserAdjustment;
@@ -2546,13 +2603,13 @@ function record_score(&$frm, $source) {
 						           SET ranking = $playerThreeNewRanking
 						           WHERE userid = '$losers[0]'
 						           AND courttypeid = '$ctidarray[0]'");	
-							
-	   $playerFourRankQuery = "SELECT rankings.ranking 
+			
+		$playerFourRankQuery = "SELECT rankings.ranking
 							   FROM tblUserRankings rankings 
 							   WHERE rankings.userid = $losers[1] 
 							   	AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
-						
+
 		$playerFourRankResult = db_query($playerFourRankQuery);
 		$playerFourRanking = mysql_result($playerFourRankResult, 0);
 		$playerFourNewRanking = 	$playerFourRanking - $loserAdjustment;
@@ -2562,10 +2619,10 @@ function record_score(&$frm, $source) {
 						           SET ranking = $playerFourNewRanking
 						           WHERE userid = '$losers[1]'
 						           AND courttypeid = '$ctidarray[0]'");
-		         
+		 
 
 	}
-	
+
 	//Singles
 	elseif ($usertypeval == 0) {
 
@@ -2592,14 +2649,14 @@ function record_score(&$frm, $source) {
 		$loseridarray = db_fetch_array($loseridresult);
 
 		$rankingArray = calculateRankings($winneridarray[0], $loseridarray[0]);
-		
+
 		if ($ctidarray[3] == 2) {
 			$rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
 		}
-		
+
 		$newWinnerRanking = $rankingArray['winner'];
-		$newLoserRanking = $rankingArray['loser'];	
-		
+		$newLoserRanking = $rankingArray['loser'];
+
 		// Update the winners ranking
 
 		$losersrankq = db_query("
@@ -2622,7 +2679,7 @@ function record_score(&$frm, $source) {
 	/**
 	 * Write out the message
 	 */
-	 
+
 	if ($usertypeval == 1) {
 
 
@@ -2644,7 +2701,7 @@ function record_score(&$frm, $source) {
 
 		$lteamnameresult = db_query($lteamnamequery);
 		$lteamnamearray = db_fetch_array($lteamnameresult);
-	
+
 		echo "<span class=bigbanner> Congratulations $wteamnamearray[0] $wteamnamearray[1] and ";
 
 		// And now get the next partner
@@ -2664,43 +2721,54 @@ function record_score(&$frm, $source) {
 		echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by ". round($winnerAdjustment,4)."  to ".round($playerThreeRanking,4)."</div>";
 		$lteamnamearray = db_fetch_array($lteamnameresult);
 		echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by ". round($winnerAdjustment,4)."  to ".round($playerFourRanking,4)."</div>";
-	
+
 		?>
-		<div>
-		<? if( isset($source) && $source == "ladder"){ ?>
-			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back to the ladder</a>
+<div>
+<? if( isset($source) && $source == "ladder"){ ?>
+	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back
+		to the ladder</a>
 		<? } else { ?>
-			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back to the scheduler</a>
+	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back
+		to the scheduler</a>
 		<? } ?>
-		</div>
-		
+</div>
+
 		<?
 		//Send out the emails
 		report_scores_doubles($frm['reservationid'], $winnerRanking, $rankingArray['winner'], $loserRanking, $rankingArray['loser'], $frm['score']);
 
 	} else {  ?>
 
-		<table cellspacing="0" cellpadding="0" border="0" width="710" align="center">
-		<tr>
-		<td class="normal">
-		<font class="bigbanner"> Congratulations <?=$winneridarray[1]?> <?=$winneridarray[2] ?>!!</font><br><br>
-		<?= $winneridarray[1]?> <?=$winneridarray[2]?>'s rating rose from <?=$winneridarray[0]?> to <?=round($newWinnerRanking,4)?>  <br>
-		<?=$loseridarray[1]?>  <?=$loseridarray[2]?>'s rating fell from <?=$loseridarray[0]?> to <?=round($newLoserRanking,4)?> <br>
-		<td>
-		<tr>
-		<tr>
-		<td class="normal">
-		<br/>
+<table cellspacing="0" cellpadding="0" border="0" width="710"
+	align="center">
+	<tr>
+		<td class="normal"><font class="bigbanner"> Congratulations <?=$winneridarray[1]?>
+		<?=$winneridarray[2] ?>!!
+		</font><br> <br> <?= $winneridarray[1]?> <?=$winneridarray[2]?>'s
+			rating rose from <?=$winneridarray[0]?> to <?=round($newWinnerRanking,4)?>
+			<br> <?=$loseridarray[1]?> <?=$loseridarray[2]?>'s rating fell from <?=$loseridarray[0]?>
+			to <?=round($newLoserRanking,4)?> <br>
 		
-		<?
-		if( isset($source) && $source == "ladder"){?>
-			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back to the ladder</a>
-		<? } else { ?>
-			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back to the scheduler</a>
-		<? } ?>
 		<td>
-		<tr>
-		</table>
+	
+	
+	<tr>
+	
+	
+	<tr>
+		<td class="normal"><br /> <?
+		if( isset($source) && $source == "ladder"){?> <a
+			href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back
+				to the ladder</a> <? } else { ?> <a
+			href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back
+				to the scheduler</a> <? } ?>
+		
+		<td>
+	
+	
+	<tr>
+
+</table>
 
 		<?
 		//Send out the emails
@@ -2712,19 +2780,19 @@ function record_score(&$frm, $source) {
 
 
 /**
-    This is done using the USSRA rating system.  This is calculated using the
-	 following formula:
-	 --------------------------------------------------------------------------
-	 WRO= Winner's old rating
-	 LRO = Loser's old rating
-	 K = constant = .1
-	 D = denominator = .5
-	 PW = Probability that the winner would win = (1/power(10,(-(WRO-LRO)/D))+1))
-	 PL = Probability that the lose would win = (1/Power(10,(-(LRO-WRO)/D))+1))
-	 WRN = Winners's new raing = (WRO+K*(1-PW))
-	 LRN = Loser's new rating = (LRO+K*K(0-PL)
-	 --------------------------------------------------------------------------
-	 This is using infomration found at www.us-squash.org **/
+ This is done using the USSRA rating system.  This is calculated using the
+ following formula:
+ --------------------------------------------------------------------------
+ WRO= Winner's old rating
+ LRO = Loser's old rating
+ K = constant = .1
+ D = denominator = .5
+ PW = Probability that the winner would win = (1/power(10,(-(WRO-LRO)/D))+1))
+ PL = Probability that the lose would win = (1/Power(10,(-(LRO-WRO)/D))+1))
+ WRN = Winners's new raing = (WRO+K*(1-PW))
+ LRN = Loser's new rating = (LRO+K*K(0-PL)
+ --------------------------------------------------------------------------
+ This is using infomration found at www.us-squash.org **/
 
 function calculateRankings($winnerOldRanking, $losersOldRanking) {
 
@@ -2746,10 +2814,14 @@ function calculateRankings($winnerOldRanking, $losersOldRanking) {
 
 
 /**
- *  This is the function used by the box leagues to record how many 
- *  matches people have played. First we read in the previous games 
- *  played value for both the person calling this function as
-	well as the person's opponent.
+ * This is the function used by the box leagues to record how many
+ * matches people have played. First we read in the previous games
+ * played value for both the person calling this function as 
+ * well as the person's opponent.
+ *  
+ * @param unknown_type $playerOneId
+ * @param unknown_type $playerTwoId
+ * @param unknown_type $boxId
  */
 function update_gamesplayed($playerOneId, $playerTwoId, $boxId) {
 
@@ -2760,7 +2832,7 @@ function update_gamesplayed($playerOneId, $playerTwoId, $boxId) {
 	                         AND ((tblkpBoxLeagues.boxid)=$boxId))";
 
 	$boxgamesplayedresult = db_query($boxgamesplayedquery);
-	
+
 	while ($boxgamesplayedarray = mysql_fetch_row($boxgamesplayedresult)) {
 		$onemoregame = $boxgamesplayedarray[2] + 1;
 		$updategames = db_query("UPDATE tblkpBoxLeagues
@@ -2840,13 +2912,13 @@ function update_streakval(& $frm) {
 }
 
 /***********************************************************************************************************************
- * 
- * This is called in the report scores function which may or maynot be reporting the score of
- * a box league match, if if is a bax league match it may or maynot be done through the same page
- * one being the report scores link, the other through the reservation.  We will look for the outcome
- * http_post_var to determine this one.
- * 
- * */
+ *
+* This is called in the report scores function which may or maynot be reporting the score of
+* a box league match, if if is a bax league match it may or maynot be done through the same page
+* one being the report scores link, the other through the reservation.  We will look for the outcome
+* http_post_var to determine this one.
+*
+* */
 
 function get_matchresults($winner, $player1, $player2) {
 
@@ -2868,32 +2940,32 @@ function get_matchresults($winner, $player1, $player2) {
 /************************************************************************************************************************/
 
 function update_ladderscore($losersgamepoints, $boxid, $winner, $player1, $player2) {
-	
+
 	if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: losersgamepoints: $losersgamepoints\nboxid: $boxid\nwinner: $winner\nplayer1: $player1\nplayer2: $player2");
-	
+
 	// Per John OBrien on 10/10/2002 the box leagues players are to be ranked in the
 	// box league with a box league score.  For every match recorded through the boxleague
 	// the players score is incremented one for winning plus one for playing.  As for the loser
 	// their score is only increment one for playing.
 
 	/* 11/22/2002 - alright.  one more LAST change to the way this fricking scoring works.
-	                          if A beats B (3-2) A is supposed to get FIVE points: one point
-	                          for showing up,one point for each game, and one point for the win
+	 if A beats B (3-2) A is supposed to get FIVE points: one point
+	for showing up,one point for each game, and one point for the win
 	*/
 
 	//We are not going to use the box results for now since all scores are reported through the reservation
 	$results = get_matchresults($winner, $player1, $player2);
-	
-	
+
+
 	//Dont really understand why we have to trim these, i guess its not really that important.
 	$winner = $results['winner'];
 	$winner = rtrim ($winner);
-	
+
 	$loser = $results['loser'];
 	$loser = rtrim ($loser);
-	
-	 if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: setting winner: $winner which is ".strlen($winner)." loser $loser ".strlen($loser));
-	
+
+	if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: setting winner: $winner which is ".strlen($winner)." loser $loser ".strlen($loser));
+
 	$pointsforshowing = 1;
 	$pointsforwinning = 1;
 	$winnersgamepoints = 3;
@@ -2912,7 +2984,7 @@ function update_ladderscore($losersgamepoints, $boxid, $winner, $player1, $playe
 		$resultbox = $ladderscorearray[0];
 		$resultuser = $ladderscorearray[1];
 		$resultscore = $ladderscorearray[2];
-		
+
 		if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: updating ladder score for $resultuser where loser is $loser and winner is $winner.");
 			
 		$newwinnerscore = $resultscore + $pointsforshowing + $winnersgamepoints + $pointsforwinning;
@@ -2920,9 +2992,9 @@ function update_ladderscore($losersgamepoints, $boxid, $winner, $player1, $playe
 
 		//Give the loser props...for trying
 		if ($resultuser == $loser) {
-			
+				
 			if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: updating ladder score for $resultuser to $newloserscore");
-			
+				
 			$qid = db_query("UPDATE tblkpBoxLeagues
 			                SET score = $newloserscore
 			                WHERE boxid = '$boxid'
@@ -2933,8 +3005,8 @@ function update_ladderscore($losersgamepoints, $boxid, $winner, $player1, $playe
 		if ($resultuser == $winner) {
 
 			if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: updating ladder score for $resultuser to $newwinnerscore");
-			
-			
+				
+				
 			$qid = db_query("UPDATE tblkpBoxLeagues
 			                SET score = $newwinnerscore
 			                WHERE boxid = '$boxid'
@@ -2981,8 +3053,8 @@ function getDOW($thisday) {
 
 /*
  *******************************************************************************************************
- **   getTeamIDForCurrentUser
- *******************************************************************************************************
+**   getTeamIDForCurrentUser
+*******************************************************************************************************
 */
 function getTeamIDForCurrentUser($sportid, $partner) {
 
@@ -3037,38 +3109,38 @@ function getTeamIDForCurrentUser($sportid, $partner) {
 
 /**
  * Returns the player names for a team
- * 
+ *
  * @param $teamid
  */
 function getFullnameForTeamPlayers($teamid){
-	
+
 	$query = "SELECT users.firstname, users.lastname, users.userid, users.email,
 			concat_ws(' ', users.firstname, users.lastname) AS fullname
 					      FROM tblUsers users,  tblkpTeams teams
 					   WHERE users.userid = teams.userid
 					   AND teams.teamid=$teamid";
-	
+
 	$result = db_query($query);
-	
+
 	$teamnames = array();
-	
+
 	while( $playerarray = mysql_fetch_array($result) ){
-	
-	 $player = array('firstname' => $playerarray['firstname'], 
+
+	 $player = array('firstname' => $playerarray['firstname'],
 	 				'lastname' => $playerarray['lastname'], 
 	 				'email' => $playerarray['email'], 
 	 				'userid' => $playerarray['userid'], 
 	 				'fullname' => $playerarray['fullname']);
-	 
+
 	 $teamnames[] = $player;
 	}
-	
+
 	return $teamnames;
-	
+
 }
 
 /*
-*******************************************************************************************************
+ *******************************************************************************************************
 **   getTeamIDForPlayers
 *******************************************************************************************************
 */
@@ -3119,7 +3191,7 @@ function getTeamIDForPlayers($sportid, $player1, $player2) {
 	}
 	/* This will happen when a team is needed for the same person
 	 * only really application for club guest and club member teams
-	 */
+	*/
 	elseif (count($teamexistsarray) > 1) {
 
 		$teamid = findSelfTeam($teamexistsarray);
@@ -3131,7 +3203,7 @@ function getTeamIDForPlayers($sportid, $player1, $player2) {
 			$teamidarray = makeTeamForPlayers($sportid, $player1, $player2);
 			$teamid = $teamidarray[1];
 		}
-	
+
 	} else {
 
 		//had to make a team
@@ -3155,7 +3227,7 @@ function isCurrentUserOnTeam($teamid) {
 
 	// run the query on the database
 	$result = db_query($query);
-	
+
 	if( mysql_num_rows($result)< 2){
 		return 0;
 	}
@@ -3164,11 +3236,11 @@ function isCurrentUserOnTeam($teamid) {
 
 	if (get_userid() == $playerone || get_userid() == $playertwo) {
 		$imOnTheTeam = 1;
-		if( isDebugEnabled(1) ) logMessage("applicationlib.isCurrentUserOnTeam: Current User is on team");	
+		if( isDebugEnabled(1) ) logMessage("applicationlib.isCurrentUserOnTeam: Current User is on team");
 	}
 
-	
-	
+
+
 	return $imOnTheTeam;
 }
 /************************************************************************************************************************/
@@ -3216,17 +3288,17 @@ function load_avail_sites() {
 
 /* This will retrieve the site parameters */
 function load_parameter_options($parameterid){
-	
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.load_parameter_options for parameter: ". $parameterId );
-	
+
 	$query = "SELECT parameteroption.optionname, parameteroption.optionvalue
 				FROM tblParameterOptions parameteroption
 				WHERE parameteroption.parameterid = $parameterid";
-	
+
 	$result = db_query($query);
-	
+
 	return $result;
-	
+
 }
 
 
@@ -3234,10 +3306,10 @@ function load_parameter_options($parameterid){
 
 /* This will retrieve the site parameters */
 function load_site_parameters() {
-	
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.load_site_parameters for site: ". get_siteid());
-    
-	
+
+
 	$getAllClubSitesQuery = "SELECT parameter.parameterid, parameter.parameterlabel, parametertype.parametertypename, parameteraccesstype.parameteraccesstypename
 								FROM tblParameter parameter, tblParameterType parametertype, tblParameterAccess parameteraccess, tblParameterAccessType parameteraccesstype
 								WHERE parameter.parametertypeid = parametertype.parametertypeid
@@ -3246,27 +3318,27 @@ function load_site_parameters() {
 								AND parameteraccess.parameteraccesstypeid = parameteraccesstype.parameteraccesstypeid
 								AND parameter.siteid = " . get_siteid() . "
 								ORDER BY parameter.parameterid";
-	
+
 	$getAllClubSitesResult = db_query($getAllClubSitesQuery);
 
 	return $getAllClubSitesResult;
-	
+
 }
 
 /************************************************************************************************************************/
 
 /* This will retrieve the site parameter */
 function load_site_parameter($parameterid, $userid) {
-	 
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.load_site_parameter: $parameterid for user $userid" );
-    
-	
+
+
 	$query = "SELECT parametervalue.parametervalue
 								FROM tblParameterValue parametervalue
 								WHERE parametervalue.userid = $userid
 								AND parametervalue.parameterid = $parameterid
 								AND parametervalue.enddate IS NULL";
-	
+
 	$result = db_query($query);
 
 	if( mysql_num_rows($result) > 0 ){
@@ -3274,23 +3346,23 @@ function load_site_parameter($parameterid, $userid) {
 	}else{
 		return "";
 	}
-	
-	
+
+
 }
 
 /************************************************************************************************************************/
 
 /* This will retrieve the site parameter option name*/
 function load_parameter_option_name($parameterid, $optionvalue) {
-	 
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.load_parameter_option_name: $parameterid for user $optionvalue" );
-    
-	
+
+
 	$query = "SELECT parameteroption.optionname
 								FROM tblParameterOptions parameteroption
 								WHERE parameteroption.parameterid = '$parameterid'
 								AND parameteroption.optionvalue = '$optionvalue'";
-	
+
 	$result = db_query($query);
 
 	if( mysql_num_rows($result) > 0 ){
@@ -3298,7 +3370,7 @@ function load_parameter_option_name($parameterid, $optionvalue) {
 	}else{
 		return "";
 	}
-	
+
 }
 
 
@@ -3308,7 +3380,7 @@ function load_parameter_option_name($parameterid, $optionvalue) {
 function load_user_profile($userid) {
 
 
-	$qid = db_query("SELECT users.userid, 
+	$qid = db_query("SELECT users.userid,
 							users.username, 
 							users.firstname, 
 							users.lastname, 
@@ -3347,7 +3419,7 @@ function load_registered_sports($userid) {
 	$registeredSportsResult = db_query($registeredSportsQuery);
 
 	if( isDebugEnabled(1) ) logMessage("applicationlib: found ". mysql_num_rows($registeredSportsResult). " registered sports for user: ". $userid);
-        
+
 	return $registeredSportsResult;
 
 }
@@ -3361,7 +3433,7 @@ function load_auth_sites($userid) {
 	                  WHERE clubsites.siteid = siteauth.siteid
 	                  AND  siteauth.userid = $userid
 					  AND clubsites.clubid = ". get_clubid();
-					  
+		
 	$authSitesResult = db_query($authSitesQuery);
 
 	return $authSitesResult;
@@ -3371,7 +3443,7 @@ function load_auth_sites($userid) {
 /************************************************************************************************************************/
 
 /*
-   This is used to get the courttype for singles courttypes.
+ This is used to get the courttype for singles courttypes.
 */
 
 function get_singlesCourtTypesForSite($currentSiteId) {
@@ -3391,7 +3463,7 @@ function get_singlesCourtTypesForSite($currentSiteId) {
 /************************************************************************************************************************/
 
 /*
-  This is used to get the courttype for doubles courttypes.
+ This is used to get the courttype for doubles courttypes.
 */
 
 function get_doublesCourtTypesForSite($currentSiteId) {
@@ -3405,7 +3477,7 @@ function get_doublesCourtTypesForSite($currentSiteId) {
 						ORDER BY courttype.courttypeid";
 
 	return db_query($courttypeQuery);
-	
+
 
 }
 
@@ -3414,7 +3486,7 @@ function get_doublesCourtTypesForSite($currentSiteId) {
 /************************************************************************************************************************/
 
 /*
-  Gets the available court types for the site
+ Gets the available court types for the site
 */
 
 function get_courtTypeForCourt($court) {
@@ -3429,17 +3501,17 @@ function get_courtTypeForCourt($court) {
 }
 
 /*
-***********************************************************************************************************************
+ ***********************************************************************************************************************
 */
 /* returns the court type for the given reservationid */
 
 function get_courtTypeForReservationId($resid) {
 
-	$matchtypequery = "SELECT courts.courttypeid 
+	$matchtypequery = "SELECT courts.courttypeid
 						FROM tblReservations reservation, tblCourts courts 
 						WHERE reservation.courtid = courts.courtid
 						AND reservation.reservationid=$resid";
-				
+
 	$matchtyperesult = db_query($matchtypequery);
 	$matchtypevalue = mysql_result($matchtyperesult, 0);
 
@@ -3450,7 +3522,7 @@ function get_courtTypeForReservationId($resid) {
 
 /************************************************************************************************************************/
 /*
-This is by all player selection dropdowns.  It makes sure the player is authorized for the site
+ This is by all player selection dropdowns.  It makes sure the player is authorized for the site
 and also has a ranking for the sport.
 */
 
@@ -3477,7 +3549,7 @@ function get_all_players_dropdown($currentCourtSiteID) {
 
 /************************************************************************************************************************/
 /*
-This is by all player selection dropdowns.  It makes sure the player is authorized for the site
+ This is by all player selection dropdowns.  It makes sure the player is authorized for the site
 and also has a ranking for the sport.
 */
 
@@ -3506,7 +3578,7 @@ function get_player_dropdown($currentCourtSiteID, $courtid) {
 
 /************************************************************************************************************************/
 /*
-This is by all player selection dropdowns.  It makes sure the player is authorized for the site
+ This is by all player selection dropdowns.  It makes sure the player is authorized for the site
 and also has a ranking for the sport.
 */
 
@@ -3532,7 +3604,7 @@ function get_player_dropdown_withme($currentCourtSiteID, $courtid) {
 
 /************************************************************************************************************************/
 /*
-This is by all player selection dropdowns.  It makes sure the player is authorized for the site
+ This is by all player selection dropdowns.  It makes sure the player is authorized for the site
 and also has a ranking for the sport.  **Important: THis does not exlude club guest from being displayed
 and really is only used to generate the list of members for modifing a doubles reservation.
 */
@@ -3558,7 +3630,7 @@ function get_player_dropdown_with_current($currentCourtSiteID, $courtid) {
 
 /************************************************************************************************************************/
 /*
-This will the the hisotry of the games played between the current user and the userid passed in.  This will figure out the
+ This will the the hisotry of the games played between the current user and the userid passed in.  This will figure out the
 sports the two users have in common as well as the win loss hisotryAn array
 will be returned that will look like this:
 
@@ -3570,9 +3642,9 @@ will be returned that will look like this:
 
 function get_record_history($userid1, $userid2, $courttypeid) {
 
-	
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.get_record_history: getting the record history for userid: ".$userid1." and userid: ". $userid2." for court type: ". $courttypeid);
-       
+	 
 	// 1. get all resevationsids for user 1
 	// 2. get all reservationids for user 2
 	// for like reservations record user1 wins and user two wins
@@ -3622,9 +3694,9 @@ function get_record_history($userid1, $userid2, $courttypeid) {
 			if ($firstRecordArray['userid'] == $userid1) {
 				++ $userOneWins;
 			} else
-				if ($firstRecordArray['userid'] == $userid2) {
-					++ $userTwoWins;
-				}
+			if ($firstRecordArray['userid'] == $userid2) {
+				++ $userTwoWins;
+			}
 		}
 
 		next($usersMatches);
@@ -3639,20 +3711,20 @@ function get_record_history($userid1, $userid2, $courttypeid) {
 		$userOnePercentageFormated = "0.00";
 	}
 
-	
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.get_record_history: Got the record userOneWins:".$userOneWins." userTwoWins:".$userTwoWins." and percentage: ". $userOnePercentageFormated);
-   
+	 
 	return array (
-		$userOneWins,
-		$userTwoWins,
-		$userOnePercentageFormated
+	$userOneWins,
+	$userTwoWins,
+	$userOnePercentageFormated
 	);
 
 }
 
 /************************************************************************************************************************/
 /*
-     This function takes in a single dimension sql result and returns an array of its values
+ This function takes in a single dimension sql result and returns an array of its values
 */
 function return_array($sqlResult) {
 
@@ -3665,7 +3737,7 @@ function return_array($sqlResult) {
 }
 /************************************************************************************************************************/
 /*
-     This function returns all of the months
+ This function returns all of the months
 */
 
 function get_months() {
@@ -3691,16 +3763,16 @@ function get_months() {
 
 /************************************************************************************************************************/
 /*
-     This function returns true if nobody has that email address.  
-     
-     @retun the clubuserid of the offending email address
+ This function returns true if nobody has that email address.
+ 
+@retun the clubuserid of the offending email address
 */
 
 function verifyEmailUniqueOutsideClub($email, $userid, $clubid ) {
 
 	if( isDebugEnabled(1) ) logMessage("applicationlib.verifyEmailUniqueOutsideClub: $email, $userid and $clubid");
-	
-	$qid = db_query("SELECT users.userid, clubuser.id 
+
+	$qid = db_query("SELECT users.userid, clubuser.id
 					FROM tblUsers users, tblClubUser clubuser 
 					WHERE users.email = '$email' 
 					AND users.enddate is NULL 
@@ -3720,17 +3792,17 @@ function verifyEmailUniqueOutsideClub($email, $userid, $clubid ) {
 
 /************************************************************************************************************************/
 /*
-     This function returns true if nobody has that email address.  
-     
-     @retun the clubuserid of the offending email address
+ This function returns true if nobody has that email address.
+ 
+@retun the clubuserid of the offending email address
 */
 
 function verifyEmailUniqueAtClub($email, $userid, $clubid ) {
 
-	
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.verifyEmailUniqueAtClub: $email, $userid and $clubid");
-	
-	$qid = db_query("SELECT users.userid, clubuser.id 
+
+	$qid = db_query("SELECT users.userid, clubuser.id
 					FROM tblUsers users, tblClubUser clubuser 
 					WHERE users.email = '$email' 
 					AND users.enddate is NULL 
@@ -3749,15 +3821,15 @@ function verifyEmailUniqueAtClub($email, $userid, $clubid ) {
 }
 
 /**
- * 
+ *
  * @param $email
  * @param $clubid
  */
 function isEmailUniqueAtClub($email, $clubid){
-	
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.isEmailUniqueAtClub: $email and $clubid");
-	
-	$qid = db_query("SELECT users.userid, clubuser.id 
+
+	$qid = db_query("SELECT users.userid, clubuser.id
 					FROM tblUsers users, tblClubUser clubuser 
 					WHERE users.email = '$email' 
 					AND users.enddate is NULL 
@@ -3772,12 +3844,12 @@ function isEmailUniqueAtClub($email, $clubid){
 	}
 
 
-	
+
 }
 
 /************************************************************************************************************************/
 /*
-     Just do some really basic validity checks on an email address
+ Just do some really basic validity checks on an email address
 */
 
 function is_email_valid($emailaddress) {
@@ -3792,7 +3864,7 @@ function is_email_valid($emailaddress) {
 
 /************************************************************************************************************************/
 /*
-     This function returns a list of players for admin searches
+ This function returns a list of players for admin searches
 */
 
 function get_admin_player_search($searchname) {
@@ -3812,7 +3884,7 @@ function get_admin_player_search($searchname) {
 
 /************************************************************************************************************************/
 /*
-     This function returns a list of players for player searches
+ This function returns a list of players for player searches
 */
 
 function get_player_search($searchname) {
@@ -3834,7 +3906,7 @@ function get_player_search($searchname) {
 
 /************************************************************************************************************************/
 /*
-     This function decides is the box is expired
+ This function decides is the box is expired
 */
 
 function isBoxExpired($time, $boxnum) {
@@ -3860,9 +3932,9 @@ function isBoxExpired($time, $boxnum) {
 
 /************************************************************************************************************************/
 /*
-     Since it was finally decided to limit the the number of boxes someone can play in at one time to.....well...one, we now
-     have at our disposal the  getBoxIdForUser function which will return the boxid for the userid passed in.  If a user
-     is not is a box at all -1 will be retuned.
+ Since it was finally decided to limit the the number of boxes someone can play in at one time to.....well...one, we now
+have at our disposal the  getBoxIdForUser function which will return the boxid for the userid passed in.  If a user
+is not is a box at all -1 will be retuned.
 */
 
 function getBoxIdForUser($userid) {
@@ -3881,8 +3953,8 @@ function getBoxIdForUser($userid) {
 
 /************************************************************************************************************************/
 /*
-    This will check to see if the the two users have played each other. We are not going to do alot of validation here so
-    its important to make sure that these are two VALID box leage players before calling this.
+ This will check to see if the the two users have played each other. We are not going to do alot of validation here so
+its important to make sure that these are two VALID box leage players before calling this.
 */
 
 function getBoxReservation($userid1, $userid2, $boxid) {
@@ -3930,9 +4002,9 @@ function getBoxReservation($userid1, $userid2, $boxid) {
  * something has been entered in the outcome.
  */
 function hasPlayedBoxWith($userid1, $userid2, $boxid){
-	
+
 	$reservationId = getBoxReservation($userid1, $userid2, $boxid);
-	
+
 	if( isset($reservationId) ){
 		return true;
 	}
@@ -3943,7 +4015,7 @@ function hasPlayedBoxWith($userid1, $userid2, $boxid){
 
 /************************************************************************************************************************/
 /*
-    This will retireive the sitecode
+ This will retireive the sitecode
 */
 
 function get_sitecode() {
@@ -3964,7 +4036,7 @@ function get_sitecode() {
 
 /************************************************************************************************************************/
 /*
-     This function returns a list of players for player searches
+ This function returns a list of players for player searches
 */
 
 function get_allclubs_dropdown() {
@@ -3979,7 +4051,7 @@ function get_allclubs_dropdown() {
 
 /************************************************************************************************************************/
 /*
-     This function returns a list of players for player searches
+ This function returns a list of players for player searches
 */
 
 function get_allsites_dropdown() {
@@ -3994,7 +4066,7 @@ function get_allsites_dropdown() {
 
 /************************************************************************************************************************/
 /*
-     This function returns a list of players for player searches
+ This function returns a list of players for player searches
 */
 
 function getMonthName($month) {
@@ -4040,7 +4112,7 @@ function getMonthName($month) {
 
 /************************************************************************************************************************/
 /*
-     This function returns a the two userid for the team specified
+ This function returns a the two userid for the team specified
 */
 
 function getUserIdsForTeamId($teamid) {
@@ -4053,7 +4125,7 @@ function getUserIdsForTeamId($teamid) {
 
 	$playersResult = db_query($playersQuery);
 
-	
+
 	return $playersResult;
 
 }
@@ -4061,7 +4133,7 @@ function getUserIdsForTeamId($teamid) {
 
 /************************************************************************************************************************/
 /*
-     This function returns a the two userid for the team specified
+ This function returns a the two userid for the team specified
 */
 
 function getUserIdsForTeamIdWithCourtType($teamid, $courtTypeId) {
@@ -4077,7 +4149,7 @@ function getUserIdsForTeamIdWithCourtType($teamid, $courtTypeId) {
 
 	$playersResult = db_query($playersQuery);
 
-	
+
 	return $playersResult;
 
 }
@@ -4085,7 +4157,7 @@ function getUserIdsForTeamIdWithCourtType($teamid, $courtTypeId) {
 
 /************************************************************************************************************************/
 /*
-     This will return true if the user specified is a club guest and false if not.
+ This will return true if the user specified is a club guest and false if not.
 */
 
 function isClubGuest($userid) {
@@ -4115,24 +4187,24 @@ function isClubGuest($userid) {
  * Used to determine if a player has been selected in a drop down.
  */
 function isPlayerSpecified($userid){
-	
+
 	if($userid ==""){
 		return false;
 	}
-	
+
 	return true;
 }
 
 /*
  * This will return true if the passed in user has a roleid is 2 or Program administrator
- */
+*/
 function isProgramAdmin($userid) {
 
 	//This damn thing might be empty, fine, I'll check it
 	if (empty ($userid))
-		return false;
+	return false;
 
-	$query = "SELECT clubuser.roleid 
+	$query = "SELECT clubuser.roleid
 				  FROM tblClubUser clubuser
 				  WHERE clubuser.userid = $userid";
 	$result = db_query($query);
@@ -4147,14 +4219,14 @@ function isProgramAdmin($userid) {
 
 /*
  * Figures out if this is a CLub Member
- */
+*/
 function isClubMember($userid) {
 
 	if(empty($userid)){
 		return false;
 	}
-	
-	$query = "SELECT users.firstname, users.lastname 
+
+	$query = "SELECT users.firstname, users.lastname
 				  FROM tblUsers users
 				  WHERE users.userid = $userid";
 	$result = db_query($query);
@@ -4170,7 +4242,7 @@ function isClubMember($userid) {
 
 /*
  * Figures out if this is a CLub Member (just based on the name)
- */
+*/
 function isClubMemberName($username) {
 
 	if ($username == "Club Member") {
@@ -4183,7 +4255,7 @@ function isClubMemberName($username) {
 
 /*
  * Figures out if this is a CLub Gueset (just based on the name)
- */
+*/
 function isClubGuestName($username) {
 
 	if ($username == "Club Guest") {
@@ -4196,15 +4268,15 @@ function isClubGuestName($username) {
 
 /************************************************************************************************************************/
 /*
-	Validates the Skill Range Policies
-	Only support singles court types for now
+ Validates the Skill Range Policies
+Only support singles court types for now
 */
 function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype, $time) {
 
-	
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.validateSkillPolicies: Validating Skill Range Policies: opponent: $opponentid, Current User: $currentuserid, courtid = $courtid, time= $time Court Type: $courttype ");
-	
-	
+
+
 	//Make an exception for the club guest
 	if (isClubGuest($opponentid)) {
 		return TRUE;
@@ -4233,11 +4305,11 @@ function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype
 
 					//Check for a Singles Reservations
 					/*
-					Note: Doubles reservations are not validated because it would require too much work to
+					 Note: Doubles reservations are not validated because it would require too much work to
 					court_reservation.php.
-					
+						
 					*/
-					
+						
 					if ($courttype == 'singles') {
 
 						//Check individual ranking
@@ -4274,7 +4346,7 @@ function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype
 						else{
 							if( isDebugEnabled(1) ) logMessage("applicationlib.validateSkillPolicies: ".abs($ranking1 - $ranking2) ." is less than the skill range of ".$row['skillrange'].".  This is ok.");
 						}
-						
+
 
 					} //end if singles check
 
@@ -4287,20 +4359,20 @@ function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype
 	} //end main while loop
 
 	if( isDebugEnabled(1) ) logMessage("applicationlib.validateSkillPolicies: Everything looks ok with this reservation ");
-	
+
 	return TRUE;
 
 }
 
 /************************************************************************************************************************/
 /*
-     This will return TRUE if the resevation is being made in a primetime window   I realize that this appears really complicated,
-     but really its not that bad. 
-     
-     court id- the court id
-     time - the time
-     opponent - the opponent. Used for validating allow looking for a match
-	* 
+ This will return TRUE if the resevation is being made in a primetime window   I realize that this appears really complicated,
+but really its not that bad.
+ 
+court id- the court id
+time - the time
+opponent - the opponent. Used for validating allow looking for a match
+*
 */
 function validateSchedulePolicies($courtid, $time, $opponent) {
 
@@ -4318,7 +4390,7 @@ function validateSchedulePolicies($courtid, $time, $opponent) {
 		$starthour = $startTimeArray[0];
 		$endhour = $endTimeArray[0];
 
-	
+
 		//Check to see if court applies
 		if ($row['courtid'] == $courtid || $row['courtid'] == NULL) {
 
@@ -4335,10 +4407,10 @@ function validateSchedulePolicies($courtid, $time, $opponent) {
 						//Check to see if they exceeded window
 						if ($row['schedulelimit'] <= getAllReservationsMadeToday($starthour, $endhour, $time)) {
 							$message = "Policy '".$row['policyname']."' doesn't allow more than ".$row['schedulelimit']. " reservations per day";
-							if( isDebugEnabled(1) ) logMessage($message);	
+							if( isDebugEnabled(1) ) logMessage($message);
 							return $message;
 						}
-						
+
 						//Checking looking for match
 						// if the partner is set and empty that means its a no specified opponent from the singles, if its not
 						//set and not defined that means this is being run on a doubles reservation in which case we do not apply
@@ -4346,41 +4418,41 @@ function validateSchedulePolicies($courtid, $time, $opponent) {
 						if( $row['allowlooking']=='n' && isset($opponent)){
 							if( isDebugEnabled(1) ) logMessage("applicationlib.validateSchedulePolicies: this policy doesn't allow looking for a match");
 							$message = "Policy called '".$row['policyname']."' doesn't allow players looking for a match";
-							if( isDebugEnabled(1) ) logMessage($message);	
+							if( isDebugEnabled(1) ) logMessage($message);
 							return $message;
 						}
-						
+
 						// Checking the back to back policies.
 						if( $row['allowback2back']=='n' ){
 							if( isDebugEnabled(1) ) logMessage("applicationlib.validateSchedulePolicies: this policy doesn't allow back2back, looking into this.");
 							$courtDuration = getCourtDuration($courtid, $time, $dow );
 							$previousReservationTime  = $time - ($courtDuration * 60 * 60);
-							
+								
 							if( isInReservation($courtid, $previousReservationTime, get_userid() ) ){
 								$message = "A policy called '".$row['policyname']."' doesn't allow back to back reservations.";
-								if( isDebugEnabled(1) ) logMessage($message);	
+								if( isDebugEnabled(1) ) logMessage($message);
 								return $message;
 							}
-							
+								
 							$nextReservationTime = $time + ($courtDuration * 60 * 60);
-							
+								
 							if( isInReservation($courtid, $nextReservationTime, get_userid() ) ){
 								$message = "A policy called '".$row['policyname']."' doesn't allow back to back reservations.";
-								if( isDebugEnabled(1) ) logMessage($message);	
+								if( isDebugEnabled(1) ) logMessage($message);
 								return $message;
 							}
-							
-							
+								
+								
 						}
-						
-						
+
+
 					} else {
 
-						
+
 						//Check to see if they exceeded window
 						if ($row['schedulelimit'] <= getCourtReservationsMadeToday($courtid, $starthour, $endhour, $time)) {
 							$message = "Policy '".$row['policyname']."' doesn't allow more than ".$row['schedulelimit']. " reservations per day";
-							if( isDebugEnabled(1) ) logMessage($message);	
+							if( isDebugEnabled(1) ) logMessage($message);
 							return $message;
 						}
 
@@ -4400,7 +4472,7 @@ function validateSchedulePolicies($courtid, $time, $opponent) {
 
 /************************************************************************************************************************/
 /*
-     This will return TRUE if the resevation is being made in a window
+ This will return TRUE if the resevation is being made in a window
 */
 function withinWindow($reservationtime, $starthour, $endhour) {
 
@@ -4457,28 +4529,28 @@ function getCourtReservationsMadeToday($courtid, $starthour, $endhour, $time) {
 */
 function countNumberOfAllResevationsMadeToday($time) {
 
-	
-	if( isDebugEnabled(1) ) logMessage("applicationlib.countNumberOfAllResevationsMadeToday: checking to see if reservations are made for time: $time");	
-	
+
+	if( isDebugEnabled(1) ) logMessage("applicationlib.countNumberOfAllResevationsMadeToday: checking to see if reservations are made for time: $time");
+
 	//For each court in the site
 	$courtQuery = "Select courts.courtid from tblCourts courts where courts.siteid=".get_siteid();
 	$courtResult = db_query($courtQuery);
 	$totalReservations = 0;
-	
+
 	//Get Teams
 	$userid = get_userid();
 	$teams = getTeamsForUser($userid);
 
-	
+
 	while($courtidArray = mysql_fetch_array($courtResult)){
-	
-			$courtid = $courtidArray['courtid'];
+
+		$courtid = $courtidArray['courtid'];
 			
-			//Have to get the open/close time for today
-			$starttime = getOpenTimeToday($time, $courtid);
-			$endtime = getCloseTimeToday($time, $courtid);
-		
-			$singlesQuery = "SELECT count(reservations.time)
+		//Have to get the open/close time for today
+		$starttime = getOpenTimeToday($time, $courtid);
+		$endtime = getCloseTimeToday($time, $courtid);
+
+		$singlesQuery = "SELECT count(reservations.time)
 			                        FROM tblReservations reservations, tblkpUserReservations details
 			                        WHERE reservations.reservationid = details.reservationid
 			                        AND details.userid = " . get_userid() . "
@@ -4487,38 +4559,38 @@ function countNumberOfAllResevationsMadeToday($time) {
 								    AND reservations.courtid=$courtid
 			                        AND reservations.time >= $starttime
 			                        AND reservations.time < $endtime";
-		
-			$singlesResult = db_query($singlesQuery);
-		
-			$totalReservations += mysql_result($singlesResult, 0);
 
-			//Now get the number of doubles reservations
-			/*
-			    1.) Get the the court type ids for the site doubles or multi reservationtype
-			    2.) For each one, get the list of teams ids
-			    3.) Look for all reservations with team id
-			    4.) Count them.
-			*/
-		
+		$singlesResult = db_query($singlesQuery);
+
+		$totalReservations += mysql_result($singlesResult, 0);
+
+		//Now get the number of doubles reservations
+		/*
+		 1.) Get the the court type ids for the site doubles or multi reservationtype
+		2.) For each one, get the list of teams ids
+		3.) Look for all reservations with team id
+		4.) Count them.
+		*/
+
 		if(mysql_num_rows($teams) > 0 ){
-			
-			    $teamINClause = "";
 				
-				//Reset the teams
-				mysql_data_seek($teams,0);
-	
-				for ($i = 0; $i < mysql_num_rows($teams); ++ $i) {
-			
-					$team = mysql_fetch_array($teams);
-			
-					if ($i != 0) {
-						$teamINClause .= ",";
-					}
-					$teamINClause .= "$team[teamid]";
-			
+			$teamINClause = "";
+
+			//Reset the teams
+			mysql_data_seek($teams,0);
+
+			for ($i = 0; $i < mysql_num_rows($teams); ++ $i) {
+					
+				$team = mysql_fetch_array($teams);
+					
+				if ($i != 0) {
+					$teamINClause .= ",";
 				}
-			
-				$doublesQuery = "SELECT count(reservations.time)
+				$teamINClause .= "$team[teamid]";
+					
+			}
+				
+			$doublesQuery = "SELECT count(reservations.time)
 				                        FROM tblReservations reservations, tblkpUserReservations details, tblCourts courts
 				                        WHERE reservations.reservationid = details.reservationid
 				                        AND reservations.usertype = 1
@@ -4527,22 +4599,22 @@ function countNumberOfAllResevationsMadeToday($time) {
 				                        AND reservations.time < $endtime
 				                        AND details.userid IN ($teamINClause)
 				                        AND reservations.enddate IS NULL";
-			
-				$doublesResult = db_query($doublesQuery);
-			
-				$totalReservations += mysql_result($doublesResult, 0);
-			
+				
+			$doublesResult = db_query($doublesQuery);
+				
+			$totalReservations += mysql_result($doublesResult, 0);
+				
 		}
 			
-		}
-		
+	}
+
 	return $totalReservations;
 
 }
 
 /************************************************************************************************************************/
 /*
-     This will return TRUE if the resevation is being made in a window
+ This will return TRUE if the resevation is being made in a window
 */
 function countNumberOfAllResevationsMadeTodayInWindow($starthour, $endhour, $time) {
 
@@ -4561,13 +4633,13 @@ function countNumberOfAllResevationsMadeTodayInWindow($starthour, $endhour, $tim
 
 	$singlesResult = db_query($singlesQuery);
 	$totalReservations = mysql_result($singlesResult, 0);
-	
+
 	//Now get the number of doubles reservations
 	/*
-	    1.) Get the the court type ids for the site doubles or multi reservationtype
-	    2.) For each one, get the list of teams ids
-	    3.) Look for all reservations with team id
-	    4.) Count them.
+	 1.) Get the the court type ids for the site doubles or multi reservationtype
+	2.) For each one, get the list of teams ids
+	3.) Look for all reservations with team id
+	4.) Count them.
 	*/
 
 	$teamINClause = "";
@@ -4586,9 +4658,9 @@ function countNumberOfAllResevationsMadeTodayInWindow($starthour, $endhour, $tim
 
 	}
 
-	// If this person is on a team, set.	
-	if($rows > 0 ){	
-		
+	// If this person is on a team, set.
+	if($rows > 0 ){
+
 		$doublesQuery = "SELECT count(reservations.time)
 		                        FROM tblReservations reservations, tblkpUserReservations details
 		                        WHERE reservations.reservationid = details.reservationid
@@ -4597,7 +4669,7 @@ function countNumberOfAllResevationsMadeTodayInWindow($starthour, $endhour, $tim
 		                        AND reservations.time >= $starttime
 		                        AND reservations.time < $endtime
 		                        AND details.userid IN ($teamINClause)";
-	
+
 		$doublesResult = db_query($doublesQuery);
 		$totalReservations +=  mysql_result($doublesResult, 0);
 
@@ -4616,8 +4688,8 @@ function countNumberOfCourtResevationsMadeToday($courtid, $time) {
 	$starttime = getOpenTimeToday($time, $courtid);
 	$endtime = getCloseTimeToday($time, $courtid);
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.countNumberOfCourtResevationsMadeToday: checking to see if reservations are made: $courtid and $time");	
-	
+	if( isDebugEnabled(1) ) logMessage("applicationlib.countNumberOfCourtResevationsMadeToday: checking to see if reservations are made: $courtid and $time");
+
 	$singlesQuery = "SELECT count(reservations.time)
 	                      FROM tblReservations reservations, tblkpUserReservations details
 	                      WHERE reservations.reservationid = details.reservationid
@@ -4632,10 +4704,10 @@ function countNumberOfCourtResevationsMadeToday($courtid, $time) {
 
 	//Now get the number of doubles reservations
 	/*
-	    1.) Get the the court type ids for the site doubles or multi reservationtype
-	    2.) For each one, get the list of teams ids
-	    3.) Look for all reservations with team id
-	    4.) Count them.
+	 1.) Get the the court type ids for the site doubles or multi reservationtype
+	2.) For each one, get the list of teams ids
+	3.) Look for all reservations with team id
+	4.) Count them.
 	*/
 
 	$teamINClause = "";
@@ -4655,7 +4727,7 @@ function countNumberOfCourtResevationsMadeToday($courtid, $time) {
 	}
 
 	if($rows > 0){
-		
+
 		$doublesQuery = "SELECT count(reservations.time)
 		                        FROM tblReservations reservations, tblkpUserReservations details
 		                        WHERE reservations.reservationid = details.reservationid
@@ -4664,12 +4736,12 @@ function countNumberOfCourtResevationsMadeToday($courtid, $time) {
 		                        AND reservations.time >= $starttime
 		                        AND reservations.time < $endtime
 		                        AND details.userid IN ($teamINClause)";
-	
+
 		$doublesResult = db_query($doublesQuery);
 		$totalReservations += mysql_result($doublesResult, 0);
 	}
-	
-	
+
+
 
 	return $totalReservations;
 
@@ -4684,8 +4756,8 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 	$starttime = getTimeToday($starthour, $time);
 	$endtime = getTimeToday($endhour, $time);
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.countNumberOfCourtResevationsMadeTodayInWindow: checking to see if reservations are made: starthour: $starthour endhour: $endhour and time: $time");	
-	
+	if( isDebugEnabled(1) ) logMessage("applicationlib.countNumberOfCourtResevationsMadeTodayInWindow: checking to see if reservations are made: starthour: $starthour endhour: $endhour and time: $time");
+
 	$singlesQuery = "SELECT count(reservations.time)
 	                      FROM tblReservations reservations, tblkpUserReservations details
 	                      WHERE reservations.reservationid = details.reservationid
@@ -4697,13 +4769,13 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 
 	$singlesResult = db_query($singlesQuery);
 	$totalReservations = mysql_result($singlesResult,0);
-	
+
 	//Now get the number of doubles reservations
 	/*
-	    1.) Get the the court type ids for the site doubles or multi reservationtype
-	    2.) For each one, get the list of teams ids
-	    3.) Look for all reservations with team id
-	    4.) Count them.
+	 1.) Get the the court type ids for the site doubles or multi reservationtype
+	2.) For each one, get the list of teams ids
+	3.) Look for all reservations with team id
+	4.) Count them.
 	*/
 
 	$teamINClause = "";
@@ -4732,12 +4804,12 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 		                        AND reservations.time >= $starttime
 		                        AND reservations.time < $endtime
 		                        AND details.userid IN ($teamINClause)";
-	
+
 		$doublesResult = db_query($doublesQuery);
 		$totalReservations += mysql_result($doublesResult, 0);
 
 	}
-	
+
 	return $totalReservations;
 
 }
@@ -4750,10 +4822,10 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 function getTeamsForUser($userid) {
 
 	/*
-	  1.) Get the the court type ids for the site doubles or multi reservationtype
-	  2.) For each one, get the list of teams ids
-	
-	  */
+	 1.) Get the the court type ids for the site doubles or multi reservationtype
+	2.) For each one, get the list of teams ids
+
+	*/
 
 	$teamsQuery = "SELECT teamdetails.teamid
 	                           FROM tblkpTeams teamdetails
@@ -4835,7 +4907,7 @@ function getDurationToday($time, $courtid) {
 
 	$result = db_query($query);
 	$duration = mysql_result($result, 0);
-	
+
 
 	return $duration;
 
@@ -4860,7 +4932,7 @@ function getTimeToday($hour, $time) {
 
 /*****************************************************************/
 /*
-     Will load the windows
+ Will load the windows
 */
 function load_reservation_policies($siteid) {
 
@@ -4884,7 +4956,7 @@ function load_reservation_policies($siteid) {
 
 /*****************************************************************/
 /*
-     
+  
 */
 function load_reservation_policy($policyid) {
 
@@ -4908,7 +4980,7 @@ function load_reservation_policy($policyid) {
 }
 /*****************************************************************/
 /*
-     Will load the windows
+ Will load the windows
 */
 function load_skill_policies($siteid) {
 
@@ -4928,11 +5000,11 @@ function load_skill_policies($siteid) {
 }
 
 /**
- * 
+ *
  * @param $eventid
  */
 function load_court_event($eventid){
-	
+
 	$query = "SELECT events.eventname,
 	                          events.playerlimit,events.eventid
 	                   FROM tblEvents events
@@ -4943,30 +5015,30 @@ function load_court_event($eventid){
 }
 
 /**
- * 
+ *
  * @param $eventid
  */
 function load_court_events($siteid){
-	
+
 	$query = "SELECT events.eventid, events.eventname,
 	                          events.playerlimit
 	                   FROM tblEvents events
 	                   WHERE events.siteid = $siteid";
-	
-	
-	
+
+
+
 	$result = db_query($query);
-	
-	if( isDebugEnabled(1) ) logMessage("applicationlib.load_court_events: loading court events for site $siteid. Found ". mysql_num_rows($result) . " in all");	
-	
+
+	if( isDebugEnabled(1) ) logMessage("applicationlib.load_court_events: loading court events for site $siteid. Found ". mysql_num_rows($result) . " in all");
+
 	return db_query($query);
-	
-	
+
+
 }
 
 /*****************************************************************/
 /*
-     Will load the windows
+ Will load the windows
 */
 function load_skill_range_policy($policyid) {
 
@@ -4989,46 +5061,46 @@ function load_skill_range_policy($policyid) {
 
 /**
  * Returns a court duration given a court id and time
- * @return current court duration in minutes.  
- * 
+ * @return current court duration in minutes.
+ *
  * 	This does not support hours exceptions!!
  */
 function getCourtDuration($courtid, $time, $dow){
-	
-	$query = "SELECT duration 
+
+	$query = "SELECT duration
 				FROM tblCourtHours hours
 				WHERE courtid = $courtid
 				AND dayid = $dow";
-	
+
 	$result = db_query($query);
 	return mysql_result($result,0);
 }
 
 /**
- * 
+ *
  * @return boolean
- * 
+ *
  * Only works for singles reservations at the moment
- * 
+ *
  */
 function isInReservation($courtid, $time, $userid){
-	
+
 	$query = "SELECT 1 FROM tblReservations reservation, tblkpUserReservations reservationdetails
 				WHERE reservation.reservationid = reservationdetails.reservationid
 				AND reservation.courtid = $courtid
 				AND reservation.time = $time
 				AND reservation.usertype=0
 				AND reservationdetails.userid = $userid";
-	
+
 	$result = db_query($query);
-	
+
 	if(mysql_num_rows($result) > 0 ){
 		return TRUE;
 	}else{
 		return FALSE;
 	}
-	
-	
+
+
 }
 
 
@@ -5036,7 +5108,7 @@ function isInReservation($courtid, $time, $userid){
  * This should only be set in the clubpro/admin.php
  */
 function isSystemAdministrationConsole(){
-	
+
 	if( isset($_SESSION["siteprefs"]["clubid"]) && $_SESSION["siteprefs"]["clubid"] == 0 ){
 		return true;
 	}
@@ -5047,37 +5119,37 @@ function isSystemAdministrationConsole(){
 
 /**
  * Returns the club site ladders for a given siteid
- * 
+ *
  * @param unknown_type $siteid
  */
 function getClubSiteLadders($siteid){
-	
-	if( isDebugEnabled(1) ) logMessage("applicationlib.getClubSiteLadders: getting the ladders configured for site for court: $siteid");	
-	
+
+	if( isDebugEnabled(1) ) logMessage("applicationlib.getClubSiteLadders: getting the ladders configured for site for court: $siteid");
+
 	$array = array();
-	
+
 	$query = "SELECT ladders.name, ladders.courttypeid
 				FROM tblClubSiteLadders ladders
 				WHERE ladders.siteid = $siteid
 				AND ladders.enddate IS NULL";
-	
+
 	$qid = db_query($query);
-	 while( $ladder = db_fetch_array($qid) ){
-	 	$array[] = $ladder;
-	 }
-	  
-	 return $array;
-	
+	while( $ladder = db_fetch_array($qid) ){
+		$array[] = $ladder;
+	}
+	 
+	return $array;
+
 }
 /*****************************************************************/
 /*
-     Retreives all site preferences
+ Retreives all site preferences
 */
 function getSitePreferencesForCourt($courtid) {
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.getSitePreferencesForCourt: getting site preferences for site for court: $courtid");	
-	
-	$query = "SELECT 
+	if( isDebugEnabled(1) ) logMessage("applicationlib.getSitePreferencesForCourt: getting site preferences for site for court: $courtid");
+
+	$query = "SELECT
 					sites.siteid, 
 					sites.allowselfcancel, 
 					sites.clubid,
@@ -5105,31 +5177,31 @@ function getSitePreferencesForCourt($courtid) {
 
 	$qid = db_query($query);
 	$array =  db_fetch_array($qid);
-	
+
 	$anyboxesquery = "SELECT tblBoxLeagues.boxid
                          FROM tblBoxLeagues
                           WHERE tblBoxLeagues.siteid=".$array['siteid'];
 
-    $anyboxesresult = db_query($anyboxesquery);
-    
+	$anyboxesresult = db_query($anyboxesquery);
+
 	if(mysql_num_rows($anyboxesresult)>0){
-     	$array['boxenabled'] = 'true';
-     }else{
-     	$array['boxenabled'] = 'false';
-     }
+		$array['boxenabled'] = 'true';
+	}else{
+		$array['boxenabled'] = 'false';
+	}
 
 	return $array;
 }
 
 /*****************************************************************/
 /*
-     Retreives all site preferences
+ Retreives all site preferences
 */
 function getSitePreferences($siteid) {
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.getSitePreferences: Getting Site Preferences for Site: $siteid");	
-	
-	$query = "SELECT 
+	if( isDebugEnabled(1) ) logMessage("applicationlib.getSitePreferences: Getting Site Preferences for Site: $siteid");
+
+	$query = "SELECT
 					sites.siteid, 
 					sites.allowselfcancel, 
 					sites.clubid,
@@ -5157,398 +5229,398 @@ function getSitePreferences($siteid) {
 	$qid = db_query($query);
 
 	$array = db_fetch_array($qid);
-	
+
 	$anyboxesquery = "SELECT tblBoxLeagues.boxid
                          FROM tblBoxLeagues
                           WHERE tblBoxLeagues.siteid=$siteid";
 
-    $anyboxesresult = db_query($anyboxesquery);
+	$anyboxesresult = db_query($anyboxesquery);
 
-     if(mysql_num_rows($anyboxesresult)>0){
-     	$array['boxenabled'] = 'true';
-     }else{
-     	$array['boxenabled'] = 'false';
-     }
-	
+	if(mysql_num_rows($anyboxesresult)>0){
+		$array['boxenabled'] = 'true';
+	}else{
+		$array['boxenabled'] = 'false';
+	}
+
 	return $array;
 }
 
 /*
  * Retreives all site attributes.  Unlike a preference, these are derived.
- * 
- * Others can be added
- * 
- * Current site attributes are: COURT_SPORT
- */
- function getSiteAttributes($siteid){
- 	
- 	$attributeArray = array();
- 	
- 	$court_sport = "court_sport";
- 	$web_ladder = "web_ladder";
- 	/*
- 	 * If the site contains any of the supported sports:
- 	 *   + Tenns (5)
- 	 *   + Badmitton (3)
- 	 *   + Squash (4)
- 	 *   + Racquetball (6)
- 	 *  
- 	 */
- 	
- 	$sportQuery = "SELECT DISTINCT 1 from tblCourts courts, tblCourtType courttype
+*
+* Others can be added
+*
+* Current site attributes are: COURT_SPORT
+*/
+function getSiteAttributes($siteid){
+
+	$attributeArray = array();
+
+	$court_sport = "court_sport";
+	$web_ladder = "web_ladder";
+	/*
+	 * If the site contains any of the supported sports:
+	*   + Tenns (5)
+	*   + Badmitton (3)
+	*   + Squash (4)
+	*   + Racquetball (6)
+	*
+	*/
+
+	$sportQuery = "SELECT DISTINCT 1 from tblCourts courts, tblCourtType courttype
 					WHERE courts.courttypeid = courttype.courttypeid
 					AND courts.siteid = $siteid
 					AND (courttype.sportid = 5 OR courttype.sportid = 3 OR courttype.sportid = 4 OR courttype.sportid = 6)";
-	
+
 	$$sportResult = db_query($sportQuery);
-	
+
 	if(mysql_num_rows($$sportResult) > 0){
 		array_push($attributeArray, $court_sport);
 	}
-	
+
 	/*
 	 * If the site has an assigned box league.
-	 */
-	 $anyboxesquery = "SELECT tblBoxLeagues.boxid
+	*/
+	$anyboxesquery = "SELECT tblBoxLeagues.boxid
                               FROM tblBoxLeagues
                               WHERE (((tblBoxLeagues.siteid)=$siteid))";
 
-     $anyboxesresult = db_query($anyboxesquery);
+	$anyboxesresult = db_query($anyboxesquery);
 
-    if(mysql_num_rows($anyboxesresult)>0){
-    	array_push($attributeArray, $web_ladder);
-    }
-	
+	if(mysql_num_rows($anyboxesresult)>0){
+		array_push($attributeArray, $web_ladder);
+	}
+
 	return $attributeArray;
- 	
- }
- 
- 
- /*
+
+}
+
+
+/*
  * Simply checks the existence of the court attribute
- * Store this as a session varaible
- */
- function isSiteBoxLeageEnabled(){
- 	
+* Store this as a session varaible
+*/
+function isSiteBoxLeageEnabled(){
+
 	return $_SESSION["siteprefs"]["boxenabled"]=='true'?true:false;
- }
+}
 
 /*****************************************************************/
 /*
-     Gets the usertype of a reservation (1=Doubles, 0=Singles)
+ Gets the usertype of a reservation (1=Doubles, 0=Singles)
 */
 function isDoublesReservation($reservationID){
-	
-	$query = "SELECT reservations.usertype 
+
+	$query = "SELECT reservations.usertype
 				FROM tblReservations reservations 
 				WHERE reservations.reservationid = $reservationID";
-				
+
 	$qid = db_query($query);
 	$usertype = mysql_result($qid, 0);
 	return $usertype==1 ? true: false;
-	
-		
+
+
 }
 
 /*****************************************************************
-  * Adds name value pairs to an array and return how many were added.
-  */
- function array_push_associative(&$arr) {
-   $args = func_get_args();
-   $ret = 0;
-   foreach ($args as $arg) {
-       if (is_array($arg)) {
-           foreach ($arg as $key => $value) {
-               $arr[$key] = $value;
-               $ret++;
-           }
-       }else{
-           $arr[$arg] = "";
-       }
-   }
-   return $ret;
+ * Adds name value pairs to an array and return how many were added.
+*/
+function array_push_associative(&$arr) {
+	$args = func_get_args();
+	$ret = 0;
+	foreach ($args as $arg) {
+		if (is_array($arg)) {
+			foreach ($arg as $key => $value) {
+				$arr[$key] = $value;
+				$ret++;
+			}
+		}else{
+			$arr[$arg] = "";
+		}
+	}
+	return $ret;
 }
 
 //Will return true if is club administrator and is in the reservation
 function isCAButNotinReservation($courtid, $time){
-  
 
-   $isCA = FALSE;
-   $isGuestMatch = FALSE;
-   $isInReservation = FALSE;
 
-   if(get_roleid()==2){
-      $isCA = TRUE;
-   }
-    $getCourtInfoQuery = "SELECT *
+	$isCA = FALSE;
+	$isGuestMatch = FALSE;
+	$isInReservation = FALSE;
+
+	if(get_roleid()==2){
+		$isCA = TRUE;
+	}
+	$getCourtInfoQuery = "SELECT *
                           FROM tblReservations
                           WHERE tblReservations.courtid = '$courtid'
                           AND tblReservations.time = '$time'";
-    $getCourtInfoResults = db_query($getCourtInfoQuery);
-    $getCourtInfoArray = mysql_fetch_array($getCourtInfoResults);
+	$getCourtInfoResults = db_query($getCourtInfoQuery);
+	$getCourtInfoArray = mysql_fetch_array($getCourtInfoResults);
 
-    //Check if this is a guest reservation
-    if($getCourtInfoArray['guesttype']==1){
-        $isGuestMatch = TRUE;
-    }
+	//Check if this is a guest reservation
+	if($getCourtInfoArray['guesttype']==1){
+		$isGuestMatch = TRUE;
+	}
 
-    //Check singles reservation
-     elseif($getCourtInfoArray['usertype']==0){
-                   $userlookupQuery = "SELECT tblkpUserReservations.userid
+	//Check singles reservation
+	elseif($getCourtInfoArray['usertype']==0){
+		$userlookupQuery = "SELECT tblkpUserReservations.userid
                                        FROM tblkpUserReservations
                                        INNER JOIN tblReservations ON tblkpUserReservations.reservationid = tblReservations.reservationid
                                        WHERE (((tblReservations.time)=$time)
                                        AND ((tblReservations.courtid)=$courtid))";
 
-                   $userlookupResult = db_query($userlookupQuery);
-                            while($userlookupArray = mysql_fetch_array($userlookupResult)){
-                                 if($userlookupArray['userid']==get_userid()){
-                                      $isInReservation = TRUE;
-                                 }
-                            }
-     }
+		$userlookupResult = db_query($userlookupQuery);
+		while($userlookupArray = mysql_fetch_array($userlookupResult)){
+			if($userlookupArray['userid']==get_userid()){
+				$isInReservation = TRUE;
+			}
+		}
+	}
 
 
-   //Check doubles reservation with teams
-    elseif($getCourtInfoArray['usertype']==1){
+	//Check doubles reservation with teams
+	elseif($getCourtInfoArray['usertype']==1){
 
-             $doublesQuery = "SELECT tblkpUserReservations.userid, tblkpUserReservations.usertype
+		$doublesQuery = "SELECT tblkpUserReservations.userid, tblkpUserReservations.usertype
                                   FROM tblkpUserReservations
                                   INNER JOIN tblReservations ON tblkpUserReservations.reservationid = tblReservations.reservationid
                                   WHERE (((tblReservations.time)=$time)
                                   AND ((tblReservations.courtid)=$courtid))";
 
-            $doublesResult = db_query($doublesQuery);
-            while($doublesArray = mysql_fetch_array($doublesResult)){
-                   if($doublesArray['usertype']==0){
-                       if($doublesArray['userid']==get_userid()){
-                          $isInReservation = TRUE;
-                       }
-                   }//end if
-                   elseif($doublesArray['usertype']==1){
-                           if(isCurrentUserOnTeam($doublesArray['userid'])==1){
-                                $isInReservation = TRUE;
-                           } //endif
-                   }//end elseif
-            }//end while
-    }
+		$doublesResult = db_query($doublesQuery);
+		while($doublesArray = mysql_fetch_array($doublesResult)){
+			if($doublesArray['usertype']==0){
+				if($doublesArray['userid']==get_userid()){
+					$isInReservation = TRUE;
+				}
+			}//end if
+			elseif($doublesArray['usertype']==1){
+				if(isCurrentUserOnTeam($doublesArray['userid'])==1){
+					$isInReservation = TRUE;
+				} //endif
+			}//end elseif
+		}//end while
+	}
 
-    if(($isCA && !$isInReservation) || ($isCA && $isGuestMatch)){
-         return TRUE;
-    }
-    else{
-         return FALSE;
-    }
+	if(($isCA && !$isInReservation) || ($isCA && $isGuestMatch)){
+		return TRUE;
+	}
+	else{
+		return FALSE;
+	}
 
 }
 
 /*
-  **********************************************************************************************************
-  This will check to see if on either a singles reservation or a doubles reservation the user attempting
-  to cancel the court in doing so where someone is looking for a match.  As a general rule we are only
-  allowing members of an incomplete reservation (and desk users) to cancel the court.
+ **********************************************************************************************************
+This will check to see if on either a singles reservation or a doubles reservation the user attempting
+to cancel the court in doing so where someone is looking for a match.  As a general rule we are only
+allowing members of an incomplete reservation (and desk users) to cancel the court.
 */
 function isUserInPartialReservationSingles($courtid, $time){
 
-         $isOnlyUserInReservation = FALSE;
-         $isInReservation = FALSE;
-         $isOnlyOnePlayer = FALSE;
+	$isOnlyUserInReservation = FALSE;
+	$isInReservation = FALSE;
+	$isOnlyOnePlayer = FALSE;
 
-          $userlookupQuery = "SELECT tblkpUserReservations.userid
+	$userlookupQuery = "SELECT tblkpUserReservations.userid
                               FROM tblkpUserReservations
                               INNER JOIN tblReservations ON tblkpUserReservations.reservationid = tblReservations.reservationid
                               WHERE (((tblReservations.time)=$time)
                               AND ((tblReservations.courtid)=$courtid))";
 
-          $userlookupResult = db_query($userlookupQuery);
-                   while($userlookupArray = mysql_fetch_array($userlookupResult)){
-                        if($userlookupArray['userid']==get_userid()){
-                             $isInReservation = TRUE;
-                        }
-                        if($userlookupArray['userid']==0){
-                             $isOnlyOnePlayer = TRUE;
-                        }
-                   }
+	$userlookupResult = db_query($userlookupQuery);
+	while($userlookupArray = mysql_fetch_array($userlookupResult)){
+		if($userlookupArray['userid']==get_userid()){
+			$isInReservation = TRUE;
+		}
+		if($userlookupArray['userid']==0){
+			$isOnlyOnePlayer = TRUE;
+		}
+	}
 
-        if($isInReservation && $isOnlyOnePlayer){
-               $isOnlyUserInReservation = TRUE;
-        }
+	if($isInReservation && $isOnlyOnePlayer){
+		$isOnlyUserInReservation = TRUE;
+	}
 
 
-        // Or if tblkpUserReservations are of different usertypes then we kn
+	// Or if tblkpUserReservations are of different usertypes then we kn
 
-        return  $isOnlyUserInReservation;
+	return  $isOnlyUserInReservation;
 }
 
 
 /*
-  **********************************************************************************************************
-  This will check to see if on either a singles reservation or a doubles reservation the user attempting
-  to cancel the court in doing so where someone is looking for a match.  As a general rule we are only
-  allowing members of an incomplete reservation (and desk users) to cancel the court.
+ **********************************************************************************************************
+This will check to see if on either a singles reservation or a doubles reservation the user attempting
+to cancel the court in doing so where someone is looking for a match.  As a general rule we are only
+allowing members of an incomplete reservation (and desk users) to cancel the court.
 */
 function isUserInPartialReservationDoubles($courtid, $time){
 
-   $isInReservation = FALSE;
-   $doesDoublesReservationNeedAPlayer = FALSE;
-   $isUserInPartialReservationDoubles = FALSE;
-   $doublesReservationLookingForTeam = FALSE;
-   $isOnDoublesTeam = FALSE;
-   $isInDoublesReservation = FALSE;
+	$isInReservation = FALSE;
+	$doesDoublesReservationNeedAPlayer = FALSE;
+	$isUserInPartialReservationDoubles = FALSE;
+	$doublesReservationLookingForTeam = FALSE;
+	$isOnDoublesTeam = FALSE;
+	$isInDoublesReservation = FALSE;
 
-   $usertype = 0;
+	$usertype = 0;
 
-     $userlookupQuery = "SELECT tblkpUserReservations.userid, tblkpUserReservations.usertype
+	$userlookupQuery = "SELECT tblkpUserReservations.userid, tblkpUserReservations.usertype
                          FROM tblkpUserReservations
                          INNER JOIN tblReservations ON tblkpUserReservations.reservationid = tblReservations.reservationid
                          WHERE (((tblReservations.time)=$time)
                          AND ((tblReservations.courtid)=$courtid))";
 
-   $userlookupResult =   db_query($userlookupQuery);
+	$userlookupResult =   db_query($userlookupQuery);
 
-   while($reservationUser = mysql_fetch_array($userlookupResult)){
+	while($reservationUser = mysql_fetch_array($userlookupResult)){
 
-           //First check to see if current user is the one looking for a match
-           //if($reservationUser[usertype]==0 && $reservationUser[userid]==get_userid()){
-                  //$isInDoublesReservation = TRUE;
+		//First check to see if current user is the one looking for a match
+		//if($reservationUser[usertype]==0 && $reservationUser[userid]==get_userid()){
+		//$isInDoublesReservation = TRUE;
 
-           //}
+		//}
 
-           //Now check if the current user is in one of the teams
-            if($reservationUser['usertype']==1 && isCurrentUserOnTeam($reservationUser['userid'])){
-                  $isInDoublesReservation = TRUE;
-                  $isOnDoublesTeam = TRUE;
+		//Now check if the current user is in one of the teams
+		if($reservationUser['usertype']==1 && isCurrentUserOnTeam($reservationUser['userid'])){
+			$isInDoublesReservation = TRUE;
+			$isOnDoublesTeam = TRUE;
 
-           }
+		}
 
-           //We want to check for doubles reservations looking for a team
+		//We want to check for doubles reservations looking for a team
 
-           if($reservationUser['userid'] == 0){
-                  $doublesReservationLookingForTeam = TRUE;
-           }
+		if($reservationUser['userid'] == 0){
+			$doublesReservationLookingForTeam = TRUE;
+		}
 
-          // print "This is the value of reservationUser[usertype] $reservationUser[usertype]";
-           $usertype = $usertype + $reservationUser['usertype'];
+		// print "This is the value of reservationUser[usertype] $reservationUser[usertype]";
+		$usertype = $usertype + $reservationUser['usertype'];
 
-   }
+	}
 
-   //For a complete doubles reservation the usertypes should add up to 2 (1+1), for a complete singles reservation
-   // the usertype should add up to 0 (0+0)
+	//For a complete doubles reservation the usertypes should add up to 2 (1+1), for a complete singles reservation
+	// the usertype should add up to 0 (0+0)
 
-   if($usertype == 1){
-        $doesDoublesReservationNeedAPlayer = TRUE;
-   }
+	if($usertype == 1){
+		$doesDoublesReservationNeedAPlayer = TRUE;
+	}
 
-   //If Both are true then set $isInDoublesReservation to TRUE, then we have established that
-   //the current user is in the reservation somehow (either by himself or on a team) and that
-   //the this is a doubles reservation that
-   if($doesDoublesReservationNeedAPlayer && $isInDoublesReservation){
-
-
-       $isUserInPartialReservationDoubles = TRUE;
-   }
+	//If Both are true then set $isInDoublesReservation to TRUE, then we have established that
+	//the current user is in the reservation somehow (either by himself or on a team) and that
+	//the this is a doubles reservation that
+	if($doesDoublesReservationNeedAPlayer && $isInDoublesReservation){
 
 
-   //Finally we have to check for the scenerio of someone on a team looking for anothher team.  If
-   // this person attempts to cancel the court they too should only have the option of canceling
-   // (not modifying)
-
-   if($doublesReservationLookingForTeam && $isOnDoublesTeam == TRUE){
-
-       $isUserInPartialReservationDoubles = TRUE;
-   }
+		$isUserInPartialReservationDoubles = TRUE;
+	}
 
 
-   return $isUserInPartialReservationDoubles;
+	//Finally we have to check for the scenerio of someone on a team looking for anothher team.  If
+	// this person attempts to cancel the court they too should only have the option of canceling
+	// (not modifying)
+
+	if($doublesReservationLookingForTeam && $isOnDoublesTeam == TRUE){
+
+		$isUserInPartialReservationDoubles = TRUE;
+	}
+
+
+	return $isUserInPartialReservationDoubles;
 
 }
 
 /**
-  This will return the full name of a user for a given userid (first name, last name)
-*/
+ This will return the full name of a user for a given userid (first name, last name)
+ */
 function getFullNameForUserId($userId){
-	                                   
+
 	//this may not be set
 	if( !isset($userId)) return;
-	
+
 	$userResult = getFullNameResultForUserId($userId);
-    $userArray = mysql_fetch_array($userResult); 
-    $fullname = "";
-    
-    //For faster results using indexes
-    if( mysql_num_rows($userResult) > 0){
-    	$fullname = "$userArray[0] $userArray[1]";  
-    }
-    
-    return $fullname;
-       
+	$userArray = mysql_fetch_array($userResult);
+	$fullname = "";
+
+	//For faster results using indexes
+	if( mysql_num_rows($userResult) > 0){
+		$fullname = "$userArray[0] $userArray[1]";
+	}
+
+	return $fullname;
+	 
 }
 
 /**
-  This will return the full name of a and espcaes ', ", and a few others.  Use when putting
-  output in database.
-*/
+ This will return the full name of a and espcaes ', ", and a few others.  Use when putting
+ output in database.
+ */
 function getFullNameForUserIdWithEscapes($userId){
-	                                   
-	$fullname = getFullNameForUserId($userId); 
-    return addslashes($fullname);
-       
+
+	$fullname = getFullNameForUserId($userId);
+	return addslashes($fullname);
+	 
 }
 
 function getFullNameResultForUserId($userId){
-	
+
 	$userQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                         FROM tblUsers
                         WHERE tblUsers.userid=$userId";
-	                                    
+	 
 	return db_query($userQuery);
 }
 
 /**
  * Returns the the names of the players in the team specified
  */
- function getFullNamesForTeamId($teamId){
- 	
- 	
- 	$teamsQuery = "SELECT teamdetails.userid 
+function getFullNamesForTeamId($teamId){
+
+
+	$teamsQuery = "SELECT teamdetails.userid
 					FROM tblkpTeams teamdetails 
 					WHERE teamdetails.teamid =  $teamId";
-					
-    $teamResult = db_query($teamsQuery);
-    $playerOne = mysql_result($teamResult, 0);
-    $playerTwo = mysql_result($teamResult, 1);
-    
-    return getFullNameForUserId($playerOne)." and ".getFullNameForUserId($playerTwo);
- 	
- }
+		
+	$teamResult = db_query($teamsQuery);
+	$playerOne = mysql_result($teamResult, 0);
+	$playerTwo = mysql_result($teamResult, 1);
+
+	return getFullNameForUserId($playerOne)." and ".getFullNameForUserId($playerTwo);
+
+}
 
 /**
  * Returns the events for the site.
  */
 function get_site_events($siteid){
-	
+
 	if( isDebugEnabled(1) )  logMessage("applicationlib.get_site_events: Getting events for site $siteid");
-	  
+	 
 	$query = "SELECT eventid, eventname
                           FROM tblEvents
                           WHERE siteid = $siteid";
 
-      return  db_query($query);
+	return  db_query($query);
 }
 
 
 /*
  * Simply determins if the time  past occured before the current time
- */
+*/
 function isInPast($time){
-	
+
 	$clubquery = "SELECT timezone from tblClubs WHERE clubid='".get_clubid()."'";
 	$clubresult = db_query($clubquery);
 	$clubobj = db_fetch_array($clubresult);
 
 	$tzdelta = $clubobj[timezone]*3600;
 	$curtime =   mktime()+$tzdelta;
-	
+
 
 	if($time<$curtime){
 		return true;
@@ -5556,7 +5628,7 @@ function isInPast($time){
 	else{
 		return false;
 	}
-	
+
 }
 
 /**
@@ -5565,24 +5637,24 @@ function isInPast($time){
 function logMessage($message){
 
 	date_default_timezone_set('GMT');
-	
+
 	if( !isset($_SESSION["CFG"]["logFile"])){
 		die("This thing isn't configured right, try specifing a log file in application.lib");
 	}
-	
+
 	$fp = fopen ($_SESSION["CFG"]["logFile"], "a+");
 	fwrite($fp,date("r",mktime()).": ".$message."\n");
 	fclose($fp);
-	
+
 }
 
 /**
  * Set in the application.php
  */
 function isDebugEnabled($level){
-	
+
 	global $APP_DEBUG;
-	
+
 	if( isset($APP_DEBUG) && $APP_DEBUG <=$level){
 		return true;
 	}
@@ -5595,32 +5667,32 @@ function isDebugEnabled($level){
  * For sendout out debug mails
  */
 function isMailDebugEnabled($level){
-	
+
 	global $MAIL_DEBUG;
-	
+
 	if( isset($MAIL_DEBUG) && $MAIL_DEBUG <=$level){
 		return true;
 	}
 	else{
 		return false;
 	}
-	
+
 }
 
 /**
- * Will display either today, a day ago, three days, four days, 
+ * Will display either today, a day ago, three days, four days,
  * five days, six days, a week, more than a week ago
  */
 function determineLastLoginText($theTimeTheyLastLoggedIn, $clubid){
-	
+
 	$clubquery = "SELECT timezone from tblClubs WHERE clubid=$clubid";
 	$clubresult = db_query($clubquery);
 	$timezoneval = mysql_result($clubresult,0);
 	$tzdelta = $timezoneval*3600;
 	$theTimeItIsRightNow =   mktime()+$tzdelta;
-	
+
 	$timeSinceLastLogin = $theTimeItIsRightNow - $theTimeTheyLastLoggedIn;
-	
+
 	if( $timeSinceLastLogin < 86400 ){
 		$timeSinceLastLoginString =  "Within the last day";
 	}
@@ -5635,114 +5707,114 @@ function determineLastLoginText($theTimeTheyLastLoggedIn, $clubid){
 	}
 	elseif( $timeSinceLastLogin < (86400 * 5) ){
 		$timeSinceLastLoginString = "Five days ago";
-    }
+	}
 	elseif( $timeSinceLastLogin < (86400 * 6 ) ){
 		$timeSinceLastLoginString = "Six days ago";
 	}
 	else{
 		$timeSinceLastLoginString = "More than a week ago";
 	}
-	
+
 	return $timeSinceLastLoginString;
-	
+
 }
 
 /**
-* A simple Twitter status display script.
-* Useful as a status badge for JavaScript non-compliant browsers, where the
-* insertion of the status message must be performed on the server.
-*
-* Example: echo(getTwitterStatus(637073, "\\0"));
-*
-* @author Manas Tungare, manas@tungare.name
-* @version 1.0
-* @copyright Manas Tungare, 2007.
-* @license Creative Commons Attribution ShareAlike 3.0.
-*/
+ * A simple Twitter status display script.
+ * Useful as a status badge for JavaScript non-compliant browsers, where the
+ * insertion of the status message must be performed on the server.
+ *
+ * Example: echo(getTwitterStatus(637073, "\\0"));
+ *
+ * @author Manas Tungare, manas@tungare.name
+ * @version 1.0
+ * @copyright Manas Tungare, 2007.
+ * @license Creative Commons Attribution ShareAlike 3.0.
+ */
 
 /**
-* Retrieves Twitter status from the Twitter server, parses it, and
-* linkifies any URLs present.
-*
-* This code is a textbook example of optimizing at the cost of maintainability
-* and reliability. It is utterly susceptible to changes in the XML format
-* (that would otherwise be nicely handled by an XML parser.) But XML itself is
-* an insanely heavy markup format, and this code neatly teases out the
-* interesting bits while ignoring the rest. It was written for performance,
-* not elegance. (Though, some would argue about elegance through sheer
-* simplicity, but I digress.) :-)
-*
-* @return string Current status message of given user.
-* @param userNumber Your user number; not to be confused with your user id.
-* @param linkText Configurable anchor text for linkified URLs
-*   "\\0"  : if you want the entire URL to show up.
-*   "\\1"  : to show only the domain name (slashdot-style).
-*   "blah" : Anything else inserts that text verbatim.
-*/
+ * Retrieves Twitter status from the Twitter server, parses it, and
+ * linkifies any URLs present.
+ *
+ * This code is a textbook example of optimizing at the cost of maintainability
+ * and reliability. It is utterly susceptible to changes in the XML format
+ * (that would otherwise be nicely handled by an XML parser.) But XML itself is
+ * an insanely heavy markup format, and this code neatly teases out the
+ * interesting bits while ignoring the rest. It was written for performance,
+ * not elegance. (Though, some would argue about elegance through sheer
+ * simplicity, but I digress.) :-)
+ *
+ * @return string Current status message of given user.
+ * @param userNumber Your user number; not to be confused with your user id.
+ * @param linkText Configurable anchor text for linkified URLs
+ *   "\\0"  : if you want the entire URL to show up.
+ *   "\\1"  : to show only the domain name (slashdot-style).
+ *   "blah" : Anything else inserts that text verbatim.
+ */
 function getTwitterStatus($userNumber, $linkText) {
-  $url = "http://twitter.com/statuses/user_timeline/" . $userNumber .
+	$url = "http://twitter.com/statuses/user_timeline/" . $userNumber .
       ".xml?count=$count";
-  $feed = "";
+	$feed = "";
 
-  // Fetch feed, read it all into a string.
-  // TODO(manas) Cache me if you can.
-  $file = fopen($url, "r");
-  if (!is_resource($file)) {
-    return ("Unable to connect to Twitter!");
-  }
+	// Fetch feed, read it all into a string.
+	// TODO(manas) Cache me if you can.
+	$file = fopen($url, "r");
+	if (!is_resource($file)) {
+		return ("Unable to connect to Twitter!");
+	}
 
-  while (!feof($file)) {
-    $feed .= fgets($file, 4096);
-  }
-  fclose ($file);
+	while (!feof($file)) {
+		$feed .= fgets($file, 4096);
+	}
+	fclose ($file);
 
-  // Parse, obtain created_at time, format it nicely.
-  $created_at = array();
-  preg_match("/<created_at>(.*?)<\/created_at>/", $feed, $created_at);
-  $relative_time = niceTime(strtotime(str_replace("+0000", "",
-      $created_at[1])));
+	// Parse, obtain created_at time, format it nicely.
+	$created_at = array();
+	preg_match("/<created_at>(.*?)<\/created_at>/", $feed, $created_at);
+	$relative_time = niceTime(strtotime(str_replace("+0000", "",
+	$created_at[1])));
 
-  // Parse it to extract the <text> element.
-  $text = array();
-  preg_match("/<text>(.*?)<\/text>/", $feed, $text);
-  $status = preg_replace("/http:\/\/(.*?)\/[^ ]*/",
+	// Parse it to extract the <text> element.
+	$text = array();
+	preg_match("/<text>(.*?)<\/text>/", $feed, $text);
+	$status = preg_replace("/http:\/\/(.*?)\/[^ ]*/",
       '<a href="\\0">'.$linkText.'</a>', $text[1]);
 
-  // Linkify URLs
-  //return $status . " &mdash; " . $relative_time;
-  return $status ;
+	// Linkify URLs
+	//return $status . " &mdash; " . $relative_time;
+	return $status ;
 }
 
 /**
-* Formats a timestamp nicely with an adaptive "x units of time ago" message.
-* Based on the original Twitter JavaScript badge. Only handles past dates.
-* @return string Nicely-formatted message for the timestamp.
-* @param $time Output of strtotime() on your choice of timestamp.
-*/
+ * Formats a timestamp nicely with an adaptive "x units of time ago" message.
+ * Based on the original Twitter JavaScript badge. Only handles past dates.
+ * @return string Nicely-formatted message for the timestamp.
+ * @param $time Output of strtotime() on your choice of timestamp.
+ */
 function niceTime($time) {
-  $delta = time() - $time;
-  if ($delta < 60) {
-    return 'less than a minute ago.';
-  } else if ($delta < 120) {
-    return 'about a minute ago.';
-  } else if ($delta < (45 * 60)) {
-    return floor($delta / 60) . ' minutes ago.';
-  } else if ($delta < (90 * 60)) {
-    return 'about an hour ago.';
-  } else if ($delta < (24 * 60 * 60)) {
-    return 'about ' . floor($delta / 3600) . ' hours ago.';
-  } else if ($delta < (48 * 60 * 60)) {
-    return '1 day ago.';
-  } else {
-    return floor($delta / 86400) . ' days ago.';
-  }
+	$delta = time() - $time;
+	if ($delta < 60) {
+		return 'less than a minute ago.';
+	} else if ($delta < 120) {
+		return 'about a minute ago.';
+	} else if ($delta < (45 * 60)) {
+		return floor($delta / 60) . ' minutes ago.';
+	} else if ($delta < (90 * 60)) {
+		return 'about an hour ago.';
+	} else if ($delta < (24 * 60 * 60)) {
+		return 'about ' . floor($delta / 3600) . ' hours ago.';
+	} else if ($delta < (48 * 60 * 60)) {
+		return '1 day ago.';
+	} else {
+		return floor($delta / 86400) . ' days ago.';
+	}
 }
 
 /**
  * Goes out to the database and gets the footer message
  */
 function getFooterMessage(){
-	
+
 	$footerMessageQuery = "SELECT text from tblFooterMessage WHERE enddate is NULL";
 	$footMessageResult = db_query($footerMessageQuery);
 	if( mysql_num_rows($footMessageResult) > 0){
@@ -5751,39 +5823,39 @@ function getFooterMessage(){
 	else{
 		return;
 	}
-	
-	
+
+
 }
 
 /**
- * 
+ *
  * @param $siteId
  */
 function getRecentSiteActivity($siteid){
-	
+
 	$query = "SELECT activity.description, activity.activitydate
 	 			FROM tblSiteActivity activity 
 				WHERE siteid = $siteid AND enddate is NULL
 				ORDER BY activity.activitydate DESC LIMIT 3";
-	
+
 	return db_query($query);
-	
+
 }
 
 /**
  * Gets recent activity older than a $startDate
- * 
+ *
  * @param $siteId
  */
 function getRecentSiteActivityBlock($siteid,$startDate){
-	
-	$query = "SELECT activity.description,activity.activitydate from tblSiteActivity activity 
+
+	$query = "SELECT activity.description,activity.activitydate from tblSiteActivity activity
 				WHERE siteid = $siteid AND enddate is NULL
 				AND activity.activitydate < '$startDate'
 				ORDER BY activity.activitydate DESC LIMIT 3";
-	
+
 	return db_query($query);
-	
+
 }
 
 /**
@@ -5791,25 +5863,25 @@ function getRecentSiteActivityBlock($siteid,$startDate){
  * @param $siteid
  */
 function getClubNews($siteid){
-	
-		$query = "SELECT message FROM tblMessages messages 
+
+	$query = "SELECT message FROM tblMessages messages
 				WHERE siteid = $siteid AND enable = 1 AND messagetypeid = 2
 				ORDER BY messages.lastmodified DESC LIMIT 3";
-	
+
 	return db_query($query);
-	
+
 }
 
 function getClubEvents($clubid){
-	
+
 	$query = "SELECT events.id, events.name, events.eventdate, events.description
 			   FROM tblClubEvents events 
 				WHERE clubid = $clubid 
 				AND enddate is NULL
 				ORDER BY events.eventdate LIMIT 6";
-	
+
 	return db_query($query);
-	
+
 }
 
 
@@ -5819,10 +5891,10 @@ function getClubEvents($clubid){
  * @param $siteid
  */
 function getMatchesByType($siteid, $matchtype, $limit){
-	
+
 	if( isDebugEnabled(1) ) logMessage("applicationlib.getMatchesByType: Getting challenge matches $siteid");
-	
-	
+
+
 	$curresidquery = "SELECT reservations.reservationid, reservations.time, courts.courtname
 		                  FROM tblReservations reservations,tblCourts courts
 						  WHERE reservations.matchtype = $matchtype
@@ -5832,96 +5904,96 @@ function getMatchesByType($siteid, $matchtype, $limit){
 						  AND courts.siteid = $siteid
 						  ORDER BY reservations.time DESC LIMIT $limit";
 	//print $curresidquery;
-	
+
 	return db_query($curresidquery);
 }
 
 /**
- * 
+ *
  * @param unknown_type $clubeventid
  */
 function getClubEventParticipants($clubeventid){
-	
-	
+
+
 	$query = "SELECT users.userid, users.firstname, users.lastname
 			   FROM tblClubEventParticipants participant, tblUsers users
 				WHERE users.userid = participant.userid
 				AND participant.clubeventid = $clubeventid
 				AND participant.enddate is NULL";
-	
+
 	return db_query($query);
 }
 
 /**
- * 
+ *
  * @param $siteid
  */
 function logSiteActivity($siteid, $description){
-	
+
 
 	$description = addslashes($description);
-	
-			 $query = "INSERT INTO tblSiteActivity (
+
+	$query = "INSERT INTO tblSiteActivity (
 	                activitydate, siteid, description
 	                ) VALUES (
 	                now(),
 	                '$siteid',
 	                '$description'
 	                )";
-			 
-			 db_query($query);
+
+	db_query($query);
 }
 
 /**
- * 
+ *
  * @param $dateString
  * The string is in this format yyyy-dd-mm
  */
 function formatDateString($dateString){
-	
+
 	date_default_timezone_set('GMT');
 	$dates = explode("-",$dateString);
 	$day = $dates[2];
 	$month = $dates[1];
 	$year = $dates[0];
-	
+
 	$time = mktime(0,0,0,$month,$day,$year);
-	
+
 	return date("l F j", $time);
-	
+
 }
 
 /**
- * 
+ *
  * @param $dateString
  * The string is in this format yyyy-dd-mm
  */
 function formatDateStringSimple($dateString){
-	
+
 	date_default_timezone_set('GMT');
 	$dates = explode("-",$dateString);
 	$day = $dates[2];
 	$month = $dates[1];
 	$year = $dates[0];
-	
+
 	$time = mktime(0,0,0,$month,$day,$year);
-	
+
 	return date("n/j/Y", $time);
-	
+
 }
 
 /**
- * 
+ *
  * @param $dateString
  */
 function convertToDateSlashes($dateString){
-	
+
 	if( empty($dateString)){
 		return;
 	}
 
 	$pos = strpos($dateString, '-');
-		
+
 	if ($pos !== false) {
 		$dates = explode("-",$dateString);
 		$month = $dates[2];
@@ -5953,7 +6025,7 @@ function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts
 	if ( $img ) {
 		$url = '<img src="' . $url . '"';
 		foreach ( $atts as $key => $val )
-			$url .= ' ' . $key . '="' . $val . '"';
+		$url .= ' ' . $key . '="' . $val . '"';
 		$url .= ' />';
 	}
 	return $url;
