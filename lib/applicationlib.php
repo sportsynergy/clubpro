@@ -55,12 +55,14 @@ function formatDate($dateString){
 	return date("Y-n-d G:i:s", $dateString);
 }
 
-
 /**
  * Logs in user
- *
- * One very interesting thing here is that anyone can use a superpassword to login. This password is
- *  MD5 encoded as 25a694bd7f0a3f48e078f30c3afce1e5
+ * 
+ * One very interesting thing here is that anyone can use a superpassword to login.
+ * 
+ * @param String $username
+ * @param String $password
+ * @param bool $encodedpassword
  */
 function verify_login($username, $password, $encodedpassword) {
 	/* verify the username and password.  if it is a valid login, return an array
@@ -84,8 +86,6 @@ function verify_login($username, $password, $encodedpassword) {
 					   AND users.password = '$password'
         			   AND clubuser.enable='y' 
 					   AND clubuser.enddate IS NULL";
-	if( isDebugEnabled(1) ) 
-		logMessage("applicationlib.verify_login:". $loginQuery);
 
 	$loginResult = db_query($loginQuery);
 
@@ -108,10 +108,7 @@ function verify_login($username, $password, $encodedpassword) {
 
 			$loginResult = db_query($loginQuery);
 		}
-			
 	}
-
-
 	return db_fetch_array($loginResult);
 }
 

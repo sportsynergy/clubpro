@@ -2,226 +2,249 @@
 
 <?
 
-	//Set some important variables	
+//Set some important variables
 
- 	$playerposition = 0;
-	$playerlocked = false;
-			 
-	while ( $playerarray = db_fetch_array($ladderplayers)){
-			 	
-		if($playerarray['userid']==get_userid()){
-			 	$playerposition = $playerarray['ladderposition'];
-			 		
-			 	if($playerarray['locked']=='y'){
-			 		$playerlocked = true;
-			 	}
-			 		
-			 	break;
-			}
-			 	
+$playerposition = 0;
+$playerlocked = false;
+
+while ( $playerarray = db_fetch_array($ladderplayers)){
+		
+	if($playerarray['userid']==get_userid()){
+		$playerposition = $playerarray['ladderposition'];
+
+		if($playerarray['locked']=='y'){
+			$playerlocked = true;
+		}
+
+		break;
 	}
-	
-	// Rest the pointer
-	mysql_data_seek($ladderplayers,0);
-			 
+		
+}
+
+// Rest the pointer
+mysql_data_seek($ladderplayers,0);
+
 ?>
 
 
- <form name="addmetoladderform" method="post" action="<?=$ME?>">
-     <input type="hidden" name="userid" value="<?=get_userid()?>">
-     <input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-     <input type="hidden" name="cmd" value="addtoladder">
+<form name="addmetoladderform" method="post" action="<?=$ME?>">
+	<input type="hidden" name="userid" value="<?=get_userid()?>"> <input
+		type="hidden" name="courttypeid" value="<?=$courttypeid?>"> <input
+		type="hidden" name="cmd" value="addtoladder">
 </form>
 
- <form name="deleteform" method="post" action="<?=$ME?>">
-	<input type="hidden" name="userid" value="<?=get_userid()?>">
-	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-	<input type="hidden" name="cmd" value="removefromladder">
+<form name="deleteform" method="post" action="<?=$ME?>">
+	<input type="hidden" name="userid" value="<?=get_userid()?>"> <input
+		type="hidden" name="courttypeid" value="<?=$courttypeid?>"> <input
+		type="hidden" name="cmd" value="removefromladder">
 </form>
 
- <form name="moveform" method="post" action="<?=$ME?>">
-	<input type="hidden" name="userid" value="<?=get_userid()?>">
-	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-	<input type="hidden" name="cmd" value="moveupinladder">
+<form name="moveform" method="post" action="<?=$ME?>">
+	<input type="hidden" name="userid" value="<?=get_userid()?>"> <input
+		type="hidden" name="courttypeid" value="<?=$courttypeid?>"> <input
+		type="hidden" name="cmd" value="moveupinladder">
 </form>
 
 
-<? 
+<?
 $numrows = mysql_num_rows($ladderplayers);
 if($numrows ==0) { ?>
 
 Nobody has signed up for the ladder yet.
-	<?  if(get_roleid()==2 || get_roleid==4){ ?>
-		 
-
-		  Click <span id="show"><a style="text-decoration: underline; cursor: pointer">here</a></span> to add somone now.
+<?  if(get_roleid()==2 || get_roleid==4){ ?>
 
 
-	<? } else {?>
-		 
-		 
-		 	Click <a href="javascript:submitForm('addmetoladderform')">here</a> to add your name now.
+Click
+<span id="show"><a style="text-decoration: underline; cursor: pointer">here</a>
+</span>
+to add somone now.
 
 
-	<? } ?>
+<? } else {?>
+
+
+Click
+<a href="javascript:submitForm('addmetoladderform')">here</a>
+to add your name now.
+
+
+<? } ?>
 
 <? } else{ ?>
 
 <div id="ladderControlPanel" style="padding-bottom: 5px;">
-<span class="normal">
- <a href=javascript:newWindow('../help/club_ladders.html')> Ladders explained</a> 
-<?  if(get_roleid()==2 || get_roleid()==4){ ?>
-	 | <span class="normal" id="show"><a style="text-decoration: underline; cursor: pointer"> Add Player</a></span>
+	<span class="normal"> <a href=javascript:newWindow('../help/club_ladders.html')>
+			Ladders explained</a> <?  if(get_roleid()==2 || get_roleid()==4){ ?>
+		| <span class="normal" id="show"><a
+			style="text-decoration: underline; cursor: pointer"> Add Player</a> </span>
+			<? } ?>
 
-<? } ?>
-
-</span>
+	</span>
 </div>
 
 
 <table width="650">
 	<tr>
-	<td valign="top">
+		<td valign="top">
 
-<table cellspacing="0" cellpadding="20" width="300" class="generictable" id="formtable">
- <tr>
-    <td class=clubid<?=get_clubid()?>th>
-    	<span class="whiteh1">
-    		<div align="center"><? pv($DOC_TITLE) ?></div>
-    	</span>
-    </td>
- </tr>
+			<table cellspacing="0" cellpadding="20" width="300"
+				class="generictable" id="formtable">
+				<tr>
+					<td class=clubid <?=get_clubid()?> th><span class="whiteh1">
+							<div align="center">
+							<? pv($DOC_TITLE) ?>
+							</div>
+					</span>
+					</td>
+				</tr>
 
- <tr>
-    <td >
+				<tr>
+					<td>
 
-     <table cellspacing="1" cellpadding="5" width="300" class="borderless" >
- 		<tr>
-                 <td ><span class="bold">Place</span></th>
-                 <td><span class="bold">Name</span></th>
-             </tr>
-			 <?
+						<table cellspacing="1" cellpadding="5" width="300"
+							class="borderless">
+							<tr>
+								<td><span class="bold">Place</span>
+								
+								</th>
+								<td><span class="bold">Name</span>
+								
+								</th>
+							</tr>
+							<?
 
-			 //Reset pointer
-			 mysql_data_seek($ladderplayers,0);
-			 
-			 $numrows = mysql_num_rows($ladderplayers);
-                while ( $playerarray = db_fetch_array($ladderplayers)){
-                	$rc = (($numrows/2 - intval($numrows/2)) > .1) ? "lightrow_plain" : "darkrow_plain"; 
-                 	
-                   ?>
-                 	
-                 	<form name="playerform<?=$numrows?>" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php" >
-                            <input type="hidden" name="userid" value="<?=$playerarray['userid']?>">
-                       		<input type="hidden" name="origin" value="ladder">
-                     </form>
-                     
-                                   
-                 	<tr class="<?=$rc?>">
-                 		<td ><?=$playerarray['ladderposition']?>
-                 			<? if($playerarray['going']=="up"){ ?>
-                 			<img src="<?=$_SESSION["CFG"]["imagedir"]?>/raise.png" title="Won the last challenge match" >
-                 			<? } else if($playerarray['going']=="down"){ ?>
-                 				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/fall.png" title="Lost the last challenge match" >
-                 			<? } ?>
-                 		</td>
-                 		<td >
-                 		<a href="javascript:submitForm('playerform<?=$numrows?>')"><?=$playerarray['firstname']?> <?=$playerarray['lastname']?></a>
-                 		<? if(get_roleid()==2 || get_roleid()==4){?>
-                 		
-                 		<a href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" title="remove this chump from the ladder" /></a>
-						
-                 		<a href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);"><img src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png" title="bump this guy up one spot" ></a>
+							//Reset pointer
+							mysql_data_seek($ladderplayers,0);
 
-						<?}?>
-						
-						<? if($playerarray['locked']=='y') {?>
-						<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png" title="I am locked because I am currently being challenged or I am challenging someone else. In any event, once the scores have been put in, the lock will be removed." />
-						<? } else if( !$playerlocked && isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){?>
-						<span id="challenge-<?=$playerarray['ladderposition']?>"> <img src="<?=$_SESSION["CFG"]["imagedir"]?>/add_small.png" title="click me to challenge" /></span>
-						<?} ?>
-                 		</td>
-                 	</tr>
-                 
-				<? 
-				 	$numrows = $numrows - 1;
-				}  ?>
-				
+							$numrows = mysql_num_rows($ladderplayers);
+							while ( $playerarray = db_fetch_array($ladderplayers)){
+								$rc = (($numrows/2 - intval($numrows/2)) > .1) ? "lightrow_plain" : "darkrow_plain";
 
- 	</table>
+								?>
 
-	</td>
+							<form name="playerform<?=$numrows?>" method="post"
+								action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php">
+								<input type="hidden" name="userid"
+									value="<?=$playerarray['userid']?>"> <input type="hidden"
+									name="origin" value="ladder">
+							</form>
+
+
+							<tr class="<?=$rc?>">
+								<td><?=$playerarray['ladderposition']?> <? if($playerarray['going']=="up"){ ?>
+									<img src="<?=$_SESSION["CFG"]["imagedir"]?>/raise.png"
+									title="Won the last challenge match"> <? } else if($playerarray['going']=="down"){ ?>
+									<img src="<?=$_SESSION["CFG"]["imagedir"]?>/fall.png"
+									title="Lost the last challenge match"> <? } ?>
+								</td>
+								<td><a href="javascript:submitForm('playerform<?=$numrows?>')"><?=$playerarray['firstname']?>
+								<?=$playerarray['lastname']?> </a> <? if(get_roleid()==2 || get_roleid()==4){?>
+									<a
+									href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img
+										src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png"
+										title="remove this chump from the ladder" /> </a> <a
+									href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);"><img
+										src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png"
+										title="bump this guy up one spot"> </a> <?}
+										?> <? if($playerarray['locked']=='y') {?> <img
+									src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"
+									title="I am locked because I am currently being challenged or I am challenging someone else. In any event, once the scores have been put in, the lock will be removed." />
+									<? } else if( !$playerlocked && isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){?>
+									<span id="challenge-<?=$playerarray['ladderposition']?>"> <img
+										src="<?=$_SESSION["CFG"]["imagedir"]?>/add_small.png"
+										title="click me to challenge" />
+								</span> <?} 
+
+								?></td>
+							</tr>
+
+							<?
+							$numrows = $numrows - 1;
+							}  ?>
+
+
+						</table>
+
+					</td>
+				</tr>
+			</table>
+
+		</td>
+		<td valign="top">
+			<div style="padding-left: 1em;">
+			<? include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php"); ?>
+			</div>
+
+		</td>
 	</tr>
 </table>
 
-</td>
-	<td valign="top" >
-		<div style="padding-left: 1em;"><? include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php"); ?></div>
-	 				  		
-	</td>
-</tr>
-</table>
-
-<? } ?>
+			<? } ?>
 
 
 <div id="challengedialog" class="yui-pe-content">
 
-<div class="bd">
-<form method="POST" action="<?=$ME?>">
-	<label for="from_name">From:</label><input type="textbox" name="firstname" value="<?=get_userfullname()?>" disabled="disabled"/>
-	<label for="to_name">To:</label><input type="textbox" name="lastname" disabled="disabled" id="to_name"/>
-	<label for="to_email">E-mail:</label><input type="textbox" name="email" disabled="disabled" id="to_email" size="50"> 
+	<div class="bd">
+		<form method="POST" action="<?=$ME?>">
+			<label for="from_name">From:</label><input type="textbox"
+				name="firstname" value="<?=get_userfullname()?>" disabled="disabled" />
+			<label for="to_name">To:</label><input type="textbox" name="lastname"
+				disabled="disabled" id="to_name" /> <label for="to_email">E-mail:</label><input
+				type="textbox" name="email" disabled="disabled" id="to_email"
+				size="50">
 
-	<div class="clear"></div>
-	<label for="textarea">Message:</label>
-	<textarea id="challengemessage" name="textarea" cols="50" rows="10" onKeyDown="limitText(this.form.textarea,this.form.countdown,250);" 
-			onKeyUp="limitText(this.form.textarea,this.form.countdown,250);"></textarea>
+			<div class="clear"></div>
+			<label for="textarea">Message:</label>
+			<textarea id="challengemessage" name="textarea" cols="50" rows="10"
+				onKeyDown="limitText(this.form.textarea,this.form.countdown,250);"
+				onKeyUp="limitText(this.form.textarea,this.form.countdown,250);"></textarea>
 
-	<div class="clear"></div>
-	<span class="normalsm">
-				You have <input readonly type="text" name="countdown" size="3" value="120"> characters left.
-	</span>	
-	<input type="hidden" name="cmd" value="challengeplayer">
-   	<input type="hidden" name="challengeeid" id="challengeeid">
-   	<script>
+			<div class="clear"></div>
+			<span class="normalsm"> You have <input readonly type="text"
+				name="countdown" size="3" value="120"> characters left.
+			</span> <input type="hidden" name="cmd" value="challengeplayer"> <input
+				type="hidden" name="challengeeid" id="challengeeid">
+			<script>
    
    	</script>
 
-</form>
-</div>
+		</form>
+	</div>
 </div>
 
 <div id="dialog1" class="yui-pe-content">
 
 
-<div class="bd">
+	<div class="bd">
 
-<form method="POST" action="<?=$ME?>">
+		<form method="POST" action="<?=$ME?>">
 
-	<div>
-		<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
-        <input id="id1" name="userid" type="hidden" />
-      </div>    
-       <div>
-       	Spot: <select name="placement">
-             	<?
-             	mysql_data_seek($ladderplayers,0);	
-             	for ( $i = 1; $i<= mysql_num_rows($ladderplayers)+1; ++$i){ 
-             		
-             		if($i == count($ladderplayers)+1 ){
-             			$selected = "selected=\"selected\"";
-             		}
-             		?>
-			 			<option value="<?=$i?>" <?=$selected?>><?=$i?></option>	 	
+			<div>
+				<input id="name1" name="playeronename" type="text" size="30"
+					class="form-autocomplete" /> <input id="id1" name="userid"
+					type="hidden" />
+			</div>
+			<div>
+				Spot: <select name="placement">
+				<?
+				mysql_data_seek($ladderplayers,0);
+				for ( $i = 1; $i<= mysql_num_rows($ladderplayers)+1; ++$i){
+
+					if($i == count($ladderplayers)+1 ){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<option value="<?=$i?>" <?=$selected?>>
+					<?=$i?>
+					</option>
 					<? } ?>
-             	
-             </select> 
-             </div>
-                <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
-   				<input type="hidden" name="cmd" value="addtoladder">
-   				<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-    			<script>
+
+				</select>
+			</div>
+			<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+			<input type="hidden" name="cmd" value="addtoladder"> <input
+				type="hidden" name="courttypeid" value="<?=$courttypeid?>">
+			<script>
                 <?
                 $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
                  pat_autocomplete( array(
@@ -238,9 +261,9 @@ Nobody has signed up for the ladder yet.
 
                 </script>
 
- </form>
- </div>
- </div>
+		</form>
+	</div>
+</div>
 
 <script>
 

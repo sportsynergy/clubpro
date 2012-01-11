@@ -1,250 +1,273 @@
+<?php
 
+//Initialize some important variables
 
-<?
+$playerposition = 0;
+$playerlocked = false;
+$myteamid =0;
+$userid = get_userid();
+$teams = getTeamsForUser($userid);
+$teamrows = mysql_num_rows($teams);
+$teamINClause = array();
 
-	//Initialize some important variables	
+if( isDebugEnabled(1) ){
+	logMessage(sprintf("team_ladder_form Number of Teams [%s]", $teamrows));
+}
 
- 	$playerposition = 0;
-	$playerlocked = false;
-	$myteamid =0;
-	$userid = get_userid();
-	$teams = getTeamsForUser($userid);
-	$teamrows = mysql_num_rows($teams);
-	$teamINClause = "";
-	
-		//build in clause
-		for ($i = 0; $i < $teamrows; ++$i) {
-	
-			$team = mysql_fetch_array($teams);
-	
-			if ($i != 0) {
-				$teamINClause .= ",";
-			}
-			$teamINClause .= "$team[teamid]";
-	
-		}
-		
-		$query = "SELECT ladder.ladderposition, ladder.locked, ladder.userid  
+//build in clause
+for ($i = 0; $i < $teamrows; ++$i) {
+	$team = mysql_fetch_array($teams);
+	/*if ($i != 0) {
+		$teamINClause[] = ",";
+	}*/
+
+	// It appears something is missing here ?? 
+	$teamINClause[] = "$team[teamid]";
+}
+
+if(count($teamINClause) > 0 ){
+	$rawQuery = "SELECT ladder.ladderposition, ladder.locked, ladder.userid
 						FROM tblClubLadder ladder
-						WHERE ladder.userid IN ($teamINClause) 
-						AND ladder.courttypeid = $courttypeid 
-						AND ladder.clubid = ".get_clubid() ." 
+						WHERE ladder.userid IN (%s) 
+						AND ladder.courttypeid = %s 
+						AND ladder.clubid = %s 
 						AND enddate IS NULL";
-	    
-		$result = db_query($query);
-		if( mysql_num_rows($result) > 0 ){
-			$ladderplayer = mysql_fetch_array($result);
-			$playerposition = $ladderplayer['ladderposition'];
-			$playerlocked = $ladderplayer['locked']=="y" ? true : false;
-			$myteamid = $ladderplayer['userid'];
-		}
-	
-				 
+	$query = sprintf($rawQuery, implode(',',$teamINClause), $courttypeid, get_clubid() );
+
+	$result = db_query($query);
+	if( mysql_num_rows($result) > 0 ){
+		$ladderplayer = mysql_fetch_array($result);
+		$playerposition = $ladderplayer['ladderposition'];
+		$playerlocked = $ladderplayer['locked']=="y" ? true : false;
+		$myteamid = $ladderplayer['userid'];
+	}
+}
+
 ?>
 
 
 
 
- <form name="deleteform" method="post" action="<?=$ME?>">
-	<input type="hidden" name="userid" value="<?=get_userid()?>">
-	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-	<input type="hidden" name="cmd" value="removefromladder">
+<form name="deleteform" method="post" action="<?=$ME?>">
+	<input type="hidden" name="userid" value="<?=get_userid()?>"> <input
+		type="hidden" name="courttypeid" value="<?=$courttypeid?>"> <input
+		type="hidden" name="cmd" value="removefromladder">
 </form>
 
- <form name="moveform" method="post" action="<?=$ME?>">
-	<input type="hidden" name="userid" value="">
-	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-	<input type="hidden" name="cmd" value="moveupinladder">
+<form name="moveform" method="post" action="<?=$ME?>">
+	<input type="hidden" name="userid" value=""> <input type="hidden"
+		name="courttypeid" value="<?=$courttypeid?>"> <input type="hidden"
+		name="cmd" value="moveupinladder">
 </form>
 
- <form name="moveform" method="post" action="<?=$ME?>">
-	<input type="hidden" name="userid" value="">
-	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-	<input type="hidden" name="cmd" value="removechallenge">
+<form name="moveform" method="post" action="<?=$ME?>">
+	<input type="hidden" name="userid" value=""> <input type="hidden"
+		name="courttypeid" value="<?=$courttypeid?>"> <input type="hidden"
+		name="cmd" value="removechallenge">
 </form>
 
 
-<? 
+<?
 $numrows = count($ladderplayers);
 if($numrows ==0) { ?>
 
 Nobody has signed up for the ladder yet.
-	<?  if(get_roleid()==2 || get_roleid==4){ ?>
-		 
-		Click <span id="show"><a style="text-decoration: underline; cursor: pointer">here</a></span> to add the first team now.
-		
+<?  if(get_roleid()==2 || get_roleid==4){ ?>
 
-	<? } else {?>
-		 
-		 	Ask your club pro to get the ball rolling with this.
-		
+Click
+<span id="show"><a style="text-decoration: underline; cursor: pointer">here</a>
+</span>
+to add the first team now.
 
-	<? } ?>
+
+<? } else {?>
+
+Ask your club pro to get the ball rolling with this.
+
+
+<? } ?>
 
 <? } else{ ?>
 
 <div id="ladderControlPanel" style="padding-bottom: 5px;">
-<span class="normal">
- <a href=javascript:newWindow('../help/club_ladders.html')> Ladders explained</a> 
-<?  if(get_roleid()==2 || get_roleid()==4){ ?>
-	 | <span class="normal" id="show"><a style="text-decoration: underline; cursor: pointer">Add Team</a></span>
-<? } ?>
+	<span class="normal"> <a href=javascript:newWindow('../help/club_ladders.html')>
+			Ladders explained</a> <?  if(get_roleid()==2 || get_roleid()==4){ ?>
+		| <span class="normal" id="show"><a
+			style="text-decoration: underline; cursor: pointer">Add Team</a> </span>
+			<? } ?>
 
-</span>
+	</span>
 </div>
 
 
-<table  width="650">
+<table width="650">
 	<tr>
-	<td valign="top">
+		<td valign="top">
 
-<table cellspacing="0" cellpadding="20" width="300" class="generictable" id="formtable">
- <tr>
-    <td class=clubid<?=get_clubid()?>th>
-    	<span class="whiteh1">
-    		<div align="center"><? pv($DOC_TITLE) ?></div>
-    	</span>
-    </td>
- </tr>
+			<table cellspacing="0" cellpadding="20" width="300"
+				class="generictable" id="formtable">
+				<tr>
+					<td class=clubid <?=get_clubid()?> th><span class="whiteh1">
+							<div align="center">
+							<? pv($DOC_TITLE) ?>
+							</div>
+					</span>
+					</td>
+				</tr>
 
- <tr>
-    <td >
+				<tr>
+					<td>
 
-     <table cellspacing="1" cellpadding="5" width="300" class="borderless" >
- 		<tr>
-                 <td ><span class="bold">Place</span></th>
-                 <td><span class="bold">Name</span></th>
-             </tr>
-			 <?
+						<table cellspacing="1" cellpadding="5" width="300"
+							class="borderless">
+							<tr>
+								<td><span class="bold">Place</span>
+								
+								</th>
+								<td><span class="bold">Name</span>
+								
+								</th>
+							</tr>
+							<?
 
-			 //Reset pointer
+							//Reset pointer
 
-			 
-			 $numrows = count($ladderplayers);
-			 for($i=0; $i< count($ladderplayers); ++$i){
-                	
-			 	$playerarray = $ladderplayers[$i];
-			 	$rc = (($numrows/2 - intval($numrows/2)) > .1) ? "lightrow_plain" : "darkrow_plain"; 
-                 	
-                   ?>
-                 	              
-                 	<tr class="<?=$rc?>">
-                 		<td ><?=$playerarray['ladderposition']?>
-                 			<? if($playerarray['going']=="up"){ ?>
-                 			<img src="<?=$_SESSION["CFG"]["imagedir"]?>/raise.png" title="Won the last challenge match" >
-                 			<? } else if($playerarray['going']=="down"){ ?>
-                 				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/fall.png" title="Lost the last challenge match" >
-                 			<? } ?>
-                 		</td>
-                 		<td >
-                 		<?=$playerarray['firstplayer']?> and <?=$playerarray['secondplayer']?>
-                 		<? if(get_roleid()==2 || get_roleid()==4){?>
-                 		
-                 		<a href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" title="remove these chumpts from the ladder" /></a>
-						
-                 		<a href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);"><img src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png" title="bump these guys up one spot" ></a>
 
-						<?}?>
-						
-						<? if($playerarray['locked']=='y') {?>
-						<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png" title="We are locked because we are currently being challenged or we are challenging another team. In any event, once the scores have been put in, the lock will be removed." />
-						<? } else if(  !$playerlocked && isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){?>
-						<span id="challenge-<?=$playerarray['ladderposition']?>"> <img src="<?=$_SESSION["CFG"]["imagedir"]?>/add_small.png" title="click me to challenge" /></span>
-						<?} ?>
-                 		</td>
-                 	</tr>
-                 
-				<? 
-				 	$numrows = $numrows - 1;
-				}  ?>
-				
+							$numrows = count($ladderplayers);
+							for($i=0; $i< count($ladderplayers); ++$i){
+									
+								$playerarray = $ladderplayers[$i];
+								$rc = (($numrows/2 - intval($numrows/2)) > .1) ? "lightrow_plain" : "darkrow_plain";
 
- 	</table>
+								?>
 
-	</td>
+							<tr class="<?=$rc?>">
+								<td><?=$playerarray['ladderposition']?> <? if($playerarray['going']=="up"){ ?>
+									<img src="<?=$_SESSION["CFG"]["imagedir"]?>/raise.png"
+									title="Won the last challenge match"> <? } else if($playerarray['going']=="down"){ ?>
+									<img src="<?=$_SESSION["CFG"]["imagedir"]?>/fall.png"
+									title="Lost the last challenge match"> <? } ?>
+								</td>
+								<td><?=$playerarray['firstplayer']?> and <?=$playerarray['secondplayer']?>
+								<? if(get_roleid()==2 || get_roleid()==4){?> <a
+									href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img
+										src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png"
+										title="remove these chumpts from the ladder" /> </a> <a
+									href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);"><img
+										src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png"
+										title="bump these guys up one spot"> </a> <?}
+
+										?> <? if($playerarray['locked']=='y') {?> <img
+									src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"
+									title="We are locked because we are currently being challenged or we are challenging another team. In any event, once the scores have been put in, the lock will be removed." />
+									<? } else if(  !$playerlocked && isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){?>
+									<span id="challenge-<?=$playerarray['ladderposition']?>"> <img
+										src="<?=$_SESSION["CFG"]["imagedir"]?>/add_small.png"
+										title="click me to challenge" />
+								</span> <?} 
+
+
+
+								?></td>
+							</tr>
+
+							<?
+							$numrows = $numrows - 1;
+							}  ?>
+
+
+						</table>
+
+					</td>
+				</tr>
+			</table>
+
+		</td>
+		<td valign="top">
+			<div style="padding-left: 1em;">
+			<? include($_SESSION["CFG"]["includedir"]."/include_doubles_ladder_activity.php"); ?>
+			</div>
+
+		</td>
 	</tr>
 </table>
 
-</td>
-	<td valign="top" >
-		<div style="padding-left: 1em;"><? include($_SESSION["CFG"]["includedir"]."/include_doubles_ladder_activity.php"); ?></div>
-	 				  		
-	</td>
-</tr>
-</table>
-
-<? } ?>
+			<? } ?>
 
 
 <div id="challengedialog" class="yui-pe-content">
 
-<div class="bd">
-<form method="POST" action="<?=$ME?>">
-	<label for="from_name">From:</label><input type="textbox" name="firstname" value="<?=get_userfullname()?>" disabled="disabled"/>
-	<label for="to_name">To:</label><input type="textbox" name="lastname" disabled="disabled" id="to_name" size="38"/>
-	<label for="to_email">E-mail:</label><input type="textbox" name="email" disabled="disabled" id="to_email" size="50"> 
+	<div class="bd">
+		<form method="POST" action="<?=$ME?>">
+			<label for="from_name">From:</label><input type="textbox"
+				name="firstname" value="<?=get_userfullname()?>" disabled="disabled" />
+			<label for="to_name">To:</label><input type="textbox" name="lastname"
+				disabled="disabled" id="to_name" size="38" /> <label for="to_email">E-mail:</label><input
+				type="textbox" name="email" disabled="disabled" id="to_email"
+				size="50">
 
-	<div class="clear"></div>
-	<label for="textarea">Message:</label>
-	<textarea id="challengemessage" name="textarea" cols="50" rows="10" onKeyDown="limitText(this.form.textarea,this.form.countdown,250);" 
-			onKeyUp="limitText(this.form.textarea,this.form.countdown,250);"></textarea>
+			<div class="clear"></div>
+			<label for="textarea">Message:</label>
+			<textarea id="challengemessage" name="textarea" cols="50" rows="10"
+				onKeyDown="limitText(this.form.textarea,this.form.countdown,250);"
+				onKeyUp="limitText(this.form.textarea,this.form.countdown,250);"></textarea>
 
-	<div class="clear"></div>
-	<span class="normalsm">
-				You have <input readonly type="text" name="countdown" size="3" value="85"> characters left.
-	</span>	
-	<input type="hidden" name="cmd" value="challengeplayer">
-   	<input type="hidden" name="challengeeid" id="challengeeid">
-   	<input type="hidden" name="challengerid" id="challengerid">
-   	
-    <input type="hidden" name="firstplayer" id="firstplayer">
-   	<input type="hidden" name="firstemail" id="firstemail">
-   	<input type="hidden" name="secondplayer" id="secondplayer">
-   	<input type="hidden" name="secondemail" id="secondemail">
-   		
-   	<script>
+			<div class="clear"></div>
+			<span class="normalsm"> You have <input readonly type="text"
+				name="countdown" size="3" value="85"> characters left.
+			</span> <input type="hidden" name="cmd" value="challengeplayer"> <input
+				type="hidden" name="challengeeid" id="challengeeid"> <input
+				type="hidden" name="challengerid" id="challengerid"> <input
+				type="hidden" name="firstplayer" id="firstplayer"> <input
+				type="hidden" name="firstemail" id="firstemail"> <input
+				type="hidden" name="secondplayer" id="secondplayer"> <input
+				type="hidden" name="secondemail" id="secondemail">
+
+			<script>
    
    	</script>
 
-</form>
-</div>
+		</form>
+	</div>
 </div>
 
 <div id="dialog1" class="yui-pe-content">
 
 
-<div class="bd">
+	<div class="bd">
 
-<form method="POST" action="<?=$ME?>">
+		<form method="POST" action="<?=$ME?>">
 
-	<div>
-		<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
-        <input id="id1" name="userid" type="hidden" />
-        and 
-        <input id="name2" name="playertwoname" type="text" size="30" class="form-autocomplete" />
-        <input id="id2" name="userid2" type="hidden" />
-   </div>    
-       <div>
-       	Spot: <select name="placement">
-             	<?
-             	$selected = "";
-             	
-             	for ( $i = 1; $i<= count($ladderplayers)+1; ++$i){ 
-             	
-             		if($i == count($ladderplayers)+1 ){
-             			$selected = "selected=\"selected\"";
-             		}
-             		
-             		?>
-			 			<option value="<?=$i?>"  <?=$selected?>><?=$i?></option>	 	
+			<div>
+				<input id="name1" name="playeronename" type="text" size="30"
+					class="form-autocomplete" /> <input id="id1" name="userid"
+					type="hidden" /> and <input id="name2" name="playertwoname"
+					type="text" size="30" class="form-autocomplete" /> <input id="id2"
+					name="userid2" type="hidden" />
+			</div>
+			<div>
+				Spot: <select name="placement">
+				<?
+				$selected = "";
+
+				for ( $i = 1; $i<= count($ladderplayers)+1; ++$i){
+
+					if($i == count($ladderplayers)+1 ){
+						$selected = "selected=\"selected\"";
+					}
+
+					?>
+					<option value="<?=$i?>" <?=$selected?>>
+					<?=$i?>
+					</option>
 					<? } ?>
-             	
-             </select> 
-             </div>
-                <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
-   				<input type="hidden" name="cmd" value="addtoladder">
-   				<input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-    			<script>
+
+				</select>
+			</div>
+			<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+			<input type="hidden" name="cmd" value="addtoladder"> <input
+				type="hidden" name="courttypeid" value="<?=$courttypeid?>">
+			<script>
                 <?
                 $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
                  pat_autocomplete( array(
@@ -271,11 +294,11 @@ Nobody has signed up for the ladder yet.
 
                 </script>
 
-	
 
- </form>
- </div>
- </div>
+
+		</form>
+	</div>
+</div>
 
 <script>
 
