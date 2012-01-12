@@ -41,12 +41,19 @@
 include ("../application.php");
 require_login();
 
+/*
 //Load in Date
 $userid = $_REQUEST["userid"];
 
 if (!isset($userid)) {
     $userid = get_userid();
 }
+*/
+
+// Security Issue Resolved, by always enforcing
+// the session ID.
+$userid = $_SESSION['user']['userid'];
+
 $DOC_TITLE = "Edit Account";
 unset($authSites);
 unset($registeredSports);
@@ -56,16 +63,19 @@ $availbleSports = load_avail_sports();
 $availableSites = load_avail_sites();
 $extraParametersResult = load_site_parameters();
 
-/* form has been submitted, check if it the user login information is correct */
 
-if (match_referer() && isset($_POST)) {
+// Make sure the form actually has been posted.  
+// An error would occur if you pressed "Account Setttings" link twice
+// Extra parsing of the POST special variable resolves this issue 
+if (match_referer() && isset($_POST['submit']) && $_POST['submit'] == 'Update Settings') {
     $frm = $_POST;
     $errormsg = validate_form($frm, $errors);
     
     if (isset($userid)) {
-        $useridstring = "?userid=$userid";
+        $useridstring = sprintf("?userid=%s",$userid);
     }
-    $backtopage = $_SESSION["CFG"]["wwwroot"] . "/users/change_settings.php$useridstring";
+	
+    $backtopage = $_SESSION["CFG"]["wwwroot"] . sprintf("/users/change_settings.php%s",$useridstring);
     
     if (empty($errormsg)) {
         update_settings($frm, $extraParametersResult);
@@ -76,6 +86,7 @@ if (match_referer() && isset($_POST)) {
         $noticemsg = "Your profile was saved.  Good Job!<br/><br/>";
     }
 }
+
 $frm = load_user_profile($userid);
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/change_settings_form.php");

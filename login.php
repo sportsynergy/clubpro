@@ -35,20 +35,14 @@ $DOC_TITLE = "Login Screen";
 /* form has been submitted, check if it the user login information is correct */
 
 if (match_referer() && isset($_POST)) {
-
-    
     if (isset($_POST["frompickform"])) {
-
         $user = load_user($_POST["userid"]);
     } else {
         $user = verify_login($_POST["username"], $_POST["password"], true);
     }
     
     if ($user) {
-
-
         //Already through this once...skipping
-        
         if (!isset($_POST["frompickform"])) {
 
             $usersResult = getAllUsersWithIdResult($_POST["username"], $user['clubid']);
@@ -101,5 +95,11 @@ if (match_referer() && isset($_POST)) {
         $frm["username"] = $_POST["username"];
     }
 }
+
+$rSql = "SELECT clubname FROM tblClubs WHERE clubid =%s";
+$clubNameSql = sprintf($rSql,get_clubid());
+unset($rSql);
+list($clubName) = mysql_fetch_row(db_query($clubNameSql));
+
 include ($_SESSION["CFG"]["templatedir"] . "/login_form.php");
 ?>

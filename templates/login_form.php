@@ -1,7 +1,13 @@
 <html>
 <head>
 <title>
-<? pv($DOC_TITLE) ?>
+<?php 
+if(isset($clubName) && strlen($clubName) <> 0){
+	echo $clubName.' Login';
+}else{
+	pv($DOC_TITLE);
+}
+ ?>
 </title>
 <!--
 <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css">
@@ -58,7 +64,13 @@ a {
     <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/login.php" autocomplete="off">
       <div id="loginWindow">
         <h1 align="center">
-          <? pv($DOC_TITLE) ?>
+          <?php 
+		  if(isset($clubName) && strlen($clubName) <> 0){
+			  echo $clubName.' Login';
+		  }else{
+			  pv($DOC_TITLE);
+		  }
+		   ?>
         </h1>
         <div style="height:15px;"> <!-- Spacer --> </div>
         <? if (! empty($errormsg)) { ?>

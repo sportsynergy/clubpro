@@ -81,16 +81,16 @@ function validate_form(&$frm, &$errors) {
     }
     return $msg;
 }
-function password_valid($password) {
 
+function password_valid($password) {
     /* return true if the user's password is valid */
     $username = $_SESSION["user"]["username"];
     $password = md5($password);
     $qid = db_query("SELECT 1 FROM tblUsers WHERE username = '$username' AND password = '$password' AND tblUsers.enddate IS NULL");
     return db_num_rows($qid);
 }
-function update_password($newpassword) {
 
+function update_password($newpassword) {
     /* set the user's password to the new one */
     $username = $_SESSION["user"]["username"];
     $newpassword = md5($newpassword);
