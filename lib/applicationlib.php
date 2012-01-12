@@ -5295,19 +5295,22 @@ function getSiteAttributes($siteid){
 }
 
 
-/*
+/**
  * Simply checks the existence of the court attribute
-* Store this as a session varaible
-*/
+ * Store this as a session varaible
+ * @return boolean
+ */
 function isSiteBoxLeageEnabled(){
 
 	return $_SESSION["siteprefs"]["boxenabled"]=='true'?true:false;
 }
 
-/*****************************************************************/
-/*
- Gets the usertype of a reservation (1=Doubles, 0=Singles)
-*/
+/**
+ * Gets the usertype of a reservation (1=Doubles, 0=Singles)
+ * 
+ * @param unknown_type $reservationID
+ * @return boolean
+ */
 function isDoublesReservation($reservationID){
 
 	$query = "SELECT reservations.usertype
@@ -5321,9 +5324,12 @@ function isDoublesReservation($reservationID){
 
 }
 
-/*****************************************************************
+/**
  * Adds name value pairs to an array and return how many were added.
-*/
+ * 
+ * @param unknown_type $arr
+ * @return number
+ */
 function array_push_associative(&$arr) {
 	$args = func_get_args();
 	$ret = 0;
@@ -5340,7 +5346,14 @@ function array_push_associative(&$arr) {
 	return $ret;
 }
 
-//Will return true if is club administrator and is in the reservation
+
+/**
+ * Will return true if is club administrator and is in the reservation
+ * 
+ * @param unknown_type $courtid
+ * @param unknown_type $time
+ * @return boolean
+ */
 function isCAButNotinReservation($courtid, $time){
 
 
@@ -5413,12 +5426,17 @@ function isCAButNotinReservation($courtid, $time){
 
 }
 
-/*
- **********************************************************************************************************
-This will check to see if on either a singles reservation or a doubles reservation the user attempting
-to cancel the court in doing so where someone is looking for a match.  As a general rule we are only
-allowing members of an incomplete reservation (and desk users) to cancel the court.
-*/
+
+/**
+ * This will check to see if on either a singles reservation or a doubles 
+ * reservation the user attempting to cancel the court in doing so where 
+ * someone is looking for a match.  As a general rule we are only allowing 
+ * members of an incomplete reservation (and desk users) to cancel the court.
+ * 
+ * @param unknown_type $courtid
+ * @param unknown_type $time
+ * @return boolean
+ */
 function isUserInPartialReservationSingles($courtid, $time){
 
 	$isOnlyUserInReservation = FALSE;
@@ -5452,12 +5470,17 @@ function isUserInPartialReservationSingles($courtid, $time){
 }
 
 
-/*
- **********************************************************************************************************
-This will check to see if on either a singles reservation or a doubles reservation the user attempting
-to cancel the court in doing so where someone is looking for a match.  As a general rule we are only
-allowing members of an incomplete reservation (and desk users) to cancel the court.
-*/
+/**
+ * This will check to see if on either a singles reservation or a 
+ * doubles reservation the user attempting to cancel the court in 
+ * doing so where someone is looking for a match.  As a general 
+ * rule we are only allowing members of an incomplete reservation 
+ * s(and desk users) to cancel the court.
+ * 
+ * @param unknown_type $courtid
+ * @param unknown_type $time
+ * @return boolean
+ */
 function isUserInPartialReservationDoubles($courtid, $time){
 
 	$isInReservation = FALSE;
@@ -5535,7 +5558,10 @@ function isUserInPartialReservationDoubles($courtid, $time){
 }
 
 /**
- This will return the full name of a user for a given userid (first name, last name)
+ * This will return the full name of a user for a given userid (first name, last name)
+ * 
+ * @param int $userId
+ * @return String Users Name (first name, last name)
  */
 function getFullNameForUserId($userId){
 
@@ -5566,6 +5592,11 @@ function getFullNameForUserIdWithEscapes($userId){
 	 
 }
 
+/**
+ * 
+ * Enter description here ...
+ * @param unknown_type $userId
+ */
 function getFullNameResultForUserId($userId){
 
 	$userQuery = "SELECT tblUsers.firstname, tblUsers.lastname
@@ -5608,9 +5639,9 @@ function get_site_events($siteid){
 }
 
 
-/*
+/**
  * Simply determins if the time  past occured before the current time
-*/
+ */
 function isInPast($time){
 
 	$clubquery = "SELECT timezone from tblClubs WHERE clubid='".get_clubid()."'";
@@ -5632,6 +5663,10 @@ function isInPast($time){
 
 /**
  * Logs Stuff
+ * 
+ * TODO: addin a light-logrotate class
+ * 
+ * @param String $message
  */
 function logMessage($message){
 
@@ -5644,7 +5679,6 @@ function logMessage($message){
 	$fp = fopen ($_SESSION["CFG"]["logFile"], "a+");
 	fwrite($fp,date("r",mktime()).": ".$message."\n");
 	fclose($fp);
-
 }
 
 /**
@@ -5883,8 +5917,6 @@ function getClubEvents($clubid){
 
 }
 
-
-
 /**
  * Gets the recent challenges matches
  * @param $siteid
@@ -6029,8 +6061,6 @@ function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts
 	}
 	return $url;
 }
-
-
 
 
 ?>

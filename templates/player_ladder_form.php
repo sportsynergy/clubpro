@@ -73,7 +73,7 @@ to add your name now.
 <? } else{ ?>
 
 <div id="ladderControlPanel" style="padding-bottom: 5px;">
-	<span class="normal"> <a href=javascript:newWindow('../help/club_ladders.html')>
+	<span class="normal"> <a href="../help/club_ladders.html?iframe=true&width=600&height=450" rel="prettyPhoto[iframe]">
 			Ladders explained</a> <?  if(get_roleid()==2 || get_roleid()==4){ ?>
 		| <span class="normal" id="show"><a
 			style="text-decoration: underline; cursor: pointer"> Add Player</a> </span>
@@ -122,7 +122,7 @@ to add your name now.
 
 								?>
 
-							<form name="playerform<?=$numrows?>" method="post"
+							<form name="playerform<?=$numrows?>" method="get"
 								action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php">
 								<input type="hidden" name="userid"
 									value="<?=$playerarray['userid']?>"> <input type="hidden"

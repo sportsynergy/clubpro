@@ -1,5 +1,4 @@
-<?
-
+<?php
 
 include("../application.php");
 require($_SESSION["CFG"]["libdir"]."/ladderlib.php");
@@ -7,6 +6,10 @@ require($_SESSION["CFG"]["libdir"]."/postageapplib.php");
 $DOC_TITLE = "Player Ladder";
 require_loginwq();
 
+// Include jQuery
+define("_JQUERY_",true);
+// Include PrettyPhoto
+define("_PRETTYPHOTO_",true);
 
 
 if( !empty($_POST['courttypeid']) ){

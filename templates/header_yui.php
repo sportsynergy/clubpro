@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" />
 <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/menu/assets/skins/sam/menu.css">
 
-<!-- CSS for Menu -->
+<!-- EMCA 262 for Menu -->
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/animation/animation.js"></script>
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/container_core.js"></script>
@@ -36,19 +36,31 @@
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/menu/menu.js"></script>
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/navigation.js"></script>
 
+<?php if (!defined("_JQUERY_")){ ?>
 <!-- Page-specific styles -->
 <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
 <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/prototype-1.3.1.js" type="text/javascript"></script>
 <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/ajaxtags-1.1.5.js" type="text/javascript"></script>
+<?php } ?>
+
+<?php if (defined("_JQUERY_") && _JQUERY_ == true){ ?>
+<!-- jQuery -->
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/jquery-1.6.1.min.js" type="text/javascript"></script>
+	<?php if (defined("_PRETTYPHOTO_") && _PRETTYPHOTO_ == true){ ?>
+<!-- PrettyPhoto -->
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/jquery.prettyPhoto.js" type="text/javascript"></script>
+    <?php } ?>
+<?php } ?>
 
 <!-- Standard reset, fonts and grids -->
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css">
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/ajaxtags.css" rel=stylesheet type=text/css>
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/displaytag.css" rel=stylesheet type=text/css>
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/calendar.css" rel=stylesheet type=text/css>
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css" />
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel="stylesheet" type="text/css" />
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/ajaxtags.css" rel="stylesheet" type="text/css" />
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/displaytag.css" rel="stylesheet" type="text/css" />
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/calendar.css" rel="stylesheet" type="text/css" />
 <?php if(isset( $_SESSION["siteprefs"]["siteid"]) ){ ?>
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?php echo get_sitecode(); ?>/main.css" rel=stylesheet type=text/css>
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?php echo get_sitecode(); ?>/main.css" rel="stylesheet" type="text/css" />
 <?php } ?>
 </head>
 

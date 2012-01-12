@@ -206,7 +206,7 @@ switch ($frm['displayoption']) {
 	        <tr>
 	
 	          <td align="right">
-	              <font class="normal"><a href=javascript:newWindow('../help/squash-rankings.html')>Rankings Explained</a>
+	              <font class="normal"><a href="../help/squash-rankings.html?iframe=true&width=600&height=450" rel="prettyPhoto[iframe]">Rankings Explained</a>
 	              | <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Search Again </a> </font>
 	          </td>
 	        </tr>
@@ -274,7 +274,7 @@ switch ($frm['displayoption']) {
 	                                   </td>
                                    <td><a href="javascript:submitForm('playerform<?=$counter?>')"><?= $rankrow[0] ?> <?=$rankrow[1]?></a> </td>
                                    <td><div align="center"><?=$formrank?></div></td>
-                                   <form name="playerform<?=$counter?>" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php" >
+                                   <form name="playerform<?=$counter?>" method="get" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php" >
                                    	<input type="hidden" name="userid" value="<?=$rankrow[4]?>">
 	                       			<input type="hidden" name="courttypeid" value="<?=$frm["courttypeid"]?>">
 	                       			<input type="hidden" name="sortoption" value="<?=$frm['sortoption']?>">

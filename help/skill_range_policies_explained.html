@@ -5,16 +5,14 @@
 <title>Reservation Policies</title>
 <br>
 <LINK href="../main.css" rel=stylesheet type=text/css>
-</head>
-<body>
+</head><body>
 <h1>Skill Range Policies</h1>
-<br>
 Skill range policies are a convenient and flexible way to control the restrictions.  Policies are cumulative, meaning that the most restrictive will apply. <br>
 <br>
 <table width="100%" cellpadding="5">
   <tr>
-    <td valign="top"><div class="label">Name:</div></td>
-    <td>A meaningful name that will be used to identify the policy on the club preferences page.</td>
+    <td width="14%" valign="top"><div class="label">Name:</div></td>
+    <td width="86%">A meaningful name that will be used to identify the policy on the club preferences page.</td>
   </tr>
   <tr>
     <td valign="top"><div class="label">Description:</div></td>
@@ -34,105 +32,106 @@ Skill range policies are a convenient and flexible way to control the restrictio
   </tr>
   <tr>
     <td valign="top"><div class="label">Day of Week:</div></td>
-    <td>Scheduling polices can be applied selectively to specific days or can be applied to all days.</td>
+    <td>Scheduling policies can be applied selectively to specific days or can be applied to all days.</td>
   </tr>
   <tr>
     <td valign="top"><div class="label">Specify Window:</div></td>
-    <td>Optionally, scheduling windows can be specified.  A scheduling window can be created to block off a time range.  This can be used to specify.  When a scheduling window is not specified, the scheduling policy applies for the entire day.</td>
+    <td>Optionally, scheduling windows can be specified.  A scheduling window can be created to block off a time range during the day. <br />
+      Note: When a scheduling window is not specified, the scheduling policy applies for the entire day.</td>
   </tr>
   <tr>
     <td valign="top"><div class="label">Start Time:</div></td>
-    <td>When the specify window checkbox is checked, the start time represents the time of day that the policy will be enforced.</td>
+    <td>When the specify window checkbox is checked, the <em>start-time</em> represents the time of day that the policy will be enforced.</td>
   </tr>
   <tr>
     <td valign="top"><div class="label">End Time:</div></td>
-    <td>When the specify window checkbox is checked, the start time represents the time of day that policy is no longer enforced.</td>
+    <td>When the specify window checkbox is checked, the <em>end-time</em> represents the time of day that policy is no longer enforced.</td>
   </tr>
 </table>
 <br>
 <br>
 <div class="label">Examples:</div>
-1) To create a policy restricting players from making any reservation with other players who are ranked more than .25 higher or lower than them:<br>
-<br>
-<table width="100%" cellpadding="5">
-  <tr>
-    <td><div class="italitcsm">Name:</div></td>
-    <td><div class="italitcsm">Skill Range Policy</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Description:</div></td>
-    <td><div class="italitcsm">A cancellation policy restricting users cancellation privileges</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Type</div></td>
-    <td><div class="italitcsm">Cancellation</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Skill Range</div></td>
-    <td><div class="italitcsm">.25</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Court:</div></td>
-    <td><div class="italitcsm">All Courts</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Day of Week</div></td>
-    <td><div class="italitcsm">All Days</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Specify Window</div></td>
-    <td><div class="italitcsm">< not checked ></div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Start Time:</div></td>
-    <td><div class="italitcsm">N/A</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">End Time:</div></td>
-    <td><div class="italitcsm">N/A</div></td>
-  </tr>
-</table>
-<br>
-<br>
-2) To create a policy restricting players from making reservations on Saturdays between 11am and 2pm with other players who are ranked more than .5 higher or lower than them:<br>
-<br>
-<table width="100%" cellpadding="5">
-  <tr>
-    <td><div class="italitcsm">Name:</div></td>
-    <td><div class="italitcsm">Prime time Policy</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Description:</div></td>
-    <td><div class="italitcsm">A reservation policy that restricts the number of reservations users to one daily reservation.</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Type</div></td>
-    <td><div class="italitcsm">Reservation</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Skill Range</div></td>
-    <td><div class="italitcsm">.5</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Court:</div></td>
-    <td><div class="italitcsm">All Courts</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Day of Week</div></td>
-    <td><div class="italitcsm">Saturday</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Specify Window</div></td>
-    <td><div class="italitcsm">< checked ></div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">Start Time:</div></td>
-    <td><div class="italitcsm">11:00</div></td>
-  </tr>
-  <tr>
-    <td><div class="italitcsm">End Time:</div></td>
-    <td><div class="italitcsm">14:00</div></td>
-  </tr>
-</table>
+<ol>
+  <li>To create a policy restricting players from making any reservation with other players who are ranked more than .25 higher or lower than them:<br />
+    <table width="100%" cellpadding="5">
+      <tr>
+        <td width="13%"><div class="italitcsm">Name:</div></td>
+        <td width="87%"><div class="italitcsm">Skill Range Policy</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Description:</div></td>
+        <td><div class="italitcsm">A cancellation policy restricting users cancellation privileges</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Type:</div></td>
+        <td><div class="italitcsm">Cancellation</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Skill Range:</div></td>
+        <td><div class="italitcsm">.25</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Court:</div></td>
+        <td><div class="italitcsm">All Courts</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Day of Week:</div></td>
+        <td><div class="italitcsm">All Days</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Specify&nbsp;Window:</div></td>
+        <td><div class="italitcsm">< not checked ></div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Start Time:</div></td>
+        <td><div class="italitcsm">N/A</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">End Time:</div></td>
+        <td><div class="italitcsm">N/A</div></td>
+      </tr>
+    </table>
+  </li>
+  <li> To create a policy restricting players from making reservations on Saturdays between 11am and 2pm with other players who are ranked more than .5 higher or lower than them:<br />
+    <table width="100%" cellpadding="5">
+      <tr>
+        <td width="14%"><div class="italitcsm">Name:</div></td>
+        <td width="86%"><div class="italitcsm">Prime time Policy</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Description:</div></td>
+        <td><div class="italitcsm">A reservation policy that restricts the number of reservations users to one daily reservation.</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Type:</div></td>
+        <td><div class="italitcsm">Reservation</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Skill Range:</div></td>
+        <td><div class="italitcsm">.5</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Court:</div></td>
+        <td><div class="italitcsm">All Courts</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Day of Week:</div></td>
+        <td><div class="italitcsm">Saturday</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Specify&nbsp;Window:</div></td>
+        <td><div class="italitcsm">< checked ></div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">Start Time:</div></td>
+        <td><div class="italitcsm">11:00</div></td>
+      </tr>
+      <tr>
+        <td><div class="italitcsm">End Time:</div></td>
+        <td><div class="italitcsm">14:00</div></td>
+      </tr>
+    </table>
+  </li>
+</ol>
 </body>
 </html>

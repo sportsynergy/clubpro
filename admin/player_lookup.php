@@ -108,7 +108,7 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
 			?>
 			
 			<tr class="<?=$rc?>" >
-			<form name="playerform<?=$rownum?>" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_info.php">
+			<form name="playerform<?=$rownum?>" method="get" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_info.php">
 			<td><div align="center"><?=$playerarray['firstname']?></div> </td>
 			<td><div align="center"><?=$playerarray['lastname']?></div> </td>
 				<input type="hidden" name="userid" value="<?=$playerarray[0]?>">

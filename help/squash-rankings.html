@@ -7,24 +7,56 @@
 </head>
 
 <body>
-<h1>Rankings</h1><br>
-Sportsynergy uses a nationally recognized ranking calculation. <br>
-<font class=italitcsm>
-// --------------------------------------------------------------------------<br>
- // WRO= Winner's old rating<br>
- // LRO = Loser's old rating<br>
- // K = constant = .1<br>
- // D = denominator = .5<br>
- // PW = Probability that the winner would win = (1/power(10,(-(WRO-LRO)/D))+1))<br>
- // PL = Probability that the lose would win = (1/Power(10,(-(LRO-WRO)/D))+1))<br>
- // WRN = Winners's new raing = (WRO+K*(1-PW))<br>
- // LRN = Loser's new rating = (LRO+K*K(0-PL)<br>
- // --------------------------------------------------------------------------<br>
+<h1>Rankings</h1>
+Sportsynergy uses a nationally recognized ranking calculation as listed below:<br>
+<font class=italitcsm><br>
  
  </font> 
-<br><br>
+<table width="100%" border="0" cellpadding="5">
+  <tr>
+    <td align="right"><font class=italitcsm>WRO</font></td>
+    <td align="center">=</td>
+    <td><font class=italitcsm>Winner's old rating</font></td>
+  </tr>
+  <tr>
+    <td align="right"><font class=italitcsm>LRO</font></td>
+    <td align="center">=</td>
+    <td><font class=italitcsm>Loser's old rating</font></td>
+  </tr>
+  <tr>
+    <td align="right">K</td>
+    <td align="center">=</td>
+    <td><font class=italitcsm>constant = .1</font></td>
+  </tr>
+  <tr>
+    <td align="right">D</td>
+    <td align="center">=</td>
+    <td><font class=italitcsm>denominator = .5</font></td>
+  </tr>
+  <tr>
+    <td align="right"><font class=italitcsm>PW</font></td>
+    <td align="center">=</td>
+    <td><font class=italitcsm>Probability that the winner would win = (1/power(10,(-(WRO-LRO)/D))+1))</font></td>
+  </tr>
+  <tr>
+    <td align="right"><font class=italitcsm>PL</font></td>
+    <td align="center">=</td>
+    <td><font class=italitcsm>Probability that the lose would win = (1/Power(10,(-(LRO-WRO)/D))+1))</font></td>
+  </tr>
+  <tr>
+    <td align="right"><font class=italitcsm>WRN</font></td>
+    <td align="center">=</td>
+    <td><font class=italitcsm>Winners's new rating = (WRO+K*(1-PW))</font></td>
+  </tr>
+  <tr>
+    <td align="right"><font class=italitcsm>LRN</font></td>
+    <td align="center">=</td>
+    <td><font class=italitcsm>Loser's new rating = (LRO+K*K(0-PL)</font></td>
+  </tr>
+</table>
+<br>
 The flames next to player's names indicate that the person has won his/her last match
-as welll as at least 13 games in their last 5 matches.
+as well as at least 13 games in their last 5 matches.
 
 
 </body>

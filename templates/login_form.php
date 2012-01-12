@@ -77,8 +77,8 @@ a {
         </div>
         <div style="height:15px;"> <!-- Spacer --> </div>
         <div style="text-align:center;">
-          <input type="submit" value="Login" id="submitbutton1" style="font-size:26px;">
-          <input type="button" value="Cancel" onClick="javascript: history.go(-1)" id="cancelbutton1" style="font-size:26px;">
+          <input type="submit" value="Login" id="submitbutton1" style="font-size:16px;">
+          <input type="button" value="Cancel" onClick="javascript: history.go(-1)" id="cancelbutton1" style="font-size:16px;">
         </div>
         <div style="height:15px;"> <!-- Spacer --> </div>
         <span style="float:right;">Powered by<br />

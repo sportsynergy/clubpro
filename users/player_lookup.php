@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*
  * $LastChangedRevision: 857 $
@@ -13,14 +13,12 @@ $DOC_TITLE = "Member Directory";
 require_loginwq();
 
 
-//Set the http variables
-$searchname = $_REQUEST["searchname"];
+// Set the http variables
+// Updated to GET method
+$searchname = $_GET["searchname"];
 
 //Check to see if the view is empty
-
-
 if (isset($searchname)) {
-
     $errormsg = validate_form($searchname);
     $backtopage = $_SESSION["CFG"]["wwwroot"]."/users/player_lookup.php";
 
@@ -88,27 +86,19 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
         mysql_data_seek($playerResults,0);
         $num_fields = mysql_num_fields($playerResults);
         $num_rows = mysql_num_rows($playerResults);
-
-
+		
                 ?>
-
-
-				<table cellpadding="20" width="650" class="bordertable">
-                       <tr class="loginth">
-                           <th height="25"><span class="whitenorm">First Name</span></th>
-                           <th height="25"><span class="whitenorm">Last Name</span></th>
-                           <th height="25"><span class="whitenorm">Email</span></th>
-                           <th height="25"><span class="whitenorm">Work Phone</span></th>
-                           <th height="25"><span class="whitenorm">Home Phone</span></th>
-                           <th height="25"><span class="whitenorm">Mobile Phone</span></th>
-                           <th></th>
-                       </tr>
-
-
-
-
-
-                <?
+<table cellpadding="20" width="100%" class="bordertable">
+  <tr class="loginth">
+    <th height="25"><span class="whitenorm">First Name</span></th>
+    <th height="25"><span class="whitenorm">Last Name</span></th>
+    <th height="25"><span class="whitenorm">Email</span></th>
+    <th height="25"><span class="whitenorm">Work Phone</span></th>
+    <th height="25"><span class="whitenorm">Home Phone</span></th>
+    <th height="25"><span class="whitenorm">Mobile Phone</span></th>
+    <th></th>
+  </tr>
+  <?php
 
 
                 $rownum = mysql_num_rows($playerResults);
@@ -117,33 +107,40 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
                         $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
                         
                         ?>
-                       <tr class="<?=$rc?>" >
-                       		<form name="playerform<?=$rownum?>" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php" >
-	                       		<td><div align="center"><?=$playerarray[1]?></div> </td>
-	                       		<td><div align="center"><?=$playerarray[2]?></div> </td>
-	                       		<td><div align="center"><a href="mailto:<?=$playerarray[3]?>"><?=$playerarray[3]?></a></div> </td>
-	                       		<td><div align="center"><?=$playerarray[4]?></div> </td>
-	                       		<td><div align="center"><?=$playerarray[5]?></div> </td>
-	                       		<td><div align="center"><?=$playerarray[6]?></div> </td>
-	                       		<input type="hidden" name="userid" value="<?=$playerarray[0]?>">
-	                       		<input type="hidden" name="searchname" value="<?=$searchname?>">
-	                       		<input type="hidden" name="origin" value="lookup">
-	                        	<td><div align="center"><a href="javascript:submitForm('playerform<?=$rownum?>')">Info</a></td>
-                        	</form>
-                        </tr>
-                        
-                        <?
+  <tr class="<?=$rc?>" >
+    <form name="playerform<?=$rownum?>" method="get" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php" >
+      <td><div align="center">
+          <?=$playerarray[1]?>
+        </div></td>
+      <td><div align="center">
+          <?=$playerarray[2]?>
+        </div></td>
+      <td><div align="center"><a href="mailto:<?=$playerarray[3]?>">
+          <?=$playerarray[3]?>
+          </a></div></td>
+      <td><div align="center">
+          <?=$playerarray[4]?>
+        </div></td>
+      <td><div align="center">
+          <?=$playerarray[5]?>
+        </div></td>
+      <td><div align="center">
+          <?=$playerarray[6]?>
+        </div></td>
+      <input type="hidden" name="userid" value="<?=$playerarray[0]?>">
+      <input type="hidden" name="searchname" value="<?=$searchname?>">
+      <input type="hidden" name="origin" value="lookup">
+      <td><div align="center">
+        <a href="javascript:submitForm('playerform<?=$rownum?>')">Info</a></td>
+    </form>
+  </tr>
+  				<?php
                         $rownum = $rownum - 1;
                 }
 
                 ?>
-                </table>
-               
-                  
-                <?  }           
-      }
-
+</table>
+<?php  
+		}           
+	}
 ?>
-
-
-

@@ -1,5 +1,4 @@
-
-<?
+<?php
   $DOC_TITLE = "Court Reservation";
 
   $courtformquery = "SELECT courttype.courttypeid, courts.courtid, courttype.reservationtype
@@ -16,38 +15,36 @@
   
 ?>
 
- <div id="reservations" class="yui-navset">
-    <ul class="yui-nav">
-    	<? if($reservationType==0 || $reservationType==1) { ?>
-        <li class="selected"><a href="#singles"><em>Singles</em></a></li>
-        <? } ?>
-        <? if($reservationType==2 || $reservationType==1) { ?>
-        <li <?=$reservationType=="2"?"class=\"selected\"":""?>><a href="#doubles"><em>Doubles</em></a></li>
-        <? } ?>
-        <? if(get_roleid()==2) { ?>
-        <li><a href="#events"><em>Court Events</em></a></li>
-		<? } ?>
-    </ul>            
-   
-    <div class="yui-content">
-   		 <? if($reservationType==1 || $reservationType==0) { ?>
-        <div id="singles"> 
-        	 <? include($_SESSION["CFG"]["includedir"]."/include_reservation_singles.php");?>
-        </div>
-        <? } ?>
-        <? if($reservationType==2 || $reservationType==1) { ?>
-        <div id="doubles">
-			 <? include($_SESSION["CFG"]["includedir"]."/include_reservation_doubles.php");?>
-		</div>
-		<? } ?>
-		<? if(get_roleid()==2) { ?>
-        <div id="events">
-			 <? include($_SESSION["CFG"]["includedir"]."/include_reservation_event.php");?>
-		</div>
-		<? } ?>
+<div id="reservations" class="yui-navset">
+  <ul class="yui-nav">
+    <? if($reservationType==0 || $reservationType==1) { ?>
+    <li class="selected"><a href="#singles"><em>Singles</em></a></li>
+    <? } ?>
+    <? if($reservationType==2 || $reservationType==1) { ?>
+    <li <?=$reservationType=="2"?"class=\"selected\"":""?>><a href="#doubles"><em>Doubles</em></a></li>
+    <? } ?>
+    <? if(get_roleid()==2) { ?>
+    <li><a href="#events"><em>Court Events</em></a></li>
+    <? } ?>
+  </ul>
+  <div class="yui-content">
+    <? if($reservationType==1 || $reservationType==0) { ?>
+    <div id="singles">
+      <? include($_SESSION["CFG"]["includedir"]."/include_reservation_singles.php");?>
     </div>
+    <? } ?>
+    <? if($reservationType==2 || $reservationType==1) { ?>
+    <div id="doubles">
+      <? include($_SESSION["CFG"]["includedir"]."/include_reservation_doubles.php");?>
+    </div>
+    <? } ?>
+    <? if(get_roleid()==2) { ?>
+    <div id="events">
+      <? include($_SESSION["CFG"]["includedir"]."/include_reservation_event.php");?>
+    </div>
+    <? } ?>
+  </div>
 </div>
-
 <?
 
 // Calculate current tab index
@@ -63,12 +60,10 @@ else if($_REQUEST["courttype"]=="doubles" && $reservationType=="1") {
 }
 
 ?>
-
 <form name="tabIndexForm">
-	<input type="hidden" name="tabIndex" value="<?=$currentTabIndex?>"></input>
+  <input type="hidden" name="tabIndex" value="<?=$currentTabIndex?>">
+  </input>
 </form>
-
-
 <script language="Javascript">
 
 
@@ -115,7 +110,6 @@ function unsetplayerone(fieldname)
        if( document.doubles_reservation_form.dname1.value.length == 0){
        	 document.doubles_reservation_form.did1.value = "";
        }
-
 }
 
 function unsetplayertwo(fieldname)
@@ -123,7 +117,6 @@ function unsetplayertwo(fieldname)
        if( document.doubles_reservation_form.dname2.value.length == 0){
        	 document.doubles_reservation_form.did2.value = "";
        }
-
 }
 
 function unsetplayerthree(fieldname)
@@ -131,7 +124,6 @@ function unsetplayerthree(fieldname)
        if( document.doubles_reservation_form.name3.value.length == 0){
        	 document.doubles_reservation_form.id3.value = "";
        }
-
 }
 
 function unsetplayerfour(fieldname)
@@ -139,12 +131,10 @@ function unsetplayerfour(fieldname)
        if( document.doubles_reservation_form.name4.value.length == 0){
        	 document.doubles_reservation_form.id4.value = "";
        }
-
 }
 
 function disableEventOptions(repeat)
 {
-        
     if(repeat.value == "norepeat"){
        document.entryform.duration.disabled = true;
      }
@@ -156,20 +146,11 @@ function disableEventOptions(repeat)
 
 function disableEventOptions(repeat)
 {
-        
    if(repeat.value == "norepeat"){
        document.event_reservation_form.duration.disabled = true;
-
    }
    else{
       document.event_reservation_form.duration.disabled = "";
-   }
-        
+   }       
 }
-
-
-
-
-
 </script>
-
