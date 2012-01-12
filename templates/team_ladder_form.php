@@ -11,18 +11,20 @@ $teamrows = mysql_num_rows($teams);
 $teamINClause = array();
 
 if( isDebugEnabled(1) ){
-	logMessage(sprintf("team_ladder_form Number of Teams [%s]", $teamrows));
+	logMessage(sprintf("team_ladder_form-> Number of Teams [%s]", $teamrows));
 }
 
 //build in clause
 for ($i = 0; $i < $teamrows; ++$i) {
-	$team = mysql_fetch_array($teams);
+	$team = mysql_fetch_assoc($teams);
 	/*if ($i != 0) {
-		$teamINClause[] = ",";
+		$teamINClause .= ",";
 	}*/
-
-	// It appears something is missing here ?? 
-	$teamINClause[] = "$team[teamid]";
+	if( isDebugEnabled(1) ){
+		logMessage(sprintf("team_ladder_form-> Column Set from Response: %s", print_r($team,true)));
+	}
+	
+	$teamINClause[] = $team['teamid']; // teamid
 }
 
 if(count($teamINClause) > 0 ){

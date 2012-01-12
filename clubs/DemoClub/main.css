@@ -1,4 +1,6 @@
-/********* Demo ***************************************************/
+/**
+ * Demo Club
+ */
 
 .ct2cl13    {
 	font-family: Arial, sans-serif;
@@ -49,7 +51,9 @@ background-color:  #2E25CF;
 height: 5px;	
 }
 
-/*  For Tabs */
+/**
+ * For Tabs 
+ */
 .yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover {
 background:#2E25CF url(../../../../assets/skins/sam/sprite.png) repeat-x scroll left -1400px;
 }
@@ -60,4 +64,28 @@ border-color:#2E25CF;
 
 .yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
 border-color: #2E25CF;
+}
+
+/** 
+ * -New Skin-
+ * updated on 1-11-2012
+ */
+html{
+	height:100%;
+}
+body {
+	margin:0;
+	padding:0;
+	/* TODO: Allow Admin's to customize background image*/
+	background-image: url(../../images/squash-scotstoun.jpg);
+	background-repeat: no-repeat;
+	background-position: -650px -670px;
+	min-height:100%;
+	background-attachment:fixed;
+}
+
+#doc2{
+	padding:10px;
+	background-color:rgba(255,255,255,0.95);
+	min-height:90%;
 }

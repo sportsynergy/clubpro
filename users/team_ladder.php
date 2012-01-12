@@ -284,14 +284,11 @@ function isPlayingInLadder($userid, $courttypeid){
 	}
 	//build in clause
 	for ($i = 0; $i < $teamrows; ++ $i) {
-
 		$team = mysql_fetch_array($teams);
-
 		if ($i != 0) {
 			$teamINClause .= ",";
 		}
 		$teamINClause .= "$team[teamid]";
-
 	}
 
 	$query = "SELECT 1 FROM tblClubLadder WHERE userid IN ($teamINClause) AND courttypeid = $courttypeid AND clubid = ".get_clubid() ." AND enddate IS NULL";

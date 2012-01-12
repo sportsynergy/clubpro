@@ -1,4 +1,4 @@
-<?
+<?php
 
 $DOC_TITLE = "System Administration Console";
 
