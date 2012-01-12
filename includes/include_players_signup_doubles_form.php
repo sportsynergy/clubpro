@@ -1,40 +1,67 @@
-<?
+<?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
+ * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
 
-  //reservation_doubles_wanted_form.php
-  $DOC_TITLE = "Doubles Court Reservation";
+/**
+* Class and Function List:
+* Function list:
+* Classes list:
+*/
+//reservation_doubles_wanted_form.php
+$DOC_TITLE = "Doubles Court Reservation";
 
- // Get the first and last name of the player one.  The player one
- // and player two variables are set in court_reservation.php when
- //determining what form to display.
- $needpartnerquery = "SELECT reservationdetails.userid, reservationdetails.usertype
+// Get the first and last name of the player one.  The player one
+// and player two variables are set in court_reservation.php when
+
+//determining what form to display.
+
+$needpartnerquery = "SELECT reservationdetails.userid, reservationdetails.usertype
 									                     FROM tblReservations reservations, tblkpUserReservations reservationdetails
 														 WHERE reservations.reservationid = reservationdetails.reservationid
 									                     AND reservations.courtid='$courtid'
 									                     AND reservations.time='$time'
 														 AND reservations.enddate is NULL
 														ORDER BY reservationdetails.usertype, reservationdetails.userid";
-									
-	// run the query on the database
-	$needpartnerresult = db_query($needpartnerquery);
-	$playerOneArray = mysql_fetch_array($needpartnerresult);
-	$playerTwoArray = mysql_fetch_array($needpartnerresult);
-									
- $playerOneQuery = "SELECT tblUsers.firstname, tblUsers.lastname
+
+// run the query on the database
+$needpartnerresult = db_query($needpartnerquery);
+$playerOneArray = mysql_fetch_array($needpartnerresult);
+$playerTwoArray = mysql_fetch_array($needpartnerresult);
+$playerOneQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                      FROM tblUsers
                      WHERE tblUsers.userid=$playerOneArray[userid]";
+$playerOneResult = db_query($playerOneQuery);
+$playerOneNameArray = db_fetch_array($playerOneResult);
 
- $playerOneResult = db_query($playerOneQuery);
- $playerOneNameArray = db_fetch_array($playerOneResult);
- 
-  // Get the first and last name of the player two
- $playerTwoQuery = "SELECT tblUsers.firstname, tblUsers.lastname
+// Get the first and last name of the player two
+$playerTwoQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                      FROM tblUsers
                      WHERE tblUsers.userid=$playerTwoArray[userid]";
-
- $playerTwoResult = db_query($playerTwoQuery);
- $playerTwoNameArray = db_fetch_array($playerTwoResult);
-
-
+$playerTwoResult = db_query($playerTwoQuery);
+$playerTwoNameArray = db_fetch_array($playerTwoResult);
 ?>
 
 <script type="text/javascript">

@@ -1,6 +1,37 @@
 <?php
-
-include("../application.php");
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
+ * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
+/**
+* Class and Function List:
+* Function list:
+* - validate_form()
+* - update_settings()
+* Classes list:
+*/
+include ("../application.php");
 require_login();
 require_priv("2");
 
@@ -8,11 +39,9 @@ require_priv("2");
 $userid = $_GET["userid"];
 $searchname = $_GET["searchname"];
 
-
-if(!isset($userid)){
-  $userid = get_userid();
+if (!isset($userid)) {
+    $userid = get_userid();
 }
-
 $DOC_TITLE = "Player Administration";
 
 // Load up data for view
@@ -22,238 +51,196 @@ $availbleSports = load_avail_sports();
 $availableSites = load_avail_sites();
 $extraParametersResult = load_site_parameters();
 
-
-
 /* form has been submitted, check if it the user login information is correct */
-if ( isset($_POST['submitme'])) {
+
+if (isset($_POST['submitme'])) {
+    $frm = $_POST;
+
+    // Do a special check for duplicate email addresses.
+    
+    if (isset($userid)) {
+        $useridstring = "?userid=$userid";
+    }
+    $wwwroot = $_SESSION["CFG"]["wwwroot"];
+    $backtopage = "$wwwroot/admin/change_settings.php$useridstring";
+    $errormsg = validate_form($frm, $errors);
+    
+    if (empty($errormsg)) {
+        update_settings($frm, $availableSites, $availbleSports, $extraParametersResult);
+
+        //Refresh the data
+        $registeredSports = load_registered_sports($userid);
+        $authSites = load_auth_sites($userid);
+
+        // Reset these pointers
         
-		 $frm = $_POST;
-		 
-         // Do a special check for duplicate email addresses.
-          if(isset($userid)){
-             $useridstring = "?userid=$userid";
-          }
-          $wwwroot = $_SESSION["CFG"]["wwwroot"];
-          $backtopage = "$wwwroot/admin/change_settings.php$useridstring";
-
- 
-          		$errormsg = validate_form($frm, $errors);
+        if (mysql_num_rows($extraParametersResult) > 0) {
+            mysql_data_seek($extraParametersResult, 0);
+        }
         
-				if (empty($errormsg)){
-	                
-					update_settings($frm,$availableSites, $availbleSports, $extraParametersResult);
-					
-					//Refresh the data
-	                $registeredSports = load_registered_sports($userid);
-	                $authSites = load_auth_sites($userid);
-	                
-	                // Reset these pointers
-	                if( mysql_num_rows($extraParametersResult) > 0 ){
-	                	mysql_data_seek($extraParametersResult, 0);
-	                }
-	                
-					if( mysql_num_rows($availbleSports) > 0 ){
-	                	mysql_data_seek($availbleSports, 0);
-	                }
-		                
-					if( mysql_num_rows($availableSites) > 0 ){
-	                	mysql_data_seek($availableSites, 0);
-	                }
-	                
-					//Save email address
-					$query = "UPDATE tblUsers set email = '".$frm['email']."' where userid = ".$frm['userid'];
-					db_query($query);
-					
-					// Display this, their email validates
-					$noticemsg = "Your profile was saved.  Good Job!<br/><br/>";
-				}
-			
-          
-			
+        if (mysql_num_rows($availbleSports) > 0) {
+            mysql_data_seek($availbleSports, 0);
+        }
+        
+        if (mysql_num_rows($availableSites) > 0) {
+            mysql_data_seek($availableSites, 0);
+        }
 
-} 
+        //Save email address
+        $query = "UPDATE tblUsers set email = '" . $frm['email'] . "' where userid = " . $frm['userid'];
+        db_query($query);
 
-
-
-
+        // Display this, their email validates
+        $noticemsg = "Your profile was saved.  Good Job!<br/><br/>";
+    }
+}
 $frm = load_user_profile($userid);
-
-include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
-include($_SESSION["CFG"]["templatedir"]."/change_settings_admin_form.php");
-include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/change_settings_admin_form.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 
 /******************************************************************************
  * FUNCTIONS
  *****************************************************************************/
-
-
-
 function validate_form(&$frm, &$errors) {
-/* validate the forgot password form, and return the error messages in a string.
- * if the string is empty, then there are no errors */
 
-        $errors = new Object;
-        $msg = "";
-		
-		// Make sure that the login id is set
-		if(isSiteAutoLogin() && empty($frm["memberid"])){
-			$errors->memberid = true;
-			$msg .= "You did not specify a member id";
-		} 
-		elseif( !isSiteAutoLogin() && empty($frm["username"])  ){
-        	 $errors->username = true;
-        	$msg .= "You did not specify a username";
-		} 
-		elseif (!isSiteAutoLogin() && username_already_exists($frm["username"], $frm["userid"]) ) {
-                $errors->username = true;
-                $msg .= "The username <b>" . ov($frm["username"]) ."</b> already exists";
-        }  
-        elseif (!empty($frm["email"]) && !is_email_valid($frm["email"])) {
-                $errors->email = true;
-                $msg .= "Please enter a valid email address";
+    /* validate the forgot password form, and return the error messages in a string.
+     * if the string is empty, then there are no errors */
+    $errors = new Object;
+    $msg = "";
+
+    // Make sure that the login id is set
+    
+    if (isSiteAutoLogin() && empty($frm["memberid"])) {
+        $errors->memberid = true;
+        $msg.= "You did not specify a member id";
+    } elseif (!isSiteAutoLogin() && empty($frm["username"])) {
+        $errors->username = true;
+        $msg.= "You did not specify a username";
+    } elseif (!isSiteAutoLogin() && username_already_exists($frm["username"], $frm["userid"])) {
+        $errors->username = true;
+        $msg.= "The username <b>" . ov($frm["username"]) . "</b> already exists";
+    } elseif (!empty($frm["email"]) && !is_email_valid($frm["email"])) {
+        $errors->email = true;
+        $msg.= "Please enter a valid email address";
+    } elseif (empty($frm["firstname"])) {
+        $errors->firstname = true;
+        $msg.= "You did not specify a first name";
+    } elseif (empty($frm["lastname"])) {
+        $errors->lastname = true;
+        $msg.= "You did not specify a last name";
+    } elseif (!empty($frm["email"])) {
+        $otherUser = verifyEmailUniqueAtClub($frm["email"], $frm["userid"], get_clubid());
+        
+        if (isset($otherUser)) {
+            $errors->email = true;
+            $msg.= "The email address <b>" . ov($frm["email"]) . "</b> already exists";
         }
-        
-        elseif (empty($frm["firstname"])) {
-                $errors->firstname = true;
-                $msg .= "You did not specify a first name";
-
-        } elseif (empty($frm["lastname"])) {
-                $errors->lastname = true;
-                $msg .= "You did not specify a last name";
-                
-        } elseif ( !empty($frm["email"]) ) {
-                
-        	$otherUser = verifyEmailUniqueAtClub($frm["email"], $frm["userid"], get_clubid() );
-        	
-        	if( isset($otherUser) ){
-        		$errors->email = true;
-                $msg .= "The email address <b>" . ov($frm["email"]) ."</b> already exists";
-        	}
-        	
-        } 
-        
-
-        return $msg;
+    }
+    return $msg;
 }
-
-
 /**
- * 
+ *
  * @param $frm
  * @param $availableSites
  * @param $availbleSports
  * @param $extraParametersResult
  */
 function update_settings(&$frm, $availableSites, $availbleSports, $extraParametersResult) {
+    
+    if (isDebugEnabled(1)) logMessage("Updating the account for: " . $frm['userid']);
 
-	if( isDebugEnabled(1) ) logMessage("Updating the account for: " .$frm['userid'] );
-	
+    //If userid is not set this is being run by a player who is updating
+    //their own accoutn information.  If this is the case we will get the userid
 
-         //If userid is not set this is being run by a player who is updating
-         //their own accoutn information.  If this is the case we will get the userid
-         //out of the session.
-         if(!$frm['userid']){
+    //out of the session.
 
-         $userid = get_userid();
-         }
-        else{
-		
-		$userid = $frm['userid'];
-        $mycourtTypes = explode (",", $frm['mycourttypes']);
-        $mySites = explode (",", $frm['mysites']);
+    
+    if (!$frm['userid']) {
+        $userid = get_userid();
+    } else {
+        $userid = $frm['userid'];
+        $mycourtTypes = explode(",", $frm['mycourttypes']);
+        $mySites = explode(",", $frm['mysites']);
 
+        //if the courttype post var is set we need to either update or insert depending
+        //on if it was set before.
 
-                  //if the courttype post var is set we need to either update or insert depending
-                 //on if it was set before.
+        //Now set the sites
 
-                 //Now set the sites
-                for ($i=0; $i<mysql_num_rows($availbleSports); ++$i){
-                      $courtTypeArray = mysql_fetch_array($availbleSports);
-                      if($frm["courttype$courtTypeArray[courttypeid]"]){
-
-                          if(in_array($courtTypeArray['courttypeid'],$mycourtTypes)){
-                             mysql_query("UPDATE `tblUserRankings` SET ranking = '".$frm["courttype$courtTypeArray[courttypeid]"]."' WHERE courttypeid='$courtTypeArray[courttypeid]' AND userid ='$userid' AND usertype ='0'");
-
-                          }
-                          else{
-                               $query = "INSERT INTO `tblUserRankings`
+        for ($i = 0; $i < mysql_num_rows($availbleSports); ++$i) {
+            $courtTypeArray = mysql_fetch_array($availbleSports);
+            
+            if ($frm["courttype$courtTypeArray[courttypeid]"]) {
+                
+                if (in_array($courtTypeArray['courttypeid'], $mycourtTypes)) {
+                    mysql_query("UPDATE `tblUserRankings` SET ranking = '" . $frm["courttype$courtTypeArray[courttypeid]"] . "' WHERE courttypeid='$courtTypeArray[courttypeid]' AND userid ='$userid' AND usertype ='0'");
+                } else {
+                    $query = "INSERT INTO `tblUserRankings`
                                         (`userid` , `courttypeid` , `ranking` , `hot` , `usertype`  )
-                                        VALUES ('$userid', '$courtTypeArray[courttypeid]', '".$frm["courttype$courtTypeArray[courttypeid]"]."', '0', '0')";
-
-                                   db_query($query);
-                          }
-
-
-                      }
-                      //if courttype post var is not set and it was set before we will delete it.
-                      else{
-                           mysql_query("DELETE from `tblUserRankings`WHERE userid=$userid AND courttypeid='$courtTypeArray[courttypeid]' AND usertype=0");
-                      }
-
+                                        VALUES ('$userid', '$courtTypeArray[courttypeid]', '" . $frm["courttype$courtTypeArray[courttypeid]"] . "', '0', '0')";
+                    db_query($query);
                 }
+            }
 
-
-                 //Now set the sites
-                for ($i=0; $i<mysql_num_rows($availableSites); ++$i){
-				
-                	if( isDebugEnabled(1) ) logMessage("Going through the available sites");
-                	
-                	$siteArray = mysql_fetch_array($availableSites);
-                      
-                      if($frm["clubsite$siteArray[siteid]"]){
-
-                      	
-                      	if( isDebugEnabled(1) ) logMessage("Checking on Site ".$siteArray[siteid]);
-                          
-                      	//If the site isn't in the list insert it
-                          if(!in_array($siteArray['siteid'],$mySites)){
-							
-                          	if( isDebugEnabled(1) ) logMessage("Adding a new site autorization ". $siteArray['siteid']);
-                          	
-                          		$addSiteQuery = "INSERT INTO `tblkupSiteAuth` ( `userid` , `siteid` ) VALUES ($userid, ".$siteArray['siteid'].")";
-                           		db_query($addSiteQuery);
-                          }
-
-
-                      }
-                      //if siteid post var is not set and it was set before we will delete it.
-                      else{
-						if( isDebugEnabled(1) ) logMessage("Deleting a site autorization ". $siteArray['siteid']." and user: $userid");
-                      	$removeSiteQuery = "DELETE from tblkupSiteAuth WHERE userid=$userid AND siteid=".$siteArray['siteid'];
-                      	
-                      	db_query($removeSiteQuery);
-                      }
-
-                }
+            //if courttype post var is not set and it was set before we will delete it.
+            else {
+                mysql_query("DELETE from `tblUserRankings`WHERE userid=$userid AND courttypeid='$courtTypeArray[courttypeid]' AND usertype=0");
+            }
         }
 
-		//Set the enable variable
-		if( isset($frm['enable'])){
-			$enable= 'y';
-		}
-		else{
-			$enable= 'n';
-		}
-	
-		
-		if(isSiteAutoLogin()){
-			$username = $frm['memberid'];
-		}
-		else{
-			$username = $frm['username'];
-		}
-	
+        //Now set the sites
+        for ($i = 0; $i < mysql_num_rows($availableSites); ++$i) {
+            
+            if (isDebugEnabled(1)) logMessage("Going through the available sites");
+            $siteArray = mysql_fetch_array($availableSites);
+            
+            if ($frm["clubsite$siteArray[siteid]"]) {
+                
+                if (isDebugEnabled(1)) logMessage("Checking on Site " . $siteArray[siteid]);
 
-		if( get_magic_quotes_gpc()){
-			$firstName = $frm['firstname'];
-			$lastName = $frm['lastname'];
-		}
-		else{
-			$firstName= addslashes($frm['firstname']);
-			$lastName= addslashes($frm['lastname']);
-		}
-		
-		$updateUserQuery = "
+                //If the site isn't in the list insert it
+                
+                if (!in_array($siteArray['siteid'], $mySites)) {
+                    
+                    if (isDebugEnabled(1)) logMessage("Adding a new site autorization " . $siteArray['siteid']);
+                    $addSiteQuery = "INSERT INTO `tblkupSiteAuth` ( `userid` , `siteid` ) VALUES ($userid, " . $siteArray['siteid'] . ")";
+                    db_query($addSiteQuery);
+                }
+            }
+
+            //if siteid post var is not set and it was set before we will delete it.
+            else {
+                
+                if (isDebugEnabled(1)) logMessage("Deleting a site autorization " . $siteArray['siteid'] . " and user: $userid");
+                $removeSiteQuery = "DELETE from tblkupSiteAuth WHERE userid=$userid AND siteid=" . $siteArray['siteid'];
+                db_query($removeSiteQuery);
+            }
+        }
+    }
+
+    //Set the enable variable
+    
+    if (isset($frm['enable'])) {
+        $enable = 'y';
+    } else {
+        $enable = 'n';
+    }
+    
+    if (isSiteAutoLogin()) {
+        $username = $frm['memberid'];
+    } else {
+        $username = $frm['username'];
+    }
+    
+    if (get_magic_quotes_gpc()) {
+        $firstName = $frm['firstname'];
+        $lastName = $frm['lastname'];
+    } else {
+        $firstName = addslashes($frm['firstname']);
+        $lastName = addslashes($frm['lastname']);
+    }
+    $updateUserQuery = "
         UPDATE tblUsers SET
 				username = '$username'
                 ,email = '$frm[email]'
@@ -266,11 +253,8 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
                 ,useraddress = '$frm[useraddress]'
 		        ,gender = '$frm[gender]'
         WHERE userid = '$userid'";
-    
-        $qid = db_query($updateUserQuery);
-        
-        
-        $updateClubUserQuery = "
+    $qid = db_query($updateUserQuery);
+    $updateClubUserQuery = "
         UPDATE tblClubUser SET
                 recemail = '$frm[recemail]'
                 ,enable = '$enable'
@@ -278,38 +262,29 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
 				,roleid 	  =  '$frm[roleid]'
 				,msince  =  '$frm[msince]'
         WHERE userid = '$userid'";
+    $qid = db_query($updateClubUserQuery);
+
+    //Set the password
+    
+    if (!empty($frm["password"])) {
+        $updateUserQuery = "UPDATE tblUsers SET password = '" . md5($frm["password"]) . "' WHERE userid = '$userid'";
+        $qid = db_query($updateUserQuery);
+    }
+
+    // Update the Custom Parameters
+    while ($parameterArray = mysql_fetch_array($extraParametersResult)) {
+        $parameterId = $parameterArray['parameterid'];
         
-        $qid = db_query($updateClubUserQuery);
-
-
-	//Set the password
-	if(!empty($frm["password"])){
-		
-		$updateUserQuery = "UPDATE tblUsers SET password = '" . md5($frm["password"]) ."' WHERE userid = '$userid'";
-		$qid = db_query($updateUserQuery);
-	}
-	
- 		// Update the Custom Parameters
- 		while ($parameterArray = mysql_fetch_array($extraParametersResult) ){
-             
-	   		 $parameterId = $parameterArray['parameterid'];
-	   		 
-             if($frm["parameter-$parameterId"]){
-             	if( isDebugEnabled(1) ) logMessage("(admin)change_settings.update_settings: adding custom parameter:  ".$frm["parameter-$parameterId"]);
-             	$parameterValue = $frm["parameter-$parameterId"];
-                $query = "INSERT INTO tblParameterValue (userid,parameterid,parametervalue) 
+        if ($frm["parameter-$parameterId"]) {
+            
+            if (isDebugEnabled(1)) logMessage("(admin)change_settings.update_settings: adding custom parameter:  " . $frm["parameter-$parameterId"]);
+            $parameterValue = $frm["parameter-$parameterId"];
+            $query = "INSERT INTO tblParameterValue (userid,parameterid,parametervalue) 
                 			VALUES ('$userid', '$parameterId','$parameterValue') 
                 			ON DUPLICATE KEY UPDATE parametervalue = '$parameterValue'";
-       			db_query($query);
-       			
-             }
-
-       }
-       
-
-   unset($userid);
-   }
-
-   
-  
+            db_query($query);
+        }
+    }
+    unset($userid);
+}
 ?>

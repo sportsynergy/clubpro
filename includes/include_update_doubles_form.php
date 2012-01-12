@@ -1,75 +1,103 @@
-<?
-
-/*
+<?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
  * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
+
+/**
+* Class and Function List:
+* Function list:
+* Classes list:
+*/
+/*
+ *
  * $LastChangedRevision: 857 $
  * $LastChangedBy: Adam Preston $
  * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
- * 
- * 
+ *
+ *
  * The following variables are required before loading this form:
- * 
+ *
  * 		$userid
  * 		$time
  * 		$courtid
  * 		$reservationid
- * 
- * 
+ *
+ *
 */
 
-	  //Program administrators have the option of rearranging a doubles reservation
-      //after it has already occured.  This variable is used for enabling/disabling
-      //functions to support this feature.
-      $isPageBeingLoadedForPastReservation = isInPast($time);
-      
-      //Get the players from the reservation (doubles will be teams, singles will be players)
-       $teamQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, reservations.reservationid, reservations.locked
+//Program administrators have the option of rearranging a doubles reservation
+//after it has already occured.  This variable is used for enabling/disabling
+
+//functions to support this feature.
+
+$isPageBeingLoadedForPastReservation = isInPast($time);
+
+//Get the players from the reservation (doubles will be teams, singles will be players)
+$teamQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, reservations.reservationid, reservations.locked
                         FROM tblReservations reservations, tblkpUserReservations reservationdetails
                         WHERE reservations.reservationid = reservationdetails.reservationid
                         AND reservations.time=$time
 						AND reservations.courtid=$courtid
 						AND reservations.enddate IS NULL
 						ORDER BY reservationdetails.usertype DESC, reservationdetails.userid DESC";
-        
-        $teamResult = db_query($teamQuery);
-		$teamRow = mysql_fetch_array($teamResult);
-		
-		$locked = $teamRow['locked'];
-		
-		if( $teamRow['usertype']==1){
-			$teamPlayerResult = getUserIdsForTeamId($teamRow['userid']);
-			$teamPlayerRow = mysql_fetch_array($teamPlayerResult);
-		    $player1Id = $teamPlayerRow['userid'];
-		    $player1FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
-		    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
-		    $player2Id = $teamPlayerRow['userid'];
-		    $player2FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
-		    $reservationid = $teamRow['reservationid'];
-		}else{
-			$player1Id = $teamRow['userid'];
-			$player1FullName = getFullNameForUserId($teamRow['userid']);
-			$player2Id = "";
-			$player2FullName = "";
-			$reservationid = $teamRow['reservationid'];
-		}
-		
-		$teamRow = mysql_fetch_array($teamResult);
-		
-		if( $teamRow['usertype']==1){
-			$teamPlayerResult = getUserIdsForTeamId($teamRow['userid']);
-			$teamPlayerRow = mysql_fetch_array($teamPlayerResult);
-		    $player3Id = $teamPlayerRow['userid'];
-		    $player3FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
-		    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
-		    $player4Id = $teamPlayerRow['userid'];
-		    $player4FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
-		}else{
-			$player3Id = $teamRow['userid'];
-			$player3FullName = getFullNameForUserId($teamRow['userid']);
-			$player4Id = "";
-			$player4FullName = "";
-		}
+$teamResult = db_query($teamQuery);
+$teamRow = mysql_fetch_array($teamResult);
+$locked = $teamRow['locked'];
 
+if ($teamRow['usertype'] == 1) {
+    $teamPlayerResult = getUserIdsForTeamId($teamRow['userid']);
+    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
+    $player1Id = $teamPlayerRow['userid'];
+    $player1FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
+    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
+    $player2Id = $teamPlayerRow['userid'];
+    $player2FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
+    $reservationid = $teamRow['reservationid'];
+} else {
+    $player1Id = $teamRow['userid'];
+    $player1FullName = getFullNameForUserId($teamRow['userid']);
+    $player2Id = "";
+    $player2FullName = "";
+    $reservationid = $teamRow['reservationid'];
+}
+$teamRow = mysql_fetch_array($teamResult);
+
+if ($teamRow['usertype'] == 1) {
+    $teamPlayerResult = getUserIdsForTeamId($teamRow['userid']);
+    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
+    $player3Id = $teamPlayerRow['userid'];
+    $player3FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
+    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
+    $player4Id = $teamPlayerRow['userid'];
+    $player4FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
+} else {
+    $player3Id = $teamRow['userid'];
+    $player3FullName = getFullNameForUserId($teamRow['userid']);
+    $player4Id = "";
+    $player4FullName = "";
+}
 ?>
 
 <script language="Javascript">

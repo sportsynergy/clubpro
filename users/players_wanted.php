@@ -1,73 +1,94 @@
-<?
+<?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
+ * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
 
+/**
+* Class and Function List:
+* Function list:
+* - get_playerswanted()
+* Classes list:
+*/
 /*
  * $LastChangedRevision: 854 $
  * $LastChangedBy: Adam Preston $
  * $LastChangedDate: 2011-03-08 20:15:00 -0600 (Tue, 08 Mar 2011) $
 
 */
-
-include("../application.php");
+include ("../application.php");
 require_login();
-
-
 $DOC_TITLE = "Players Wanted";
-include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 get_playerswanted();
-include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 
 /******************************************************************************
  * FUNCTIONS
  *****************************************************************************/
-
-
 function get_playerswanted() {
+    $imagedir = $_SESSION["CFG"]["imagedir"];
+    $wwwroot = $_SESSION["CFG"]["wwwroot"];
 
-$imagedir = $_SESSION["CFG"]["imagedir"];
-$wwwroot = $_SESSION["CFG"]["wwwroot"];
+    /* Get the Reservation id all court types */
 
-/* Get the Reservation id all court types */
-//Get General Club info
+    //Get General Club info
+    $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
+    $clubresult = db_query($clubquery);
+    $clubobj = db_fetch_object($clubresult);
+    $gmtime = gmmktime();
+    $mktime = mktime();
+    $tzdelta = $clubobj->timezone * 3600;
+    $curtime = $mktime + $tzdelta;
+    $simtzdelta = $clubobj->timezone;
 
-$clubquery = "SELECT timezone from tblClubs WHERE clubid=".get_clubid()."";
-$clubresult = db_query($clubquery);
-$clubobj = db_fetch_object($clubresult);
-
-$gmtime =   gmmktime();
-$mktime = mktime();
-$tzdelta = $clubobj->timezone*3600;
-$curtime =   $mktime+$tzdelta;
-$simtzdelta = $clubobj->timezone;
-
-
-//First we need to get all resvations that have a userid with 0 in the future
-
-$singlespwquery = "SELECT DISTINCTROW tblReservations.reservationid
+    //First we need to get all resvations that have a userid with 0 in the future
+    $singlespwquery = "SELECT DISTINCTROW tblReservations.reservationid
                    FROM (tblCourts INNER JOIN tblReservations
                    ON tblCourts.courtid = tblReservations.courtid)
                    INNER JOIN tblkpUserReservations
                    ON tblReservations.reservationid = tblkpUserReservations.reservationid
                    WHERE (((tblReservations.time)>$curtime)
                    AND ((tblkpUserReservations.userid)=0)
-                   AND ((tblCourts.siteid)=".get_siteid().")
+                   AND ((tblCourts.siteid)=" . get_siteid() . ")
                    AND ((tblReservations.usertype)=0))
                    AND (tblReservations.matchtype != 4)
 				   AND tblReservations.enddate IS NULL
                    ORDER BY tblReservations.time";
-
-$doublesspwquery = "SELECT DISTINCTROW tblReservations.reservationid, tblReservations.time
+    $doublesspwquery = "SELECT DISTINCTROW tblReservations.reservationid, tblReservations.time
                     FROM (tblCourts INNER JOIN tblReservations
                     ON tblCourts.courtid = tblReservations.courtid)
                     INNER JOIN tblkpUserReservations
                     ON tblReservations.reservationid = tblkpUserReservations.reservationid
                     WHERE (((tblReservations.time)>$curtime)
                     AND ((tblkpUserReservations.userid)=0)
-                    AND ((tblCourts.siteid)=".get_siteid().")
+                    AND ((tblCourts.siteid)=" . get_siteid() . ")
                     AND ((tblReservations.usertype)=1))
                     ORDER BY tblReservations.time";
- 
- //get doubles reservations that need an extra player
-$doublesspwquery2 = "SELECT DISTINCTROW reservations.reservationid, reservations.time
+
+    //get doubles reservations that need an extra player
+    $doublesspwquery2 = "SELECT DISTINCTROW reservations.reservationid, reservations.time
                      FROM tblCourts courts, tblkpUserReservations reservationdetails, tblReservations reservations
                      WHERE courts.courtid = reservations.courtid
                      AND reservations.reservationid = reservationdetails.reservationid
@@ -75,55 +96,52 @@ $doublesspwquery2 = "SELECT DISTINCTROW reservations.reservationid, reservations
                      AND ( ( reservationdetails.usertype ) = 0 )
                      AND ( ( reservationdetails.userid ) <> 0 )
                      AND ( ( reservations.time ) > $curtime )
-                     AND ( ( courts.siteid ) = ".get_siteid()." ) )
+                     AND ( ( courts.siteid ) = " . get_siteid() . " ) )
 					 AND reservations.enddate IS NULL";
-              
-$lessonspwquery = "SELECT reservations.reservationid
+    $lessonspwquery = "SELECT reservations.reservationid
                    FROM tblCourts courts, tblReservations reservations, tblkpUserReservations reservationdetails
                    WHERE courts.courtid = reservations.courtid
                    AND reservationdetails.reservationid = reservations.reservationid
                    AND (((reservations.time)>$curtime)
                    AND ((reservationdetails.userid)=0)
-                   AND ((courts.siteid)=".get_siteid().")
+                   AND ((courts.siteid)=" . get_siteid() . ")
                    AND ((reservations.usertype)=0))
                    AND (reservations.matchtype = 4)
 				   AND reservations.enddate IS NULL
                    ORDER BY reservations.time";
-                   
 
+    // run the query on the database
+    $singlespwresult = db_query($singlespwquery);
+    $doublesspwresult = db_query($doublesspwquery);
+    $doublesspwresult2 = db_query($doublesspwquery2);
+    $lessonpwresult = db_query($lessonspwquery);
+    $doublesArray1 = array();
+    $doublesArray2 = array();
+    $doublesArray = array();
 
-// run the query on the database
-$singlespwresult = db_query($singlespwquery);
-$doublesspwresult = db_query($doublesspwquery);
-$doublesspwresult2 = db_query($doublesspwquery2);
-$lessonpwresult = db_query($lessonspwquery);
-
-$doublesArray1 = array();
-$doublesArray2 = array();
-$doublesArray = array();
-
-  //Jam our two subtlely different doubles reservation types together
-  for($i=0; $i< mysql_num_rows($doublesspwresult); $i++){
+    //Jam our two subtlely different doubles reservation types together
+    for ($i = 0; $i < mysql_num_rows($doublesspwresult); $i++) {
         $data = mysql_fetch_array($doublesspwresult);
-        $doublesArray1[$i] = array("time"=>$data['time'],
-                                   "reservationid"=>$data['reservationid']);
-   }
-   for($i=0; $i< mysql_num_rows($doublesspwresult2); $i++){
+        $doublesArray1[$i] = array(
+            "time" => $data['time'],
+            "reservationid" => $data['reservationid']
+        );
+    }
+    for ($i = 0; $i < mysql_num_rows($doublesspwresult2); $i++) {
         $data = mysql_fetch_array($doublesspwresult2);
+        $newEntry = array(
+            "time" => $data['time'],
+            "reservationid" => $data['reservationid']
+        );
 
-        $newEntry = array("time"=>$data['time'],
-                                   "reservationid"=>$data['reservationid']);
-         //Only add if its unique
-        if(!in_array($newEntry, $doublesArray1)){
-        	$doublesArray2[$i] =  $newEntry; 
-        }                          
-                               
-   }
-
-	$doublesArray = array_merge($doublesArray1, $doublesArray2);
-
-sort($doublesArray);
-
+        //Only add if its unique
+        
+        if (!in_array($newEntry, $doublesArray1)) {
+            $doublesArray2[$i] = $newEntry;
+        }
+    }
+    $doublesArray = array_merge($doublesArray1, $doublesArray2);
+    sort($doublesArray);
 ?>
 
 <table cellspacing="0" cellpadding="0" border="0" width="710" class="borderless">

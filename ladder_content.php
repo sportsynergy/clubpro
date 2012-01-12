@@ -1,63 +1,98 @@
-<?
+<?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
+ * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
+
+/**
+* Class and Function List:
+* Function list:
+* Classes list:
+*/
 /*
  * $LastChangedRevision: 856 $
  * $LastChangedBy: Adam Preston $
  * $LastChangedDate: 2011-03-14 13:29:36 -0500 (Mon, 14 Mar 2011) $
-
 */
 
- //Load necessary libraries and set the wanturl to get back here.
+//Load necessary libraries and set the wanturl to get back here.
 $_SESSION["wantsurl"] = qualified_mewithq();
 $_SESSION["siteprefs"] = getSitePreferences($siteid);
 
 //Set the footer message
-if( !isset($_SESSION["footermessage"]) ){
-	$footerMessage = getFooterMessage();
-	$_SESSION["footermessage"] = $footerMessage;
+
+if (!isset($_SESSION["footermessage"])) {
+
+    $footerMessage = getFooterMessage();
+    $_SESSION["footermessage"] = $footerMessage;
 }
 
 //Display the multiuser login form
-if(isset($username) && isset($password) && !is_logged_in() ){
-	$usersResult = getAllUsersWithIdResult($username, $clubid);
-	if( mysql_num_rows($usersResult) > 1  ){
-        	 include($_SESSION["CFG"]["templatedir"]."/pick_user_form.php"); 
-        	 die;
-     }else{
-	$user = verify_login($username, $password, false);
-		if($user){
-			$_SESSION["user"] = $user;
-    	}else{
-    		print "bad login: $username/$password";
-    	}
-    	
-	}
+
+if (isset($username) && isset($password) && !is_logged_in()) {
+
+    $usersResult = getAllUsersWithIdResult($username, $clubid);
+    
+    if (mysql_num_rows($usersResult) > 1) {
+
+        include ($_SESSION["CFG"]["templatedir"] . "/pick_user_form.php");
+        die;
+    } else {
+        $user = verify_login($username, $password, false);
+        
+        if ($user) {
+
+            $_SESSION["user"] = $user;
+        } else {
+            print "bad login: $username/$password";
+        }
+    }
 }
-	
+
 //Get user log in the user in from the multiuser login form
- if( isset($_POST["frompickform"] ) ){
-    	$user = load_user($_POST["userid"] );
-    	if($user){
-			$_SESSION["user"] = $user;
-    	}
-  }
 
+if (isset($_POST["frompickform"])) {
 
+    $user = load_user($_POST["userid"]);
+    
+    if ($user) {
+
+        $_SESSION["user"] = $user;
+    }
+}
 $DOC_TITLE = "Sportsynergy Box Leagues";
-include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 
-if ($clubid){
+if ($clubid) {
 
-//Get all of the web ladders for the club
 
-$getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable
+    //Get all of the web ladders for the club
+    $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable
                       FROM tblBoxLeagues
                       WHERE (((tblBoxLeagues.siteid)=$siteid))
                       ORDER BY tblBoxLeagues.boxrank";
-
-
-
-$getwebladdersresult = db_query($getwebladdersquery);
-
+    $getwebladdersresult = db_query($getwebladdersquery);
 ?>
 
 <table width="710" cellspacing="0" cellpadding="0" align="center" class="borderless">

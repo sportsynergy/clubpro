@@ -1,67 +1,91 @@
-<?
+<?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
+ * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
+/**
+* Class and Function List:
+* Function list:
+* Classes list:
+*/
+require ($_SESSION["CFG"]["libdir"] . "/reservationlib.php");
+require ($_SESSION["CFG"]["libdir"] . "/courtlib.php");
 
-require($_SESSION["CFG"]["libdir"]."/reservationlib.php");
-require($_SESSION["CFG"]["libdir"]."/courtlib.php");
-
- //Load necessary libraries and set the wanturl to get back here.
+//Load necessary libraries and set the wanturl to get back here.
 $_SESSION["wantsurl"] = qualified_mewithq();
 $siteprefs = getSitePreferences($siteid);
 $_SESSION["siteprefs"] = $siteprefs;
 
 //Only load the site ladders if the ranking scheme is configured as such
-if( isLadderRankingScheme() ){
-	$ladders = getClubSiteLadders($siteid);
-	$_SESSION["ladders"] = $ladders;
+
+if (isLadderRankingScheme()) {
+    $ladders = getClubSiteLadders($siteid);
+    $_SESSION["ladders"] = $ladders;
 }
-
 $wwwroot = $_SESSION["CFG"]["wwwroot"];
-
 $username = $_REQUEST['username'];
 $password = $_REQUEST['password'];
 $courtGroupFromForm = $_REQUEST['courtGroupFromForm'];
 $courtWindowStart = $_REQUEST['courtWindowStart'];
 
 //Set the footer message
-if( !isset($_SESSION["footermessage"]) ){
-	$footerMessage = getFooterMessage();
-	$_SESSION["footermessage"] = $footerMessage;
-}
 
+if (!isset($_SESSION["footermessage"])) {
+    $footerMessage = getFooterMessage();
+    $_SESSION["footermessage"] = $footerMessage;
+}
 
 //Get user log in the user in from the multiuser login form
- if( isset($_POST["frompickform"] ) ){
 
- 	$user = load_user($_POST["userid"] );
-    	if($user){
-			$_SESSION["user"] = $user;
-    	}
-  }
-  
-//Display the multiuser login form
-if(isset($username) && isset($password) && !is_logged_in()  ){
-	
-	$usersResult = getAllUsersWithIdResult($username, $clubid);
-	if( mysql_num_rows($usersResult) > 1  ){
-        	 include($_SESSION["CFG"]["templatedir"]."/pick_user_form.php"); 
-        	 die;
-     }else{
-	$user = verify_login($username, $password, false);
-		if($user){
-			$_SESSION["user"] = $user;
-    	}else{
-    		
-    		header ("Location: $wwwroot/users/authenticationError.php");
-    		
-    	}
-    	
-	}
+if (isset($_POST["frompickform"])) {
+    $user = load_user($_POST["userid"]);
+    
+    if ($user) {
+        $_SESSION["user"] = $user;
+    }
 }
-	
-	
-$DOC_TITLE = "Sportsynergy Clubpro"; 
-include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
 
+//Display the multiuser login form
 
+if (isset($username) && isset($password) && !is_logged_in()) {
+    $usersResult = getAllUsersWithIdResult($username, $clubid);
+    
+    if (mysql_num_rows($usersResult) > 1) {
+        include ($_SESSION["CFG"]["templatedir"] . "/pick_user_form.php");
+        die;
+    } else {
+        $user = verify_login($username, $password, false);
+        
+        if ($user) {
+            $_SESSION["user"] = $user;
+        } else {
+            header("Location: $wwwroot/users/authenticationError.php");
+        }
+    }
+}
+$DOC_TITLE = "Sportsynergy Clubpro";
+include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 
 // When a site has a court group configured set a session variable.  The first court group id will be the default.
 // If a court group isn't found, just display the courts by displayorder (using the navigation arrows if necessary)
@@ -69,53 +93,56 @@ include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
 $grouping = "SELECT grouping.id from tblCourtGrouping grouping
 							WHERE grouping.siteid = $siteid
 							ORDER BY grouping.id";
-	
 $groupingResult = db_query($grouping);
 
 //Update the court group session variable if set
-if( isset($courtGroupFromForm) ){
-	$_SESSION["courtGroup"][$siteid] = $courtGroupFromForm;
-	unset($_SESSION["courtWindowStart"]);	
+
+if (isset($courtGroupFromForm)) {
+    $_SESSION["courtGroup"][$siteid] = $courtGroupFromForm;
+    unset($_SESSION["courtWindowStart"]);
 }
 
 // Set the Court Group ID
-if ( mysql_num_rows($groupingResult) > 0 && !isset($_SESSION["courtGroup"][$siteid] ) ) { 
-	$_SESSION["courtGroup"][$siteid] = mysql_result($groupingResult,0);	
-	unset($_SESSION["courtWindowStart"]);
+
+if (mysql_num_rows($groupingResult) > 0 && !isset($_SESSION["courtGroup"][$siteid])) {
+    $_SESSION["courtGroup"][$siteid] = mysql_result($groupingResult, 0);
+    unset($_SESSION["courtWindowStart"]);
 }
 
 //Unset the Court Group Id if no court groups found, this is needed if the data is updated while
 // someone already has the some session variable set (very rare!)
-if ( mysql_num_rows($groupingResult) == 0){
-	unset($_SESSION["courtGroup"]);
+
+
+if (mysql_num_rows($groupingResult) == 0) {
+    unset($_SESSION["courtGroup"]);
 }
 
 //Get the courtWindowStart from the form (if exists) and set, otherwise get from session
-if( isset($courtWindowStart) ){
-	$_SESSION["courtWindowStart"][$siteid] = $courtWindowStart;	
-}else{
-	$courtWindowStart = $_SESSION["courtWindowStart"][$siteid];
+
+if (isset($courtWindowStart)) {
+    $_SESSION["courtWindowStart"][$siteid] = $courtWindowStart;
+} else {
+    $courtWindowStart = $_SESSION["courtWindowStart"][$siteid];
 }
 
 //If courtWindowStart is set get courts starting with that
-if( isset($_SESSION["courtWindowStart"][$siteid]) ){
 
-	
-	// Check to see if there is a grouping set up
-	if( isset($_SESSION["courtGroup"][$siteid]) ){
-			$courtquery = "SELECT courts.* 
+if (isset($_SESSION["courtWindowStart"][$siteid])) {
+
+    // Check to see if there is a grouping set up
+    
+    if (isset($_SESSION["courtGroup"][$siteid])) {
+        $courtquery = "SELECT courts.* 
 								FROM tblCourts courts, tblCourtGrouping courtgrouping, tblCourtGroupingEntry groupingentry
 								WHERE courtgrouping.id = groupingentry.groupingid
-								AND courtgrouping.id = ".$_SESSION["courtGroup"][$siteid]."
+								AND courtgrouping.id = " . $_SESSION["courtGroup"][$siteid] . "
 								AND courts.courtid = groupingentry.courtid 
 								AND courts.courtid >=$courtWindowStart
 								AND courts.enable = 1
 								ORDER BY courts.displayorder
 								LIMIT 6";
-	}
-	else{
-		
-		$courtquery = "SELECT * 
+    } else {
+        $courtquery = "SELECT * 
 							FROM tblCourts courts
 							WHERE clubid=$clubid 
 						    AND courtid >=$courtWindowStart
@@ -123,33 +150,31 @@ if( isset($_SESSION["courtWindowStart"][$siteid]) ){
 							AND enable = 1
 							ORDER BY courts.displayorder
 						    LIMIT 6";
-	}
+    }
 }
+
 // Get the courts for the defined group
-elseif( isset($_SESSION["courtGroup"][$siteid]) ){
-	
-	$courtquery = "SELECT courts.* 
+elseif (isset($_SESSION["courtGroup"][$siteid])) {
+    $courtquery = "SELECT courts.* 
 				FROM tblCourts courts, tblCourtGrouping courtgrouping, tblCourtGroupingEntry groupingentry
 				WHERE courtgrouping.id = groupingentry.groupingid
-				AND courtgrouping.id = ".$_SESSION["courtGroup"][$siteid]."
+				AND courtgrouping.id = " . $_SESSION["courtGroup"][$siteid] . "
 				AND courts.courtid = groupingentry.courtid 
 				AND courts.enable = 1
 				ORDER BY courts.displayorder
 				LIMIT 6";
 }
+
 //If not set just get all of them (which should be under 6)
-else{
-	
-	$courtquery = "SELECT * 
+else {
+    $courtquery = "SELECT * 
 				FROM tblCourts courts
 				WHERE clubid=$clubid 
 				AND siteid=$siteid 
 				AND enable = 1
 				ORDER BY courts.displayorder
 				LIMIT 6";
-}	
-
-			
+}
 $currentCourtResult = db_query($courtquery);
 
 //We are going to need this.
@@ -157,40 +182,30 @@ $totalCurrentCourts = mysql_num_rows($currentCourtResult);
 
 //Get the Total Court Count.  If courts are grouped, get this, if not count all of the courts
 
-
-	if( isset($_SESSION["courtGroup"][$siteid]) ){
-		
-		$totalCourtsQuery = "SELECT courts.* 
+if (isset($_SESSION["courtGroup"][$siteid])) {
+    $totalCourtsQuery = "SELECT courts.* 
 								FROM tblCourts courts, tblCourtGrouping courtgrouping, tblCourtGroupingEntry groupingentry
 								WHERE courtgrouping.id = groupingentry.groupingid
-								AND courtgrouping.id = ".$_SESSION["courtGroup"][$siteid]."
+								AND courtgrouping.id = " . $_SESSION["courtGroup"][$siteid] . "
 								AND courts.courtid = groupingentry.courtid 
 								AND courts.enable = 1
 								ORDER BY courts.displayorder";
-	}
-	else{
-		$totalCourtsQuery = "SELECT court.courtid FROM tblCourts court where court.siteid = $siteid and court.enable = 1 ORDER BY court.displayorder";
-	}
+} else {
+    $totalCourtsQuery = "SELECT court.courtid FROM tblCourts court where court.siteid = $siteid and court.enable = 1 ORDER BY court.displayorder";
+}
 
 //Get the total courts for the site (not all will be displayed)
-
 $totalCourtResult = db_query($totalCourtsQuery);
 $totalCourts = mysql_num_rows($totalCourtResult);
 
-
-
 //Get General Club info
-$clubquery = "SELECT * from tblClubs WHERE clubid='".$clubid."'";
+$clubquery = "SELECT * from tblClubs WHERE clubid='" . $clubid . "'";
 $clubresult = db_query($clubquery);
 $clubobj = db_fetch_object($clubresult);
-
-$tzdelta = $clubobj->timezone*3600;
-$curtime =   mktime()+$tzdelta;
-$_SESSION["current_time"] = $curtime; 
-
-
+$tzdelta = $clubobj->timezone * 3600;
+$curtime = mktime() + $tzdelta;
+$_SESSION["current_time"] = $curtime;
 $simtzdelta = $clubobj->timezone;
-
 
 //Allow Person to type in the date to load
 $month = $_REQUEST['month'];
@@ -198,96 +213,73 @@ $date = $_REQUEST['date'];
 $year = $_REQUEST['year'];
 $daysahead = $_REQUEST['daysahead'];
 
-if(isset($month) && isset($date) && isset($year)){
-	
-	 $currYear = $year;
-     $currMonth = $month;
-     $currDay = $date;
-     $specDate = mktime(0, 0, 0, $month, $date, $year);
-					 		
-     $currDOW = getDOW(gmdate("l", $specDate));
+if (isset($month) && isset($date) && isset($year)) {
+    $currYear = $year;
+    $currMonth = $month;
+    $currDay = $date;
+    $specDate = mktime(0, 0, 0, $month, $date, $year);
+    $currDOW = getDOW(gmdate("l", $specDate));
 }
+
 //Set Current data and time
 // set up some variables to identify the month, date and year to display
-elseif (empty($daysahead) || !isset($daysahead)   ){
 
-      $currYear = gmdate("Y", $curtime);
-      $currMonth = gmdate("n", $curtime);
-      $currDay = gmdate("j", $curtime);
-      $currDOW = getDOW(gmdate("l", $curtime));
-
+elseif (empty($daysahead) || !isset($daysahead)) {
+    $currYear = gmdate("Y", $curtime);
+    $currMonth = gmdate("n", $curtime);
+    $currDay = gmdate("j", $curtime);
+    $currDOW = getDOW(gmdate("l", $curtime));
+} else {
+    $currYear = gmdate("Y", $daysahead);
+    $currMonth = gmdate("n", $daysahead);
+    $currDay = gmdate("j", $daysahead);
+    $currDOW = getDOW(gmdate("l", $daysahead));
 }
-else{
-     $currYear = gmdate("Y",$daysahead);
-     $currMonth = gmdate("n",$daysahead);
-     $currDay = gmdate("j",$daysahead);
-     $currDOW = getDOW(gmdate("l", $daysahead));
-
-}
-
 
 //Check to see if an hour policy is available.
 $hourspolicyQuery = "SELECT * from tblHoursPolicy WHERE siteid='$siteid'
                     AND year = $currYear
                     AND month = $currMonth
                     AND day = $currDay";
-
 $hourPolicyResult = db_query($hourspolicyQuery);
 
-
-         if(mysql_num_rows($hourPolicyResult)>0){
-
-                   $policyArray = mysql_fetch_array($hourPolicyResult);
-                   $otimearray = explode (":", $policyArray[opentime]);
-                   $ctimearray = explode (":", $policyArray[closetime]);
-                   $ohour = $otimearray[0];
-         		   $chour = $ctimearray[0];
-         }
-        
-
+if (mysql_num_rows($hourPolicyResult) > 0) {
+    $policyArray = mysql_fetch_array($hourPolicyResult);
+    $otimearray = explode(":", $policyArray[opentime]);
+    $ctimearray = explode(":", $policyArray[closetime]);
+    $ohour = $otimearray[0];
+    $chour = $ctimearray[0];
+}
 
 //Get todays range and put it in an object
-$todaystart = gmmktime (0,0,0,$currMonth,$currDay,$currYear);
-$todayend =  gmmktime (23,0,0,$currMonth,$currDay,$currYear);
+$todaystart = gmmktime(0, 0, 0, $currMonth, $currDay, $currYear);
+$todayend = gmmktime(23, 0, 0, $currMonth, $currDay, $currYear);
 
 // Calculate days ahead
 $userdate = $curtime + (get_daysahead() * 86400);
-$oYear = gmdate("Y",$userdate);
-$oDay = gmdate("n",$userdate);
-$oMonth = gmdate("j",$userdate);
+$oYear = gmdate("Y", $userdate);
+$oDay = gmdate("n", $userdate);
+$oMonth = gmdate("j", $userdate);
 
 //used in the date picker
-$jsdate = "$oDay/$oMonth/$oYear";						 		
+$jsdate = "$oDay/$oMonth/$oYear";
 
-
-if ($clubid){
-
-
+if ($clubid) {
 ?>
-     
 
-                   <!-- Date and Drop Down Table begin -->
-                   <table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
-                          <tr>
-       						
-       						 <td align="left" valign="top">
-                              <span class=bigbanner><? echo gmdate("l F j",$todaystart) ?></span>
-                              	<? include($_SESSION["CFG"]["includedir"]."/include_datepicker.php") ?>
-                             </td>
-								
-				
-                           </tr>
+<!-- Date and Drop Down Table begin -->
 
-                      <!-- Date and Drop Down Table end -->
-                      </table>
-
-
-            </td>
-         </tr>
-
-        
- 
-		 <?
+<table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
+  <tr>
+    <td align="left" valign="top"><span class=bigbanner><? echo gmdate("l F j",$todaystart) ?></span>
+      <? include($_SESSION["CFG"]["includedir"]."/include_datepicker.php") ?></td>
+  </tr>
+  
+  <!-- Date and Drop Down Table end -->
+</table>
+</td>
+</tr>
+<?
 		 
 		 		//Check the display time
 		 		if(  get_displaytime()  != null ){
@@ -310,13 +302,18 @@ if ($clubid){
 						
 						$displaytime = mktime($displayhour,$displayminute, 0, $todaysMonth, $todaysDay,$todaysYear)+$tzdelta;
 						?>
-						<tr><td class="normal">
-						<br><br>
-						The courts are not yet available.  
-						Please check back later today after <?=gmdate("g",$displaytime)?>:<?=gmdate("i",$displaytime)?> <?=gmdate("a",$displaytime)?>.
-						<br>
-						</td></tr>
-						<?
+<tr>
+  <td class="normal"><br>
+    <br>
+    The courts are not yet available.  
+    Please check back later today after
+    <?=gmdate("g",$displaytime)?>
+    :
+    <?=gmdate("i",$displaytime)?>
+    <?=gmdate("a",$displaytime)?>
+    . <br></td>
+</tr>
+<?
 						
 						print "</table>";
 						include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
@@ -325,8 +322,7 @@ if ($clubid){
 				
 		 		}
 		 ?>
- 		
- 		<?
+<?
 	 		
 	 		$grouping = "SELECT grouping.name, grouping.id 
 							FROM tblCourtGrouping grouping
@@ -338,13 +334,10 @@ if ($clubid){
 			 if ( mysql_num_rows($groupingResult) > 0 ) { 
 			 	
 			 ?>
- 		
-		 		<tr>
-		 			<td>
-		 				<table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
-							<tr height="15" >
-							<td align="right" class="normal">
-							<SCRIPT LANGUAGE=JAVASCRIPT TYPE="TEXT/JAVASCRIPT">
+<tr>
+  <td><table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
+      <tr height="15" >
+        <td align="right" class="normal"><SCRIPT LANGUAGE=JAVASCRIPT TYPE="TEXT/JAVASCRIPT">
 							 function submitCourtGroupForm(action, groupid)
 							{
 						        document.courtGroupForm.courtGroupFromForm.value = groupid;
@@ -353,11 +346,11 @@ if ($clubid){
 							
 							}
 							</SCRIPT>
-					 			<form name="courtGroupForm" method="post">
-					 			<input type="hidden" name="courtGroupFromForm">
-					 			<input type="hidden" name="daysahead" value="<?=$daysahead?>"></form>
-										
-							 <?	$counter = 0;
+          <form name="courtGroupForm" method="post">
+            <input type="hidden" name="courtGroupFromForm">
+            <input type="hidden" name="daysahead" value="<?=$daysahead?>">
+          </form>
+          <?	$counter = 0;
 							 	while($courtGroupRow = mysql_fetch_row($groupingResult)){ 
 		
 							 		if($counter > 0){
@@ -378,38 +371,26 @@ if ($clubid){
 							 		++$counter;
 		
 							 	} ?>
-							<br><br></td>
-		 					</tr>
-						</table>
- 					</td>
- 				</tr> 
-			<? }?>
-						
-		 		<tr>
-		 			<td>
-		 				<table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
-							<tr height="15">
-								<td align="left" class="normal"> <? printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
-								<td align="right" class="normal" >  <? printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
-								
-							</tr>
-						</table>
-		 			
-		 			</td>
-		 		</tr>
- 	
- 		
- 		
-         <tr valign="top">
-
-             <td>
-
-             <!-- Court Table Begin-->
-              <table cellspacing="0" cellpadding="0" border="0"  width="100%" >
-
-                <tr valign="top">
-
-                <?
+          <br>
+          <br></td>
+      </tr>
+    </table></td>
+</tr>
+<? }?>
+<tr>
+  <td><table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
+      <tr height="15">
+        <td align="left" class="normal"><? printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
+        <td align="right" class="normal" ><? printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
+      </tr>
+    </table></td>
+</tr>
+<tr valign="top">
+  <td><!-- Court Table Begin-->
+    
+    <table cellspacing="0" cellpadding="0" border="0"  width="100%" >
+      <tr valign="top">
+        <?
 				
 				
 				//Reset the index (from the querys earlier)
@@ -459,16 +440,12 @@ if ($clubid){
                   }
 
 				  ?>
-				  
-                  <td >
-                  <table width=<?=$courtWidth?> cellpadding="0" cellspacing="0" align="center" class="scheduletable" >
-                  
-                  <tr valign="top" >
-                  <th class="ct<?=$ctobj->courttypeid?>cl<?=$clubobj->clubid?>"><?=$ctobj->courttypename?></th>
-                  </tr>
-                  <tr>
-                  
-				  <?
+        <td ><table width=<?=$courtWidth?> cellpadding="0" cellspacing="0" align="center" class="scheduletable" >
+            <tr valign="top" >
+              <th class="ct<?=$ctobj->courttypeid?>cl<?=$clubobj->clubid?>"><?=$ctobj->courttypename?></th>
+            </tr>
+            <tr>
+              <?
                   /**
                    * Allow Program Administrators click on the court name to bring up event load screen, 
                    * As long as there is at least one event to book, that is.
@@ -874,20 +851,14 @@ if ($clubid){
                                        
 
                                        } ?>
-                                  
-
-
-                                   <? } ?>
-                                <? } ?>
-                               
-                            <? } else{
+              <?php } ?>
+              <?php } ?>
+              <?php } else{
                                		printEmptyReservation($i, $courtobj->courtid, true);
                                }
 
                            } ?>
-
-
-                              <? } 
+              <?php } 
 
                          //if stack is not set.  This means that the particular resource does not have
                          // any reservations for this day
@@ -901,45 +872,24 @@ if ($clubid){
                                    }
 
                         } ?>
-
-                         
-
-                      <?  } ?>
-
-                  </table>
-                  </td>
-                 
-                      <? unset($stack); ?>
-
-                 <? } ?>
-
-
-                <!-- Court Table End-->
-               </tr>
-               </table>
-               
-               <div style="padding-top: 2em;"></div>
-               
-               
-               <table class="legend">
-               	<tr>
-               		<td class="seekingmatchcl<?=$clubid?>">Needs Players</td>
-               		<td class="eventcourt">Special Event</td>
-               		<td class="reportscorecl<?=$clubid?>">Record Score</td>
-               		<td class="reservecourtcl<?=$clubid?>">Plain Old Reservation</td>
-               	</tr>
-               </table>
-               
-
-<?
+              <?php  } ?>
+          </table></td>
+        <?php unset($stack); ?>
+        <?php } ?>
+        
+        <!-- Court Table End--> 
+      </tr>
+    </table>
+    <div style="padding-top: 2em;"></div>
+    <table class="legend">
+      <tr>
+        <td class="seekingmatchcl<?=$clubid?>">Needs Players</td>
+        <td class="eventcourt">Special Event</td>
+        <td class="reportscorecl<?=$clubid?>">Record Score</td>
+        <td class="reservecourtcl<?=$clubid?>">Plain Old Reservation</td>
+      </tr>
+    </table>
+    <?php
 }
-
-
 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
-
-
-
-
-
 ?>
-

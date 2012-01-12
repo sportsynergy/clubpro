@@ -1,35 +1,66 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
+ * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
+
+/**
+* Class and Function List:
+* Function list:
+* Classes list:
+*/
 /*
  * Created on Feb 28, 2008
  *
- */
- 
-		$name = $_GET['name'];
- 		$clubid = $_GET['clubid'];
- 		$courtid = $_GET['courtid'];
- 		$courttype = $_GET['courttype'];
- 		$siteid = $_GET['siteid'];
- 		$userid = $_GET['userid'];
- 		
- 		//if court id is set, look up the court id
- 		if( isset($courtid)){
- 			$courttype = get_courtTypeForCourt($courtid);
- 		}
- 		
-  	    if(isDebugEnabled(1) ) logMessage("Users.Userlookup: name: $name clubid: $clubid courtid: $courtid siteid: $siteid userid: $userid");
-  	
-  		//Don't exclude administrators
-  		if( isProgramAdmin ($userid) ){
-  			$userid = 0;
-  		}
-  		  
-  		  
-  		// If a courtype isn't defined, then just leave this out of the query.  This will be cases like on the
-  		// my buddies page where a courttype really isn't involved.  
-  		
-  		if( empty($courttype)){
-  			
-  			$query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
+*/
+$name = $_GET['name'];
+$clubid = $_GET['clubid'];
+$courtid = $_GET['courtid'];
+$courttype = $_GET['courttype'];
+$siteid = $_GET['siteid'];
+$userid = $_GET['userid'];
+
+//if court id is set, look up the court id
+
+if (isset($courtid)) {
+    $courttype = get_courtTypeForCourt($courtid);
+}
+
+if (isDebugEnabled(1)) logMessage("Users.Userlookup: name: $name clubid: $clubid courtid: $courtid siteid: $siteid userid: $userid");
+
+//Don't exclude administrators
+
+if (isProgramAdmin($userid)) {
+    $userid = 0;
+}
+
+// If a courtype isn't defined, then just leave this out of the query.  This will be cases like on the
+// my buddies page where a courttype really isn't involved.
+
+
+if (empty($courttype)) {
+    $query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
 	                FROM tblUsers users, tblUserRankings rankings, tblkupSiteAuth siteauth, tblClubUser clubuser
 					WHERE users.userid = rankings.userid
 	                AND users.userid = siteauth.userid
@@ -45,10 +76,8 @@
 						(users.firstname LIKE '%$name%'
 						 OR users.lastname LIKE '%$name%')
 	                ORDER BY users.lastname";
-  			
-  		} else{
-  			
-  			$query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
+} else {
+    $query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
 	                FROM tblUsers users, tblUserRankings rankings, tblkupSiteAuth siteauth, tblClubUser clubuser
 					WHERE users.userid = rankings.userid
 	                AND users.userid = siteauth.userid
@@ -65,21 +94,13 @@
 						(users.firstname LIKE '%$name%'
 						 OR users.lastname LIKE '%$name%')
 	                ORDER BY users.lastname";
-  			
-  			
-  		}   
-		
-	    if(isDebugEnabled(1) ) logMessage($query);
-          
-	    $result = db_query($query);
-	    
-	    if(isDebugEnabled(1) ) logMessage("Users.UserLookup: Found ".mysql_num_rows($result) ." users");
-	    
-	    while( $row = mysql_fetch_row($result) ){
-	    	echo '<item><name>'.$row[1].' '.$row[2].'</name><value>'.$row[0].' </value></item>';
-	    }        
-	                 
+}
 
+if (isDebugEnabled(1)) logMessage($query);
+$result = db_query($query);
 
-
+if (isDebugEnabled(1)) logMessage("Users.UserLookup: Found " . mysql_num_rows($result) . " users");
+while ($row = mysql_fetch_row($result)) {
+    echo '<item><name>' . $row[1] . ' ' . $row[2] . '</name><value>' . $row[0] . ' </value></item>';
+}
 ?>

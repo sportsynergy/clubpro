@@ -1,5 +1,103 @@
 <?php
-
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
+ * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
+/**
+* Class and Function List:
+* Function list:
+* - send_email()
+* - formatDate()
+* - verify_login()
+* - load_user()
+* - getAllUsersWithIdResult()
+* - amiValidForSite()
+* - isValidForCourtType()
+* - amIaBuddyOf()
+* - isABuddyOfMine()
+* - markMatchType()
+* - is_inabox()
+* - getMatchType()
+* - get_partnerbytid()
+* - isUserInClubLadder()
+* - isUnscoredBoxLeagueReservation()
+* - getBoxIdTheseTwoGuysAreInTogether()
+* - are_boxplayers()
+* - is_logged_in()
+* - require_login()
+* - require_loginwq()
+* - get_clubid()
+* - get_siteid()
+* - isSiteAutoLogin()
+* - isDisplayRecentActivity()
+* - get_displaytime()
+* - isSoloReservationEnabled()
+* - isLadderRankingScheme()
+* - getChallengeRange()
+* - isPointRankingScheme()
+* - isSelfScoreEnabled()
+* - isSiteEnabled()
+* - getRankingAdjustment()
+* - isSiteGuestReservationEnabled()
+* - get_daysahead()
+* - get_facebookurl()
+* - isLiteVersion()
+* - isAllowAllSiteAdvertising()
+* - isNearRankingAdvertising()
+* - isDisplaySiteNavigation()
+* - get_roleid()
+* - get_userid()
+* - get_email()
+* - get_userfullname()
+* - get_userfirstname()
+* - get_clubname()
+* - get_tzdelta()
+* - require_priv()
+* - has_priv()
+* - atleastof_priv()
+* - err()
+* - err2()
+* - username_exists()
+* - username_already_exists()
+* - email_exists()
+* - makeTeamForCurrentUser()
+* - makeTeamForPlayers()
+* - findSelfTeam()
+* - email_players()
+* - email_boxmembers()
+* - confirm_singles()
+* - cancel_singles()
+* - confirm_doubles()
+* - cancel_doubles()
+* - report_scores_singles_simple()
+* - report_scores_singles()
+* - report_scores_singlesbox()
+* - report_scores_doubles_simple()
+* - report_scores_doubles()
+* - record_score()
+* Classes list:
+*/
 /**
  * Calls the PostageApp
  *
@@ -8,76 +106,88 @@
  * @param $to_name
  * @param $content an array of line1, line2, line3
  */
-function send_email($subject, $to_emails, $from_email, $content, $template){
+function send_email($subject, $to_emails, $from_email, $content, $template) {
+    
+    if (isDebugEnabled(1)) {
+    	logMessage("applicationlib.send_email: sending email with subject $subject with a size " . count($to_emails) . " from $from_email");
+    }
 
-	if( isDebugEnabled(1) ) 
-		logMessage("applicationlib.send_email: sending email with subject $subject with a size ".count($to_emails)." from $from_email");
+    // Who's going to receive this email.
+    // The $to field can have the following formats:
 
+    //
 
-	# Who's going to receive this email.
-	# The $to field can have the following formats:
-	#
-	# String:
-	#   $to = 'myemail@somewhere.com';
-	#
-	# Array:
-	#   $to = array('myemail@somewhere.com', 'youremail@somewhere.com', ...)
-	#
-	# Array with variables:
-	#   $to = array(
-	#     'myemail@somewhere.com'   => array('name' => 'John Smith', ...),
-	#     'youremail@somewhere.com' => array('name' => 'Ann Johnson', ...),
-	#     ...
-	#   )
-	// $to = array($to_email => array('name' => $to_name));
+    // String:
 
-	$variables = array('line1' =>  $content->line1,
-						'clubname' =>  $content->clubname);
+    //   $to = 'myemail@somewhere.com';
 
-	# Setup some headers
-	$header = array(
-      'From'      => $from_email,
-      'Reply-to'  => $from_email
-	);
+    //
 
+    // Array:
 
-	# Send it all
-	$response = PostageApp::mail($to_emails, $subject, $template, $header, $variables);
-	//return $response;
+    //   $to = array('myemail@somewhere.com', 'youremail@somewhere.com', ...)
+
+    //
+
+    // Array with variables:
+
+    //   $to = array(
+
+    //     'myemail@somewhere.com'   => array('name' => 'John Smith', ...),
+
+    //     'youremail@somewhere.com' => array('name' => 'Ann Johnson', ...),
+
+    //     ...
+
+    //   )
+
+    // $to = array($to_email => array('name' => $to_name));
+
+    $variables = array(
+        'line1' => $content->line1,
+        'clubname' => $content->clubname
+    );
+
+    // Setup some headers
+    $header = array(
+        'From' => $from_email,
+        'Reply-to' => $from_email
+    );
+
+    // Send it all
+    $response = PostageApp::mail($to_emails, $subject, $template, $header, $variables);
+
+    //return $response;
+    
 }
-
 /**
  *
  * @param $dateString
  */
-function formatDate($dateString){
-
-	return date("Y-n-d G:i:s", $dateString);
+function formatDate($dateString) {
+    return date("Y-n-d G:i:s", $dateString);
 }
-
 /**
  * Logs in user
- * 
+ *
  * One very interesting thing here is that anyone can use a superpassword to login.
- * 
+ *
  * @param String $username
  * @param String $password
  * @param bool $encodedpassword
  */
 function verify_login($username, $password, $encodedpassword) {
-	/* verify the username and password.  if it is a valid login, return an array
-	 * with the username, firstname, lastname, and email address of the user */
 
-	$superpassword = "25a694bd7f0a3f48e078f30c3afce1e5";
-
-	if($encodedpassword){
-		$password = md5($password);
-	}
-	 
-	if( isDebugEnabled(1) ) 
-		logMessage("applicationlib.verify_login: Logging in $username");
-
-	$loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
+    /* verify the username and password.  if it is a valid login, return an array
+     * with the username, firstname, lastname, and email address of the user */
+    $superpassword = "25a694bd7f0a3f48e078f30c3afce1e5";
+    
+    if ($encodedpassword) {
+        $password = md5($password);
+    }
+    
+    if (isDebugEnabled(1)) logMessage("applicationlib.verify_login: Logging in $username");
+    $loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
         			   FROM tblUsers users, tblClubUser clubuser, tblClubs club
 					   WHERE users.username = '$username' 
 					   AND users.userid = clubuser.userid
@@ -86,18 +196,18 @@ function verify_login($username, $password, $encodedpassword) {
 					   AND users.password = '$password'
         			   AND clubuser.enable='y' 
 					   AND clubuser.enddate IS NULL";
+    $loginResult = db_query($loginQuery);
 
-	$loginResult = db_query($loginQuery);
+    // If the login fails see if the superpassword was used
+    
+    if (mysql_num_rows($loginResult) == 0) {
 
-	// If the login fails see if the superpassword was used
-	if ( mysql_num_rows($loginResult) == 0){
-			
-		//encode the superpassword
-			
-		// If they used the superpassword, then just get the user.
-		if($superpassword == $password){
+        //encode the superpassword
+        // If they used the superpassword, then just get the user.
 
-			$loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
+        
+        if ($superpassword == $password) {
+            $loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
         			   FROM tblUsers users, tblClubUser clubuser, tblClubs club
 					   WHERE users.username = '$username' 
 					   AND users.userid = clubuser.userid
@@ -105,20 +215,17 @@ function verify_login($username, $password, $encodedpassword) {
 					   AND club.clubid = clubuser.clubid
         			   AND clubuser.enable='y' 
 					   AND clubuser.enddate IS NULL";
-
-			$loginResult = db_query($loginQuery);
-		}
-	}
-	return db_fetch_array($loginResult);
+            $loginResult = db_query($loginQuery);
+        }
+    }
+    return db_fetch_array($loginResult);
 }
-
 /**
  * Loads user (logs in with no password)
- * @param 
+ * @param
  */
-function load_user($userid){
-
-	$loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.clubid, clubuser.roleid, club.clubname
+function load_user($userid) {
+    $loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.clubid, clubuser.roleid, club.clubname
         			   FROM tblUsers users, tblClubUser clubuser, tblClubs club
 					   WHERE users.userid = clubuser.userid
 					   AND clubuser.clubid
@@ -127,53 +234,45 @@ function load_user($userid){
         			   AND clubuser.enable='y'
 					   AND club.clubid = clubuser.clubid
 					   AND clubuser.enddate IS NULL ";
-
-	$loginResult = db_query($loginQuery);
-
-	return db_fetch_array($loginResult);
-
+    $loginResult = db_query($loginQuery);
+    return db_fetch_array($loginResult);
 }
-
 /**
  * Returns all users with the given username.
  * @param unknown_type $username
  * @param unknown_type $clubid
  */
-function getAllUsersWithIdResult($username, $clubid){
-	$usersQuery = "SELECT users.userid, users.firstname, users.lastname
+function getAllUsersWithIdResult($username, $clubid) {
+    $usersQuery = "SELECT users.userid, users.firstname, users.lastname
 					FROM tblUsers users, tblClubUser clubuser
 					WHERE users.username = '$username'
 					AND users.userid = clubuser.userid
 					AND clubuser.clubid='" . get_clubid() . "'
 					AND clubuser.enddate IS NULL";
-	return  db_query($usersQuery);
-
+    return db_query($usersQuery);
 }
-
-
 /**
  * This determines if the user is valid for a sport.
- * 
+ *
  * @param unknown_type $siteid
  * @return boolean
  */
 function amiValidForSite($siteid) {
-	
-	$amiauthforsiteQuery = "SELECT tblkupSiteAuth.userid, tblkupSiteAuth.siteid
+    $amiauthforsiteQuery = "SELECT tblkupSiteAuth.userid, tblkupSiteAuth.siteid
 	                              FROM tblkupSiteAuth
 	                              WHERE (((tblkupSiteAuth.userid)=" . get_userid() . ") AND ((tblkupSiteAuth.siteid)=$siteid))";
-
-	$amiauthforsiteResult = db_query($amiauthforsiteQuery);
-	if (mysql_numrows($amiauthforsiteResult) == 0) {
-		if( isDebugEnabled(1) ) logMessage("applicationlib.amiValidForSite: ". get_userid(). " is NOT valid for $siteid");
-		return FALSE;
-	} else {
-		if( isDebugEnabled(1) ) logMessage("applicationlib.amiValidForSite: ". get_userid(). " is  valid for $siteid");
-		return TRUE;
-	}
+    $amiauthforsiteResult = db_query($amiauthforsiteQuery);
+    
+    if (mysql_numrows($amiauthforsiteResult) == 0) {
+        
+        if (isDebugEnabled(1)) logMessage("applicationlib.amiValidForSite: " . get_userid() . " is NOT valid for $siteid");
+        return FALSE;
+    } else {
+        
+        if (isDebugEnabled(1)) logMessage("applicationlib.amiValidForSite: " . get_userid() . " is  valid for $siteid");
+        return TRUE;
+    }
 }
-
-
 /**
  * This determines if the user is valid for a site.
  * @param unknown_type $courttypeid
@@ -181,72 +280,56 @@ function amiValidForSite($siteid) {
  * @return boolean Returns either TRUE or FALSE
  */
 function isValidForCourtType($courttypeid, $userid) {
-
-	$amiauthforCourtTypeQuery = "SELECT tblUserRankings.courttypeid
+    $amiauthforCourtTypeQuery = "SELECT tblUserRankings.courttypeid
 	                                  FROM tblUserRankings
 	                                  WHERE tblUserRankings.userid=$userid
 	                                  AND tblUserRankings.courttypeid=$courttypeid
 	                                  AND tblUserRankings.usertype=0";
-
-	$amiauthforCourtTypeResult = db_query($amiauthforCourtTypeQuery);
-
-	if (mysql_numrows($amiauthforCourtTypeResult) == 0) {
-		if( isDebugEnabled(1) ) logMessage("applicationlib.amiValidForCourtType: $userid is NOT valid for $courttypeid");
-		return FALSE;
-	} else {
-		if( isDebugEnabled(1) ) logMessage("applicationlib.amiValidForCourtType: $userid is valid for $courttypeid");
-		return TRUE;
-	}
+    $amiauthforCourtTypeResult = db_query($amiauthforCourtTypeQuery);
+    
+    if (mysql_numrows($amiauthforCourtTypeResult) == 0) {
+        
+        if (isDebugEnabled(1)) logMessage("applicationlib.amiValidForCourtType: $userid is NOT valid for $courttypeid");
+        return FALSE;
+    } else {
+        
+        if (isDebugEnabled(1)) logMessage("applicationlib.amiValidForCourtType: $userid is valid for $courttypeid");
+        return TRUE;
+    }
 }
-
-
 /**
  * Check to see if I am a buddy
  * @param unknown_type $userid
  */
 function amIaBuddyOf($userid) {
-
-	$imabuddy = FALSE;
-
-	$imabuddyQuery = "SELECT buddyid FROM tblBuddies WHERE userid=$userid";
-	$imabuddyResult = db_query($imabuddyQuery);
-
-	while ($imabuddyArray = mysql_fetch_array($imabuddyResult)) {
-
-		if ($imabuddyArray['buddyid'] == get_userid()) {
-			$imabuddy = TRUE;
-		}
-	}
-
-	return $imabuddy;
-
+    $imabuddy = FALSE;
+    $imabuddyQuery = "SELECT buddyid FROM tblBuddies WHERE userid=$userid";
+    $imabuddyResult = db_query($imabuddyQuery);
+    while ($imabuddyArray = mysql_fetch_array($imabuddyResult)) {
+        
+        if ($imabuddyArray['buddyid'] == get_userid()) {
+            $imabuddy = TRUE;
+        }
+    }
+    return $imabuddy;
 }
-
 /**
  * Checks to see if this person is a buddy.
  * @param unknown_type $buddyid
  * @return boolean
  */
-function isABuddyOfMine($buddyid){
-
-	$isABuddy = FALSE;
-
-	$imabuddyQuery = "SELECT buddyid FROM tblBuddies WHERE userid=".get_userid();
-	$imabuddyResult = db_query($imabuddyQuery);
-
-	while ($imabuddyArray = mysql_fetch_array($imabuddyResult)) {
-
-		if ($imabuddyArray['buddyid'] == $buddyid) {
-			$isABuddy = TRUE;
-		}
-	}
-
-	return $isABuddy;
+function isABuddyOfMine($buddyid) {
+    $isABuddy = FALSE;
+    $imabuddyQuery = "SELECT buddyid FROM tblBuddies WHERE userid=" . get_userid();
+    $imabuddyResult = db_query($imabuddyQuery);
+    while ($imabuddyArray = mysql_fetch_array($imabuddyResult)) {
+        
+        if ($imabuddyArray['buddyid'] == $buddyid) {
+            $isABuddy = TRUE;
+        }
+    }
+    return $isABuddy;
 }
-
-
-
-
 /**
  * This is used to quickly set a match type.  Right now as far as I know there are 4 possible match types:
  * 		0	practice match
@@ -257,124 +340,103 @@ function isABuddyOfMine($buddyid){
  * @param unknown_type $matchtype
  */
 function markMatchType($resid, $matchtype) {
-
-	$markMatchTypeQuery = "Update tblReservations SET matchtype=$matchtype WHERE reservationid=$resid AND enddate IS NULL";
-	$markMatchTypeResult = db_query($markMatchTypeQuery);
-
+    $markMatchTypeQuery = "Update tblReservations SET matchtype=$matchtype WHERE reservationid=$resid AND enddate IS NULL";
+    $markMatchTypeResult = db_query($markMatchTypeQuery);
 }
-
-
 /**
- * This will find out if the calling user is in a box of the 
- * courttype fo the court passed in as the argument. 
+ * This will find out if the calling user is in a box of the
+ * courttype fo the court passed in as the argument.
  * Not very fancy here, true if they are false if they are not.
- * 
+ *
  * @param unknown_type $courtid
  * @param unknown_type $userid
  */
 function is_inabox($courtid, $userid) {
-
-	$amIinThisBox = FALSE;
-	$courtTypeId = get_courtTypeForCourt($courtid);
-	$amiinaboxquery = "SELECT boxleagues.courttypeid, boxleaguedetails.userid
+    $amIinThisBox = FALSE;
+    $courtTypeId = get_courtTypeForCourt($courtid);
+    $amiinaboxquery = "SELECT boxleagues.courttypeid, boxleaguedetails.userid
 								FROM tblBoxLeagues boxleagues, tblkpBoxLeagues boxleaguedetails
 	                            WHERE boxleagues.boxid = boxleaguedetails.boxid
 	                            AND boxleagues.courttypeid=$courtTypeId 
 								AND boxleaguedetails.userid=$userid";
 
-	// run the query on the database
-	$amiinaboxresult = db_query($amiinaboxquery);
-
-	if (mysql_num_rows($amiinaboxresult) > 0) {
-		$amIinThisBox = TRUE;
-	}
-
-	return $amIinThisBox;
+    // run the query on the database
+    $amiinaboxresult = db_query($amiinaboxquery);
+    
+    if (mysql_num_rows($amiinaboxresult) > 0) {
+        $amIinThisBox = TRUE;
+    }
+    return $amIinThisBox;
 }
-
 /**
  * returns the match type for the given reservationid
- * 
+ *
  * @param unknown_type $resid
  * @return unknown
  */
 function getMatchType($resid) {
-
-	$matchtypequery = "SELECT matchtype FROM `tblReservations` WHERE reservationid=$resid";
-	$matchtyperesult = db_query($matchtypequery);
-	$matchtypevalue = mysql_result($matchtyperesult, 0);
-
-	return $matchtypevalue;
-
+    $matchtypequery = "SELECT matchtype FROM `tblReservations` WHERE reservationid=$resid";
+    $matchtyperesult = db_query($matchtypequery);
+    $matchtypevalue = mysql_result($matchtyperesult, 0);
+    return $matchtypevalue;
 }
-
 /**
- * When you need to just get the first and last name of a user and you only 
+ * When you need to just get the first and last name of a user and you only
  * seem to have there userid handy then this is the function for you.
- * 
+ *
  * @param unknown_type $tid
  * @return string
  */
 function get_partnerbytid($tid) {
-	$firstandlastquery = "SELECT users.firstname, users.lastname
+    $firstandlastquery = "SELECT users.firstname, users.lastname
 	                      FROM tblkpTeams teamdetails, tblUsers users
 						  WHERE teamdetails.userid = users.userid
 	                      AND teamdetails.teamid=$tid
 	                      AND users.userid !=" . get_userid();
-
-	$firstandlastresult = db_query($firstandlastquery);
-	$firstandlastarray = mysql_fetch_array($firstandlastresult);
-
-	return "$firstandlastarray[0] $firstandlastarray[1]";
+    $firstandlastresult = db_query($firstandlastquery);
+    $firstandlastarray = mysql_fetch_array($firstandlastresult);
+    return "$firstandlastarray[0] $firstandlastarray[1]";
 }
-
 /**
  * Figuers out if this user is in this league.
- * 
+ *
  * @param unknown_type $userid
  * @param unknown_type $courttypeid
  * @param unknown_type $clubid
  */
-function isUserInClubLadder($userid, $courttypeid, $clubid){
-
-	$query = "SELECT 1 FROM tblClubLadder ladder WHERE ladder.userid = $userid AND ladder.courttypeid = $courttypeid AND ladder.clubid = $clubid";
-	$result = db_query($query);
-	if( mysql_num_rows($result) > 0 ){
-		return true;
-	}
-	else{
-		return false;
-	}
-
+function isUserInClubLadder($userid, $courttypeid, $clubid) {
+    $query = "SELECT 1 FROM tblClubLadder ladder WHERE ladder.userid = $userid AND ladder.courttypeid = $courttypeid AND ladder.clubid = $clubid";
+    $result = db_query($query);
+    
+    if (mysql_num_rows($result) > 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
-
 /**
- * Does not look at the reservation match type but only if the two players 
+ * Does not look at the reservation match type but only if the two players
  * are in a box together and that haven't recorded the score yet.
- *  
+ *
  * @param unknown_type $reservationid
  * @return boolean Returns true if this is an unscore box league.
  */
 function isUnscoredBoxLeagueReservation($reservationid) {
 
-
-	//Check reservation History
-	$query = "SELECT * FROM tblBoxHistory history, tblkpUserReservations reservationdetails
+    //Check reservation History
+    $query = "SELECT * FROM tblBoxHistory history, tblkpUserReservations reservationdetails
 			 WHERE history.reservationid = $reservationid
 			 AND reservationdetails.reservationid = history.reservationid
              AND reservationdetails.outcome = 0";
-		
-	$results = db_query($query);
+    $results = db_query($query);
 
-	//If reservation hasnt't been scored
-	if( mysql_num_rows($results)==2){
-
-		return true;
-	}
-
-	return false;
+    //If reservation hasnt't been scored
+    
+    if (mysql_num_rows($results) == 2) {
+        return true;
+    }
+    return false;
 }
-
 /**
  * Called by the court reservation page to valiidate that
  * the the user is actually in a box leage with this opponent.
@@ -382,44 +444,36 @@ function isUnscoredBoxLeagueReservation($reservationid) {
  * @param unknown_type $playerOneId
  * @param unknown_type $playerTwoId
  */
-function getBoxIdTheseTwoGuysAreInTogether( $playerOneId, $playerTwoId) {
-
-
-	$playeronequery = "SELECT boxleagues.boxid, boxleaguedetails.userid
+function getBoxIdTheseTwoGuysAreInTogether($playerOneId, $playerTwoId) {
+    $playeronequery = "SELECT boxleagues.boxid, boxleaguedetails.userid
 	                   FROM tblBoxLeagues boxleagues, tblkpBoxLeagues boxleaguedetails
 	                   WHERE boxleagues.boxid = boxleaguedetails.boxid
 	                   AND boxleaguedetails.userid=$playerOneId";
 
-	// run the query on the database
-	$playeroneresult = db_query($playeronequery);
+    // run the query on the database
+    $playeroneresult = db_query($playeronequery);
+    $p1stack = array();
+    $p2stack = array();
 
-	$p1stack = array ();
-	$p2stack = array ();
-
-	//Put all boxes for the user in an array
-	while ($playeronearray = db_fetch_array($playeroneresult)) {
-		array_push($p1stack, $playeronearray[0]);
-	}
-
-
-	$playertwoquery = "SELECT boxleagues.boxid, boxleaguedetails.userid
+    //Put all boxes for the user in an array
+    while ($playeronearray = db_fetch_array($playeroneresult)) {
+        array_push($p1stack, $playeronearray[0]);
+    }
+    $playertwoquery = "SELECT boxleagues.boxid, boxleaguedetails.userid
 	                   FROM tblBoxLeagues boxleagues, tblkpBoxLeagues boxleaguedetails
 	                   WHERE boxleagues.boxid = boxleaguedetails.boxid
 	                   AND boxleaguedetails.userid=$playerTwoId";
 
-	// run the query on the database
-	$playertworesult = db_query($playertwoquery);
-	//Put all boxes for the user in an array
-	while ($playertwoarray = db_fetch_array($playertworesult)) {
-		array_push($p2stack, $playertwoarray[0]);
-	}
+    // run the query on the database
+    $playertworesult = db_query($playertwoquery);
 
-	$playersintersect = array_intersect($p1stack, $p2stack);
-
-	return $playersintersect[0];
-
+    //Put all boxes for the user in an array
+    while ($playertwoarray = db_fetch_array($playertworesult)) {
+        array_push($p2stack, $playertwoarray[0]);
+    }
+    $playersintersect = array_intersect($p1stack, $p2stack);
+    return $playersintersect[0];
 }
-
 /**
  * Returns the box id when of the box that the players share.  This function is called by
  * the court reservation page to validate that the the user is actually in a
@@ -428,46 +482,40 @@ function getBoxIdTheseTwoGuysAreInTogether( $playerOneId, $playerTwoId) {
  * @param $playertwo
  */
 function are_boxplayers($playerone, $playertwo) {
-
-
-	$playeronequery = "SELECT boxleagues.boxid, boxleaguedetails.userid
+    $playeronequery = "SELECT boxleagues.boxid, boxleaguedetails.userid
 	                   FROM tblBoxLeagues boxleagues, tblkpBoxLeagues boxleaguedetails
 	                   WHERE boxleagues.boxid = boxleaguedetails.boxid
 	                   AND boxleaguedetails.userid=$playerone";
 
-	// run the query on the database
-	$playeroneresult = db_query($playeronequery);
+    // run the query on the database
+    $playeroneresult = db_query($playeronequery);
+    $p1stack = array();
+    $p2stack = array();
 
-	$p1stack = array ();
-	$p2stack = array ();
-
-	//Put all boxes for the user in an array
-	while ($playeronearray = db_fetch_array($playeroneresult)) {
-		array_push($p1stack, $playeronearray[0]);
-	}
-
-
-	$playertwoquery = "SELECT boxleagues.boxid, boxleaguedetails.userid
+    //Put all boxes for the user in an array
+    while ($playeronearray = db_fetch_array($playeroneresult)) {
+        array_push($p1stack, $playeronearray[0]);
+    }
+    $playertwoquery = "SELECT boxleagues.boxid, boxleaguedetails.userid
 	                   FROM tblBoxLeagues boxleagues, tblkpBoxLeagues boxleaguedetails
 	                   WHERE boxleagues.boxid = boxleaguedetails.boxid
 	                   AND boxleaguedetails.userid=$playertwo";
 
-	// run the query on the database
-	$playertworesult = db_query($playertwoquery);
-	//Put all boxes for the user in an array
-	while ($playertwoarray = db_fetch_array($playertworesult)) {
-		array_push($p2stack, $playertwoarray[0]);
-	}
+    // run the query on the database
+    $playertworesult = db_query($playertwoquery);
 
-	$playersintersect = array_intersect($p1stack, $p2stack);
-
-	if(count($playersintersect)>0){
-		return true;
-	}else{
-		return false;
-	}
+    //Put all boxes for the user in an array
+    while ($playertwoarray = db_fetch_array($playertworesult)) {
+        array_push($p2stack, $playertwoarray[0]);
+    }
+    $playersintersect = array_intersect($p1stack, $p2stack);
+    
+    if (count($playersintersect) > 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
-
 /**
  * this function will return true if the user has logged in.  a user is logged
  * in if the $_SESSION["user"] is set (by the login.php page) and also if the
@@ -476,321 +524,249 @@ function are_boxplayers($playerone, $playertwo) {
  * will do for now
  */
 function is_logged_in() {
-
-	return isset ($_SESSION) && isset ($_SESSION["user"]);
+    return isset($_SESSION) && isset($_SESSION["user"]);
 }
-
 /**
  * this function checks to see if the user is logged in.  if not, it will show
  * the login screen before allowing the user to continue
  */
 function require_login() {
-
-	if (!is_logged_in()) {
-		$_SESSION["wantsurl"] = qualified_me();
-		redirect($_SESSION["CFG"]["wwwroot"]."/login.php");
-	}
+    
+    if (!is_logged_in()) {
+        $_SESSION["wantsurl"] = qualified_me();
+        redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+    }
 }
-
 /**
  * this function checks to see if the user is logged in.  if not, it will show
  * the login screen before allowing the user to continue
  */
 function require_loginwq() {
-
-	if (!is_logged_in()) {
-		$_SESSION["wantsurl"] = qualified_mewithq();
-		redirect($_SESSION["CFG"]["wwwroot"]."/login.php");
-	}
+    
+    if (!is_logged_in()) {
+        $_SESSION["wantsurl"] = qualified_mewithq();
+        redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+    }
 }
-
 /**
  * this function simply returns the clubid.
  */
 function get_clubid() {
-	return $_SESSION["siteprefs"]["clubid"];
+    return $_SESSION["siteprefs"]["clubid"];
 }
-
 /**
  * this function simply returns the siteid.
  */
 function get_siteid() {
-	return $_SESSION["siteprefs"]["siteid"];
+    return $_SESSION["siteprefs"]["siteid"];
 }
-
 /**
  * this function simply returns the autologin status
  */
 function isSiteAutoLogin() {
-	return $_SESSION["siteprefs"]["enableautologin"]=='y'?true:false;
+    return $_SESSION["siteprefs"]["enableautologin"] == 'y' ? true : false;
 }
-
-
 /**
  * this function simply returns whether or not the recent activity should be displayed
  * @return boolean
  */
 function isDisplayRecentActivity() {
-	return $_SESSION["siteprefs"]["displayrecentactivity"]=='y'?true:false;
+    return $_SESSION["siteprefs"]["displayrecentactivity"] == 'y' ? true : false;
 }
-
 /**
  * this function simply returns the daysahead or the parameter that defines how far in advance users can make.
  */
 function get_displaytime() {
-	return $_SESSION["siteprefs"]["displaytime"];
+    return $_SESSION["siteprefs"]["displaytime"];
 }
-
 /**
  * this function simply returns the whether or not the site has solo reservations enabled.
  * @return boolean
  */
 function isSoloReservationEnabled() {
-	return $_SESSION["siteprefs"]["allowsoloreservations"]=='y'?true:false;
+    return $_SESSION["siteprefs"]["allowsoloreservations"] == 'y' ? true : false;
 }
-
 function isLadderRankingScheme() {
-	/* this function simply returns the whether or not the site has solo reservations enabled. */
 
-	return $_SESSION["siteprefs"]["rankingscheme"]=='ladder'?true:false;
-
-
+    /* this function simply returns the whether or not the site has solo reservations enabled. */
+    return $_SESSION["siteprefs"]["rankingscheme"] == 'ladder' ? true : false;
 }
-
 function getChallengeRange() {
-	/* this function simply returns the challenge range*/
 
-	return $_SESSION["siteprefs"]["challengerange"];
-
-
+    /* this function simply returns the challenge range*/
+    return $_SESSION["siteprefs"]["challengerange"];
 }
-
 function isPointRankingScheme() {
-	/* this function simply returns the whether or not the site has solo reservations enabled. */
 
-	return $_SESSION["siteprefs"]["rankingscheme"]=='point'?true:false;
-
-
+    /* this function simply returns the whether or not the site has solo reservations enabled. */
+    return $_SESSION["siteprefs"]["rankingscheme"] == 'point' ? true : false;
 }
-
 function isSelfScoreEnabled() {
-	/* this function simply returns the whether or not the site has self score enabled. */
 
-	return $_SESSION["siteprefs"]["allowselfscore"]=='y'?true:false;
-
-
+    /* this function simply returns the whether or not the site has self score enabled. */
+    return $_SESSION["siteprefs"]["allowselfscore"] == 'y' ? true : false;
 }
-
 function isSiteEnabled() {
-	/* this function simply returns the whether or not the site is enabled. */
 
-	return $_SESSION["siteprefs"]["enable"]=='y'?true:false;
-
-
+    /* this function simply returns the whether or not the site is enabled. */
+    return $_SESSION["siteprefs"]["enable"] == 'y' ? true : false;
 }
-
 function getRankingAdjustment() {
-	/* this function simply returns the site ranking adjustment. */
 
-
-	return $_SESSION["siteprefs"]["rankingadjustment"];
-
-
+    /* this function simply returns the site ranking adjustment. */
+    return $_SESSION["siteprefs"]["rankingadjustment"];
 }
 function isSiteGuestReservationEnabled() {
-	/* this function simply returns the siteid. */
 
-
-	return $_SESSION["siteprefs"]["enableguestreservation"]=='y'?true:false;
+    /* this function simply returns the siteid. */
+    return $_SESSION["siteprefs"]["enableguestreservation"] == 'y' ? true : false;
 }
-
 function get_daysahead() {
-	/* this function simply returns the daysahead or the parameter that defines how far in advance users can make. */
 
-	return $_SESSION["siteprefs"]["daysahead"];
-
+    /* this function simply returns the daysahead or the parameter that defines how far in advance users can make. */
+    return $_SESSION["siteprefs"]["daysahead"];
 }
-
 function get_facebookurl() {
-	/* this function simply returns the the url. This is optional. */
 
-	return $_SESSION["siteprefs"]["facebookurl"];
-
+    /* this function simply returns the the url. This is optional. */
+    return $_SESSION["siteprefs"]["facebookurl"];
 }
-
 function isLiteVersion() {
-	/* this function returns if the site is the free version. */
-	return $_SESSION["siteprefs"]["isliteversion"]=='y'?true:false;
 
+    /* this function returns if the site is the free version. */
+    return $_SESSION["siteprefs"]["isliteversion"] == 'y' ? true : false;
 }
-
-function isAllowAllSiteAdvertising(){
-	return $_SESSION["siteprefs"]["allowallsiteadvertising"]=='y'?true:false;
+function isAllowAllSiteAdvertising() {
+    return $_SESSION["siteprefs"]["allowallsiteadvertising"] == 'y' ? true : false;
 }
-
-function isNearRankingAdvertising(){
-	return $_SESSION["siteprefs"]["allownearrankingadvertising"]=='y'?true:false;
+function isNearRankingAdvertising() {
+    return $_SESSION["siteprefs"]["allownearrankingadvertising"] == 'y' ? true : false;
 }
-
-function isDisplaySiteNavigation(){
-	return $_SESSION["siteprefs"]["displaysitenavigation"]=='y'?true:false;
+function isDisplaySiteNavigation() {
+    return $_SESSION["siteprefs"]["displaysitenavigation"] == 'y' ? true : false;
 }
-
 function get_roleid() {
 
-	/* this function simply returns the roleid. */
-
-	return $_SESSION["user"]["roleid"];
-
+    /* this function simply returns the roleid. */
+    return $_SESSION["user"]["roleid"];
 }
-
 function get_userid() {
-	/* this function simply returns the userid. */
 
-	return $_SESSION["user"]["userid"];
-
+    /* this function simply returns the userid. */
+    return $_SESSION["user"]["userid"];
 }
-
 function get_email() {
-	/* this function simply returns the email. */
 
-	return $_SESSION["user"]["email"];
-
+    /* this function simply returns the email. */
+    return $_SESSION["user"]["email"];
 }
+function get_userfullname() {
 
-function get_userfullname(){
-
-	/* this function simply returns the logged in users first and last name. */
-
-	return $_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"];
+    /* this function simply returns the logged in users first and last name. */
+    return $_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"];
 }
+function get_userfirstname() {
 
-function get_userfirstname(){
-
-	/* this function simply returns the logged in users first and last name. */
-
-	return $_SESSION["user"]["firstname"];
+    /* this function simply returns the logged in users first and last name. */
+    return $_SESSION["user"]["firstname"];
 }
 
 /*
  * this function simply returns the club name
-*
-*  */
-function get_clubname(){
-
-
-	return $_SESSION["siteprefs"]["clubname"];
+ *
+ *  */
+function get_clubname() {
+    return $_SESSION["siteprefs"]["clubname"];
 }
-
-
 function get_tzdelta() {
 
-	//gets the tzdelta
-	$tzquery = "SELECT timezone from tblClubs WHERE clubid='" . get_clubid() . "'";
-	$tzresult = db_query($tzquery);
-	$tzdelta = mysql_result($tzresult, 0);
-	return $tzdelta * 3600;
-
+    //gets the tzdelta
+    $tzquery = "SELECT timezone from tblClubs WHERE clubid='" . get_clubid() . "'";
+    $tzresult = db_query($tzquery);
+    $tzdelta = mysql_result($tzresult, 0);
+    return $tzdelta * 3600;
 }
-
 function require_priv($roleid) {
-	/* this function checks to see if the user has the privilege $roleid.  if not,
-	 * it will display an Insufficient Privileges page and stop */
 
-	if ($_SESSION["user"]["roleid"] != $roleid) {
-		include ($_SESSION["CFG"]["templatedir"]."/insufficient_privileges.php");
-		die;
-	}
-
+    /* this function checks to see if the user has the privilege $roleid.  if not,
+     * it will display an Insufficient Privileges page and stop */
+    
+    if ($_SESSION["user"]["roleid"] != $roleid) {
+        include ($_SESSION["CFG"]["templatedir"] . "/insufficient_privileges.php");
+        die;
+    }
 }
-
 function has_priv($roleid) {
-	/* returns true if the user has the privilege $priv */
 
-	if (isset ($_SESSION["user"])) {
-		return $_SESSION["user"]["roleid"] == $roleid;
-	}
-
+    /* returns true if the user has the privilege $priv */
+    
+    if (isset($_SESSION["user"])) {
+        return $_SESSION["user"]["roleid"] == $roleid;
+    }
 }
-
 function atleastof_priv($roleid) {
-	/* returns true if the user has the privilege $priv */
 
-	return $_SESSION["user"]["roleid"] >= $roleid;
+    /* returns true if the user has the privilege $priv */
+    return $_SESSION["user"]["roleid"] >= $roleid;
 }
+function err(&$errorvar) {
 
-
-
-
-function err(& $errorvar) {
-	/* if $errorvar is set, then print an error marker << */
-
-	if (isset ($errorvar)) {
-		echo "<font color=#ff0000>&lt;&lt;</font>";
-	}
+    /* if $errorvar is set, then print an error marker << */
+    
+    if (isset($errorvar)) {
+        echo "<font color=#ff0000>&lt;&lt;</font>";
+    }
 }
+function err2(&$errorvar) {
 
-function err2(& $errorvar) {
-	/* like err(), but prints the marker >> */
-
-	if (isset ($errorvar)) {
-		echo "<font color=#ff0000>&gt;&gt;</font>";
-	}
+    /* like err(), but prints the marker >> */
+    
+    if (isset($errorvar)) {
+        echo "<font color=#ff0000>&gt;&gt;</font>";
+    }
 }
-
 function username_exists($username) {
-	/* returns the true if the username exists */
 
-	$qid = db_query("SELECT 1 FROM tblUsers users, tblClubUser clubuser
+    /* returns the true if the username exists */
+    $qid = db_query("SELECT 1 FROM tblUsers users, tblClubUser clubuser
 						WHERE users.username = '$username' 
 						AND users.userid = clubuser.userid
 						AND clubuser.enddate IS NULL
-						AND clubuser.clubid = ". get_clubid()."");
-
-	return db_num_rows($qid);
+						AND clubuser.clubid = " . get_clubid() . "");
+    return db_num_rows($qid);
 }
-
 /**
  *  Used to see if there is another one.
  */
 function username_already_exists($username, $userid) {
-	/* returns the true if the username exists */
 
-	$qid = db_query("SELECT users.username, users.userid FROM tblUsers users, tblClubUser clubuser
+    /* returns the true if the username exists */
+    $qid = db_query("SELECT users.username, users.userid FROM tblUsers users, tblClubUser clubuser
 						WHERE users.username = '$username' 
 						AND users.userid = clubuser.userid
 						AND clubuser.enddate IS NULL
-						AND clubuser.clubid = ". get_clubid()."");
+						AND clubuser.clubid = " . get_clubid() . "");
+    $userArray = db_fetch_array($qid);
 
-	$userArray = db_fetch_array($qid);
-
-	//If no rows are returned or if the username/userid is unique then the username is unique.
-	if(db_num_rows($qid)==0 || ($userArray['username'] == $username && $userArray['userid']==$userid)){
-		return false;
-	}
-	else{
-		return true;
-	}
-
-
-
+    //If no rows are returned or if the username/userid is unique then the username is unique.
+    
+    if (db_num_rows($qid) == 0 || ($userArray['username'] == $username && $userArray['userid'] == $userid)) {
+        return false;
+    } else {
+        return true;
+    }
 }
-
 function email_exists($email) {
-	/* returns true the email address exists */
 
-	$query = "SELECT 1 FROM tblUsers users, tblClubUser clubuser
+    /* returns true the email address exists */
+    $query = "SELECT 1 FROM tblUsers users, tblClubUser clubuser
 				WHERE users.email = '$email' 
 				AND users.userid = clubuser.userid
-				AND clubuser.clubid = ".get_clubid()."
+				AND clubuser.clubid = " . get_clubid() . "
 				AND users.enddate IS NULL";
-	$qid = db_query($query);
-
-	return db_num_rows($qid);
+    $qid = db_query($query);
+    return db_num_rows($qid);
 }
-
-
-
 
 /*
  *******************************************************************************************************
@@ -800,76 +776,67 @@ creates a team, assigns a reanking and returns the new teamid for the current us
 
 *******************************************************************************************************
 */
-
 function makeTeamForCurrentUser($sportname, $partnerid) {
 
-	/* Set the team identifier     */
-
-	$setteamquery = "INSERT INTO tblTeams (
+    /* Set the team identifier     */
+    $setteamquery = "INSERT INTO tblTeams (
 	                courttypeid
 	                ) VALUES (
 	                           '$sportname')";
 
-	// run the query on the database
-	$setteamresult = db_query($setteamquery);
+    // run the query on the database
+    $setteamresult = db_query($setteamquery);
 
-	/* Get the team id     */
-	$lastinsert = mysql_insert_id();
-	$addselfquery = "INSERT INTO tblkpTeams (
+    /* Get the team id     */
+    $lastinsert = mysql_insert_id();
+    $addselfquery = "INSERT INTO tblkpTeams (
 	                teamid, userid
 	                ) VALUES ( $lastinsert
 	                           ,'" . get_userid() . "')";
 
-	// run the query on the database
-	$addselfresult = db_query($addselfquery);
+    // run the query on the database
+    $addselfresult = db_query($addselfquery);
 
-	/* Now add partner   */
+    /* Now add partner   */
 
-	// add self to new team
-
-	$addpartnerquery = "INSERT INTO tblkpTeams (
+    // add self to new team
+    $addpartnerquery = "INSERT INTO tblkpTeams (
 	                teamid, userid
 	                ) VALUES ( $lastinsert
 	                           ,$partnerid)";
 
-	// run the query on the database
-	$addpartnerresult = db_query($addpartnerquery);
+    // run the query on the database
+    $addpartnerresult = db_query($addpartnerquery);
 
-	// Finally update the rankings for the new team
+    // Finally update the rankings for the new team
+    //Get the users doubles ranking for each team member
 
-	//Get the users doubles ranking for each team member
-
-	$usersrankquery = "SELECT tblUserRankings.ranking
+    $usersrankquery = "SELECT tblUserRankings.ranking
 	                      FROM tblUserRankings
 	                      WHERE (((tblUserRankings.userid)=" . get_userid() . "
 	                      Or (tblUserRankings.userid)=$partnerid)
 	                      AND ((tblUserRankings.courttypeid)=$sportname)
 	                      AND ((tblUserRankings.usertype)=0))";
-
-	$usersrankresult = db_query($usersrankquery);
-	$rank1 = mysql_result($usersrankresult, 0);
-
-	$usersrankresult = db_query($usersrankquery);
-	$rank2 = mysql_result($usersrankresult, 1);
-	$averagerank = ($rank1 + $rank2) / 2;
-
-	$rankquery = "INSERT INTO tblUserRankings (
+    $usersrankresult = db_query($usersrankquery);
+    $rank1 = mysql_result($usersrankresult, 0);
+    $usersrankresult = db_query($usersrankquery);
+    $rank2 = mysql_result($usersrankresult, 1);
+    $averagerank = ($rank1 + $rank2) / 2;
+    $rankquery = "INSERT INTO tblUserRankings (
 	                userid, courttypeid, ranking, usertype
 	                ) VALUES (
 	                          '$lastinsert'
 	                          ,'$sportname'
 	                           ,'$averagerank'
 	                           ,1)";
-
-	$rankresult = db_query($rankquery);
-
-	$teaminfoarray = array (
-	$averagerank,
-	$lastinsert
-	);
-	return $teaminfoarray;
-
+    $rankresult = db_query($rankquery);
+    $teaminfoarray = array(
+        $averagerank,
+        $lastinsert
+    );
+    return $teaminfoarray;
 }
+
 /*
  *******************************************************************************************************
 **   makeTeamForPlayers
@@ -878,111 +845,96 @@ creates a team, assigns a reanking and returns the new teamid for two different 
 
 *******************************************************************************************************
 */
-
 function makeTeamForPlayers($sportname, $player1id, $player2id) {
 
-	/* Set the team identifier     */
-
-	$setteamquery = "INSERT INTO tblTeams (
+    /* Set the team identifier     */
+    $setteamquery = "INSERT INTO tblTeams (
 	                courttypeid
 	                ) VALUES (
 	                           '$sportname')";
 
-	// run the query on the database
-	$setteamresult = db_query($setteamquery);
+    // run the query on the database
+    $setteamresult = db_query($setteamquery);
 
-	/* Get the team id     */
-	$lastinsert = mysql_insert_id();
-	$addselfquery = "INSERT INTO tblkpTeams (
+    /* Get the team id     */
+    $lastinsert = mysql_insert_id();
+    $addselfquery = "INSERT INTO tblkpTeams (
 	                teamid, userid
 	                ) VALUES ( $lastinsert
 	                           ,$player1id)";
 
-	// run the query on the database
-	$addselfresult = db_query($addselfquery);
+    // run the query on the database
+    $addselfresult = db_query($addselfquery);
 
-	/* Now add partner   */
+    /* Now add partner   */
 
-	// add self to new team
-
-	$addpartnerquery = "INSERT INTO tblkpTeams (
+    // add self to new team
+    $addpartnerquery = "INSERT INTO tblkpTeams (
 	                teamid, userid
 	                ) VALUES ( $lastinsert
 	                           ,$player2id)";
 
-	// run the query on the database
-	$addpartnerresult = db_query($addpartnerquery);
+    // run the query on the database
+    $addpartnerresult = db_query($addpartnerquery);
 
-	// Finally update the rankings for the new team
+    // Finally update the rankings for the new team
+    //Get the users doubles ranking for each team member
 
-	//Get the users doubles ranking for each team member
-
-	$usersrankquery = "SELECT tblUserRankings.ranking
+    $usersrankquery = "SELECT tblUserRankings.ranking
 	                      FROM tblUserRankings
 	                      WHERE (((tblUserRankings.userid)=$player1id
 	                      Or (tblUserRankings.userid)=$player2id)
 	                      AND ((tblUserRankings.courttypeid)=$sportname)
 	                      AND ((tblUserRankings.usertype)=0))";
-
-	$usersrankresult = db_query($usersrankquery);
-	$rank1 = mysql_result($usersrankresult, 0);
-
-	$usersrankresult = db_query($usersrankquery);
-	$rank2 = mysql_result($usersrankresult, 1);
-	$averagerank = ($rank1 + $rank2) / 2;
-
-	$rankquery = "INSERT INTO tblUserRankings (
+    $usersrankresult = db_query($usersrankquery);
+    $rank1 = mysql_result($usersrankresult, 0);
+    $usersrankresult = db_query($usersrankquery);
+    $rank2 = mysql_result($usersrankresult, 1);
+    $averagerank = ($rank1 + $rank2) / 2;
+    $rankquery = "INSERT INTO tblUserRankings (
 	                userid, courttypeid, ranking, usertype
 	                ) VALUES (
 	                          '$lastinsert'
 	                          ,'$sportname'
 	                           ,'$averagerank'
 	                           ,1)";
-
-	$rankresult = db_query($rankquery);
-
-	$teaminfoarray = array (
-	$averagerank,
-	$lastinsert
-	);
-	return $teaminfoarray;
-
+    $rankresult = db_query($rankquery);
+    $teaminfoarray = array(
+        $averagerank,
+        $lastinsert
+    );
+    return $teaminfoarray;
 }
-
 /**
  * This is really just an array funnction that will return the first element that is a duplication in the list
  */
 function findSelfTeam($array) {
-
-	while ($teamid = array_pop($array)) {
-		if (in_array($teamid, $array)) {
-			return $teamid;
-		}
-	}
+    while ($teamid = array_pop($array)) {
+        
+        if (in_array($teamid, $array)) {
+            return $teamid;
+        }
+    }
 }
-
-
 /**
- * 
+ *
  * Enter description here ...
  * @param unknown_type $resid
  * @param unknown_type $emailType
  */
 function email_players($resid, $emailType) {
+    
+    if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: emailing Players about reservation id: $resid for a $emailType kind of email");
 
+    //Check to see if the reservation is for a doubles court
+    $usertypequery = "SELECT usertype FROM tblReservations WHERE reservationid=$resid";
+    $usertyperesult = db_query($usertypequery);
+    $usertypeval = mysql_result($usertyperesult, 0);
+    
+    if ($usertypeval == 0) {
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.emailplayers: emailing Players about reservation id: $resid for a $emailType kind of email");
-
-	//Check to see if the reservation is for a doubles court
-	$usertypequery = "SELECT usertype FROM tblReservations WHERE reservationid=$resid";
-	$usertyperesult = db_query($usertypequery);
-	$usertypeval = mysql_result($usertyperesult, 0);
-
-
-	if ($usertypeval == 0) {
-		//email about a singles court
-
-		$rquery = "SELECT courts.courtname, courts.courtid, reservations.time, users.userid, users.firstname, users.lastname, courttype.courttypeid, rankings.ranking,  users.email, users.homephone, users.cellphone, users.workphone, matchtype.name
+        //email about a singles court
+        $rquery = "SELECT courts.courtname, courts.courtid, reservations.time, users.userid, users.firstname, users.lastname, courttype.courttypeid, rankings.ranking,  users.email, users.homephone, users.cellphone, users.workphone, matchtype.name
 		                 FROM tblCourts courts, tblReservations reservations, tblUsers users, tblCourtType courttype, tblUserRankings rankings, tblkpUserReservations reservationdetails, tblMatchType matchtype
 						 WHERE users.userid = rankings.userid
 						 AND reservations.courtid = courts.courtid
@@ -993,43 +945,39 @@ function email_players($resid, $emailType) {
 						 AND matchtype.id  = reservations.matchtype
 		                 AND reservations.reservationid = $resid
 						 AND rankings.usertype=0";
+        $rresult = db_query($rquery);
+        $robj = mysql_fetch_object($rresult);
+        $var = new Object;
+        
+        if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: courtid " . $robj->courtid);
 
-		$rresult = db_query($rquery);
+        /* email the user with the new account information    */
+        $var->userid = $robj->userid;
+        $var->firstname = $robj->firstname;
+        $var->lastname = $robj->lastname;
+        $var->email = $robj->email;
+        $var->homephone = $robj->homephone;
+        $var->cellphone = $robj->cellphone;
+        $var->workphone = $robj->workphone;
+        $var->ranking = $robj->ranking;
+        $var->courtname = $robj->courtname;
+        $var->courtid = $robj->courtid;
+        $var->matchtype = $robj->name;
+        $var->time = gmdate("l F j g:i a", $robj->time);
+        $var->timestamp = $robj->time;
+        $var->dns = $_SESSION["CFG"]["dns"];
+        $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
+        $var->fullname = $robj->firstname . " " . $robj->lastname;
+        $var->support = $_SESSION["CFG"]["support"];
 
-		$robj = mysql_fetch_object($rresult);
-		$var = new Object;
-
-		if( isDebugEnabled(1) ) logMessage("applicationlib.emailplayers: courtid ".$robj->courtid);
-		/* email the user with the new account information    */
-
-		$var->userid = $robj->userid;
-		$var->firstname = $robj->firstname;
-		$var->lastname = $robj->lastname;
-		$var->email = $robj->email;
-		$var->homephone = $robj->homephone;
-		$var->cellphone = $robj->cellphone;
-		$var->workphone = $robj->workphone;
-		$var->ranking = $robj->ranking;
-		$var->courtname = $robj->courtname;
-		$var->courtid = $robj->courtid;
-		$var->matchtype = $robj->name;
-		$var->time = gmdate("l F j g:i a", $robj->time);
-		$var->timestamp = $robj->time;
-		$var->dns = $_SESSION["CFG"]["dns"];
-		$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
-		$var->fullname = $robj->firstname . " " . $robj->lastname;
-		$var->support = $_SESSION["CFG"]["support"];
-
-		//Set the URL
-		$rawurl  = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;
-		$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
-
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/singles_wanted.php", $var);
-		$emailbody = nl2br($emailbody);
-
-		if ($emailType == "3") {
-
-			$emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+        //Set the URL
+        $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $var->userid;
+        $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/singles_wanted.php", $var);
+        $emailbody = nl2br($emailbody);
+        
+        if ($emailType == "3") {
+            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 	                       FROM tblUsers users, tblUserRankings rankings, tblClubUser clubuser
 						   WHERE users.userid = rankings.userid
 						   AND users.userid = clubuser.userid
@@ -1039,10 +987,8 @@ function email_players($resid, $emailType) {
 	                       AND users.userid != " . get_userid() . "
 	                       AND clubuser.enable= 'y'
 						   AND clubuser.enddate IS NULL";
-		}
-		elseif ($emailType == "2") {
-
-			$emailidquery = "SELECT users.firstname, users.lastname, users.email
+        } elseif ($emailType == "2") {
+            $emailidquery = "SELECT users.firstname, users.lastname, users.email
 			                        FROM tblUsers users, tblBuddies buddies, tblClubUser clubuser
 									WHERE users.userid = buddies.buddyid
 			                        AND users.userid = clubuser.userid
@@ -1051,24 +997,21 @@ function email_players($resid, $emailType) {
 			                        AND buddies.userid=" . get_userid() . "
 			                        AND clubuser.enable= 'y'
 									AND clubuser.enddate IS NULL";
+        } elseif ($emailType == "1") {
 
-		}
-		elseif ($emailType == "1") {
-				
-			//Get the rankdev of the club
-			$rankdevquery = "SELECT rankdev FROM tblClubs WHERE clubid=" . get_clubid() . "";
+            //Get the rankdev of the club
+            $rankdevquery = "SELECT rankdev FROM tblClubs WHERE clubid=" . get_clubid() . "";
 
-			// run the query on the database
-			$rankdevresult = db_query($rankdevquery);
-			$rankdevval = mysql_result($rankdevresult, 0);
+            // run the query on the database
+            $rankdevresult = db_query($rankdevquery);
+            $rankdevval = mysql_result($rankdevresult, 0);
+            $highrange = $robj->ranking + $rankdevval;
+            $lowrange = $robj->ranking - $rankdevval;
 
-			$highrange = $robj->ranking + $rankdevval;
-			$lowrange = $robj->ranking - $rankdevval;
+            //Now get all players who receive players wanted notifications at the club and are within
+            //the set skill range
 
-			//Now get all players who receive players wanted notifications at the club and are within
-			//the set skill range
-
-			$emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 				                       FROM tblUsers users, tblUserRankings rankings, tblClubUser clubuser
 									   WHERE users.userid = rankings.userid
 									   AND users.userid = clubuser.userid
@@ -1080,36 +1023,31 @@ function email_players($resid, $emailType) {
 				                       AND users.userid != " . get_userid() . "
 				                       AND clubuser.enable='y'
 									   AND clubuser.enddate IS NULL";
+        }
 
-		}
+        // run the query on the database
+        $emailidresult = db_query($emailidquery);
+        $to_emails = array();
+        while ($emailidrow = db_fetch_row($emailidresult)) {
+            $to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+            $to_emails[$to_email] = array(
+                'name' => $emailidrow[0]
+            );
+        }
+        $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+        $content = new Object;
+        $content->line1 = $emailbody;
+        $content->clubname = get_clubname();
+        $template = get_sitecode();
+        $subject = get_clubname() . " - Player's Market Place";
 
-		// run the query on the database
-		$emailidresult = db_query($emailidquery);
-		$to_emails = array();
+        //Send the email
+        send_email($subject, $to_emails, $from_email, $content, $template);
+    }
 
-		while ($emailidrow = db_fetch_row($emailidresult)) {
-			$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
-			$to_emails[$to_email] = array('name' => $emailidrow[0]);
-
-		}
-
-		$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-		$content = new Object;
-		$content->line1 = $emailbody;
-		$content->clubname = get_clubname();
-		$template = get_sitecode();
-		$subject = get_clubname()." - Player's Market Place";
-
-		//Send the email
-		send_email($subject, $to_emails, $from_email, $content, $template);
-
-	}
-
-	//email about a doubles court
-	else {
-
-
-		$rquery = "SELECT DISTINCTROW
+    //email about a doubles court
+    else {
+        $rquery = "SELECT DISTINCTROW
 							courts.courtname, 
 							courts.courttypeid, 
 							reservations.time, 
@@ -1134,205 +1072,177 @@ function email_players($resid, $emailType) {
 					  AND matchtype.id = reservations.matchtype
 					  AND reservationdetails.reservationid=$resid
 					  AND users.userid = clubuser.userid
-					  AND clubuser.clubid=" . get_clubid() ;
-			
-			
-		$rresult = db_query($rquery);
-		$robj = mysql_fetch_object($rresult);
-
-		$extraPlayerQuery = "SELECT reservationdetails.userid
+					  AND clubuser.clubid=" . get_clubid();
+        $rresult = db_query($rquery);
+        $robj = mysql_fetch_object($rresult);
+        $extraPlayerQuery = "SELECT reservationdetails.userid
 		                        FROM tblReservations reservations, tblkpUserReservations reservationdetails
 		                        WHERE reservations.reservationid = reservationdetails.reservationid
 		                        AND reservationdetails.reservationid=$resid
 		                        AND reservationdetails.usertype=0
 								ORDER BY reservationdetails.userid";
+        $extraPlayerResult = db_query($extraPlayerQuery);
+        $extraPlayerArray = mysql_fetch_array($extraPlayerResult);
 
-		$extraPlayerResult = db_query($extraPlayerQuery);
-		$extraPlayerArray = mysql_fetch_array($extraPlayerResult);
+        //Get Court Type.  The reason this is done here is that in the cases of partial
+        //reservations, this is empty in the query above.
 
-		//Get Court Type.  The reason this is done here is that in the cases of partial
-		//reservations, this is empty in the query above.
-
-		$ctQuery = "SELECT courts.courttypeid
+        $ctQuery = "SELECT courts.courttypeid
 		                        FROM tblReservations reservations, tblCourts courts
 		                        WHERE reservations.reservationid=$resid
 		                        AND reservations.courtid = courts.courtid";
+        $ctResult = db_query($ctQuery);
+        $courtType = mysql_result($ctResult, 0);
+        $player1 = $robj->userid;
+        $var = new Object;
 
-		$ctResult = db_query($ctQuery);
-		$courtType = mysql_result($ctResult, 0);
+        /* email the user with the new account information    */
+        $var->firstname1 = $robj->firstname;
+        $var->lastname1 = $robj->lastname;
+        $var->fullname1 = $robj->firstname . " " . $robj->lastname;
+        $var->teamid = $robj->teamid;
 
+        //Get the next result
+        $robj = mysql_fetch_object($rresult);
+        $player2 = $robj->userid;
+        $var->firstname2 = $robj->firstname;
+        $var->lastname2 = $robj->lastname;
+        $var->fullname2 = $robj->firstname . " " . $robj->lastname;
+        $var->courtid = $robj->courtid;
+        $var->courtname = $robj->courtname;
+        $var->matchtype = $robj->name;
+        $var->time = gmdate("l F j g:i a", $robj->time);
+        $var->timestamp = $robj->time;
+        $var->dns = $_SESSION["CFG"]["dns"];
+        $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
+        $var->support = $_SESSION["CFG"]["support"];
+        $clubfullname = get_clubname();
+        $var->clubfullname = $clubfullname;
+        $var->clubadminemail = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-		$player1 = $robj->userid;
-		$var = new Object;
+        //if this reservation is made with a player looking for a partner, something will
+        //be set in the extraPlayerQuery, if so display a different email message .
 
-		/* email the user with the new account information    */
+        //  $extraPlayerobj->userid will be 0 when taking a player removes himself
 
-		$var->firstname1 = $robj->firstname;
-		$var->lastname1 = $robj->lastname;
-		$var->fullname1 = $robj->firstname . " " . $robj->lastname;
-		$var->teamid = $robj->teamid;
+        //from a reservation where he was looking for a match.
 
-	  
-		//Get the next result
-		$robj = mysql_fetch_object($rresult);
+        $extraPlayerUserId = 0;
 
-		$player2 = $robj->userid;
-		$var->firstname2 = $robj->firstname;
-		$var->lastname2 = $robj->lastname;
-		$var->fullname2 = $robj->firstname . " " . $robj->lastname;
+        //Check for three players wanted
+        
+        if (db_num_rows($extraPlayerResult) == 2 && $extraPlayerArray['userid'] == 0) {
 
-		$var->courtid = $robj->courtid;
-		$var->courtname = $robj->courtname;
-		$var->matchtype = $robj->name;
-		$var->time = gmdate("l F j g:i a", $robj->time);
-		$var->timestamp = $robj->time;
-		$var->dns = $_SESSION["CFG"]["dns"];
-		$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
-
-		$var->support = $_SESSION["CFG"]["support"];
-
-		$clubfullname = get_clubname();
-		$var->clubfullname = $clubfullname;
-		$var->clubadminemail = "Sportsynergy <player.mailer@sportsynergy.net>";
-
-
-
-		//if this reservation is made with a player looking for a partner, something will
-		//be set in the extraPlayerQuery, if so display a different email message .
-		//  $extraPlayerobj->userid will be 0 when taking a player removes himself
-		//from a reservation where he was looking for a match.
-
-		$extraPlayerUserId = 0;
-
-
-		//Check for three players wanted
-		if(db_num_rows($extraPlayerResult)==2 && $extraPlayerArray['userid']==0){
-				
-				
-			//Obtain the court and matchtype information
-			$rquery = "SELECT courts.courtname, matchtype.name, reservations.time, courts.courtid
+            //Obtain the court and matchtype information
+            $rquery = "SELECT courts.courtname, matchtype.name, reservations.time, courts.courtid
 					FROM tblMatchType matchtype, tblCourts courts, tblReservations reservations 
 					WHERE reservations.reservationid=$resid
 					AND reservations.courtid = courts.courtid
 					AND matchtype.id = reservations.matchtype";
-				
-			$rresult = db_query($rquery);
-			$robj = mysql_fetch_object($rresult);
-			$var->courtname = $robj->courtname;
-			$var->courtid = $robj->courtid;
-			$var->matchtype = $robj->name;
-			$var->timestamp = $robj->time;
-			$var->time = gmdate("l F j g:i a", $robj->time);
-
-			$extraPlayerArray = mysql_fetch_array($extraPlayerResult);
-
-			$var->userid = $extraPlayerArray['userid'];
-
-			$partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
+            $rresult = db_query($rquery);
+            $robj = mysql_fetch_object($rresult);
+            $var->courtname = $robj->courtname;
+            $var->courtid = $robj->courtid;
+            $var->matchtype = $robj->name;
+            $var->timestamp = $robj->time;
+            $var->time = gmdate("l F j g:i a", $robj->time);
+            $extraPlayerArray = mysql_fetch_array($extraPlayerResult);
+            $var->userid = $extraPlayerArray['userid'];
+            $partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                            FROM tblUsers
                            WHERE (((tblUsers.userid)=$var->userid))";
+            $partnerResult = db_query($partnerQuery);
+            $partnerobj = mysql_fetch_object($partnerResult);
+            $var->single1 = $partnerobj->firstname . " " . $partnerobj->lastname;
+            $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $var->userid;
+            $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/threePlayersWanted.php", $var);
+        }
 
-			$partnerResult = db_query($partnerQuery);
-			$partnerobj = mysql_fetch_object($partnerResult);
+        //Check for two players wanted
+        elseif (db_num_rows($extraPlayerResult) == 2 && $extraPlayerArray['userid'] != 0) {
 
-			$var->single1 = $partnerobj->firstname . " " . $partnerobj->lastname;
-
-			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->userid;
-			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
-			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/threePlayersWanted.php", $var);
-				
-		}
-		//Check for two players wanted
-		elseif(db_num_rows($extraPlayerResult)==2 && $extraPlayerArray['userid']!=0){
-
-			//Obtain the court and matchtype information
-			$rquery = "SELECT courts.courtname, matchtype.name, reservations.time
+            //Obtain the court and matchtype information
+            $rquery = "SELECT courts.courtname, matchtype.name, reservations.time
 					FROM tblMatchType matchtype, tblCourts courts, tblReservations reservations 
 					WHERE reservations.reservationid=$resid
 					AND reservations.courtid = courts.courtid
 					AND matchtype.id = reservations.matchtype";
-				
-			$rresult = db_query($rquery);
-			$robj = mysql_fetch_object($rresult);
-			$var->courtname = $robj->courtname;
-			$var->matchtype = $robj->name;
-			$var->time = gmdate("l F j g:i a", $robj->time);
+            $rresult = db_query($rquery);
+            $robj = mysql_fetch_object($rresult);
+            $var->courtname = $robj->courtname;
+            $var->matchtype = $robj->name;
+            $var->time = gmdate("l F j g:i a", $robj->time);
 
-			//Single Player One
-			$singlePlayerOne = $extraPlayerArray['userid'];
-			$playerOneQuery = "SELECT tblUsers.firstname, tblUsers.lastname
+            //Single Player One
+            $singlePlayerOne = $extraPlayerArray['userid'];
+            $playerOneQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                            FROM tblUsers
                            WHERE ((tblUsers.userid)=$singlePlayerOne) ";
-			 
-			$playerOneResult = db_query($playerOneQuery);
-			$playerOneobj = mysql_fetch_object($playerOneResult);
-			$var->single1 = $playerOneobj->firstname . " " . $playerOneobj->lastname;
+            $playerOneResult = db_query($playerOneQuery);
+            $playerOneobj = mysql_fetch_object($playerOneResult);
+            $var->single1 = $playerOneobj->firstname . " " . $playerOneobj->lastname;
 
-			//Single Player Two
-			$extraPlayerArray = mysql_fetch_array($extraPlayerResult);
-			$singlePlayerTwo = $extraPlayerArray['userid'];
-			$playerTwoQuery = "SELECT tblUsers.firstname, tblUsers.lastname
+            //Single Player Two
+            $extraPlayerArray = mysql_fetch_array($extraPlayerResult);
+            $singlePlayerTwo = $extraPlayerArray['userid'];
+            $playerTwoQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                            FROM tblUsers
                            WHERE ((tblUsers.userid)=$singlePlayerTwo) ";
-			$playerTwoResult = db_query($playerTwoQuery);
-			$playerTwoobj = mysql_fetch_object($playerTwoResult);
+            $playerTwoResult = db_query($playerTwoQuery);
+            $playerTwoobj = mysql_fetch_object($playerTwoResult);
+            $var->single2 = $playerTwoobj->firstname . " " . $playerTwoobj->lastname;
+            $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $singlePlayerOne;
+            $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/twoPlayersWanted.php", $var);
+        }
 
-			$var->single2 = $playerTwoobj->firstname . " " . $playerTwoobj->lastname;
-
-			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$singlePlayerOne;
-			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
-			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/twoPlayersWanted.php", $var);
-				
-		}
-		//Check for one player wanted
-		elseif ($extraPlayerArray['userid'] != null && $extraPlayerArray['userid'] != 0) {
-
-			$extraPlayerUserId = $extraPlayerArray['userid'];
-				
-			$partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
+        //Check for one player wanted
+        elseif ($extraPlayerArray['userid'] != null && $extraPlayerArray['userid'] != 0) {
+            $extraPlayerUserId = $extraPlayerArray['userid'];
+            $partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
 			                           FROM tblUsers
 			                           WHERE (((tblUsers.userid)=$extraPlayerUserId))";
-				
-			$partnerResult = db_query($partnerQuery);
-			$partnerobj = mysql_fetch_object($partnerResult);
+            $partnerResult = db_query($partnerQuery);
+            $partnerobj = mysql_fetch_object($partnerResult);
+            $var->partner = $partnerobj->firstname . " " . $partnerobj->lastname;
+            $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $extraPlayerUserId;
+            $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/partner_wanted.php", $var);
+        }
 
-			$var->partner = $partnerobj->firstname . " " . $partnerobj->lastname;
-				
-			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$extraPlayerUserId;
-			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
-			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/partner_wanted.php", $var);
+        //Default for team wanted
+        else {
 
-		}
-		//Default for team wanted
-		else {
-				
-			//guard against certain types of situations
-			if( empty($var->timestamp) || empty($var->courtid) || empty($var->teamid) ){
-				return;
-			}
-				
-			$rawurl = "http://".$var->dns."".$var->wwwroot."/users/court_reservation.php?time=".$var->timestamp."&courtid=".$var->courtid."&userid=".$var->teamid;
-			$var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
-			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/doubles_wanted.php", $var);
-		}
+            //guard against certain types of situations
+            
+            if (empty($var->timestamp) || empty($var->courtid) || empty($var->teamid)) {
+                return;
+            }
+            $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $var->teamid;
+            $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/doubles_wanted.php", $var);
+        }
 
-		//INitialize to avoid situations where these are not set, such as when emails are
-		//being sent and not all players are set.
-		if( !isset($player1) ){
-			$player1 = 0;
-		}
-		if( !isset($player2) ){
-			$player2 = 0;
-		}
+        //INitialize to avoid situations where these are not set, such as when emails are
+        //being sent and not all players are set.
 
+        
+        if (!isset($player1)) {
+            $player1 = 0;
+        }
+        
+        if (!isset($player2)) {
+            $player2 = 0;
+        }
 
-		/*
-		 * Email Advertisments are either set to the whole club or the list of buddies
-		* of the person making the reservation.
-		*/
-		if ($emailType == "3") {
-
-			$emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+        /*
+         * Email Advertisments are either set to the whole club or the list of buddies
+         * of the person making the reservation.
+        */
+        
+        if ($emailType == "3") {
+            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 	                       FROM tblUsers users, tblUserRankings rankings, tblClubUser clubuser
 						   WHERE users.userid = rankings.userid
 						   AND users.userid = clubuser.userid
@@ -1343,10 +1253,8 @@ function email_players($resid, $emailType) {
 	                       AND users.userid != " . get_userid() . "
 	                       AND clubuser.enable='y'
 						   AND clubuser.enddate IS NULL";
-		}
-		elseif ($emailType == "2") {
-
-			$emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+        } elseif ($emailType == "2") {
+            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 			                        FROM tblUsers users, tblBuddies buddies, tblClubUser clubuser
 			 						WHERE users.userid = buddies.buddyid
 									AND users.userid = clubuser.userid
@@ -1356,36 +1264,32 @@ function email_players($resid, $emailType) {
 			                        AND buddies.userid=" . get_userid() . "
 			                        AND clubuser.enable='y'
 									AND clubuser.enddate IS NULL";
+        } else {
 
-		} else {
+            //Get the rankdev of the club
+            $rankdevquery = "SELECT rankdev FROM tblClubs WHERE clubid=" . get_clubid() . "";
 
-			//Get the rankdev of the club
-			$rankdevquery = "SELECT rankdev FROM tblClubs WHERE clubid=" . get_clubid() . "";
+            // run the query on the database
+            $rankdevresult = db_query($rankdevquery);
+            $rankdevval = mysql_result($rankdevresult, 0);
 
-			// run the query on the database
-			$rankdevresult = db_query($rankdevquery);
-			$rankdevval = mysql_result($rankdevresult, 0);
-
-			// Get the Ranking of the current user (this based on the resid)
-			$query = "SELECT rankings.ranking
+            // Get the Ranking of the current user (this based on the resid)
+            $query = "SELECT rankings.ranking
 						FROM tblUserRankings rankings, tblReservations reservations, tblCourts courts
 						WHERE reservations.reservationid = $resid
 						AND courts.courtid = reservations.courtid
 						AND courts.courttypeid = rankings.courttypeid
 						AND rankings.usertype = 0
-						AND rankings.userid = ".get_userid();
-				
-				
-			$result = db_query($query);
-			$ranking = mysql_result($result, 0);
-				
-			$highrange = $ranking + $rankdevval;
-			$lowrange = $ranking - $rankdevval;
+						AND rankings.userid = " . get_userid();
+            $result = db_query($query);
+            $ranking = mysql_result($result, 0);
+            $highrange = $ranking + $rankdevval;
+            $lowrange = $ranking - $rankdevval;
 
+            //Now get all players who receive players wanted notifications at the club and are within
+            //the set skill range
 
-			//Now get all players who receive players wanted notifications at the club and are within
-			//the set skill range
-			$emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 				                         FROM tblUsers users, tblTeams teams, tblkpTeams teamdetails, tblUserRankings rankings, tblClubUser clubuser
 										 WHERE users.userid = teamdetails.userid
 				                         AND teams.teamid = teamdetails.teamid
@@ -1402,36 +1306,29 @@ function email_players($resid, $emailType) {
 										 AND users.userid != $extraPlayerUserId
 				                         AND clubuser.enable='y'
 										 AND clubuser.enddate IS NULL";
-				
-				
-		}
+        }
 
+        // run the query on the database
+        $emailidresult = db_query($emailidquery);
+        $to_emails = array();
+        while ($emailidrow = db_fetch_row($emailidresult)) {
+            
+            if (isDebugEnabled(1)) logMessage($message);
+            $to_emails[$emailidrow[2] = array(
+                'name' => $emailidrow[0]
+            ) ];
+        }
+        $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+        $content = new Object;
+        $content->line1 = $emailbody;
+        $content->clubname = get_clubname();
+        $template = get_sitecode();
+        $subject = get_clubname() . " - Player's Market Place";
 
-		// run the query on the database
-		$emailidresult = db_query($emailidquery);
-		$to_emails = array();
-
-		while ($emailidrow = db_fetch_row($emailidresult)) {
-				
-			if( isDebugEnabled(1) ) logMessage($message);
-			$to_emails[$emailidrow[2] = array('name' => $emailidrow[0]) ];
-		}
-
-		$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-
-		$content = new Object;
-		$content->line1 = $emailbody;
-		$content->clubname = get_clubname();
-		$template = get_sitecode();
-		$subject = get_clubname()." - Player's Market Place";
-
-		//Send the email
-		send_email($subject, $to_emails, $from_email, $content, $template);
-
-	}
-
+        //Send the email
+        send_email($subject, $to_emails, $from_email, $content, $template);
+    }
 }
-
 /**
  * This will advertise the reservation to box memebers (who haven't already played the current user)
  * @param unknown_type $resid
@@ -1439,8 +1336,8 @@ function email_players($resid, $emailType) {
  */
 function email_boxmembers($resid, $boxid) {
 
-	/* load up the reservation infomation   */
-	$rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, rankings.ranking, reservations.matchtype, users.email, users.homephone, users.cellphone, users.workphone
+    /* load up the reservation infomation   */
+    $rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, rankings.ranking, reservations.matchtype, users.email, users.homephone, users.cellphone, users.workphone
 	                  FROM tblCourts courts, tblReservations reservations, tblUsers users, tblUserRankings rankings, tblkpUserReservations reservationdetails, tblCourtType courttype
 					  WHERE users.userid = rankings.userid
 	                  AND courts.courtid = reservations.courtid
@@ -1450,78 +1347,71 @@ function email_boxmembers($resid, $boxid) {
 	                  AND users.userid = reservationdetails.userid
 	                  AND reservations.reservationid=$resid
 					  AND rankings.usertype=0";
+    $rresult = db_query($rquery);
 
-	$rresult = db_query($rquery);
-	//Get the next result
-	$robj = mysql_fetch_object($rresult);
+    //Get the next result
+    $robj = mysql_fetch_object($rresult);
 
-	/* email the user with the new account information    */
-	$var = new Object;
-	$var->matchtype = "league";
-	$var->firstname = $robj->firstname;
-	$var->lastname = $robj->lastname;
-	$var->email = $robj->email;
-	$var->homephone = $robj->homephone;
-	$var->cellphone = $robj->cellphone;
-	$var->workphone = $robj->workphone;
-	$var->ranking = $robj->ranking;
-	$var->courtname = $robj->courtname;
-	$var->time = gmdate("l F j g:i a", $robj->time);
-	$var->timestamp = $robj->time;
-	$var->dns = $_SESSION["CFG"]["dns"];
-	$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
-	$var->fullname = $robj->firstname . " " . $robj->lastname;
-	$var->support = $_SESSION["CFG"]["support"];
+    /* email the user with the new account information    */
+    $var = new Object;
+    $var->matchtype = "league";
+    $var->firstname = $robj->firstname;
+    $var->lastname = $robj->lastname;
+    $var->email = $robj->email;
+    $var->homephone = $robj->homephone;
+    $var->cellphone = $robj->cellphone;
+    $var->workphone = $robj->workphone;
+    $var->ranking = $robj->ranking;
+    $var->courtname = $robj->courtname;
+    $var->time = gmdate("l F j g:i a", $robj->time);
+    $var->timestamp = $robj->time;
+    $var->dns = $_SESSION["CFG"]["dns"];
+    $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
+    $var->fullname = $robj->firstname . " " . $robj->lastname;
+    $var->support = $_SESSION["CFG"]["support"];
+    $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/singles_wanted.php", $var);
 
-
-	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/singles_wanted.php", $var);
-
-	//Now get all boxmembers
-
-	$emailidquery = "SELECT users.userid, users.firstname, users.lastname, users.email
+    //Now get all boxmembers
+    $emailidquery = "SELECT users.userid, users.firstname, users.lastname, users.email
 	                        FROM tblUsers users,  tblkpBoxLeagues boxdetails
 							WHERE users.userid = boxdetails.userid
 	                        AND boxdetails.boxid=$boxid
 							AND users.enddate IS NULL
 							AND users.userid<>" . get_userid();
 
-	// run the query on the database
-	$emailidresult = db_query($emailidquery);
-	$to_emails = array();
+    // run the query on the database
+    $emailidresult = db_query($emailidquery);
+    $to_emails = array();
+    while ($emailidrow = mysql_fetch_array($emailidresult)) {
+        
+        if (!hasPlayedBoxWith(get_userid() , $emailidrow[userid], $boxid)) {
+            
+            if (isDebugEnabled(1)) logMessage($emailbody);
+            $to_emails[$emailidrow[3]] = array(
+                'name' => $emailidrow[1]
+            );
+        }
+    }
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
+    $subject = get_clubname() . " - Player's Market Place";
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-	while ($emailidrow = mysql_fetch_array($emailidresult)) {
-
-		if (!hasPlayedBoxWith(get_userid(), $emailidrow[userid], $boxid)) {
-				
-			if( isDebugEnabled(1) ) logMessage($emailbody);
-			$to_emails[$emailidrow[3]] = array('name' => $emailidrow[1]);
-		}
-
-	}
-
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-	$template = get_sitecode();
-	$subject = get_clubname()." - Player's Market Place";
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-
-	//Send the email
-	send_email($subject, $to_emails, $from_email, $content, $template);
-
+    //Send the email
+    send_email($subject, $to_emails, $from_email, $content, $template);
 }
-
 /**
- * 
+ *
  * Enter description here ...
  * @param unknown_type $resid
  * @param unknown_type $isNewReservation
  */
 function confirm_singles($resid, $isNewReservation) {
-
-	if( isDebugEnabled(1) ) logMessage("applicationlib.confirm_singles: sending out emails for a singles reservation");
-
-	$rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name, reservations.usertype
+    
+    if (isDebugEnabled(1)) logMessage("applicationlib.confirm_singles: sending out emails for a singles reservation");
+    $rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name, reservations.usertype
 			           FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblMatchType matchtype, tblClubUser clubuser
 			           WHERE courts.courtid = reservations.courtid
 			           AND users.userid = reservationdetails.userid
@@ -1530,90 +1420,82 @@ function confirm_singles($resid, $isNewReservation) {
 					   AND reservations.matchtype = matchtype.id
 					   AND users.userid = clubuser.userid
 			           AND clubuser.clubid=" . get_clubid();
+    $rresult = db_query($rquery);
+    $robj = mysql_fetch_object($rresult);
 
-	$rresult = db_query($rquery);
-	$robj = mysql_fetch_object($rresult);
+    /* email the user with the new account information    */
+    $var = new Object;
+    $var->courtname = $robj->courtname;
+    $var->time = gmdate("l F j g:i a", $robj->time);
+    $var->timestamp = $robj->time;
+    $var->dns = $_SESSION["CFG"]["dns"];
+    $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
+    $var->support = $_SESSION["CFG"]["support"];
+    $var->courtid = $robj->courtid;
+    $var->matchtype = $robj->name;
 
-	/* email the user with the new account information    */
-	$var = new Object;
+    //Get the first player
+    $var->firstname1 = $robj->firstname;
+    $var->lastname1 = $robj->lastname;
+    $var->fullname1 = $robj->firstname . " " . $robj->lastname;
 
-	$var->courtname = $robj->courtname;
-	$var->time = gmdate("l F j g:i a", $robj->time);
-	$var->timestamp = $robj->time;
-	$var->dns = $_SESSION["CFG"]["dns"];
-	$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
-	$var->support = $_SESSION["CFG"]["support"];
-	$var->courtid = $robj->courtid;
-	$var->matchtype = $robj->name;
+    //Get the second player
+    $robj = mysql_fetch_object($rresult);
+    $var->firstname2 = $robj->firstname;
+    $var->lastname2 = $robj->lastname;
+    $var->fullname2 = $robj->firstname . " " . $robj->lastname;
+    
+    if (db_num_rows($rresult) == 1) {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles_looking.php", $var);
+    } elseif ($robj->matchtype == 4) {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_lesson.php", $var);
+    } elseif ($robj->matchtype == 5) {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_solo.php", $var);
+    } else {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles.php", $var);
+    }
 
-	//Get the first player
-	$var->firstname1 = $robj->firstname;
-	$var->lastname1 = $robj->lastname;
-	$var->fullname1 = $robj->firstname . " " . $robj->lastname;
+    // Set the Subject
+    
+    if ($isNewReservation) {
+        $subject = get_clubname() . " - Court Reservation Notice";
+    } else {
+        $subject = get_clubname() . " - Updated Court Reservation Notice";
+    }
 
-	//Get the second player
-	$robj = mysql_fetch_object($rresult);
+    //Reset the result pointer to the begining
+    mysql_data_seek($rresult, 0);
+    $to_emails = array();
+    while ($emailidrow = db_fetch_row($rresult)) {
 
-	$var->firstname2 = $robj->firstname;
-	$var->lastname2 = $robj->lastname;
-	$var->fullname2 = $robj->firstname . " " . $robj->lastname;
+        //If they don't even bother to put in an email address
+        //don't waste your time trying to send them an email.
 
-	if (db_num_rows($rresult) == 1) {
+        //print "This is my email: $emailidrow[4]\n";
 
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_singles_looking.php", $var);
+        
+        if (!empty($emailidrow[4])) {
+            $to_emails[$emailidrow[4]] = array(
+                'name' => $emailidrow[2]
+            );
+        }
+    }
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
 
-	}
-	elseif ($robj->matchtype == 4) {
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_lesson.php", $var);
-	}
-	elseif ($robj->matchtype == 5) {
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_solo.php", $var);
-	} else {
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_singles.php", $var);
-	}
-
-	// Set the Subject
-	if ($isNewReservation) {
-		$subject = get_clubname()." - Court Reservation Notice";
-	} else {
-		$subject = get_clubname()." - Updated Court Reservation Notice";
-	}
-
-	//Reset the result pointer to the begining
-	mysql_data_seek($rresult, 0);
-
-	$to_emails = array();
-
-	while ($emailidrow = db_fetch_row($rresult)) {
-
-		//If they don't even bother to put in an email address
-		//don't waste your time trying to send them an email.
-		//print "This is my email: $emailidrow[4]\n";
-		if (!empty ($emailidrow[4])) {
-			$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
-		}
-	}
-
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-	$template = get_sitecode();
-
-	//Send the email
-	send_email($subject, $to_emails, $from_email, $content, $template);
-
+    //Send the email
+    send_email($subject, $to_emails, $from_email, $content, $template);
 }
-
-
 /**
- * 
+ *
  * Enter description here ...
  * @param unknown_type $resid
  */
 function cancel_singles($resid) {
-
-	$rquery = "SELECT DISTINCTROW courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name
+    $rquery = "SELECT DISTINCTROW courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name
 	           FROM tblCourts courts, tblUsers users, tblReservations reservations, tblkpUserReservations reservationdetails, tblUserRankings rankings, tblMatchType matchtype, tblClubUser clubuser
 			   WHERE courts.courtid = reservations.courtid
 			   AND rankings.userid = users.userid
@@ -1623,72 +1505,63 @@ function cancel_singles($resid) {
 	           AND reservations.matchtype = matchtype.id
 			   AND users.userid = clubuser.userid
 			   AND clubuser.clubid=" . get_clubid();
+    $rresult = db_query($rquery);
+    $robj = mysql_fetch_object($rresult);
 
-	$rresult = db_query($rquery);
-	$robj = mysql_fetch_object($rresult);
+    /* email the user with the new account information    */
+    $var = new Object;
+    $var->courtname = $robj->courtname;
+    $var->time = gmdate("l F j g:i a", $robj->time);
+    $var->timestamp = $robj->time;
+    $var->dns = $_SESSION["CFG"]["dns"];
+    $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
+    $var->support = $_SESSION["CFG"]["support"];
+    $var->courtid = $robj->courtid;
+    $var->matchtype = $robj->name;
 
-	/* email the user with the new account information    */
-	$var = new Object;
+    //Get the first player
+    $var->firstname1 = $robj->firstname;
+    $var->lastname1 = $robj->lastname;
+    $var->fullname1 = $robj->firstname . " " . $robj->lastname;
 
-	$var->courtname = $robj->courtname;
-	$var->time = gmdate("l F j g:i a", $robj->time);
-	$var->timestamp = $robj->time;
-	$var->dns = $_SESSION["CFG"]["dns"];
-	$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
-	$var->support = $_SESSION["CFG"]["support"];
-	$var->courtid = $robj->courtid;
-	$var->matchtype = $robj->name;
+    //Get the second player
+    $robj = mysql_fetch_object($rresult);
+    $var->firstname2 = $robj->firstname;
+    $var->lastname2 = $robj->lastname;
+    $var->fullname2 = $robj->firstname . " " . $robj->lastname;
+    
+    if (db_num_rows($rresult) == 1) {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/cancel_singles_looking.php", $var);
+    } else 
+    if ($robj->matchtype == 4) {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/cancel_lesson.php", $var);
+    } elseif ($robj->matchtype == 5) {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/cancel_solo.php", $var);
+    } else {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/cancel_singles.php", $var);
+    }
 
-	//Get the first player
-	$var->firstname1 = $robj->firstname;
-	$var->lastname1 = $robj->lastname;
-	$var->fullname1 = $robj->firstname . " " . $robj->lastname;
+    //Reset the result pointer to the begining
+    mysql_data_seek($rresult, 0);
+    $to_emails = array();
+    while ($emailidrow = db_fetch_row($rresult)) {
+        
+        if (!empty($emailidrow[4])) {
+            $to_emails[$emailidrow[4]] = array(
+                'name' => $emailidrow[2]
+            );
+        }
+    }
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
+    $subject = "Court Cancellation Notice";
 
-	//Get the second player
-	$robj = mysql_fetch_object($rresult);
-
-	$var->firstname2 = $robj->firstname;
-	$var->lastname2 = $robj->lastname;
-	$var->fullname2 = $robj->firstname . " " . $robj->lastname;
-
-	if (db_num_rows($rresult) == 1) {
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_singles_looking.php", $var);
-	} else
-	if ($robj->matchtype == 4) {
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_lesson.php", $var);
-	}
-	elseif ($robj->matchtype == 5) {
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_solo.php", $var);
-	} else {
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_singles.php", $var);
-	}
-
-	//Reset the result pointer to the begining
-	mysql_data_seek($rresult, 0);
-	$to_emails = array();
-
-	while ($emailidrow = db_fetch_row($rresult)) {
-
-		if (!empty ($emailidrow[4])) {
-			$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
-		}
-
-	}
-
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-	$template = get_sitecode();
-	$subject = "Court Cancellation Notice";
-
-	//Send the email
-	send_email($subject, $to_emails, $from_email, $content, $template);
-
+    //Send the email
+    send_email($subject, $to_emails, $from_email, $content, $template);
 }
-
-
-
 /**
  * This function only sends out emails to those players who are currently in the
  * reservation, this includes players in a team or singles players who are still
@@ -1697,214 +1570,208 @@ function cancel_singles($resid) {
  * @param unknown_type $isNewReservation
  */
 function confirm_doubles($resid, $isNewReservation) {
+    
+    if (isDebugEnabled(1)) logMessage("applicationlib.confirm_doubles: confirming reservation $resid isNewReservation $isNewReservation");
+    $var = new Object;
+    $template = get_sitecode();
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.confirm_doubles: confirming reservation $resid isNewReservation $isNewReservation");
-
-	$var = new Object;
-	$template = get_sitecode();
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-
-
-	//Obtain the court and matchtype information
-	$timeQuery = "SELECT courts.courtname, matchtype.name, reservations.time
+    //Obtain the court and matchtype information
+    $timeQuery = "SELECT courts.courtname, matchtype.name, reservations.time
 				FROM tblMatchType matchtype, tblCourts courts, tblReservations reservations 
 				WHERE reservations.reservationid=$resid
 				AND reservations.courtid = courts.courtid
 				AND matchtype.id = reservations.matchtype";
+    $timeResult = db_query($timeQuery);
+    $timeObject = mysql_fetch_object($timeResult);
+    $var->courtname = $timeObject->courtname;
+    $var->matchtype = $timeObject->name;
+    $var->time = gmdate("l F j g:i a", $timeObject->time);
 
-	$timeResult = db_query($timeQuery);
-	$timeObject = mysql_fetch_object($timeResult);
-
-	$var->courtname = $timeObject->courtname;
-	$var->matchtype = $timeObject->name;
-	$var->time = gmdate("l F j g:i a", $timeObject->time);
-
-
-	//Obtain player information
-	$playerQuery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+    //Obtain player information
+    $playerQuery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 	            FROM tblReservations reservations, tblUsers users, tblkpTeams teamdetails, tblkpUserReservations reservationdetails
 				WHERE reservationdetails.reservationid = reservations.reservationid
 	 			AND teamdetails.teamid = reservationdetails.userid
 	            AND users.userid = teamdetails.userid
 	            AND reservationdetails.reservationid=$resid
 				AND reservationdetails.usertype = 1";
-	 
-	$playerResult = db_query($playerQuery);
-	$playerObject = mysql_fetch_object($playerResult);
-	$numofrows = mysql_num_rows($playerResult);
+    $playerResult = db_query($playerQuery);
+    $playerObject = mysql_fetch_object($playerResult);
+    $numofrows = mysql_num_rows($playerResult);
+    $var->dns = $_SESSION["CFG"]["dns"];
+    $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
+    $var->support = $_SESSION["CFG"]["support"];
 
-	$var->dns = $_SESSION["CFG"]["dns"];
-	$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
-	$var->support = $_SESSION["CFG"]["support"];
+    //Get the first player of team 1
+    $var->firstname1 = $playerObject->firstname;
+    $var->lastname1 = $playerObject->lastname;
+    $var->fullname1 = $playerObject->firstname . " " . $playerObject->lastname;
 
+    //Get the second player of team 1
+    $playerObject = mysql_fetch_object($playerResult);
+    $var->firstname2 = $playerObject->firstname;
+    $var->lastname2 = $playerObject->lastname;
+    $var->fullname2 = $playerObject->firstname . " " . $playerObject->lastname;
 
-	//Get the first player of team 1
-	$var->firstname1 = $playerObject->firstname;
-	$var->lastname1 = $playerObject->lastname;
-	$var->fullname1 = $playerObject->firstname . " " . $playerObject->lastname;
+    //Get the first player of team 2
+    $playerObject = mysql_fetch_object($playerResult);
+    $var->firstname3 = $playerObject->firstname;
+    $var->lastname3 = $playerObject->lastname;
+    $var->fullname3 = $playerObject->firstname . " " . $playerObject->lastname;
 
-	//Get the second player of team 1
-	$playerObject = mysql_fetch_object($playerResult);
-	$var->firstname2 = $playerObject->firstname;
-	$var->lastname2 = $playerObject->lastname;
-	$var->fullname2 = $playerObject->firstname . " " . $playerObject->lastname;
+    //Get the second player of team 2
+    $playerObject = mysql_fetch_object($playerResult);
+    $var->firstname4 = $playerObject->firstname;
+    $var->lastname4 = $playerObject->lastname;
+    $var->fullname4 = $playerObject->firstname . " " . $playerObject->lastname;
+    $clubfullname = get_clubname();
+    $var->clubfullname = $clubfullname;
+    $var->clubadminemail = "PlayerMailer@sportsynergy.net";
 
-	//Get the first player of team 2
-	$playerObject = mysql_fetch_object($playerResult);
-	$var->firstname3 = $playerObject->firstname;
-	$var->lastname3 = $playerObject->lastname;
-	$var->fullname3 = $playerObject->firstname . " " . $playerObject->lastname;
+    // Set the Subject
+    
+    if ($isNewReservation) {
+        $subject = get_clubname() . " - Court Reservation Notice";
+    } else {
+        $subject = get_clubname() . " - Updated Court Reservation Notice";
+    }
 
-	//Get the second player of team 2
-	$playerObject = mysql_fetch_object($playerResult);
-	$var->firstname4 = $playerObject->firstname;
-	$var->lastname4 = $playerObject->lastname;
-	$var->fullname4 = $playerObject->firstname . " " . $playerObject->lastname;
-
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
-
-	// Set the Subject
-	if ($isNewReservation) {
-		$subject = get_clubname()." - Court Reservation Notice";
-	} else {
-		$subject = get_clubname()." - Updated Court Reservation Notice";
-	}
-
-	//Check to see if there is a single wanting to play
-	$extraPlayerQuery = "SELECT reservationdetails.userid, users.firstname, users.lastname, users.email
+    //Check to see if there is a single wanting to play
+    $extraPlayerQuery = "SELECT reservationdetails.userid, users.firstname, users.lastname, users.email
 		                        FROM tblReservations reservations, tblkpUserReservations reservationdetails, tblUsers users
 		                        WHERE reservations.reservationid = reservationdetails.reservationid
 							    AND reservationdetails.userid = users.userid
 		                        AND reservationdetails.reservationid=$resid
 		                        AND reservationdetails.usertype=0";
+    $extraPlayerResult = db_query($extraPlayerQuery);
+    $extraPlayerobj = mysql_fetch_object($extraPlayerResult);
 
+    //Prepare and send emails to single player where there is just one player in the whole reservation
+    
+    if (mysql_num_rows($extraPlayerResult) == 1 && mysql_num_rows($playerResult) == 0) {
+        $var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_doubles_looking_for_three.php", $var);
+        
+        if (isDebugEnabled(1)) logMessage($emailbody);
 
-	$extraPlayerResult = db_query($extraPlayerQuery);
-	$extraPlayerobj = mysql_fetch_object($extraPlayerResult);
+        // Provide Content
+        $content = new Object;
+        $content->line1 = $emailbody;
+        $content->clubname = get_clubname();
+        $to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+        $to_emails = array(
+            $to_email => array(
+                'name' => $extraPlayerobj->firstname
+            )
+        );
 
+        //Send the email
+        send_email($subject, $to_emails, $from_email, $content, $template);
+    }
 
-	//Prepare and send emails to single player where there is just one player in the whole reservation
-	if(mysql_num_rows($extraPlayerResult)==1 && mysql_num_rows($playerResult)==0){
+    //Prepare and send emails to single players where there is more than one person looking for a partner
+    elseif (mysql_num_rows($extraPlayerResult) == 2) {
+        $var->fullname1 = getFullNameForUserId($extraPlayerobj->userid);
 
-		$var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_doubles_looking_for_three.php", $var);
+        //Get the next player
+        $extraPlayerobj = mysql_fetch_object($extraPlayerResult);
+        $var->fullname2 = getFullNameForUserId($extraPlayerobj->userid);
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_doubles_for_players_looking.php", $var);
 
-		if( isDebugEnabled(1) ) logMessage($emailbody);
+        //Reset Counter
+        
+        if (mysql_num_rows($extraPlayerResult) > 0) mysql_data_seek($extraPlayerResult, 0);
+        $to_emails = array();
+        
+        if (isDebugEnabled(1)) logMessage($emailbody);
+        $to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+        $to_emails[$to_email] = array(
+            'name' => $extraPlayerobj->firstname
+        );
 
-		// Provide Content
-		$content = new Object;
-		$content->line1 = $emailbody;
-		$content->clubname = get_clubname();
-		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
-		$to_emails = array( $to_email => array('name' => $extraPlayerobj->firstname) );
+        //Get next player
+        $extraPlayerobj = mysql_fetch_object($extraPlayerResult);
+        $to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+        $to_emails[$to_email] = array(
+            'name' => $extraPlayerobj->firstname
+        );
 
-		//Send the email
-		send_email($subject, $to_emails, $from_email, $content, $template);
-	}
+        // Provide Content
+        $content = new Object;
+        $content->line1 = $emailbody;
+        $content->clubname = get_clubname();
 
-	//Prepare and send emails to single players where there is more than one person looking for a partner
-	elseif(mysql_num_rows($extraPlayerResult)==2){
+        //Send the email
+        send_email($subject, $to_emails, $from_email, $content, $template);
+    }
 
+    //Prepare and send emails to single player where there is only one person needing a partner
+    elseif (mysql_num_rows($extraPlayerResult) == 1) {
+        $var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_double_for_player_looking.php", $var);
+        
+        if (isDebugEnabled(1)) logMessage($emailbody);
+        $to_emails = array();
+        $to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+        $to_emails = array(
+            $to_email => array(
+                'name' => $extraPlayerobj->firstname
+            )
+        );
 
-		$var->fullname1 = getFullNameForUserId($extraPlayerobj->userid);
+        // Provide Content
+        $content = new Object;
+        $content->line1 = $emailbody;
+        $content->clubname = get_clubname();
 
-		//Get the next player
-		$extraPlayerobj = mysql_fetch_object($extraPlayerResult);
-		$var->fullname2 = getFullNameForUserId($extraPlayerobj->userid);
+        //Send the email
+        send_email($subject, $to_emails, $from_email, $content, $template);
+    }
 
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_doubles_for_players_looking.php", $var);
+    //Now Send emails out to players that acutally are in a team
+    else {
 
-		//Reset Counter
-		if( mysql_num_rows($extraPlayerResult)>0) mysql_data_seek($extraPlayerResult, 0);
-		$to_emails = array();
+        // when only two rows returned this is a team looking for another team.
+        
+        if ($numofrows == 2) {
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_doubles_for_team_looking.php", $var);
+        }
 
-		if( isDebugEnabled(1) ) logMessage($emailbody);
+        //Send out emails to four players, the variables were set earlier in this function
+        else {
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_doubles.php", $var);
+        }
+    }
 
-		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
-		$to_emails[$to_email] = array('name' => $extraPlayerobj->firstname);
+    //Send out emails to the teams
+    //Reset the result pointer to the begining
 
-		//Get next player
-		$extraPlayerobj = mysql_fetch_object($extraPlayerResult);
-		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
-		$to_emails[$to_email] = array('name' => $extraPlayerobj->firstname);
+    
+    if (mysql_num_rows($playerResult) > 0) mysql_data_seek($playerResult, 0);
+    $to_emails = array();
+    while ($playerObject = mysql_fetch_object($playerResult)) {
+        
+        if (isDebugEnabled(1)) logMessage($emailbody);
+        $to_email = "$playerObject->firstname $playerObject->lastname <$playerObject->email>";
+        $to_emails[$to_email] = array(
+            'name' => $playerObject->firstname
+        );
+    }
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
 
-		// Provide Content
-		$content = new Object;
-		$content->line1 = $emailbody;
-		$content->clubname = get_clubname();
-
-		//Send the email
-		send_email($subject, $to_emails, $from_email, $content, $template);
-	}
-
-	//Prepare and send emails to single player where there is only one person needing a partner
-	elseif(mysql_num_rows($extraPlayerResult)==1) {
-
-		$var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_double_for_player_looking.php", $var);
-
-		if( isDebugEnabled(1) ) logMessage($emailbody);
-
-		$to_emails = array();
-		$to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
-		$to_emails = array($to_email => array('name' => $extraPlayerobj->firstname) ) ;
-
-		// Provide Content
-		$content = new Object;
-		$content->line1 = $emailbody;
-		$content->clubname = get_clubname();
-			
-		//Send the email
-		send_email($subject, $to_emails, $from_email, $content, $template);
-	}
-
-	//Now Send emails out to players that acutally are in a team
-	else{
-
-		// when only two rows returned this is a team looking for another team.
-		if ($numofrows == 2) {
-			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_doubles_for_team_looking.php", $var);
-		}
-		//Send out emails to four players, the variables were set earlier in this function
-		else {
-			$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/confirm_doubles.php", $var);
-		}
-	}
-
-	//Send out emails to the teams
-	//Reset the result pointer to the begining
-	if( mysql_num_rows($playerResult)>0) mysql_data_seek($playerResult, 0);
-
-	$to_emails = array();
-
-	while ($playerObject = mysql_fetch_object($playerResult)) {
-
-		if(isDebugEnabled(1) ) logMessage($emailbody);
-		$to_email = "$playerObject->firstname $playerObject->lastname <$playerObject->email>";
-		$to_emails[$to_email] = array('name' => $playerObject->firstname);
-	}
-
-
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-
-	//Send the email
-	send_email($subject, $to_emails, $from_email, $content, $template);
-
-
+    //Send the email
+    send_email($subject, $to_emails, $from_email, $content, $template);
 }
-
 /**
- * 
+ *
  * Enter description here ...
  * @param unknown_type $resid
  */
 function cancel_doubles($resid) {
-
-	$rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name
+    $rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name
 	            FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblUserRankings rankings, tblkpTeams teamdetails, tblMatchType matchtype, tblClubUser clubuser
 				WHERE reservations.reservationid = reservationdetails.reservationid
 	            AND teamdetails.teamid = reservationdetails.userid
@@ -1917,80 +1784,70 @@ function cancel_doubles($resid) {
 	            AND clubuser.clubid=" . get_clubid() . "
 	            AND reservationdetails.usertype=1
 	            AND rankings.usertype=1";
+    $rresult = db_query($rquery);
+    $robj = mysql_fetch_object($rresult);
 
-	$rresult = db_query($rquery);
-	$robj = mysql_fetch_object($rresult);
+    /* email the user with the new account information    */
+    $var = new Object;
+    $var->courtname = $robj->courtname;
+    $var->time = gmdate("l F j g:i a", $robj->time);
+    $var->timestamp = $robj->time;
+    $var->dns = $_SESSION["CFG"]["dns"];
+    $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
+    $var->courtid = $robj->courtid;
+    $var->support = $_SESSION["CFG"]["support"];
+    $var->matchtype = $robj->name;
 
-	/* email the user with the new account information    */
-	$var = new Object;
+    //Get the first player of team 1
+    $var->firstname1 = $robj->firstname;
+    $var->lastname1 = $robj->lastname;
+    $var->fullname1 = $robj->firstname . " " . $robj->lastname;
 
-	$var->courtname = $robj->courtname;
-	$var->time = gmdate("l F j g:i a", $robj->time);
-	$var->timestamp = $robj->time;
-	$var->dns = $_SESSION["CFG"]["dns"];
-	$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
-	$var->courtid = $robj->courtid;
-	$var->support = $_SESSION["CFG"]["support"];
-	$var->matchtype = $robj->name;
+    //Get the second player of team 1
+    $robj = mysql_fetch_object($rresult);
+    $var->firstname2 = $robj->firstname;
+    $var->lastname2 = $robj->lastname;
+    $var->fullname2 = $robj->firstname . " " . $robj->lastname;
 
-	//Get the first player of team 1
-	$var->firstname1 = $robj->firstname;
-	$var->lastname1 = $robj->lastname;
-	$var->fullname1 = $robj->firstname . " " . $robj->lastname;
+    //Get the first player of team 2
+    $robj = mysql_fetch_object($rresult);
+    $var->firstname3 = $robj->firstname;
+    $var->lastname3 = $robj->lastname;
+    $var->fullname3 = $robj->firstname . " " . $robj->lastname;
 
-	//Get the second player of team 1
-	$robj = mysql_fetch_object($rresult);
-	$var->firstname2 = $robj->firstname;
-	$var->lastname2 = $robj->lastname;
-	$var->fullname2 = $robj->firstname . " " . $robj->lastname;
+    //Get the second player of team 2
+    $robj = mysql_fetch_object($rresult);
+    $var->firstname4 = $robj->firstname;
+    $var->lastname4 = $robj->lastname;
+    $var->fullname4 = $robj->firstname . " " . $robj->lastname;
+    $clubfullname = get_clubname();
+    $var->clubfullname = $clubfullname;
+    $var->clubadminemail = "PlayerMailer@sportsynergy.net";
+    
+    if (mysql_num_rows($rresult) == 4) {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/cancel_doubles.php", $var);
+    } else {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/cancel_doubles_looking.php", $var);
+    }
 
-	//Get the first player of team 2
-	$robj = mysql_fetch_object($rresult);
-	$var->firstname3 = $robj->firstname;
-	$var->lastname3 = $robj->lastname;
-	$var->fullname3 = $robj->firstname . " " . $robj->lastname;
+    //Reset the result pointer to the begining
+    mysql_data_seek($rresult, 0);
+    $to_emails = array();
+    while ($emailidrow = db_fetch_row($rresult)) {
+        $to_emails[$emailidrow[4]] = array(
+            'name' => $emailidrow[2]
+        );
+    }
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
+    $subject = get_clubname() . " - Court Cancellation Notice";
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-	//Get the second player of team 2
-	$robj = mysql_fetch_object($rresult);
-	$var->firstname4 = $robj->firstname;
-	$var->lastname4 = $robj->lastname;
-	$var->fullname4 = $robj->firstname . " " . $robj->lastname;
-
-	$clubfullname = get_clubname();
-	$var->clubfullname = $clubfullname;
-	$var->clubadminemail = "PlayerMailer@sportsynergy.net";
-
-	if (mysql_num_rows($rresult) == 4) {
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_doubles.php", $var);
-	} else {
-		$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/cancel_doubles_looking.php", $var);
-	}
-
-	//Reset the result pointer to the begining
-
-	mysql_data_seek($rresult, 0);
-
-	$to_emails = array();
-
-	while ($emailidrow = db_fetch_row($rresult)) {
-
-		$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
-	}
-
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-	$template = get_sitecode();
-	$subject = get_clubname()." - Court Cancellation Notice";
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-
-	//Send the email
-	send_email($subject, $to_emails, $from_email, $content, $template);
-
-
+    //Send the email
+    send_email($subject, $to_emails, $from_email, $content, $template);
 }
-
-
 /**
  * Sends out emails to the players involved.
  * @param unknown_type $wUserid
@@ -2003,71 +1860,63 @@ function cancel_doubles($resid) {
  * @param unknown_type $matchtype
  */
 function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr, $score, $matchtype) {
-
-	$rquery = "SELECT users.firstname, users.lastname, users.email
+    $rquery = "SELECT users.firstname, users.lastname, users.email
 				FROM tblUsers users
 				WHERE users.userid = $wUserid
 				OR users.userid = $lUserid";
-		
-	$rresult = db_query($rquery);
-	$robj = mysql_fetch_object($rresult);
+    $rresult = db_query($rquery);
+    $robj = mysql_fetch_object($rresult);
 
-	/* email the user with the new account information    */
-	$var = new Object;
-	if ($score == 0) {
-		$var->howbad = "pounded";
-		$var->loserscore = 0;
-	}
-	elseif ($score == 2) {
-		$var->howbad = "edged out";
-		$var->loserscore = 2;
-	} else {
-		$var->howbad = "defeated";
-		$var->loserscore = 1;
-	}
+    /* email the user with the new account information    */
+    $var = new Object;
+    
+    if ($score == 0) {
+        $var->howbad = "pounded";
+        $var->loserscore = 0;
+    } elseif ($score == 2) {
+        $var->howbad = "edged out";
+        $var->loserscore = 2;
+    } else {
+        $var->howbad = "defeated";
+        $var->loserscore = 1;
+    }
+    $var->support = $_SESSION["CFG"]["support"];
+    $var->winnersold = $wor;
+    $var->winnersnew = round($wnr, 4);
+    $var->losersold = $lor;
+    $var->losersnew = round($lnr, 4);
 
-	$var->support = $_SESSION["CFG"]["support"];
+    //Get the first player
+    $var->winnerfull = getFullNameForUserId($wUserid);
 
-	$var->winnersold = $wor;
-	$var->winnersnew = round($wnr,4);
-	$var->losersold = $lor;
-	$var->losersnew = round($lnr,4);
+    //Get the next One
+    $var->loserfull = getFullNameForUserId($lUserid);
+    $var->loserscore = $score;
+    $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/report_scores_singles_simple.php", $var);
+    $emailbody = nl2br($emailbody);
 
-	//Get the first player
-	$var->winnerfull = getFullNameForUserId($wUserid);
+    //Reset the result pointer to the begining
+    mysql_data_seek($rresult, 0);
+    $to_emails = array();
+    while ($emailidrow = db_fetch_row($rresult)) {
+        $to_emails[$emailidrow[2]] = array(
+            'name' => $emailidrow[0]
+        );
+    }
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
+    $subject = get_clubname() . " - Score Report";
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-	//Get the next One
-	$var->loserfull = getFullNameForUserId($lUserid);
-	$var->loserscore = $score;
-
-	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_singles_simple.php", $var);
-	$emailbody = nl2br($emailbody);
-
-	//Reset the result pointer to the begining
-	mysql_data_seek($rresult, 0);
-	$to_emails = array();
-
-	while ($emailidrow = db_fetch_row($rresult)) {
-		$to_emails[$emailidrow[2]] = array('name' => $emailidrow[0]);
-	}
-
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-	$template = get_sitecode();
-	$subject = get_clubname()." - Score Report";
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-
-	//Send the email
-	send_email($subject, $to_emails, $from_email, $content, $template);
-	 
-	$description = "$var->winnerfull $var->howbad $var->loserfull in a $matchtype match 3-$score ";
-	logSiteActivity(get_siteid(), $description);
-
+    //Send the email
+    send_email($subject, $to_emails, $from_email, $content, $template);
+    $description = "$var->winnerfull $var->howbad $var->loserfull in a $matchtype match 3-$score ";
+    logSiteActivity(get_siteid() , $description);
 }
-
 /**
- * 
+ *
  * Enter description here ...
  * @param unknown_type $resid
  * @param unknown_type $wor
@@ -2077,8 +1926,7 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
  * @param unknown_type $score
  */
 function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
-
-	$rquery = "SELECT DISTINCTROW courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservationdetails.outcome, reservations.matchtype, users.gender, matchtype.name
+    $rquery = "SELECT DISTINCTROW courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservationdetails.outcome, reservations.matchtype, users.gender, matchtype.name
 	           FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblUserRankings rankings, tblMatchType matchtype, tblClubUser clubuser
 			   WHERE courts.courtid = reservations.courtid
 	           AND users.userid = rankings.userid
@@ -2089,97 +1937,88 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
 			   AND users.userid = clubuser.userid
 	           AND clubuser.clubid=" . get_clubid() . "
 	           ORDER BY reservationdetails.outcome DESC";
+    $rresult = db_query($rquery);
+    $robj = mysql_fetch_object($rresult);
 
-	$rresult = db_query($rquery);
-	$robj = mysql_fetch_object($rresult);
+    /* email the user with the new account information    */
+    $var = new Object;
+    
+    if ($robj->gender == 1) {
+        $winnersex = "him";
+    } else {
+        $winnersex = "her";
+    }
+    $robj = mysql_fetch_object($rresult);
+    
+    if ($robj->gender == 1) {
+        $losersex = "he";
+    } else {
+        $losersex = "she";
+    }
+    mysql_data_seek($rresult, 0);
+    $robj = mysql_fetch_object($rresult);
+    
+    if ($score == 0) {
+        $var->howbad1 = "beat";
+        $var->howbad2 = "like $losersex owed $winnersex money";
+        $var->loserscore = 0;
+    } elseif ($score == 2) {
+        $var->howbad1 = "defeated";
+        $var->loserscore = 2;
+    } else {
+        $var->howbad1 = "defeated";
+        $var->loserscore = 1;
+    }
+    $var->courtname = $robj->courtname;
+    $var->matchtype = $robj->name;
+    $var->time = gmdate("l F j g:i a", $robj->time);
+    $var->date = gmdate("l F j", $robj->time);
+    $var->hour = gmdate("g:i a", $robj->time);
+    $var->timestamp = $robj->time;
+    $var->support = $_SESSION["CFG"]["support"];
+    $var->courtid = $robj->courtid;
+    $var->winnersold = $wor;
+    $var->winnersnew = round($wnr, 4);
+    $var->losersold = $lor;
+    $var->losersnew = round($lnr, 4);
 
-	/* email the user with the new account information    */
-	$var = new Object;
+    //Get the first player
+    $var->winnerfname = $robj->firstname;
+    $var->winnerlname = $robj->lastname;
+    $var->winnerfull = $robj->firstname . " " . $robj->lastname;
 
-	if ($robj->gender == 1) {
-		$winnersex = "him";
-	} else {
-		$winnersex = "her";
-	}
+    //Get the second player
+    $robj = mysql_fetch_object($rresult);
+    $var->loserfname = $robj->firstname;
+    $var->loserlname = $robj->lastname;
+    $var->loserfull = $robj->firstname . " " . $robj->lastname;
+    $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/report_scores_singles.php", $var);
 
-	$robj = mysql_fetch_object($rresult);
+    //convert newlines
+    $emailbody = nl2br($emailbody);
 
-	if ($robj->gender == 1) {
-		$losersex = "he";
-	} else {
-		$losersex = "she";
-	}
+    //Reset the result pointer to the begining
+    mysql_data_seek($rresult, 0);
+    $to_emails = array();
+    while ($emailidrow = db_fetch_row($rresult)) {
+        $to_emails[$emailidrow[4]] = array(
+            'name' => $emailidrow[2]
+        );
+    }
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
+    $subject = get_clubname() . " - Score Report";
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-	mysql_data_seek($rresult, 0);
-	$robj = mysql_fetch_object($rresult);
-
-	if ($score == 0) {
-		$var->howbad1 = "beat";
-		$var->howbad2 = "like $losersex owed $winnersex money";
-		$var->loserscore = 0;
-	}
-	elseif ($score == 2) {
-		$var->howbad1 = "defeated";
-		$var->loserscore = 2;
-	} else {
-		$var->howbad1 = "defeated";
-		$var->loserscore = 1;
-	}
-
-	$var->courtname = $robj->courtname;
-	$var->matchtype = $robj->name;
-	$var->time = gmdate("l F j g:i a", $robj->time);
-	$var->date = gmdate("l F j", $robj->time);
-	$var->hour = gmdate("g:i a", $robj->time);
-	$var->timestamp = $robj->time;
-	$var->support = $_SESSION["CFG"]["support"];
-	$var->courtid = $robj->courtid;
-	$var->winnersold = $wor;
-	$var->winnersnew = round($wnr,4);
-	$var->losersold = $lor;
-	$var->losersnew = round($lnr,4);
-
-	//Get the first player
-	$var->winnerfname = $robj->firstname;
-	$var->winnerlname = $robj->lastname;
-	$var->winnerfull = $robj->firstname . " " . $robj->lastname;
-
-	//Get the second player
-	$robj = mysql_fetch_object($rresult);
-
-	$var->loserfname = $robj->firstname;
-	$var->loserlname = $robj->lastname;
-	$var->loserfull = $robj->firstname . " " . $robj->lastname;
-	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_singles.php", $var);
-
-	//convert newlines
-	$emailbody = nl2br($emailbody);
-
-	//Reset the result pointer to the begining
-	mysql_data_seek($rresult, 0);
-
-	$to_emails = array();
-	while ($emailidrow = db_fetch_row($rresult)) {
-		$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
-	}
-
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-	$template = get_sitecode();
-	$subject = get_clubname()." - Score Report";
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-
-	//Send the email
-	send_email($subject, $to_emails, $from_email, $content, $template);
-
-	$description = "$var->winnerfull defeated $var->loserfull in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
-	logSiteActivity(get_siteid(), $description);
-
+    //Send the email
+    send_email($subject, $to_emails, $from_email, $content, $template);
+    $description = "$var->winnerfull defeated $var->loserfull in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
+    logSiteActivity(get_siteid() , $description);
 }
-
 /**
- * 
+ *
  * Enter description here ...
  * @param unknown_type $wid
  * @param unknown_type $lid
@@ -2189,61 +2028,58 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
  * @param unknown_type $lnr
  */
 function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
-
-	$winnernamequery = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.email
+    $winnernamequery = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.email
 	                    FROM tblUsers
 	                    WHERE (((tblUsers.userid)=$wid))";
-
-	$wresult = db_query($winnernamequery);
-	$wobj = mysql_fetch_object($wresult);
-
-	$losernamequery = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.email
+    $wresult = db_query($winnernamequery);
+    $wobj = mysql_fetch_object($wresult);
+    $losernamequery = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.email
 	                    FROM tblUsers
 	                    WHERE (((tblUsers.userid)=$lid))";
+    $lresult = db_query($losernamequery);
+    $lobj = mysql_fetch_object($lresult);
 
-	$lresult = db_query($losernamequery);
-	$lobj = mysql_fetch_object($lresult);
+    /* email the user with the new account information    */
+    $var = new Object;
+    $var->support = $_SESSION["CFG"]["support"];
+    $var->winnersold = $wor;
+    $var->winnersnew = round($wnr, 4);
+    $var->losersold = $lor;
+    $var->losersnew = round($lnr, 4);
 
-	/* email the user with the new account information    */
-	$var = new Object;
-	$var->support = $_SESSION["CFG"]["support"];
-	$var->winnersold = $wor;
-	$var->winnersnew = round($wnr,4);
-	$var->losersold = $lor;
-	$var->losersnew = round($lnr,4);
+    //Get the winner user information
+    $var->winnerfname = $wobj->firstname;
+    $var->winnerlname = $wobj->lastname;
+    $var->winnerfull = $wobj->firstname . " " . $wobj->lastname;
 
-	//Get the winner user information
-	$var->winnerfname = $wobj->firstname;
-	$var->winnerlname = $wobj->lastname;
-	$var->winnerfull = $wobj->firstname . " " . $wobj->lastname;
+    //Get the loser user information
+    $var->loserfname = $lobj->firstname;
+    $var->loserlname = $lobj->lastname;
+    $var->loserfull = $lobj->firstname . " " . $lobj->lastname;
+    $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/report_scores_singlesbox.php", $var);
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
+    $subject = get_clubname() . " - Score Report";
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+    $winner_email = array(
+        $wobj->email => array(
+            'name' => $wobj->firstname
+        )
+    );
 
-	//Get the loser user information
-	$var->loserfname = $lobj->firstname;
-	$var->loserlname = $lobj->lastname;
-	$var->loserfull = $lobj->firstname . " " . $lobj->lastname;
+    //Send the email
+    send_email($subject, $winner_email, $from_email, $content, $template);
 
-	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_singlesbox.php", $var);
-
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-
-	$template = get_sitecode();
-	$subject = get_clubname()." - Score Report";
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-	$winner_email = array($wobj->email => array('name' => $wobj->firstname) );
-
-
-	//Send the email
-	send_email($subject, $winner_email, $from_email, $content, $template);
-	 
-	//Send the email
-	$loser_email = array($lobj->email => array('name' => $lobj->firstname));
-	send_email($subject, $loser_email, $from_email, $content, $template);
-
-
+    //Send the email
+    $loser_email = array(
+        $lobj->email => array(
+            'name' => $lobj->firstname
+        )
+    );
+    send_email($subject, $loser_email, $from_email, $content, $template);
 }
-
 /**
  * Sends out emails to the players involved.
  * This is used for the admin records scores when there isn't a reservation id involved
@@ -2257,79 +2093,68 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
  * @param unknown_type $matchtype
  */
 function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr, $score, $matchtype) {
-
-	$rquery = "SELECT users.firstname, users.lastname, users.email
+    $rquery = "SELECT users.firstname, users.lastname, users.email
 				FROM tblUsers users, tblkpTeams teamdetails
 				WHERE users.userid = teamdetails.userid
 				AND users.enddate IS NULL
 				AND (teamdetails.teamid = $wTeamid
 				OR teamdetails.teamid = $lTeamid)";
+    $rresult = db_query($rquery);
+    $robj = mysql_fetch_object($rresult);
 
-	$rresult = db_query($rquery);
-	$robj = mysql_fetch_object($rresult);
+    /* email the user with the new account information    */
+    $var = new Object;
+    
+    if ($score == 0) {
+        $var->howbad = "pounded";
+        $var->loserscore = 0;
+    } elseif ($score == 2) {
+        $var->howbad = "edged out";
+        $var->loserscore = 2;
+    } else {
+        $var->howbad = "defeated";
+        $var->loserscore = 1;
+    }
+    $var->support = $_SESSION["CFG"]["support"];
+    $var->winnersold = $wor;
+    $var->winnersnew = round($wnr, 4);
+    $var->losersold = $lor;
+    $var->losersnew = round($lnr, 4);
 
+    //Get the first player
+    $var->winner = getFullNamesForTeamId($wTeamid);
 
-	/* email the user with the new account information    */
-	$var = new Object;
-	if ($score == 0) {
-		$var->howbad = "pounded";
-		$var->loserscore = 0;
-	}
-	elseif ($score == 2) {
-		$var->howbad = "edged out";
-		$var->loserscore = 2;
-	} else {
-		$var->howbad = "defeated";
-		$var->loserscore = 1;
-	}
+    //Get the next One
+    $robj = mysql_fetch_object($rresult);
+    $var->loser = getFullNamesForTeamId($lTeamid);
+    $var->loserscore = $score;
+    $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/report_scores_doubles_simple.php", $var);
+    $emailbody = nl2br($emailbody);
 
-	$var->support = $_SESSION["CFG"]["support"];
+    //Reset the result pointer to the begining
+    mysql_data_seek($rresult, 0);
+    $to_emails = array();
+    while ($emailidrow = db_fetch_row($rresult)) {
+        $to_emails[$emailidrow[2]] = array(
+            'name' => $emailidrow[0]
+        );
+    }
 
-	$var->winnersold = $wor;
-	$var->winnersnew = round($wnr,4);
-	$var->losersold = $lor;
-	$var->losersnew = round($lnr,4);
+    // Provide Content
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
+    $subject = get_clubname() . " - Score Report";
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-	//Get the first player
-	$var->winner = getFullNamesForTeamId($wTeamid);
-
-	//Get the next One
-	$robj = mysql_fetch_object($rresult);
-
-	$var->loser = getFullNamesForTeamId($lTeamid);
-
-	$var->loserscore = $score;
-
-	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_doubles_simple.php", $var);
-	$emailbody = nl2br($emailbody);
-
-	//Reset the result pointer to the begining
-	mysql_data_seek($rresult, 0);
-	$to_emails = array();
-
-	while ($emailidrow = db_fetch_row($rresult)) {
-		$to_emails[$emailidrow[2]] = array('name' => $emailidrow[0]);
-	}
-
-	// Provide Content
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-	$template = get_sitecode();
-	$subject = get_clubname()." - Score Report";
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-
-	//Send the email
-	send_email($subject, $to_emails, $from_email, $content, $template);
-
-	$description = "$var->winner $var->howbad $var->loser in a $matchtype match 3-$score ";
-	logSiteActivity(get_siteid(), $description);
-
-
+    //Send the email
+    send_email($subject, $to_emails, $from_email, $content, $template);
+    $description = "$var->winner $var->howbad $var->loser in a $matchtype match 3-$score ";
+    logSiteActivity(get_siteid() , $description);
 }
-
 /**
- * 
+ *
  * Enter description here ...
  * @param unknown_type $resid
  * @param unknown_type $wor
@@ -2339,8 +2164,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
  * @param unknown_type $score
  */
 function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
-
-	$rquery = "SELECT DISTINCT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservationdetails.outcome, reservations.matchtype, matchtype.name
+    $rquery = "SELECT DISTINCT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservationdetails.outcome, reservations.matchtype, matchtype.name
 	            FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblkpTeams teamdetails, tblUserRankings rankings, tblMatchType matchtype,tblClubUser clubuser
 				WHERE reservations.reservationid = reservationdetails.reservationid
 	            AND teamdetails.teamid = reservationdetails.userid
@@ -2353,375 +2177,332 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	            AND clubuser.clubid=" . get_clubid() . "
 	            AND rankings.usertype=1
 	            ORDER BY reservationdetails.outcome DESC";
+    $rresult = db_query($rquery);
+    $robj = mysql_fetch_object($rresult);
 
-	$rresult = db_query($rquery);
-	$robj = mysql_fetch_object($rresult);
+    /* email the user with the new account information    */
+    $var = new Object;
+    
+    if ($score == 0) {
+        $var->howbad = "completely creamed";
+        $var->loserscore = 0;
+    } elseif ($score == 2) {
+        $var->howbad = "squeaked by";
+        $var->loserscore = 2;
+    } else {
+        $var->howbad = "defeated";
+        $var->loserscore = 1;
+    }
+    $var->courtname = $robj->courtname;
+    $var->matchtype = $robj->name;
+    $var->time = gmdate("l F j g:i a", $robj->time);
+    $var->timestamp = $robj->time;
+    $var->dns = $_SESSION["CFG"]["dns"];
+    $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
+    $var->courtid = $robj->courtid;
+    $var->support = $_SESSION["CFG"]["support"];
+    $var->winnersold = $wor;
+    $var->winnersnew = round($wnr, 4);
+    $var->losersold = $lor;
+    $var->losersnew = round($lnr, 4);
+    $var->date = gmdate("l F j", $robj->time);
+    $var->hour = gmdate("g:i a", $robj->time);
 
-	/* email the user with the new account information    */
-	$var = new Object;
-	if ($score == 0) {
-		$var->howbad = "completely creamed";
-		$var->loserscore = 0;
-	}
-	elseif ($score == 2) {
-		$var->howbad = "squeaked by";
-		$var->loserscore = 2;
-	} else {
-		$var->howbad = "defeated";
-		$var->loserscore = 1;
-	}
+    //Get the first player of team 1
+    $var->firstname1 = $robj->firstname;
+    $var->lastname1 = $robj->lastname;
+    $var->fullname1 = $robj->firstname . " " . $robj->lastname;
 
-	$var->courtname = $robj->courtname;
-	$var->matchtype = $robj->name;
-	$var->time = gmdate("l F j g:i a", $robj->time);
-	$var->timestamp = $robj->time;
-	$var->dns = $_SESSION["CFG"]["dns"];
-	$var->wwwroot = $_SESSION["CFG"]["wwwroot"];
-	$var->courtid = $robj->courtid;
-	$var->support = $_SESSION["CFG"]["support"];
-	$var->winnersold = $wor;
-	$var->winnersnew = round($wnr,4);
-	$var->losersold = $lor;
-	$var->losersnew = round($lnr,4);
+    //Get the second player of team 1
+    $robj = mysql_fetch_object($rresult);
+    $var->firstname2 = $robj->firstname;
+    $var->lastname2 = $robj->lastname;
+    $var->fullname2 = $robj->firstname . " " . $robj->lastname;
 
-	$var->date = gmdate("l F j", $robj->time);
-	$var->hour = gmdate("g:i a", $robj->time);
+    //Get the first player of team 2
+    $robj = mysql_fetch_object($rresult);
+    $var->firstname3 = $robj->firstname;
+    $var->lastname3 = $robj->lastname;
+    $var->fullname3 = $robj->firstname . " " . $robj->lastname;
 
-	//Get the first player of team 1
-	$var->firstname1 = $robj->firstname;
-	$var->lastname1 = $robj->lastname;
-	$var->fullname1 = $robj->firstname . " " . $robj->lastname;
+    //Get the second player of team 2
+    $robj = mysql_fetch_object($rresult);
+    $var->firstname4 = $robj->firstname;
+    $var->lastname4 = $robj->lastname;
+    $var->fullname4 = $robj->firstname . " " . $robj->lastname;
+    $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/report_scores_doubles.php", $var);
+    $emailbody = nl2br($emailbody);
 
-	//Get the second player of team 1
-	$robj = mysql_fetch_object($rresult);
-	$var->firstname2 = $robj->firstname;
-	$var->lastname2 = $robj->lastname;
-	$var->fullname2 = $robj->firstname . " " . $robj->lastname;
+    //Reset the result pointer to the begining
+    mysql_data_seek($rresult, 0);
+    $to_emails = array();
+    while ($emailidrow = db_fetch_row($rresult)) {
+        $to_emails[$emailidrow[4]] = array(
+            'name' => $emailidrow[2]
+        );
+    }
 
-	//Get the first player of team 2
-	$robj = mysql_fetch_object($rresult);
-	$var->firstname3 = $robj->firstname;
-	$var->lastname3 = $robj->lastname;
-	$var->fullname3 = $robj->firstname . " " . $robj->lastname;
+    // Provide Content
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
+    $subject = get_clubname() . " - Score Report";
+    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-	//Get the second player of team 2
-	$robj = mysql_fetch_object($rresult);
-	$var->firstname4 = $robj->firstname;
-	$var->lastname4 = $robj->lastname;
-	$var->fullname4 = $robj->firstname . " " . $robj->lastname;
-
-	$emailbody = read_template($_SESSION["CFG"]["templatedir"]."/email/report_scores_doubles.php", $var);
-	$emailbody = nl2br($emailbody);
-
-	//Reset the result pointer to the begining
-	mysql_data_seek($rresult, 0);
-	$to_emails = array();
-
-	while ($emailidrow = db_fetch_row($rresult)) {
-		$to_emails[$emailidrow[4]] = array('name' => $emailidrow[2]);
-	}
-
-	// Provide Content
-	$content = new Object;
-	$content->line1 = $emailbody;
-	$content->clubname = get_clubname();
-	$template = get_sitecode();
-	$subject = get_clubname()." - Score Report";
-	$from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-
-	//Send the email
-	send_email($subject, $to_emails, $from_email, $content, $template);
-
-	$description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
-	logSiteActivity(get_siteid(), $description);
-
+    //Send the email
+    send_email($subject, $to_emails, $from_email, $content, $template);
+    $description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
+    logSiteActivity(get_siteid() , $description);
 }
-
-
 /**
  * ??? required parameters:	reservationid 	score
  * @param unknown_type $frm
  * @param unknown_type $source
  */
 function record_score(&$frm, $source) {
+    
+    if (isDebugEnabled(1)) logMessage("applicationlib.record_score: source is $source");
 
-	if(isDebugEnabled(1) ) logMessage("applicationlib.record_score: source is $source");
+    /* Record score */
 
+    //The winner userid is passed in the post vars, the loser is passed
+    //in either the player1 or player2 post vars.  Also, the outcome is
 
-	/* Record score */
-	//The winner userid is passed in the post vars, the loser is passed
-	//in either the player1 or player2 post vars.  Also, the outcome is
-	// either a 0 which is a 3-0 match score, a 1 which is a 3-1 match
-	// score or finally a 2 which is a 3-2 match score.
+    // either a 0 which is a 3-0 match score, a 1 which is a 3-1 match
 
-	// Set the winner and loser variables so we know who is who
+    // score or finally a 2 which is a 3-2 match score.
 
-	//If the boxid variable is set this is being called from
-	//the web ladder or from a reservation was made as a league
-	// reservation.  In any event we will figure out who who with
-	// the fancy get_matchresults.
+    // Set the winner and loser variables so we know who is who
 
-	// 03/27/2003    John now suggested that the box league matches count for
-	//               twice that of a practice match
-	// 10/01/2005    John now suggested that the challenge match count for thrice
-	//               thhat of a practice match.
+    //If the boxid variable is set this is being called from
 
-	$results = get_matchresults($frm['winner'], $frm['Player1'], $frm['Player2']);
-	$winner = $results['winner'];
-	$loser = $results['loser'];
+    //the web ladder or from a reservation was made as a league
 
-	// Update the winners outcome
-	$winnersquery = "UPDATE tblkpUserReservations SET outcome=3
+    // reservation.  In any event we will figure out who who with
+
+    // the fancy get_matchresults.
+
+    // 03/27/2003    John now suggested that the box league matches count for
+
+    //               twice that of a practice match
+
+    // 10/01/2005    John now suggested that the challenge match count for thrice
+
+    //               thhat of a practice match.
+
+    $results = get_matchresults($frm['winner'], $frm['Player1'], $frm['Player2']);
+    $winner = $results['winner'];
+    $loser = $results['loser'];
+
+    // Update the winners outcome
+    $winnersquery = "UPDATE tblkpUserReservations SET outcome=3
 	                      WHERE reservationid='$frm[reservationid]'
 	                      AND userid=$winner";
+    $winnerresult = db_query($winnersquery);
 
-	$winnerresult = db_query($winnersquery);
-
-	// Update the losers outcome
-	$loserssquery = "UPDATE tblkpUserReservations SET outcome='$frm[score]'
+    // Update the losers outcome
+    $loserssquery = "UPDATE tblkpUserReservations SET outcome='$frm[score]'
 	                      WHERE reservationid='$frm[reservationid]'
 	                      AND userid=$loser";
+    $losersresult = db_query($loserssquery);
 
-	$losersresult = db_query($loserssquery);
-
-	// Get the courttypeid from tblReservations
-	$ctidquery = "SELECT courts.courttypeid, reservations.reservationid, reservations.usertype, reservations.matchtype
+    // Get the courttypeid from tblReservations
+    $ctidquery = "SELECT courts.courttypeid, reservations.reservationid, reservations.usertype, reservations.matchtype
 	                      FROM tblCourts courts, tblReservations reservations
 	                      WHERE courts.courtid = reservations.courtid
 	                      AND reservations.reservationid='$frm[reservationid]'";
+    $ctidresult = db_query($ctidquery);
+    $ctidarray = db_fetch_array($ctidresult);
+    $usertypeval = $ctidarray[2];
+    /**
+     * Adjust the rankings
+     */
+    
+    if ($usertypeval == 1) {
 
-	$ctidresult = db_query($ctidquery);
-	$ctidarray = db_fetch_array($ctidresult);
-	$usertypeval = $ctidarray[2];
+        // Look up the individuals ranking for members of winning team
+        // (this will be averaged to calculate
 
+        $winnerResult = getUserIdsForTeamIdWithCourtType($winner, $ctidarray[0]);
+        $playerRow = mysql_fetch_array($winnerResult);
+        $winnerRanking = $playerRow['ranking'];
+        $playerRow = mysql_fetch_array($winnerResult);
+        $winnerRanking+= $playerRow['ranking'];
+        $winnerRanking = $winnerRanking / 2;
+        
+        if (isDebugEnabled(1)) logMessage("applicationlib.record_scores: Team Id $winner has a ranking of $winnerRanking");
+        $loserResult = getUserIdsForTeamIdWithCourtType($loser, $ctidarray[0]);
+        $playerRow = mysql_fetch_array($loserResult);
+        $loserRanking = $playerRow['ranking'];
+        $playerRow = mysql_fetch_array($loserResult);
+        $loserRanking+= $playerRow['ranking'];
+        $loserRanking = $loserRanking / 2;
+        
+        if (isDebugEnabled(1)) logMessage("applicationlib.record_scores: Team Id $loser has a ranking of $loserRanking");
 
-	/**
-	 * Adjust the rankings
-	 */
+        // Calculate the Rankings
+        $rankingArray = calculateRankings($winnerRanking, $loserRanking);
 
-	if ($usertypeval == 1) {
+        //If the match type is a two (challenge match) count the match two times
+        
+        if ($ctidarray[3] == 2) {
+            $rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
+        }
 
-		// Look up the individuals ranking for members of winning team
-		// (this will be averaged to calculate
-
-		$winnerResult = getUserIdsForTeamIdWithCourtType($winner, $ctidarray[0]);
-		$playerRow = mysql_fetch_array($winnerResult);
-		$winnerRanking = $playerRow['ranking'];
-		$playerRow = mysql_fetch_array($winnerResult);
-		$winnerRanking  += $playerRow['ranking'];
-		$winnerRanking = $winnerRanking/2;
-		 
-		if(isDebugEnabled(1) ) logMessage("applicationlib.record_scores: Team Id $winner has a ranking of $winnerRanking");
-
-
-		$loserResult = getUserIdsForTeamIdWithCourtType($loser, $ctidarray[0]);
-		$playerRow = mysql_fetch_array($loserResult);
-		$loserRanking = $playerRow['ranking'];
-		$playerRow = mysql_fetch_array($loserResult);
-		$loserRanking  += $playerRow['ranking'];
-		$loserRanking = $loserRanking/2;
-
-		if(isDebugEnabled(1) ) logMessage("applicationlib.record_scores: Team Id $loser has a ranking of $loserRanking");
-
-		// Calculate the Rankings
-		$rankingArray = calculateRankings($winnerRanking, $loserRanking);
-
-		//If the match type is a two (challenge match) count the match two times
-		if ($ctidarray[3] == 2) {
-			$rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
-		}
-
-		//For winner team
-		mysql_data_seek($winnerResult,0);
-		mysql_data_seek($loserResult,0);
-
-
-		$winners = array();
-		$playerRow = mysql_fetch_array($winnerResult);
-		array_push($winners, $playerRow['userid']);
-		$playerRow = mysql_fetch_array($winnerResult);
-		array_push($winners, $playerRow['userid']);
-		 
-		 
-		$winnerAdjustment = $rankingArray['winner'] - $winnerRanking;
-
-		$playerOneRankQuery = "SELECT rankings.ranking
+        //For winner team
+        mysql_data_seek($winnerResult, 0);
+        mysql_data_seek($loserResult, 0);
+        $winners = array();
+        $playerRow = mysql_fetch_array($winnerResult);
+        array_push($winners, $playerRow['userid']);
+        $playerRow = mysql_fetch_array($winnerResult);
+        array_push($winners, $playerRow['userid']);
+        $winnerAdjustment = $rankingArray['winner'] - $winnerRanking;
+        $playerOneRankQuery = "SELECT rankings.ranking
 							   FROM tblUserRankings rankings 
 							   WHERE rankings.userid = $winners[0] 
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
-
-		$playerOneRankResult = db_query($playerOneRankQuery);
-		$playerOneRanking = mysql_result($playerOneRankResult, 0);
-		$playerOneNewRanking = 	$playerOneRanking + $winnerAdjustment;
-			
-		$playerOneAdjustment = db_query("
+        $playerOneRankResult = db_query($playerOneRankQuery);
+        $playerOneRanking = mysql_result($playerOneRankResult, 0);
+        $playerOneNewRanking = $playerOneRanking + $winnerAdjustment;
+        $playerOneAdjustment = db_query("
 						           UPDATE tblUserRankings
 						           SET ranking = $playerOneNewRanking
 						           WHERE userid = '$winners[0]'
-						           AND courttypeid = '$ctidarray[0]'");	
-			
-		$playerTwoRankQuery = "SELECT rankings.ranking
+						           AND courttypeid = '$ctidarray[0]'");
+        $playerTwoRankQuery = "SELECT rankings.ranking
 							   FROM tblUserRankings rankings 
 							   WHERE rankings.userid = $winners[1] 
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
-
-		$playerTwoRankResult = db_query($playerTwoRankQuery);
-		$playerTwoRanking = mysql_result($playerTwoRankResult, 0);
-		$playerTwoNewRanking = 	$playerTwoRanking + $winnerAdjustment;
-			
-		$playerOneAdjustment = db_query("
+        $playerTwoRankResult = db_query($playerTwoRankQuery);
+        $playerTwoRanking = mysql_result($playerTwoRankResult, 0);
+        $playerTwoNewRanking = $playerTwoRanking + $winnerAdjustment;
+        $playerOneAdjustment = db_query("
 						           UPDATE tblUserRankings
 						           SET ranking = $playerTwoNewRanking
 						           WHERE userid = '$winners[1]'
-						           AND courttypeid = '$ctidarray[0]'");	
+						           AND courttypeid = '$ctidarray[0]'");
 
-
-		//For loser team
-		$losers = array();
-		$playerRow = mysql_fetch_array($loserResult);
-		array_push($losers, $playerRow['userid']);
-		$playerRow = mysql_fetch_array($loserResult);
-		array_push($losers, $playerRow['userid']);
-
-		$loserAdjustment = $loserRanking - $rankingArray['loser'];
-
-		$playerThreeRankQuery = "SELECT rankings.ranking
+        //For loser team
+        $losers = array();
+        $playerRow = mysql_fetch_array($loserResult);
+        array_push($losers, $playerRow['userid']);
+        $playerRow = mysql_fetch_array($loserResult);
+        array_push($losers, $playerRow['userid']);
+        $loserAdjustment = $loserRanking - $rankingArray['loser'];
+        $playerThreeRankQuery = "SELECT rankings.ranking
 							   FROM tblUserRankings rankings 
 							   WHERE rankings.userid = $losers[0] 
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
-
-		$playerThreeRankResult = db_query($playerThreeRankQuery);
-		$playerThreeRanking = mysql_result($playerThreeRankResult, 0);
-		$playerThreeNewRanking = 	$playerThreeRanking - $loserAdjustment;
-			
-		$playerThreeAdjustment = db_query("
+        $playerThreeRankResult = db_query($playerThreeRankQuery);
+        $playerThreeRanking = mysql_result($playerThreeRankResult, 0);
+        $playerThreeNewRanking = $playerThreeRanking - $loserAdjustment;
+        $playerThreeAdjustment = db_query("
 						           UPDATE tblUserRankings
 						           SET ranking = $playerThreeNewRanking
 						           WHERE userid = '$losers[0]'
-						           AND courttypeid = '$ctidarray[0]'");	
-			
-		$playerFourRankQuery = "SELECT rankings.ranking
+						           AND courttypeid = '$ctidarray[0]'");
+        $playerFourRankQuery = "SELECT rankings.ranking
 							   FROM tblUserRankings rankings 
 							   WHERE rankings.userid = $losers[1] 
 							   	AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
-
-		$playerFourRankResult = db_query($playerFourRankQuery);
-		$playerFourRanking = mysql_result($playerFourRankResult, 0);
-		$playerFourNewRanking = 	$playerFourRanking - $loserAdjustment;
-			
-		$playerOneAdjustment = db_query("
+        $playerFourRankResult = db_query($playerFourRankQuery);
+        $playerFourRanking = mysql_result($playerFourRankResult, 0);
+        $playerFourNewRanking = $playerFourRanking - $loserAdjustment;
+        $playerOneAdjustment = db_query("
 						           UPDATE tblUserRankings
 						           SET ranking = $playerFourNewRanking
 						           WHERE userid = '$losers[1]'
 						           AND courttypeid = '$ctidarray[0]'");
-		 
+    }
 
-	}
-
-	//Singles
-	elseif ($usertypeval == 0) {
-
-		$winneridquery = "SELECT rankings.ranking, users.firstname, users.lastname
+    //Singles
+    elseif ($usertypeval == 0) {
+        $winneridquery = "SELECT rankings.ranking, users.firstname, users.lastname
 		                  			FROM tblUsers users, tblUserRankings rankings
 		                  			WHERE users.userid = rankings.userid
 		                  			AND rankings.userid=$winner
 		                  			AND rankings.courttypeid=$ctidarray[0]
 									AND users.enddate IS NULL
 		                  			AND rankings.usertype=0";
-
-		$winneridresult = db_query($winneridquery);
-		$winneridarray = db_fetch_array($winneridresult);
-
-		$loseridquery = "SELECT rankings.ranking, users.firstname, users.lastname
+        $winneridresult = db_query($winneridquery);
+        $winneridarray = db_fetch_array($winneridresult);
+        $loseridquery = "SELECT rankings.ranking, users.firstname, users.lastname
 		                         FROM tblUsers users, tblUserRankings rankings
 		                         WHERE users.userid = rankings.userid
 		                         AND rankings.userid=$loser
 		                         AND rankings.courttypeid=$ctidarray[0]
 								 AND users.enddate IS NULL
 		                         AND rankings.usertype=0";
+        $loseridresult = db_query($loseridquery);
+        $loseridarray = db_fetch_array($loseridresult);
+        $rankingArray = calculateRankings($winneridarray[0], $loseridarray[0]);
+        
+        if ($ctidarray[3] == 2) {
+            $rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
+        }
+        $newWinnerRanking = $rankingArray['winner'];
+        $newLoserRanking = $rankingArray['loser'];
 
-		$loseridresult = db_query($loseridquery);
-		$loseridarray = db_fetch_array($loseridresult);
-
-		$rankingArray = calculateRankings($winneridarray[0], $loseridarray[0]);
-
-		if ($ctidarray[3] == 2) {
-			$rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
-		}
-
-		$newWinnerRanking = $rankingArray['winner'];
-		$newLoserRanking = $rankingArray['loser'];
-
-		// Update the winners ranking
-
-		$losersrankq = db_query("
+        // Update the winners ranking
+        $losersrankq = db_query("
 				           UPDATE tblUserRankings
 				           SET ranking = $newWinnerRanking
 				           WHERE userid = '$winner'
 				           AND courttypeid = '$ctidarray[0]'");
 
-		// Update the losers ranking
-		$winnrsrankq = db_query("
+        // Update the losers ranking
+        $winnrsrankq = db_query("
 				           UPDATE tblUserRankings
 				           SET ranking = $newLoserRanking
 				           WHERE userid = '$loser'
 				           AND courttypeid = '$ctidarray[0]'
 				           ");
-
-	}
-
-
-	/**
-	 * Write out the message
-	 */
-
-	if ($usertypeval == 1) {
-
-
-		$wteamnamequery = "SELECT users.firstname, users.lastname
+    }
+    /**
+     * Write out the message
+     */
+    
+    if ($usertypeval == 1) {
+        $wteamnamequery = "SELECT users.firstname, users.lastname
 		                            FROM tblUsers users, tblkpTeams teamdetails
 		                            WHERE users.userid = teamdetails.userid
 		                            AND teamdetails.teamid=$winner
 		                            ORDER BY users.userid";
+        $wteamnameresult = db_query($wteamnamequery);
+        $wteamnamearray = db_fetch_array($wteamnameresult);
 
-		$wteamnameresult = db_query($wteamnamequery);
-		$wteamnamearray = db_fetch_array($wteamnameresult);
-
-		//Get the players first and last names of the losing team
-		$lteamnamequery = "SELECT users.firstname, users.lastname
+        //Get the players first and last names of the losing team
+        $lteamnamequery = "SELECT users.firstname, users.lastname
 		                            FROM tblUsers users, tblkpTeams teamdetails
 		                            WHERE users.userid = teamdetails.userid
 		                            AND teamdetails.teamid=$loser
 		                            ORDER BY users.userid";
+        $lteamnameresult = db_query($lteamnamequery);
+        $lteamnamearray = db_fetch_array($lteamnameresult);
+        echo "<span class=bigbanner> Congratulations $wteamnamearray[0] $wteamnamearray[1] and ";
 
-		$lteamnameresult = db_query($lteamnamequery);
-		$lteamnamearray = db_fetch_array($lteamnameresult);
+        // And now get the next partner
+        $wteamnamearray = db_fetch_array($wteamnameresult);
+        echo "$wteamnamearray[0] $wteamnamearray[1]!</span><br><br>";
 
-		echo "<span class=bigbanner> Congratulations $wteamnamearray[0] $wteamnamearray[1] and ";
-
-		// And now get the next partner
-		$wteamnamearray = db_fetch_array($wteamnameresult);
-		echo "$wteamnamearray[0] $wteamnamearray[1]!</span><br><br>";
-
-		// Set the array pointer back to the front.
-		unset ($wteamnameresult);
-
-		$wteamnameresult = db_query($wteamnamequery);
-		$wteamnamearray = db_fetch_array($wteamnameresult);
-
-		echo "<div class=normal>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by ". round($winnerAdjustment,4)." to ".round($playerOneNewRanking,4)."</div>";
-		$wteamnamearray = db_fetch_array($wteamnameresult);
-		echo "<div class=normal>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by ". round($winnerAdjustment,4)."  to ".round($playerTwoNewRanking,4)."</div>";
-		echo "<br>";
-		echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by ". round($winnerAdjustment,4)."  to ".round($playerThreeRanking,4)."</div>";
-		$lteamnamearray = db_fetch_array($lteamnameresult);
-		echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by ". round($winnerAdjustment,4)."  to ".round($playerFourRanking,4)."</div>";
-
-		?>
+        // Set the array pointer back to the front.
+        unset($wteamnameresult);
+        $wteamnameresult = db_query($wteamnamequery);
+        $wteamnamearray = db_fetch_array($wteamnameresult);
+        echo "<div class=normal>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by " . round($winnerAdjustment, 4) . " to " . round($playerOneNewRanking, 4) . "</div>";
+        $wteamnamearray = db_fetch_array($wteamnameresult);
+        echo "<div class=normal>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by " . round($winnerAdjustment, 4) . "  to " . round($playerTwoNewRanking, 4) . "</div>";
+        echo "<br>";
+        echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by " . round($winnerAdjustment, 4) . "  to " . round($playerThreeRanking, 4) . "</div>";
+        $lteamnamearray = db_fetch_array($lteamnameresult);
+        echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by " . round($winnerAdjustment, 4) . "  to " . round($playerFourRanking, 4) . "</div>";
+?>
 <div>
 <? if( isset($source) && $source == "ladder"){ ?>
 	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back

@@ -1,3 +1,36 @@
+<?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
+ * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
+/**
+* Class and Function List:
+* Function list:
+* Classes list:
+*/
+?>
+
 <form name="singlesform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
   <table cellspacing="10" cellpadding="0" width="440" class="tabtable" id="singles-formtable">
     <tr>
@@ -27,18 +60,17 @@
         <input id="id2" name="playertwoid" type="hidden"/>
         <script>
                 <?php
-                 $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
-                 pat_autocomplete( array(
-						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-						'source'=>'name2',
-						'target'=>'id2',
-						'className'=>'autocomplete',
-						'parameters'=> "action=autocomplete&name={name2}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
-						'progressStyle'=>'throbbing',
-						'minimumCharacters'=>3,
-						));
-           
-                 ?>
+$wwwroot = $_SESSION["CFG"]["wwwroot"];
+pat_autocomplete(array(
+    'baseUrl' => "$wwwroot/users/ajaxServer.php",
+    'source' => 'name2',
+    'target' => 'id2',
+    'className' => 'autocomplete',
+    'parameters' => "action=autocomplete&name={name2}&userid=" . get_userid() . "&courtid=$courtid&siteid=" . get_siteid() . "&clubid=" . get_clubid() . "",
+    'progressStyle' => 'throbbing',
+    'minimumCharacters' => 3,
+));
+?>
 
                 </script></td>
     </tr>

@@ -1,65 +1,84 @@
-<?
-
-
-/**
+<?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
  * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
+/**
+* Class and Function List:
+* Function list:
+* - getCourtTypeIdForCourtId()
+* - getCourtTypeName()
+* - getCourtTableWidth()
+* - printLeftCourtNavigationArrow()
+* - printRightCourtNavigationArrow()
+* - printEvent()
+* Classes list:
+*/
+/**
+ *
  * @param unknown_type $courtId
  */
-function getCourtTypeIdForCourtId($courtId){
-         
-	if( isDebugEnabled(1) ) logMessage("courtlib.getCourtTypeIdForCourtId: Getting courttypeid for court $courtId");
-	
-	//Get the tblcourttype id for this court
-               $courttypequery = "SELECT courttype.courttypeid
+function getCourtTypeIdForCourtId($courtId) {
+    
+    if (isDebugEnabled(1)) logMessage("courtlib.getCourtTypeIdForCourtId: Getting courttypeid for court $courtId");
+
+    //Get the tblcourttype id for this court
+    $courttypequery = "SELECT courttype.courttypeid
                                             FROM tblCourts courts, tblCourtType courttype
                                             WHERE courts.courttypeid = courttype.courttypeid
                                             AND courts.courtid ='$courtId'";
-
-        $courttyperesult = db_query($courttypequery);
-        $courttypearray = mysql_fetch_array($courttyperesult);
-        
-        return $courttypearray[0];
+    $courttyperesult = db_query($courttypequery);
+    $courttypearray = mysql_fetch_array($courttyperesult);
+    return $courttypearray[0];
 }
-
-
-
 /**
  * Simple getter that gets court type name
  */
- function getCourtTypeName($courtTypeId){
- 	
- 	$query = "SELECT courttype.courttypename 
+function getCourtTypeName($courtTypeId) {
+    $query = "SELECT courttype.courttypename 
 				FROM tblCourtType courttype
 				WHERE courttype.courttypeid = $courtTypeId";
-				
-	$result = db_query($query);
-	
-	return mysql_result($result, 0);
- }
- 
- 
- /******************************************************************************
+    $result = db_query($query);
+    return mysql_result($result, 0);
+}
+
+/******************************************************************************
  * FUNCTIONS
  *****************************************************************************/
-
-function getCourtTableWidth($totalCurrentCourts){
-	
-	$width = 0;
-	
-	if($totalCurrentCourts == 1){
-		$width = 450;
-	}
-	elseif($totalCurrentCourts == 2){
-		$width = 300;
-	}
-	elseif($totalCurrentCourts == 3 || $totalCurrentCourts == 4){
-		$width = 150;
-	}
-	else{
-		$width = 100;
-	}
-	
-	return $width;
+function getCourtTableWidth($totalCurrentCourts) {
+    $width = 0;
+    
+    if ($totalCurrentCourts == 1) {
+        $width = 450;
+    } elseif ($totalCurrentCourts == 2) {
+        $width = 300;
+    } elseif ($totalCurrentCourts == 3 || $totalCurrentCourts == 4) {
+        $width = 150;
+    } else {
+        $width = 100;
+    }
+    return $width;
 }
 
 /*
@@ -67,105 +86,101 @@ function getCourtTableWidth($totalCurrentCourts){
  * This function determine:
  *  a) if the link is to be displayed
  *  b) what paramter to pass in as to start the court display window ($courtWindowStart)
- * 
+ *
  * This will always display a full screen of courts.  So if there are 7 courts, clicking the
  * next arrow will then display courts 2-7 not just 7.  The reason for this because one
  * court on the page doesn't really do anyone any good, plus it looks weird.  As you might imagine
  * both of these function work the same, but do the inverse of the other one or whatever.
- * 
- */
- 
+ *
+*/
 /**
  * Prints out the left court navigation arrow
  */
-function printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts,$daysahead, $siteid){
-	
-	$wwwroot = $_SESSION["CFG"]["wwwroot"];
-	
-	if( $totalCourts <= 6 ){
-		return;
-	}
-	
-	//If already displaying first court dont't print the link
-	$veryFirstCourt = mysql_result($totalCourtResult,0);
-	$firstCourtDisplayed = mysql_result($currentCourtResult,0);
-	
-	if($veryFirstCourt == $firstCourtDisplayed){
-		return;
-	}
-	
-	//Get 6 less than the first court or the very first court, which ever is less
-	$nextCourtWindow = "SELECT court.courtid FROM tblCourts court WHERE court.siteid= $siteid AND court.courtid < $firstCourtDisplayed AND court.enable = 1 ORDER BY court.courtid DESC LIMIT 6";
-	$nextCourtWindowResult = db_query($nextCourtWindow);
+function printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid) {
+    $wwwroot = $_SESSION["CFG"]["wwwroot"];
+    
+    if ($totalCourts <= 6) {
+        return;
+    }
 
-	while( $courtidArray = mysql_fetch_array($nextCourtWindowResult) ){
+    //If already displaying first court dont't print the link
+    $veryFirstCourt = mysql_result($totalCourtResult, 0);
+    $firstCourtDisplayed = mysql_result($currentCourtResult, 0);
+    
+    if ($veryFirstCourt == $firstCourtDisplayed) {
+        return;
+    }
 
-		$startCourtId = $courtidArray[0];
-	}
-	
-	//Print the Form
-	print "<form name=\"windowForm\" method=\"post\"><input type=\"hidden\" name=\"courtWindowStart\" value=\"$startCourtId\"><input type=\"hidden\" name=\"daysahead\" value=\"$daysahead\"></form>";	
-	//Print the link to the form
-	print "<br><a STYLE=\"text-decoration:none\" href=\"javascript:submitFormWithAction('windowForm','$wwwroot/clubs/".get_sitecode()."/index.php')\"> < Previous </a><br>";
-	
+    //Get 6 less than the first court or the very first court, which ever is less
+    $nextCourtWindow = "SELECT court.courtid FROM tblCourts court WHERE court.siteid= $siteid AND court.courtid < $firstCourtDisplayed AND court.enable = 1 ORDER BY court.courtid DESC LIMIT 6";
+    $nextCourtWindowResult = db_query($nextCourtWindow);
+    while ($courtidArray = mysql_fetch_array($nextCourtWindowResult)) {
+        $startCourtId = $courtidArray[0];
+    }
+
+    //Print the Form
+    print "<form name=\"windowForm\" method=\"post\"><input type=\"hidden\" name=\"courtWindowStart\" value=\"$startCourtId\"><input type=\"hidden\" name=\"daysahead\" value=\"$daysahead\"></form>";
+
+    //Print the link to the form
+    print "<br><a STYLE=\"text-decoration:none\" href=\"javascript:submitFormWithAction('windowForm','$wwwroot/clubs/" . get_sitecode() . "/index.php')\"> < Previous </a><br>";
 }
-
-
 /**
  * Print out the right court navigation array
  */
-function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid){
-	
-	$wwwroot = $_SESSION["CFG"]["wwwroot"];
-	
-	if( $totalCourts <= 6 ){
-		return;
-	}
+function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid) {
+    $wwwroot = $_SESSION["CFG"]["wwwroot"];
+    
+    if ($totalCourts <= 6) {
+        return;
+    }
 
-	//If already displaying last court dont't print the link
-	$veryLastCourt = mysql_result($totalCourtResult,$totalCourts-1);
-	$firstCourtDisplayed = mysql_result($totalCourtResult,0);
-	$lastCourtDisplayed = mysql_result($currentCourtResult,$totalCurrentCourts-1);
-	
-	// The courts will be in numerical order but not necessarily sequential.  If the 
-	// last court is within the courts that are displayed, then there is no need to 
-	// display the right navigation link.
-	if($veryLastCourt >= $firstCourtDisplayed && $veryLastCourt <= $lastCourtDisplayed){
-		return;
-	}
-	
-	//Get 6 more than the last court or the very last court, which ever is bigger
-	$nextCourtWindow = "SELECT court.courtid 
+    //If already displaying last court dont't print the link
+    $veryLastCourt = mysql_result($totalCourtResult, $totalCourts - 1);
+    $firstCourtDisplayed = mysql_result($totalCourtResult, 0);
+    $lastCourtDisplayed = mysql_result($currentCourtResult, $totalCurrentCourts - 1);
+
+    // The courts will be in numerical order but not necessarily sequential.  If the
+    // last court is within the courts that are displayed, then there is no need to
+
+    // display the right navigation link.
+
+    
+    if ($veryLastCourt >= $firstCourtDisplayed && $veryLastCourt <= $lastCourtDisplayed) {
+        return;
+    }
+
+    //Get 6 more than the last court or the very last court, which ever is bigger
+    $nextCourtWindow = "SELECT court.courtid 
 							FROM tblCourts court 
 							WHERE court.siteid= $siteid 
 							AND court.courtid > $lastCourtDisplayed 
 							ORDER BY court.courtid ASC LIMIT 6";
-							
-	$nextCourtWindowResult = db_query($nextCourtWindow);
-	$numberInNextWindow = mysql_num_rows($nextCourtWindowResult);
-	
+    $nextCourtWindowResult = db_query($nextCourtWindow);
+    $numberInNextWindow = mysql_num_rows($nextCourtWindowResult);
 
-	//If the next window does not contain a full 6 courts, set the setCourtId to
-	// 6 back from th elast one.
-	if($numberInNextWindow < 6 ){
-		$startCourtId = mysql_result($currentCourtResult,$numberInNextWindow);
-	}
-	//Otherwise set this to the first
-	else{
-		$startCourtId = mysql_result($nextCourtWindowResult,0);
-	}
-	//Print the Form
-	print "<form name=\"windowForm\" method=\"post\"><input type=\"hidden\" name=\"courtWindowStart\" value=\"$startCourtId\"><input type=\"hidden\" name=\"daysahead\" value=\"$daysahead\"></form>";	
-	//Print the link to the form
-	print "<br><a STYLE=\"text-decoration:none\" href=\"javascript:submitFormWithAction('windowForm','$wwwroot/clubs/".get_sitecode()."/index.php')\"> Next >  </a><br>";
-	
-	
+    //If the next window does not contain a full 6 courts, set the setCourtId to
+    // 6 back from th elast one.
+
+    
+    if ($numberInNextWindow < 6) {
+        $startCourtId = mysql_result($currentCourtResult, $numberInNextWindow);
+    }
+
+    //Otherwise set this to the first
+    else {
+        $startCourtId = mysql_result($nextCourtWindowResult, 0);
+    }
+
+    //Print the Form
+    print "<form name=\"windowForm\" method=\"post\"><input type=\"hidden\" name=\"courtWindowStart\" value=\"$startCourtId\"><input type=\"hidden\" name=\"daysahead\" value=\"$daysahead\"></form>";
+
+    //Print the link to the form
+    print "<br><a STYLE=\"text-decoration:none\" href=\"javascript:submitFormWithAction('windowForm','$wwwroot/clubs/" . get_sitecode() . "/index.php')\"> Next >  </a><br>";
 }
-
 /**
- * 
+ *
  * Takes the necessary parameters and prints the event marked up with HTML
- * 
+ *
  * @param $courtid
  * @param $time
  * @param $eventid
@@ -173,40 +188,37 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
  * @param $ispast
  * @param $locked
  */
-function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked){
-	
-	 $clubid = get_clubid();
-	 $eventquery = "SELECT events.eventname, events.playerlimit, events.eventid
+function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked) {
+    $clubid = get_clubid();
+    $eventquery = "SELECT events.eventname, events.playerlimit, events.eventid
               				FROM tblEvents events
               				WHERE events.eventid = $eventid ";
+    $eventresult = db_query($eventquery);
+    $eventarray = mysql_fetch_array($eventresult, 0);
 
-      $eventresult = db_query($eventquery);
-      $eventarray = mysql_fetch_array($eventresult, 0);
-              
-	
-	// if this is unlocked and needs players and is !ispast set the color to seeking match, otherwise event
-	
-     // $eventclass = $eventarray['playerlimit'] > 0 && !$ispast && $locked=="n" ? "seekingmatchcl$clubid" : "eventcourt";
-     
-      // Get the club participants
-      $query = "SELECT user.firstname, user.lastname
+    // if this is unlocked and needs players and is !ispast set the color to seeking match, otherwise event
+    // $eventclass = $eventarray['playerlimit'] > 0 && !$ispast && $locked=="n" ? "seekingmatchcl$clubid" : "eventcourt";
+
+    // Get the club participants
+
+    $query = "SELECT user.firstname, user.lastname
              	 	FROM tblCourtEventParticipants participant, tblUsers user
              		WHERE participant.reservationid = $reservationid 
              		AND participant.enddate IS NULL
              		AND participant.userid = user.userid";
-       $result = db_query($query);
-             	
-       $spotsleft = $eventarray['playerlimit'] - mysql_num_rows($result);
-       $eventid = $eventarray['eventid'];
-      
-      if($ispast){
-      	 $eventclass = "postopencourt";
-      } else if( $eventarray['playerlimit'] > 0 && $spotsleft > 0 &&  $locked=="n") {
-      	$eventclass = "seekingmatchcl$clubid event-$eventid";
-      } else {
-      	$eventclass = "eventcourt event-$eventid";
-      }
-	?>
+    $result = db_query($query);
+    $spotsleft = $eventarray['playerlimit'] - mysql_num_rows($result);
+    $eventid = $eventarray['eventid'];
+    
+    if ($ispast) {
+        $eventclass = "postopencourt";
+    } else 
+    if ($eventarray['playerlimit'] > 0 && $spotsleft > 0 && $locked == "n") {
+        $eventclass = "seekingmatchcl$clubid event-$eventid";
+    } else {
+        $eventclass = "eventcourt event-$eventid";
+    }
+?>
 	
 	
 	<tr class="<?=$eventclass?>">

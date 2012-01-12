@@ -1,94 +1,110 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+/* ====================================================================
+ * GNU Lesser General Public License
+ * Version 2.1, February 1999
+ * 
+ * <one line to give the library's name and a brief idea of what it does.>
+ *
+ * Copyright (C) 2001~2012 Adam Preston
+ * Copyright (C) 2012 Nicolas Wegener
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * $Id:$
+ */
 
+/**
+* Class and Function List:
+* Function list:
+* - validate_form()
+* - run_member_activity_report()
+* Classes list:
+*/
 /*
  * $LastChangedRevision: 857 $
  * $LastChangedBy: Adam Preston $
  * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
- */
- 
-include("../application.php");
+*/
+include ("../application.php");
 $DOC_TITLE = "Club Reports";
 require_priv("2");
 
-
-
 if (match_referer() && isset($_POST['submitme'])) {
-        $frm = $_POST;
-        $errormsg = validate_form($frm, $errors);
-
-        if ( empty($errormsg) ) {
-             
-              include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
-                   
-              	if($frm["report"]=="memberactivity"){
-                       run_member_activity_report($frm);
-                   }
-                   elseif($frm["report"]=="courtutil"){
-                       run_court_utilization_report($frm);
-                   }
-                include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
-                die;
-       }
-
+    $frm = $_POST;
+    $errormsg = validate_form($frm, $errors);
+    
+    if (empty($errormsg)) {
+        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        
+        if ($frm["report"] == "memberactivity") {
+            run_member_activity_report($frm);
+        } elseif ($frm["report"] == "courtutil") {
+            run_court_utilization_report($frm);
+        }
+        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        die;
+    }
 }
-
-include($_SESSION["CFG"]["templatedir"]."/header_yui.php");
-include($_SESSION["CFG"]["templatedir"]."/club_reports_form.php");
-include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/club_reports_form.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 
 /******************************************************************************
  * FUNCTIONS
  *****************************************************************************/
-
 function validate_form(&$frm, &$errors) {
-/* validate the signup form, and return the error messages in a string.  if
- * the string is empty, then there are no errors */
 
-        $errors = new Object;
-        $msg = "";
-
-
-         if (empty($frm["report"])) {
-                $errors->searchname = true;
-                $msg .= "You did not Specify a Report to Run.";
-         }
-
-
-        return $msg;
+    /* validate the signup form, and return the error messages in a string.  if
+     * the string is empty, then there are no errors */
+    $errors = new Object;
+    $msg = "";
+    
+    if (empty($frm["report"])) {
+        $errors->searchname = true;
+        $msg.= "You did not Specify a Report to Run.";
+    }
+    return $msg;
 }
-
 function run_member_activity_report(&$frm) {
-         
-         if( isDebugEnabled(1) ) logMessage("club_reports.php.run_court_utilization_report");
-         
-        $reportName =         "Member Activity Report";
-        $reportDescription = "This report represents the overall activity of club members for the last 30
+    
+    if (isDebugEnabled(1)) logMessage("club_reports.php.run_court_utilization_report");
+    $reportName = "Member Activity Report";
+    $reportDescription = "This report represents the overall activity of club members for the last 30
                               days as measured by the number of singles court reservations the member
                               has been booked for.";
 
+    /*Get the time value for 30 days ago.  At this point the reports aren't run with parameters.*/
+    $monthagotime = mktime() + get_tzdelta() - 2592000;
 
-        /*Get the time value for 30 days ago.  At this point the reports aren't run with parameters.*/
-         $monthagotime =   mktime()+get_tzdelta() - 2592000;
+    //Initialize Data Holders
+    $dataArray = array();
 
-         //Initialize Data Holders
-         $dataArray = array ();
-
-
-        //First we need to get the all of the members
-        $memberquery = "SELECT users.userid, users.firstname, users.lastname
+    //First we need to get the all of the members
+    $memberquery = "SELECT users.userid, users.firstname, users.lastname
                         FROM tblUsers users, tblClubUser clubuser
                         WHERE clubuser.userid = users.userid
-						AND clubuser.clubid=".get_clubid()."
+						AND clubuser.clubid=" . get_clubid() . "
 						AND clubuser.enddate is null";
 
-      // run the query on the database
-        $memberresult = db_query($memberquery);
+    // run the query on the database
+    $memberresult = db_query($memberquery);
+    for ($i = 0; $i < mysql_num_rows($memberresult); $i++) {
+        $row = mysql_fetch_array($memberresult);
 
-
-        for ($i=0; $i<mysql_num_rows($memberresult); $i++) {
-                        $row = mysql_fetch_array($memberresult);
-                         //Now For each member run a sub query to see how many reservations
-                         $howmanyreservationsquery = "SELECT tblkpUserReservations.reservationid, tblkpUserReservations.userid
+        //Now For each member run a sub query to see how many reservations
+        $howmanyreservationsquery = "SELECT tblkpUserReservations.reservationid, tblkpUserReservations.userid
                                                      FROM tblReservations
                                                      INNER JOIN tblkpUserReservations
                                                      ON tblReservations.reservationid = tblkpUserReservations.reservationid
@@ -96,25 +112,22 @@ function run_member_activity_report(&$frm) {
                                                      AND ((tblkpUserReservations.usertype)=0)
                                                      AND ((tblReservations.time)>$monthagotime))
 													 AND tblReservations.enddate IS NULL";
+        $howmanyreservationsresult = db_query($howmanyreservationsquery);
+        $reservationCount = mysql_num_rows($howmanyreservationsresult);
+        $dataArray[$i] = array(
+            "rescount" => $reservationCount,
+            "firstname" => $row['firstname'],
+            "lastname" => $row['lastname']
+        );
+    }
 
-                         $howmanyreservationsresult = db_query($howmanyreservationsquery);
-                         $reservationCount = mysql_num_rows($howmanyreservationsresult);
+    //*****************************************************************
+    //    Display the Data
 
-                         $dataArray[$i] = array("rescount"=>$reservationCount,
-                                                 "firstname"=>$row['firstname'],
-                                                 "lastname"=>$row['lastname']);
+    //*****************************************************************
 
-
-
-
-         }
-
-
-         //*****************************************************************
-        //    Display the Data
-        //*****************************************************************
-
-        ?>
+    
+?>
         <table cellspacing="0" cellpadding="0" border="0" width="710" align="center" class="borderless">
         <tr>
             <td>
