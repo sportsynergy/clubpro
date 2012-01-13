@@ -55,14 +55,6 @@
 <script type="text/javascript"
 	src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/navigation.js"></script>
 
-
-
-
-
-
-
-
-
 <?php if (!defined("_JQUERY_")){ ?>
 <!-- Page-specific styles -->
 <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
@@ -92,9 +84,6 @@
 </head>
 
 <body class="yui-skin-sam" id="main-com">
-
-
-
 
 <?php
 if( isset($trackingid) ){
@@ -179,7 +168,12 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 					src="<?=$_SESSION["CFG"]["imagedir"]?>/fb.png" border="0">
 				</a>
 				<!-- <br /> -->
-				<? } ?>
+				<?php 
+					}else{
+						echo '&nbsp; <img src="'.$_SESSION["CFG"]["imagedir"]
+							.'/spacer.gif" width="100" height="31" />';
+				   	} 
+				 ?>
 			</div>
 			<!-- start: primary column from outer template -->
 			<div id="yui-main">

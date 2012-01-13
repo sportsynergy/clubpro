@@ -30,9 +30,6 @@
 * Classes list:
 */
 
-include ("./application.php");
-include ("./lib/applicationlib.php");
-include ("./lib/stdlib.php");
 
 $DOC_TITLE = "System Administration Console";
 $_SESSION["wantsurl"] = qualified_mewithq();
