@@ -30,14 +30,19 @@
 * Function list:
 * Classes list:
 */
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/clubadminlib.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
+
+// Log user out if they are in the wrong club
+$userRelation = new UserClubRelation();
+if($userRelation->isUserLoggedin()){
+	if($userRelation->IsClubMember() == false){
+		$userRelation->KillUserSession();
+	}
+}
+
 $DOC_TITLE = "Club Event";
 
 //Load in Date

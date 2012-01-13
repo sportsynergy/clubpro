@@ -30,7 +30,11 @@
 * Classes list:
 */
 include ("../application.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 session_start();
+
+
+
 header('Content-Type: text/xml; charset=UTF-8');
 $action = $_REQUEST['action'];
 $action = $_GET['action'];

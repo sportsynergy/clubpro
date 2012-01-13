@@ -36,14 +36,23 @@
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 $DOC_TITLE = "Player Ladder";
 require_loginwq();
 
+// Log user out if they are in the wrong club
+$userRelation = new UserClubRelation();
+if($userRelation->isUserLoggedin()){
+	if($userRelation->IsClubMember() == false){
+		$userRelation->KillUserSession();
+	}
+}
+
 // Include jQuery
 define("_JQUERY_", true);
-
 // Include PrettyPhoto
 define("_PRETTYPHOTO_", true);
+
 
 if (!empty($_POST['courttypeid'])) {
     $_SESSION["ladder_courttype"] = $_POST['courttypeid'];

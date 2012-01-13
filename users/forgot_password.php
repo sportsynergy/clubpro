@@ -35,6 +35,16 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
+
+// Log user out if they are in the wrong club
+$userRelation = new UserClubRelation();
+if($userRelation->isUserLoggedin()){
+	if($userRelation->IsClubMember() == false){
+		$userRelation->KillUserSession();
+	}
+}
+
 $DOC_TITLE = "Password Recovery";
 
 /* form has been submitted, check if it the user login information is correct */

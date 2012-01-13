@@ -39,16 +39,16 @@
 
 */
 include ("../application.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 require_login();
 
-/*
-//Load in Date
-$userid = $_REQUEST["userid"];
-
-if (!isset($userid)) {
-    $userid = get_userid();
+// Log user out if they are in the wrong club
+$userRelation = new UserClubRelation();
+if($userRelation->isUserLoggedin()){
+	if($userRelation->IsClubMember() == false){
+		$userRelation->KillUserSession();
+	}
 }
-*/
 
 // Security Issue Resolved, by always enforcing
 // the session ID.

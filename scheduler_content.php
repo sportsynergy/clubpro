@@ -31,6 +31,15 @@
 */
 require ($_SESSION["CFG"]["libdir"] . "/reservationlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/courtlib.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
+
+// Log user out if they are in the wrong club
+$userRelation = new UserClubRelation();
+if($userRelation->isUserLoggedin()){
+	if($userRelation->IsClubMember() == false){
+		$userRelation->KillUserSession();
+	}
+}
 
 //Load necessary libraries and set the wanturl to get back here.
 $_SESSION["wantsurl"] = qualified_mewithq();

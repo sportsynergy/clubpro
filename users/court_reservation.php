@@ -66,15 +66,23 @@ include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/reservationlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/courtlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 
+// Log user out if they are in the wrong club
+$userRelation = new UserClubRelation();
+if($userRelation->isUserLoggedin()){
+	if($userRelation->IsClubMember() == false){
+		$userRelation->KillUserSession();
+	}
+}
+
+// TODO: Fix this.
 // Can't Include jQuery here quite Yet.  Prototype & jQuery are conflicting - NJW 1-11-2012
 // Include jQuery
-
 // define("_JQUERY_",true);
-
 // Include PrettyPhoto
-
 // define("_PRETTYPHOTO_",true);
+
 
 $DOC_TITLE = "Court Reservation";
 

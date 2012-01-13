@@ -38,6 +38,15 @@ include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/reservationlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/courtlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
+
+// Log user out if they are in the wrong club
+$userRelation = new UserClubRelation();
+if($userRelation->isUserLoggedin()){
+	if($userRelation->IsClubMember() == false){
+		$userRelation->KillUserSession();
+	}
+}
 
 //Set the http variables
 $courtid = $_REQUEST["courtid"];

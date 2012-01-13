@@ -40,7 +40,16 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/reservationlib.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 require_login();
+
+// Log user out if they are in the wrong club
+$userRelation = new UserClubRelation();
+if($userRelation->isUserLoggedin()){
+	if($userRelation->IsClubMember() == false){
+		$userRelation->KillUserSession();
+	}
+}
 
 /* form has been submitted, check if it the user login information is correct */
 

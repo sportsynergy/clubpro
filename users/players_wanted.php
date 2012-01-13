@@ -38,7 +38,17 @@
 
 */
 include ("../application.php");
+require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 require_login();
+
+// Log user out if they are in the wrong club
+$userRelation = new UserClubRelation();
+if($userRelation->isUserLoggedin()){
+	if($userRelation->IsClubMember() == false){
+		$userRelation->KillUserSession();
+	}
+}
+
 $DOC_TITLE = "Players Wanted";
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 get_playerswanted();
