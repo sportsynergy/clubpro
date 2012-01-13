@@ -142,6 +142,9 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 						}
 						++$sitecounter;
 					}
+					
+					// If we are 
+					echo '<br />';
 				}
 			}
 		}
