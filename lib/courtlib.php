@@ -663,6 +663,11 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
 		 $trclass =  "reservecourtcl$clubid";
 	}
 	
+	//avoid displaying sql error when tblReservation entry exists but no tblkupReservation entry.
+	if( empty($userid1) || empty($userid2) ){
+		return;
+	}
+	
 	 $fullName1Result = getFullNameResultForUserId($userid1);
 	 $user1Array = mysql_fetch_array($fullName1Result); 
 	 
