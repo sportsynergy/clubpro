@@ -109,7 +109,8 @@ Ask your club pro to get the ball rolling with this.
 			<table cellspacing="0" cellpadding="20" width="300"
 				class="generictable" id="formtable">
 				<tr>
-					<td class=clubid <?=get_clubid()?> th><span class="whiteh1">
+					<td class="clubid<?=get_clubid()?>th">
+						<span class="whiteh1">
 							<div align="center">
 							<? pv($DOC_TITLE) ?>
 							</div>

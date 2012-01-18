@@ -49,7 +49,7 @@ if($userRelation->isUserLoggedin()){
 }
 
 // Include jQuery
-define("_JQUERY_", true);
+//define("_JQUERY_", true);
 // Include PrettyPhoto
 define("_PRETTYPHOTO_", true);
 
