@@ -132,7 +132,7 @@ $datestring = explode("-",$wlobj->enddate);
                	<tr>
               		<td class=clubid<?=get_clubid()?>th colspan="3">
               			<span class="whitenorm">
-              				<div align="center">End Date: <?=$datestring[1].$datestring[2].$datestring[0]?></div>
+              				<div align="center">End Date: <?=$datestring[1]."-".$datestring[2]."-".$datestring[0]?></div>
               	</span>
               	<div style="height: .5em"></div>
               	</td>
@@ -157,7 +157,7 @@ $datestring = explode("-",$wlobj->enddate);
 
 <?
                // Now list the players in the ladder
-               $webladderuserquery = "SELECT tblkpBoxLeagues.boxplace,tblUsers.firstname, tblUsers.lastname, tblkpBoxLeagues.score
+               $webladderuserquery = "SELECT tblkpBoxLeagues.boxplace,tblUsers.firstname, tblUsers.lastname, tblUsers.email, tblkpBoxLeagues.score
                                       FROM tblUsers
                                       INNER JOIN tblkpBoxLeagues ON tblUsers.userid = tblkpBoxLeagues.userid
                                       WHERE (((tblkpBoxLeagues.boxid)=$wlobj->boxid))
@@ -178,7 +178,7 @@ $datestring = explode("-",$wlobj->enddate);
 	                        	<span class="normal"><?=$n?></span>
 	                        </td>
 	                        <td>
-	                        	<span class="normal"><?=$wluserobj->firstname?> <?=$wluserobj->lastname?></span>
+	                        	<span class="normal"><a href="mailto:<?=$wluserobj->email?>"><?=$wluserobj->firstname?> <?=$wluserobj->lastname?></a></span>
 	                        </td>
 	                       
 	                        <td>
