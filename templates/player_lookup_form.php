@@ -1,11 +1,5 @@
-<?php
-/**
- * $LastChangedRevision: 857 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
- */
-?>
-<div align="center">
+
+<div align="left">
   <form name="entryform" method="get" action="<?=$ME?>" autocomplete="off">
     <table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
       <tr class="borderow">
