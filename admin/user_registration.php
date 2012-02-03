@@ -137,11 +137,8 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
     // a club authoriation for the wrong id, match on the password,
 
     $result = db_query($query);
-    $contactidquery = "SELECT userid FROM tblUsers WHERE username = '$username' 
-										AND password = '$password'
-										AND homephone = '$frm[homephone]'";
-    $contactidresult = db_query($contactidquery);
-    $userid = mysql_result($contactidresult, 0);
+
+    $userid = mysql_insert_id();
 
     //Insert the Club User (for the new club)
     $clubUserQuery = "INSERT INTO tblClubUser (

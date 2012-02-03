@@ -1,4 +1,4 @@
-<div align="center">
+<div align="left">
   <form name="entryform" method="get" action="<?=$ME?>" autocomplete="off">
     <table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
       <tr class="borderow">
