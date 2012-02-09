@@ -102,7 +102,7 @@ if ($clubid) {
 
 
 		<span class="normal">
-			<A href="javascript:newWindow('../../help/box_leagues.html')">Box Leagues Explained</a>
+			<a href="javascript:newWindow('../../help/box_leagues.html')">Box Leagues Explained</a>
 		</span>
 
 	
