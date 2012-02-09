@@ -31,14 +31,14 @@ YAHOO.example.init = function () {
 
 
 function onSubmitButtonClicked(){
-	submitForm('entryform');
+	document.addschedulepolicyform.submit();
 }
 
 </script>
 
 <div align="center">
   <div style="text-align:left">
-    <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
+    <form name="addschedulepolicyform" method="post" action="<?=$ME?>" autocomplete="off">
       <div style="padding-bottom: 20px"> <a href="../help/scheduling_policies_explained.html?iframe=true&width=600&height=450" rel="prettyPhoto[iframes]">Help with Scheduling Policies</a> </div>
       <table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
         <tr class="borderow">
