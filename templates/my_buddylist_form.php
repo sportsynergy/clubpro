@@ -48,7 +48,7 @@ if(isset($action) && $action=="remove"){
 	<table width="550" cellpadding="20" cellspacing="0"
 		class="generictable" id="formtable">
 		<tr class="borderow">
-			<td class=clubid <?=get_clubid()?> th><span class="whiteh1">
+			<td class=clubid<?=get_clubid()?>th><span class="whiteh1">
 					<div align="center">
 					<? pv($DOC_TITLE) ?>
 					</div>
