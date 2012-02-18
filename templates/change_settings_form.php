@@ -12,8 +12,10 @@ YAHOO.example.init = function () {
 
 
 function onSubmitButtonClicked(){
-	submitForm('entryform');
+
+	document.entryform.submit();
 }
+
 </script>
 <div align="center">
   <form name="entryform" method="post" action="<?=$ME?>">
@@ -180,8 +182,9 @@ function onSubmitButtonClicked(){
           <td colspan="2" height="20"></td>
         </tr>
         <tr>
-          <td><input type="button" name="submit" value="Update Settings" id="submitbutton"></td>
-          <td></td>
+          <td colspan="2">
+          	<input type="button" name="submit" value="Update Settings" id="submitbutton">
+          </td>
         </tr>
       </table>
         </td>
@@ -189,12 +192,13 @@ function onSubmitButtonClicked(){
         </tr>
       
     </table>
-    <div style="margin-top: 20px"> <span class="normal warning">* </span> <span class="normal">indicates a required field</span> </div>
+    <div align="left" style="margin-left: 90px; margin-top: 20px"> <span class="normal warning">* </span> <span class="normal">indicates a required field</span> </div>
     <input type="hidden" name="userid" value="<?pv($userid) ?>">
     </td>
     <input type="hidden" name="mycourttypes" value="<? pv($mycourtTypes) ?>">
     <input type="hidden" name="mysites" value="<? pv($mysites) ?>">
     <input type="hidden" name="username" value="<? pv($frm["username"]) ?>">
+    <input type="hidden" name="submitme" value="submitme">
   </form>
   <?if($DOC_TITLE == "Player Administration"){ ?>
   <form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_admin.php">

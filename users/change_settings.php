@@ -67,10 +67,10 @@ $extraParametersResult = load_site_parameters();
 // Make sure the form actually has been posted.  
 // An error would occur if you pressed "Account Setttings" link twice
 // Extra parsing of the POST special variable resolves this issue 
-if (match_referer() && isset($_POST['submit']) && $_POST['submit'] == 'Update Settings') {
+if (match_referer() && isset($_POST['submitme']) ) {
     $frm = $_POST;
     $errormsg = validate_form($frm, $errors);
-    
+
     if (isset($userid)) {
         $useridstring = sprintf("?userid=%s",$userid);
     }
