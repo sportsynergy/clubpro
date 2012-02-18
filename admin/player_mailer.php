@@ -82,7 +82,6 @@ function validate_form(&$frm, &$errors) {
 function send_message($subject, $message, $siteid, $category, $sport, $ranking) {
 
     // Strip Slashes
-    
     if (get_magic_quotes_gpc()) {
         $message = stripslashes($message);
         $subject = stripslashes($subject);
@@ -96,7 +95,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
     if ($category == "allplayers") {
 
         //A sport was not specified
-        
+    	
         if ($sport == "all") {
             $emailidquery = "SELECT users.firstname, users.lastname, users.email
                          FROM tblUsers users, tblkupSiteAuth siteauth, tblClubUser clubuser
@@ -380,6 +379,14 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 			                          ORDER BY users.lastname";
             }
         }
+    }
+    elseif($category == "ladderPlayers"){
+    	$emailidquery = "SELECT DISTINCT users.firstname, users.lastname, users.email
+    						FROM tblUsers users, tblClubLadder ladder
+    						WHERE users.userid = ladder.userid
+    						AND	ladder.enddate IS NULL
+    						AND users.enddate IS NULL
+    						AND ladder.clubid=". get_clubid() ;
     }
 
     // run the query on the database
