@@ -154,8 +154,20 @@ function send_email($subject, $to_emails, $from_email, $content, $template) {
         'Reply-to' => $from_email
     );
 
+
     // Send it all
-    $response = PostageApp::mail($to_emails, $subject, $template, $header, $variables);
+    $ret = PostageApp::mail($to_emails, $subject, "commodore", $header, $variables);
+
+	// Checkout the response
+	 if ($ret->response->status == 'ok') {
+	  if (isDebugEnabled(1)) logMessage("applicationlib.send_email: SUCCESS An email was sent and the following response was received ".$ret->response->message);   
+	
+	 } else {
+	      if (isDebugEnabled(1)) logMessage("applicationlib.send_email: ERROR sending your email: ".$ret->response->status );   
+	
+	 }
+
+
 
     //return $response;
     
