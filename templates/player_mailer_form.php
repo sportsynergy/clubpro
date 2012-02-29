@@ -29,6 +29,23 @@ function disableRankingDropDown()
 
 }
 
+function disableSportAndRankingDropDown()
+{
+
+        var listselection = document.getElementById('whoselect');
+
+        if(listselection.value == "ladderPlayers" ){
+             document.entryform.ranking.disabled = true;
+             document.entryform.sport.disabled = true;
+        }
+        else{
+        	document.entryform.ranking.disabled = "";
+        	document.entryform.sport.disabled = "";
+        }
+        
+
+}
+
 YAHOO.example.init = function () {
 
     YAHOO.util.Event.onContentReady("formtable", function () {
@@ -37,6 +54,10 @@ YAHOO.example.init = function () {
         oSubmitButton1.on("click", onSubmitButtonClicked);
 
         YAHOO.util.Event.addListener("sportselect", "change", disableRankingDropDown); 
+
+        YAHOO.util.Event.addListener("whoselect", "change", disableSportAndRankingDropDown); 
+
+        
 
     });
 
@@ -77,12 +98,17 @@ function onSubmitButtonClicked(){
 		<tr>
         <td class="label">To:</td>
         <td colspan="3">
-         <select name="who">>
+         <select name="who" id="whoselect">
             <option value="allplayers">All Players</option>
             <option value="allWomen">All Women</option>
             <option value="allMen">All Men</option>
+           <? if( isSiteBoxLeageEnabled() ){ ?>
             <option value="boxleaguePlayers">Box League Players</option>
+            <? } ?>
             <option value="myBuddies">My Buddies</option>
+            <? if(isLadderRankingScheme() ){?>
+            <option value="ladderPlayers">Ladder Players</option>
+            <? } ?>
           </select>
         
         </td>
