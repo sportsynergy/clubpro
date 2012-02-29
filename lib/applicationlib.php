@@ -156,7 +156,7 @@ function send_email($subject, $to_emails, $from_email, $content, $template) {
 
 
     // Send it all
-    $ret = PostageApp::mail($to_emails, $subject, "commodore", $header, $variables);
+    $ret = PostageApp::mail($to_emails, $subject, $template, $header, $variables);
 
 	// Checkout the response
 	 if ($ret->response->status == 'ok') {
