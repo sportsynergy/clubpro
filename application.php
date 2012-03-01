@@ -72,36 +72,19 @@ if (isset($_SESSION["CFG"]["wwwroot"])) {
 if (!isset($_SESSION["CFG"])) {
 
     
-    if (@file_exists("/Users/Adam/Repository/clubpro/lib/wordlist.txt")) {
-
         $_SESSION["CFG"]["wwwroot"] = "/clubpro";
         $_SESSION["CFG"]["imagedir"] = "/clubpro/images";
-        $_SESSION["CFG"]["dirroot"] = "/Users/Adam/Repository/clubpro";
-        $_SESSION["CFG"]["templatedir"] = "/Users/Adam/Repository/clubpro/templates";
-        $_SESSION["CFG"]["libdir"] = "/Users/Adam/Repository/clubpro/lib";
-        $_SESSION["CFG"]["wordlist"] = "/Users/Adam/Repository/clubpro/lib/wordlist.txt";
-        $_SESSION["CFG"]["includedir"] = "/Users/Adam/Repository/clubpro/includes";
+        $_SESSION["CFG"]["dirroot"] = "/Users/adampreston/Repository/clubpro";
+        $_SESSION["CFG"]["templatedir"] = "/Users/adampreston/Repository/clubpro/templates";
+        $_SESSION["CFG"]["libdir"] = "/Users/adampreston/Repository/clubpro/lib";
+        $_SESSION["CFG"]["wordlist"] = "/Users/adampreston/Repository/clubpro/lib/wordlist.txt";
+        $_SESSION["CFG"]["includedir"] = "/Users/adampreston/Repository/clubpro/includes";
         $_SESSION["CFG"]["dns"] = "localhost";
         $_SESSION["CFG"]["support"] = "support@sportsynergy.net";
         $_SESSION["CFG"]["logFile"] = "/Users/Adam/Logs/SystemOut.log";
         $_SESSION["CFG"]["emailhost"] = "https://api.postageapp.com";
         $_SESSION["CFG"]["emailkey"] = "MVJZPactlHFF5AsMQIL3YFqLEG4Abnil";
-    } else 
-    if (@file_exists("/Users/nicolas/Documents/workspace/clubpro/lib/wordlist.txt")) {
-
-        $_SESSION["CFG"]["wwwroot"] = "/clubpro";
-        $_SESSION["CFG"]["imagedir"] = "/clubpro/images";
-        $_SESSION["CFG"]["dirroot"] = "/Users/nicolas/Documents/workspace/clubpro";
-        $_SESSION["CFG"]["templatedir"] = "/Users/nicolas/Documents/workspace/clubpro/templates";
-        $_SESSION["CFG"]["libdir"] = "/Users/nicolas/Documents/workspace/clubpro/lib";
-        $_SESSION["CFG"]["wordlist"] = "/Users/nicolas/Documents/workspace/clubpro/lib/wordlist.txt";
-        $_SESSION["CFG"]["includedir"] = "/Users/nicolas/Documents/workspace/clubpro/includes";
-        $_SESSION["CFG"]["dns"] = "localhost";
-        $_SESSION["CFG"]["support"] = "support@sportsynergy.net";
-        $_SESSION["CFG"]["logFile"] = "/Users/nicolas/Logs/SystemOut.log";
-        $_SESSION["CFG"]["emailhost"] = "https://api.postageapp.com";
-        $_SESSION["CFG"]["emailkey"] = "MVJZPactlHFF5AsMQIL3YFqLEG4Abnil";
-    }
+   
 }
 
 /* load up standard libraries */
