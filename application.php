@@ -71,6 +71,7 @@ if (isset($_SESSION["CFG"]["wwwroot"])) {
 
 if (!isset($_SESSION["CFG"])) {
 
+
     
         $_SESSION["CFG"]["wwwroot"] = "/clubpro";
         $_SESSION["CFG"]["imagedir"] = "/clubpro/images";
@@ -81,9 +82,8 @@ if (!isset($_SESSION["CFG"])) {
         $_SESSION["CFG"]["includedir"] = "/Users/adampreston/Repository/clubpro/includes";
         $_SESSION["CFG"]["dns"] = "localhost";
         $_SESSION["CFG"]["support"] = "support@sportsynergy.net";
-        $_SESSION["CFG"]["logFile"] = "/Users/Adam/Logs/SystemOut.log";
+        $_SESSION["CFG"]["logFile"] = "/Users/a904528/Logs/SystemOut.log";
         $_SESSION["CFG"]["emailhost"] = "https://api.postageapp.com";
-        $_SESSION["CFG"]["emailkey"] = "MVJZPactlHFF5AsMQIL3YFqLEG4Abnil";
    
 }
 
@@ -98,8 +98,8 @@ $ME = qualified_me();
 $MEWQ = qualified_mewithq();
 $dbhost = "localhost";
 $dbname = "clubpro_demo";
-$dbuser = "root";
-$dbpass = "password";
+$dbuser = "clubpro_main";
+$dbpass = "clubpro_main";
 
 /* connect to the database */
 db_connect($dbhost, $dbname, $dbuser, $dbpass);
