@@ -1040,10 +1040,16 @@ function email_players($resid, $emailType) {
         $emailidresult = db_query($emailidquery);
         $to_emails = array();
         while ($emailidrow = db_fetch_row($emailidresult)) {
-            $to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
-            $to_emails[$to_email] = array(
-                'name' => $emailidrow[0]
-            );
+            
+			if( !empty($emailidrow[0]) && !empty($emailidrow[1]) && !empty($emailidrow[2])){
+				$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+	            $to_emails[$to_email] = array(
+	                'name' => $emailidrow[0]
+	            );
+			} else {
+				if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: ".get_userfullname()." not sending to $emailidrow[0] because of incomplete information");
+			}
+			 
         }
         $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
         $content = new Object;
