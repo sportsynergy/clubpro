@@ -1150,7 +1150,9 @@ function email_players($resid, $emailType) {
         
         if (db_num_rows($extraPlayerResult) == 2 && $extraPlayerArray['userid'] == 0) {
 
-            //Obtain the court and matchtype information
+ 			if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: three players are wanted");
+            
+			//Obtain the court and matchtype information
             $rquery = "SELECT courts.courtname, matchtype.name, reservations.time, courts.courtid
 					FROM tblMatchType matchtype, tblCourts courts, tblReservations reservations 
 					WHERE reservations.reservationid=$resid
@@ -1179,6 +1181,8 @@ function email_players($resid, $emailType) {
         //Check for two players wanted
         elseif (db_num_rows($extraPlayerResult) == 2 && $extraPlayerArray['userid'] != 0) {
 
+			 if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: two players are wanted");
+			
             //Obtain the court and matchtype information
             $rquery = "SELECT courts.courtname, matchtype.name, reservations.time
 					FROM tblMatchType matchtype, tblCourts courts, tblReservations reservations 
@@ -1216,7 +1220,10 @@ function email_players($resid, $emailType) {
 
         //Check for one player wanted
         elseif ($extraPlayerArray['userid'] != null && $extraPlayerArray['userid'] != 0) {
-            $extraPlayerUserId = $extraPlayerArray['userid'];
+           
+			 if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: one player is wanted.");
+			
+ 			$extraPlayerUserId = $extraPlayerArray['userid'];
             $partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
 			                           FROM tblUsers
 			                           WHERE (((tblUsers.userid)=$extraPlayerUserId))";
@@ -1259,7 +1266,10 @@ function email_players($resid, $emailType) {
         */
         
         if ($emailType == "3") {
-            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+           
+			 if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: gathering up the names to email to the whole club");
+			
+ 			$emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 	                       FROM tblUsers users, tblUserRankings rankings, tblClubUser clubuser
 						   WHERE users.userid = rankings.userid
 						   AND users.userid = clubuser.userid
@@ -1271,6 +1281,9 @@ function email_players($resid, $emailType) {
 	                       AND clubuser.enable='y'
 						   AND clubuser.enddate IS NULL";
         } elseif ($emailType == "2") {
+			
+			 if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: gathering up the names to email to ".get_userfullname()."'s buddy list");
+			
             $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 			                        FROM tblUsers users, tblBuddies buddies, tblClubUser clubuser
 			 						WHERE users.userid = buddies.buddyid
@@ -1281,6 +1294,8 @@ function email_players($resid, $emailType) {
 			                        AND buddies.userid=" . get_userid() . "
 			                        AND clubuser.enable='y'
 									AND clubuser.enddate IS NULL";
+									
+									
         } else {
 
             //Get the rankdev of the club
@@ -1303,8 +1318,7 @@ function email_players($resid, $emailType) {
             $highrange = $ranking + $rankdevval;
             $lowrange = $ranking - $rankdevval;
 
-            //Now get all players who receive players wanted notifications at the club and are within
-            //the set skill range
+            //Now get all players who receive players wanted notifications at the club and are within the set skill range
 
             $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
 				                         FROM tblUsers users, tblTeams teams, tblkpTeams teamdetails, tblUserRankings rankings, tblClubUser clubuser
@@ -1328,12 +1342,15 @@ function email_players($resid, $emailType) {
         // run the query on the database
         $emailidresult = db_query($emailidquery);
         $to_emails = array();
-        while ($emailidrow = db_fetch_row($emailidresult)) {
+       
+ 		while ($emailidrow = db_fetch_row($emailidresult)) {
             
-            if (isDebugEnabled(1)) logMessage($message);
-            $to_emails[$emailidrow[2] = array(
-                'name' => $emailidrow[0]
-            ) ];
+            if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: sending email to ".$emailidrow[2]);
+            
+				$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+	            $to_emails[$to_email] = array(
+	                'name' => $emailidrow[0]
+	            );
         }
         $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
         $content = new Object;
