@@ -1289,7 +1289,6 @@ function email_players($resid, $emailType) {
 			 						WHERE users.userid = buddies.buddyid
 									AND users.userid = clubuser.userid
 			                        AND clubuser.clubid=" . get_clubid() . "
-			                        AND users.userid!=" . get_userid() . "
 									AND users.userid NOT IN ($player1, $player2, $extraPlayerUserId)
 			                        AND buddies.userid=" . get_userid() . "
 			                        AND clubuser.enable='y'
