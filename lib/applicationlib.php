@@ -1347,10 +1347,13 @@ function email_players($resid, $emailType) {
             
             if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: sending email to ".$emailidrow[2]);
             
-				$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
-	            $to_emails[$to_email] = array(
-	                'name' => $emailidrow[0]
-	            );
+				if( !empty($emailidrow[0]) && !empty($emailidrow[1]) && !empty($emailidrow[2])){
+					$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+	            	$to_emails[$to_email] = array(
+	                	'name' => $emailidrow[0]
+	            		);
+	
+				}
         }
         $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
         $content = new Object;
@@ -1606,6 +1609,7 @@ function cancel_singles($resid) {
 function confirm_doubles($resid, $isNewReservation) {
     
     if (isDebugEnabled(1)) logMessage("applicationlib.confirm_doubles: confirming reservation $resid isNewReservation $isNewReservation");
+
     $var = new Object;
     $template = get_sitecode();
     $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
@@ -1684,7 +1688,10 @@ function confirm_doubles($resid, $isNewReservation) {
     //Prepare and send emails to single player where there is just one player in the whole reservation
     
     if (mysql_num_rows($extraPlayerResult) == 1 && mysql_num_rows($playerResult) == 0) {
-        $var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
+        
+		if (isDebugEnabled(1)) logMessage("applicationlib.confirm_doubles: send emails to single player where there is only one");
+		
+		$var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_doubles_looking_for_three.php", $var);
         
         if (isDebugEnabled(1)) logMessage($emailbody);
@@ -1706,7 +1713,10 @@ function confirm_doubles($resid, $isNewReservation) {
 
     //Prepare and send emails to single players where there is more than one person looking for a partner
     elseif (mysql_num_rows($extraPlayerResult) == 2) {
-        $var->fullname1 = getFullNameForUserId($extraPlayerobj->userid);
+        
+		if (isDebugEnabled(1)) logMessage("applicationlib.confirm_doubles: send out emails to single players where more than one is looking");
+		
+		$var->fullname1 = getFullNameForUserId($extraPlayerobj->userid);
 
         //Get the next player
         $extraPlayerobj = mysql_fetch_object($extraPlayerResult);
@@ -1742,7 +1752,10 @@ function confirm_doubles($resid, $isNewReservation) {
 
     //Prepare and send emails to single player where there is only one person needing a partner
     elseif (mysql_num_rows($extraPlayerResult) == 1) {
-        $var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
+       
+		if (isDebugEnabled(1)) logMessage("applicationlib.confirm_doubles: send out emails where there is only one person needing a partner");
+		
+ 		$var->partner = $extraPlayerobj->firstname . " " . $extraPlayerobj->lastname;
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_double_for_player_looking.php", $var);
         
         if (isDebugEnabled(1)) logMessage($emailbody);
@@ -1776,28 +1789,30 @@ function confirm_doubles($resid, $isNewReservation) {
         else {
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_doubles.php", $var);
         }
-    }
+    
 
-    //Send out emails to the teams
-    //Reset the result pointer to the begining
+    	//Send out emails to the teams
+    	//Reset the result pointer to the begining
 
     
-    if (mysql_num_rows($playerResult) > 0) mysql_data_seek($playerResult, 0);
-    $to_emails = array();
-    while ($playerObject = mysql_fetch_object($playerResult)) {
+    	if (mysql_num_rows($playerResult) > 0) mysql_data_seek($playerResult, 0);
+    	$to_emails = array();
+    	while ($playerObject = mysql_fetch_object($playerResult)) {
         
-        if (isDebugEnabled(1)) logMessage($emailbody);
-        $to_email = "$playerObject->firstname $playerObject->lastname <$playerObject->email>";
-        $to_emails[$to_email] = array(
-            'name' => $playerObject->firstname
-        );
-    }
-    $content = new Object;
-    $content->line1 = $emailbody;
-    $content->clubname = get_clubname();
+        	if (isDebugEnabled(1)) logMessage($emailbody);
+        	$to_email = "$playerObject->firstname $playerObject->lastname <$playerObject->email>";
+        	$to_emails[$to_email] = array(
+            	'name' => $playerObject->firstname
+        		);
+    	}
+    	$content = new Object;
+    	$content->line1 = $emailbody;
+    	$content->clubname = get_clubname();
 
-    //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    	//Send the email
+    	send_email($subject, $to_emails, $from_email, $content, $template);
+
+	}
 }
 /**
  *
