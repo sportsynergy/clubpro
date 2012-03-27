@@ -2298,10 +2298,16 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $subject = get_clubname() . " - Score Report";
     $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-    //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
-    $description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
-    logSiteActivity(get_siteid() , $description);
+	// A little defense for a problem with bad data
+	if( empty($var->fullname1) ){
+		if (isDebugEnabled(1)) logMessage("applicationlib.report_scores_doubles: there is some bad things happening for reservation $resid");
+	} else {
+		//Send the email
+	    send_email($subject, $to_emails, $from_email, $content, $template);
+	    $description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
+	    logSiteActivity(get_siteid() , $description);
+	}
+   
 }
 /**
  * ??? required parameters:	reservationid 	score
