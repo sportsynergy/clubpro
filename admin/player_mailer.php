@@ -402,10 +402,13 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 
     // Put all of the email addresses in an array
     while ($emailidrow = db_fetch_row($emailidresult)) {
-        $to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
-        $to_emails[$to_email] = array(
-            'name' => $emailidrow[0]
-        );
+      // if( !empty($emailidrow[2]) ){
+				$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+		        $to_emails[$to_email] = array(
+		            'name' => $emailidrow[0]
+		        );
+	//	}
+ 	
     }
     $from_email = $clubadminval;
     $content = new Object;
