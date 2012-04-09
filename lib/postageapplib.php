@@ -71,6 +71,9 @@ class PostageApp {
         ));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+		if (isDebugEnabled(1)) logMessage("postageapplib.PostageApp.post: Content $content");
+		
         $output = curl_exec($ch);
         curl_close($ch);
 
