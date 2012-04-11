@@ -103,6 +103,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 					     AND users.userid = clubuser.userid
 						 AND siteauth.siteid = $siteid
 						 AND clubuser.enddate IS NULL
+						 AND users.email != ""
 						 AND clubuser.clubid=" . get_clubid() . " 
                          AND clubuser.enable ='y'
                          AND clubuser.roleid != 4";

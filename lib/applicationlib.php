@@ -2299,9 +2299,9 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
 	// A little defense for a problem with bad data
-	if( empty($var->fullname1) ){
+	if( empty($var->fullname1 ) ||  empty($var->fullname2 ) || empty($var->fullname3 ) || empty($var->fullname4 )){
 	
-		if (isDebugEnabled(1)) logMessage("applicationlib.report_scores_doubles: there is some bad things happening for reservation $resid");
+		if (isDebugEnabled(2)) logMessage("applicationlib.report_scores_doubles: there is some bad things happening for reservation $resid");
 		return;
 		
 	} 
