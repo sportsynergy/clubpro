@@ -491,9 +491,12 @@ function insert_hours_policy(&$frm) {
 function update_message_clubprefs(&$frm) {
 
     /* add the new user into the database */
-    
+     if (isDebugEnabled(2)) logMessage("policy_preferences.update_message_clubprefs: Updating messaging preferences");
+
     if (!empty($frm['Messagetextarea'])) {
         
+		if (isDebugEnabled(2)) logMessage("policy_preferences.update_message_clubprefs: Updating message text to ". $frm['Messagetextarea']);
+
         if ($frm["messagedisplay"] == "on") {
             $displaymessage = 1;
         } else {
@@ -527,7 +530,10 @@ function update_message_clubprefs(&$frm) {
     // Now add the Club News Message
     
     if (!empty($frm['ClubNewsMessage'])) {
-        $query = "INSERT INTO tblMessages (
+       
+			if (isDebugEnabled(2)) logMessage("policy_preferences.update_message_clubprefs: Updating news text to ". $frm['ClubNewsMessage']);
+			
+ 		$query = "INSERT INTO tblMessages (
                    siteid, message, messagetypeid, enable
                    ) VALUES (
                    '" . get_siteid() . "'
