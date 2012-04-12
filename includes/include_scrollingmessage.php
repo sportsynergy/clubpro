@@ -40,7 +40,7 @@
 
 if (isset($clubid)) {
     $messagequery = "SELECT message, enable
-                        FROM  tblMessages WHERE siteid = " . get_siteid();
+                        FROM  tblMessages WHERE siteid = " . get_siteid() ." ORDER BY id";
     $messageresult = db_query($messagequery);
     $messagearray = db_fetch_array($messageresult);
     

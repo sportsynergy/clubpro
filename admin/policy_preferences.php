@@ -504,8 +504,9 @@ function update_message_clubprefs(&$frm) {
         }
 
         //Check to see if club has a message
-        $qid = db_query("SELECT message, enable FROM tblMessages WHERE siteid = " . get_siteid() . " AND messagetypeid = 1");
+        $qid = db_query("SELECT id, message, enable FROM tblMessages WHERE siteid = " . get_siteid() . " AND messagetypeid = 1 order by id");
         $numrows = mysql_num_rows($qid);
+	    $messagearray = db_fetch_array($qid);
         
         if ($numrows == 0) {
             $query = "INSERT INTO tblMessages (
@@ -515,16 +516,34 @@ function update_message_clubprefs(&$frm) {
                    ,'$frm[Messagetextarea]'
                    ,1
                    ,'$displaymessage')";
+
+				  // run the query on the database
+			      db_query($query);
+			
         } elseif ($numrows == 1) {
             $query = "Update tblMessages SET
                 message = '$frm[Messagetextarea]'
                 ,enable = '$displaymessage'
                 WHERE siteid = '" . get_siteid() . "'
                 AND messagetypeid = 1";
-        }
 
-        // run the query on the database
-        $result = db_query($query);
+ 				db_query($query);
+        }
+		// only update the first one
+		else {
+			
+			 $query = "Update tblMessages SET
+	                message = '$frm[Messagetextarea]'
+	                ,enable = '$displaymessage'
+	                WHERE siteid = '" . get_siteid() . "'
+	                AND messagetypeid = 1
+					AND id = ".$messagearray['id'];
+
+	 				db_query($query);
+			
+		}
+
+      
     }
 
     // Now add the Club News Message
