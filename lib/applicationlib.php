@@ -2308,6 +2308,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 		//Send the email
 	    send_email($subject, $to_emails, $from_email, $content, $template);
 	    $description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
+		if (isDebugEnabled(2)) logMessage("applicationlib.report_scores_doubles: logging activity for $resid: $description");
 	    logSiteActivity(get_siteid() , $description);
 	
    
