@@ -53,7 +53,7 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 function countSiteMembers($siteid) {
     $getMemberCountQuery = "SELECT count(*) FROM tblkupSiteAuth auth, tblUsers users WHERE auth.siteid=$siteid 
 			AND users.userid = auth.userid
-			AND users.enddate IS NOT NULL";
+			AND users.enddate IS NULL";
 			
     $getAllClubSitesResult = db_query($getMemberCountQuery);
     return mysql_result($getAllClubSitesResult, 0);
