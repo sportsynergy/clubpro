@@ -15,11 +15,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- Database: `clubpro_demo`
---
-CREATE DATABASE `clubpro_demo` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `clubpro_demo`;
+
 
 -- --------------------------------------------------------
 
@@ -237,8 +233,9 @@ CREATE TABLE IF NOT EXISTS `tblClubUser` (
 -- Dumping data for table `tblClubUser`
 --
 
-INSERT INTO `tblClubUser` (`id`, `userid`, `clubid`, `msince`, `roleid`, `recemail`, `enable`, `memberid`, `lastlogin`, `lastmodified`, `enddate`) VALUES
-(1, 1, 13, '14-Jan-00', 2, 'y', 'y', '', 1324132296, '2011-12-17 15:31:36', NULL);
+INSERT INTO `tblClubUser` ( `userid`, `clubid`, `msince`, `roleid`, `recemail`, `enable`, `memberid`, `lastlogin`, `lastmodified`, `enddate`) VALUES
+(1, 13, '14-Jan-00', 2, 'y', 'y', '', NULL, '2011-12-17 15:31:36', NULL),
+(2, 0, '14-Jan-00', 3, 'y', 'y', '', NULL, NULL, NULL);
 
 
 -- --------------------------------------------------------
@@ -984,8 +981,9 @@ CREATE TABLE IF NOT EXISTS `tblUsers` (
 -- Dumping data for table `tblUsers`
 --
 
-INSERT INTO `tblUsers` (`userid`, `username`, `firstname`, `lastname`, `email`, `workphone`, `homephone`, `cellphone`, `pager`, `password`, `useraddress`, `gender`, `lastmodified`, `enddate`) VALUES
-(1, 'demoboy', 'Demo', 'Boy', 'adam704a@gmail.com', '333-222-3333', '654-333-2222', '', '', '21686ee8b57c6263fb09a63ce4552058', '123 Fleet St.\r\nLondon, GB  ', 1, '2010-08-24 11:41:32', NULL);
+INSERT INTO `tblUsers` ( `username`, `firstname`, `lastname`, `email`, `workphone`, `homephone`, `cellphone`, `pager`, `password`, `useraddress`, `gender`, `lastmodified`, `enddate`) VALUES
+('demoboy', 'Demo', 'Boy', 'adam704a@gmail.com', '333-222-3333', '654-333-2222', '', '', '21686ee8b57c6263fb09a63ce4552058', '123 Fleet St.\r\nLondon, GB  ', 1, '2010-08-24 11:41:32', NULL),
+('system', 'System', 'Administrator', 'adam704a@gmail.com', '333-222-3333', '654-333-2222', '', '', '21686ee8b57c6263fb09a63ce4552058', '123 Fleet St.\r\nLondon, GB  ', 1, '2010-08-24 11:41:32', NULL);
 
 -- --------------------------------------------------------
 

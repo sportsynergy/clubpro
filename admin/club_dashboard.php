@@ -54,7 +54,7 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
  *  Return the number of members for a club
  */
 function countClubMembers($clubid) {
-    $getMemberCountQuery = "SELECT count(*) from  tblUsers WHERE clubid = $clubid";
+    $getMemberCountQuery = "SELECT count(*) from  tblUsers WHERE clubid = $clubid and enddate IS NULL";
     $getAllClubSitesResult = db_query($getMemberCountQuery);
     return mysql_result($getAllClubSitesResult, 0);
 }
