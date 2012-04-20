@@ -2213,17 +2213,15 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
  */
 function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $rquery = "SELECT DISTINCT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservationdetails.outcome, reservations.matchtype, matchtype.name
-	            FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblkpTeams teamdetails, tblUserRankings rankings, tblMatchType matchtype,tblClubUser clubuser
+	            FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblkpTeams teamdetails, tblMatchType matchtype,tblClubUser clubuser
 				WHERE reservations.reservationid = reservationdetails.reservationid
 	            AND teamdetails.teamid = reservationdetails.userid
 	            AND users.userid = teamdetails.userid
-	            AND rankings.userid = reservationdetails.userid
 	            AND courts.courtid = reservations.courtid
 				AND reservations.matchtype = matchtype.id
 	            AND reservationdetails.reservationid=$resid
 				AND users.userid = clubuser.userid
 	            AND clubuser.clubid=" . get_clubid() . "
-	            AND rankings.usertype=1
 	            ORDER BY reservationdetails.outcome DESC";
     $rresult = db_query($rquery);
     $robj = mysql_fetch_object($rresult);
