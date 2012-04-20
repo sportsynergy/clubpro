@@ -34,11 +34,7 @@
 * - countSiteReservations()
 * Classes list:
 */
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-*/
+
 include ("../application.php");
 require_login();
 $DOC_TITLE = "Club Dashboard";
@@ -50,19 +46,15 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 /******************************************************************************
  * FUNCTIONS
  *****************************************************************************/
-/**
- *  Return the number of members for a club
- */
-function countClubMembers($clubid) {
-    $getMemberCountQuery = "SELECT count(*) from  tblUsers WHERE clubid = $clubid and enddate IS NULL";
-    $getAllClubSitesResult = db_query($getMemberCountQuery);
-    return mysql_result($getAllClubSitesResult, 0);
-}
+
 /**
  * Return the number of members for a site.
  */
 function countSiteMembers($siteid) {
-    $getMemberCountQuery = "SELECT count(auth.userid) FROM tblkupSiteAuth auth WHERE auth.siteid=$siteid";
+    $getMemberCountQuery = "SELECT count(*) FROM tblkupSiteAuth auth, tblUsers users WHERE auth.siteid=$siteid 
+			AND users.userid = auth.userid
+			AND users.enddate IS NOT NULL";
+			
     $getAllClubSitesResult = db_query($getMemberCountQuery);
     return mysql_result($getAllClubSitesResult, 0);
 }
@@ -70,7 +62,7 @@ function countSiteMembers($siteid) {
  *  Loads Clubsites
  */
 function loadClubSites($clubid) {
-    $getAllClubSitesQuery = "SELECT * from  tblClubSites WHERE clubid = $clubid";
+    $getAllClubSitesQuery = "SELECT * from  tblClubSites WHERE clubid = $clubid AND enable = 'y'";
     $getAllClubSitesResult = db_query($getAllClubSitesQuery);
     return $getAllClubSitesResult;
 }
