@@ -34,7 +34,7 @@
   <div class="bd">
     <ul class="first-of-type">
       <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">Member Directory</a></li>
-      <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/">Court Schedule</a></li>
+      <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/">Bookings</a></li>
       <? if(isLadderRankingScheme() ) {?>
       <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#">Club Ladder</a>
         <div id="ladder" class="yuimenu">
