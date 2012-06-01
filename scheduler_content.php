@@ -588,7 +588,12 @@ if ($clubid) {
                                                   	$useridarray = mysql_fetch_array($useridresult); 
                                                   	$userid2 = $useridarray['userid'];
                                                   	
-                                                  	printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, false, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
+                                                  		// a little defense for corrupt data
+														if( empty($userid1) || empty($userid2) ){
+															printEmptyReservation($i, $courtobj->courtid, false);
+														} else{
+                                                   	    printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
+                                               	    }
          
                                                   } 
                                                            
@@ -784,8 +789,12 @@ if ($clubid) {
                                                    	     $useridarray = db_fetch_array($useridresult);  
                                                    	     $userid2 = $useridarray['userid'];
 	
+														// a little defense for corrupt data
+														if( empty($userid1) || empty($userid2) ){
+															printEmptyReservation($i, $courtobj->courtid, true);
+														} else{
                                                    	    printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
-                                                   	    
+                                               	    }
                                                    		
                                                    } 
                                            

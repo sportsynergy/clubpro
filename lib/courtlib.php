@@ -644,7 +644,7 @@ function printGuestReservation($guest1, $guest2, $time, $courtid, $matchtype, $i
  */
 function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype, $inpast, $locked, $scored, $creator, $reservationid){
 	
-	if( isDebugEnabled(1) ) logMessage("courtlib.printSinglesReservation for court $courtid and scored $scored and matchtype $matchtype an inpast $inpast");
+	if( isDebugEnabled(1) ) logMessage("courtlib.printSinglesReservation for court $courtid and scored $scored and matchtype $matchtype an inpast $inpast $reservationid");
 	
 	$clubid = get_clubid();
 	
@@ -663,10 +663,6 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
 		 $trclass =  "reservecourtcl$clubid";
 	}
 	
-	//avoid displaying sql error when tblReservation entry exists but no tblkupReservation entry.
-	if( empty($userid1) || empty($userid2) ){
-		return;
-	}
 	
 	 $fullName1Result = getFullNameResultForUserId($userid1);
 	 $user1Array = mysql_fetch_array($fullName1Result); 
