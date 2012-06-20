@@ -592,7 +592,7 @@ if ($clubid) {
 														if( empty($userid1) || empty($userid2) ){
 															printEmptyReservation($i, $courtobj->courtid, false);
 														} else{
-                                                   	    printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
+                                                   	    printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, false, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
                                                	    }
          
                                                   } 
