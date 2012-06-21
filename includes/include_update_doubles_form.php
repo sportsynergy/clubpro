@@ -352,8 +352,9 @@ function onSubmitButtonClicked(){
 	       }
 	       
 	       ?>
-	       <input type="button" name="submit" value="Submit" <?=$disabled?> id="submitbutton">
-	       <input type="button" id="cancelbutton" value="Go back to where I was" >
+	      
+	        <input type="button" id="cancelbutton" value="Cancel" >
+	 		<input type="button" name="submit" value="Update Reservation" <?=$disabled?> id="submitbutton">
        </td>
       </tr> 
 	</table>

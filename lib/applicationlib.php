@@ -1064,7 +1064,9 @@ function email_players($resid, $emailType) {
 
     //email about a doubles court
     else {
-        $rquery = "SELECT DISTINCTROW
+        
+
+		$rquery = "SELECT 
 							courts.courtname, 
 							courts.courttypeid, 
 							reservations.time, 
@@ -1084,12 +1086,15 @@ function email_players($resid, $emailType) {
 							tblClubUser clubuser
 					  WHERE reservationdetails.reservationid = reservations.reservationid
 					  AND teamdetails.teamid = reservationdetails.userid
+					  AND reservationdetails.usertype = 1
 					  AND users.userid = teamdetails.userid
 					  AND courts.courtid = reservations.courtid
 					  AND matchtype.id = reservations.matchtype
 					  AND reservationdetails.reservationid=$resid
 					  AND users.userid = clubuser.userid
-					  AND clubuser.clubid=" . get_clubid();
+					  AND clubuser.clubid =" . get_clubid();
+					
+					
         $rresult = db_query($rquery);
         $robj = mysql_fetch_object($rresult);
         $extraPlayerQuery = "SELECT reservationdetails.userid
@@ -1158,7 +1163,8 @@ function email_players($resid, $emailType) {
 					WHERE reservations.reservationid=$resid
 					AND reservations.courtid = courts.courtid
 					AND matchtype.id = reservations.matchtype";
-            $rresult = db_query($rquery);
+            
+			$rresult = db_query($rquery);
             $robj = mysql_fetch_object($rresult);
             $var->courtname = $robj->courtname;
             $var->courtid = $robj->courtid;
@@ -1169,7 +1175,8 @@ function email_players($resid, $emailType) {
             $var->userid = $extraPlayerArray['userid'];
             $partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                            FROM tblUsers
-                           WHERE (((tblUsers.userid)=$var->userid))";
+                           WHERE tblUsers.userid=$var->userid";
+
             $partnerResult = db_query($partnerQuery);
             $partnerobj = mysql_fetch_object($partnerResult);
             $var->single1 = $partnerobj->firstname . " " . $partnerobj->lastname;
@@ -1225,9 +1232,9 @@ function email_players($resid, $emailType) {
 			
  			$extraPlayerUserId = $extraPlayerArray['userid'];
             $partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
-			                           FROM tblUsers
-			                           WHERE (((tblUsers.userid)=$extraPlayerUserId))";
-            $partnerResult = db_query($partnerQuery);
+			                      FROM tblUsers WHERE tblUsers.userid=$extraPlayerUserId";
+           
+ 			$partnerResult = db_query($partnerQuery);
             $partnerobj = mysql_fetch_object($partnerResult);
             $var->partner = $partnerobj->firstname . " " . $partnerobj->lastname;
             $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $extraPlayerUserId;

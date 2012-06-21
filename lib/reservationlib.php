@@ -458,7 +458,7 @@ function isDoublesReservationNeedPlayers($time, $courtid) {
     
     if (mysql_num_rows($result) < 2) {
         
-        if (isDebugEnabled(1)) logMessage("court_reservation.isDoublesReservationFull: Yep, there are some openings for doubles");
+        if (isDebugEnabled(1)) logMessage("court_reservation.isDoublesReservationFull: No, there are some openings for doubles");
         return TRUE;
     } else {
         return FALSE;
