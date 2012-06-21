@@ -39,6 +39,7 @@ require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 
+
 // Log user out if they are in the wrong club
 $userRelation = new UserClubRelation();
 if($userRelation->isUserLoggedin()){
@@ -91,8 +92,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
             if (isDebugEnabled(2)) logMessage("team_ladder: adding user $teamid to club ladder for club $clubid for courttypeid $courttypeid in position $position");
             $query = "INSERT INTO tblClubLadder (
 		                userid, courttypeid, ladderposition, clubid
-		                ) VALUES (
-			$teamid
+		                ) VALUES ($teamid
 		                          ,$courttypeid
 		                          ,$position
 		                          ,$clubid)";
@@ -164,7 +164,8 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         confirmChallengeeTeam($challengees, $message);
     } else 
     if ($frm['cmd'] == 'removechallenge') {
-        $challengematchid = $frm['challengematchid'];
+        
+		$challengematchid = $frm['challengematchid'];
         $challengerid = $frm['challengerid'];
         $challengeeid = $frm['challengeeid'];
         

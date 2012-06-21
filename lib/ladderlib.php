@@ -468,7 +468,8 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid) {
     $movingUpArray = mysql_fetch_array($result);
     
     if ($movingUpArray['ladderposition'] == 1) {
-        return;
+        if (isDebugEnabled(2)) logMessage("ladderlib: moveUpOneInClubLadder: already on top. exiting...");
+		return;
     }
 
     //increment and store as variable

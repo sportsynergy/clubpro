@@ -10,20 +10,9 @@ $teams = getTeamsForUser($userid);
 $teamrows = mysql_num_rows($teams);
 $teamINClause = array();
 
-if( isDebugEnabled(1) ){
-	logMessage(sprintf("team_ladder_form-> Number of Teams [%s]", $teamrows));
-}
-
 //build in clause
 for ($i = 0; $i < $teamrows; ++$i) {
 	$team = mysql_fetch_assoc($teams);
-	/*if ($i != 0) {
-		$teamINClause .= ",";
-	}*/
-	if( isDebugEnabled(1) ){
-		logMessage(sprintf("team_ladder_form-> Column Set from Response: %s", print_r($team,true)));
-	}
-	
 	$teamINClause[] = $team['teamid']; // teamid
 }
 
@@ -48,24 +37,22 @@ if(count($teamINClause) > 0 ){
 ?>
 
 
-
-
 <form name="deleteform" method="post" action="<?=$ME?>">
-	<input type="hidden" name="userid" value="<?=get_userid()?>"> <input
-		type="hidden" name="courttypeid" value="<?=$courttypeid?>"> <input
-		type="hidden" name="cmd" value="removefromladder">
+	<input type="hidden" name="userid" value="<?=get_userid()?>"> 
+	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>"> 
+	<input type="hidden" name="cmd" value="removefromladder">
 </form>
 
 <form name="moveform" method="post" action="<?=$ME?>">
-	<input type="hidden" name="userid" value=""> <input type="hidden"
-		name="courttypeid" value="<?=$courttypeid?>"> <input type="hidden"
-		name="cmd" value="moveupinladder">
+	<input type="hidden" name="userid" value=""> 
+	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>"> 
+	<input type="hidden" name="cmd" value="moveupinladder">
 </form>
 
-<form name="moveform" method="post" action="<?=$ME?>">
-	<input type="hidden" name="userid" value=""> <input type="hidden"
-		name="courttypeid" value="<?=$courttypeid?>"> <input type="hidden"
-		name="cmd" value="removechallenge">
+<form name="removechallenge" method="post" action="<?=$ME?>">
+	<input type="hidden" name="userid" value=""> 
+	<input type="hidden" name="courttypeid" value="<?=$courttypeid?>"> 
+	<input type="hidden" name="cmd" value="removechallenge">
 </form>
 
 
@@ -155,10 +142,9 @@ Ask your club pro to get the ball rolling with this.
 								<? if(get_roleid()==2 || get_roleid()==4){?> <a
 									href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img
 										src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png"
-										title="remove these chumpts from the ladder" /> </a> <a
-									href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);"><img
-										src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png"
-										title="bump these guys up one spot"> </a> <?}
+										title="remove these chumpts from the ladder" /> </a> 
+										<a href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);">
+											<img src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png" title="bump these guys up one spot"></a> <?}
 
 										?> <? if($playerarray['locked']=='y') {?> <img
 									src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"
