@@ -426,7 +426,7 @@ Ask your club pro to get the ball rolling with this.
 				
 				if( !$playerlocked && isLadderChallengable( $playerposition, $playerarray['ladderposition'])  ){
 				?>
-			personObj_<?=$playerarray['ladderposition']?>={firstplayer:'<?=rtrim($playerarray['firstplayer'])?>',firstemail:"<?=$playerarray['firstemail']?>",secondplayer:"<?=rtrim($playerarray['secondplayer'])?>",secondemail:"<?=$playerarray['secondemail']?>",userid:<?=$playerarray['userid']?>,myteamid:<?=$myteamid?>};	
+			personObj_<?=$playerarray['ladderposition']?>={firstplayer:'<?=rtrim($playerarray['firstplayer'])?>',firstemail:"<?=$playerarray['firstemail']?>",secondplayer:'<?=rtrim($playerarray['secondplayer'])?>',secondemail:"<?=$playerarray['secondemail']?>",userid:<?=$playerarray['userid']?>,myteamid:<?=$myteamid?>};	
 			YAHOO.util.Event.addListener("challenge-<?=$playerarray['ladderposition']?>", "click", YAHOO.clubladder.container.challengedialog.show, YAHOO.clubladder.container.challengedialog, true);
 			YAHOO.util.Event.addListener("challenge-<?=$playerarray['ladderposition']?>", "click", defaultChallengeDialog,personObj_<?=$playerarray['ladderposition']?>,true);
 			
