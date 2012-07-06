@@ -115,13 +115,23 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
         $password = md5($frm["password"]);
         $username = $frm['username'];
     }
+
+	if (get_magic_quotes_gpc()) {
+        $firstname = stripslashes($frm['firstname']);
+		$lastname = stripslashes($frm['lastname']);
+    } else {
+        $firstname = addslashes($frm['firstname']);
+        $lastname = addslashes($frm['lastname']);
+    }
+
+	
     $query = "INSERT INTO tblUsers (
 	                username, password, firstname, lastname, email, homephone, workphone, cellphone, pager, useraddress, gender
 	                ) VALUES (
 	                          '$username'
 	                          ,'$password'
-	                          ,'$frm[firstname]'
-	                          ,'$frm[lastname]'
+	                          ,'$firstname'
+	                          ,'$lastname'
 	                          ,'$frm[email]'
 	                          ,'$frm[homephone]'
 	                          ,'$frm[workphone]'
