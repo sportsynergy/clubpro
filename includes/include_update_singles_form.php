@@ -55,7 +55,8 @@
 $isPageBeingLoadedForPastReservation = isInPast($time);
 
 //Get the players from the reservation (doubles will be teams, singles will be players)
-$playersQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, users.firstname, users.lastname, reservations.reservationid, reservations.locked
+$playersQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, concat(users.firstname,' ',users.lastname) AS fullname,
+ reservations.locked,reservations.reservationid
                         FROM tblReservations reservations, tblkpUserReservations reservationdetails, tblUsers users
                         WHERE reservations.reservationid = reservationdetails.reservationid
                         AND reservations.time=$time
@@ -63,18 +64,19 @@ $playersQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, 
 						AND reservations.enddate IS NULL
 						AND users.userid = reservationdetails.userid
 						ORDER BY reservationdetails.usertype DESC, reservationdetails.userid DESC";
+						
 $playersResult = db_query($playersQuery);
 $playerRow = mysql_fetch_array($playersResult);
 $locked = $playerRow['locked'];
 $player1Id = $playerRow['userid'];
-$player1FullName = "$playerRow[firstname] $playerRow[lastname]";
+$player1FullName = "$playerRow[fullname]";
 $reservationid = $playerRow['reservationid'];
 $playerRow = mysql_fetch_array($playersResult);
 $player2Id = $playerRow['userid'];
 $player2FullName = "";
 
 if (!empty($player2Id)) {
-    $player2FullName = "$playerRow[firstname] $playerRow[lastname]";
+    $player2FullName = "$playerRow[fullname]";
 }
 $emailArray = getEmailAddressesForReservation($reservationid);
 $emailString = implode(",", $emailArray);
@@ -115,6 +117,11 @@ YAHOO.example.init = function () {
 
         var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
         oCancelButton.on("click", onCancelButtonClicked);
+
+		//Default names
+		document.entryform.name1.value = "<?= addslashes($player1FullName) ?>";
+		document.entryform.name2.value = "<?= addslashes($player2FullName) ?>";
+		
     });
 
 } ();
@@ -143,7 +150,9 @@ function enable()
 {
      document.entryform.name1.disabled = "";
      document.entryform.name2.disabled = "";
-     document.entryform.lock.disabled = "";
+    <? if( get_roleid()==2 || get_roleid() ==4){ ?>
+ 	document.entryform.lock.disabled = "";
+	<?}?>
 }
 
 	
@@ -151,7 +160,7 @@ function enable()
 </script>
 
 <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" onSubmit="SubDisable(this);" autocomplete="off">
-  <table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
+  <table cellspacing="0" cellpadding="20" width="410" class="generictable" id="formtable">
     <tr class="borderow">
       <td class=clubid<?=get_clubid()?>th><span class="whiteh1">
         <div align="center">
@@ -171,8 +180,8 @@ function enable()
               &nbsp;Update the reservation </td>
           </tr>
           <tr>
-            <td><input id="name1" name="name1" type="text" size="30" class="form-autocomplete" value="<?=$player1FullName?>" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?>  />
-              <input id="id1" name="player1" type="hidden" size="30" value="<?=$player1Id?>"/>
+            <td><input id="name1" name="name1" type="text" size="35" class="form-autocomplete" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?>  />
+              <input id="id1" name="player1" type="hidden" value="<?=$player1Id?>"/>
               <script>
                 <?
                  $wwwroot = $_SESSION["CFG"]["wwwroot"];
@@ -188,8 +197,8 @@ function enable()
                  ?>
 
                 </script></td>
-            <td><input id="name2" name="name2" type="text" size="30" class="form-autocomplete" value="<?=$player2FullName?>" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?> />
-              <input id="id2" name="player2" type="hidden" size="30" value="<?=$player2Id?>"/>
+            <td><input id="name2" name="name2" type="text" size="35" class="form-autocomplete" value="<?=$player2FullName?>" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?> />
+              <input id="id2" name="player2" type="hidden"  value="<?=$player2Id?>"/>
               <script>
 	                <?
 	                 

@@ -35,7 +35,7 @@
   <table cellspacing="10" cellpadding="0" width="440" class="tabtable" id="singles-formtable">
     <tr>
       <td class="label">Player&nbsp;One:</td>
-      <td><input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
+      <td><input id="name1" name="playeronename" type="text" size="35" class="form-autocomplete" />
         <input id="id1" name="playeroneid" type="hidden" />
         <script>
                 <?
@@ -56,7 +56,7 @@
     </tr>
     <tr>
       <td class=label>Player&nbsp;Two:</td>
-      <td><input id="name2" name="playertwoname" type="text" size="30" class="form-autocomplete" />
+      <td><input id="name2" name="playertwoname" type="text" size="35" class="form-autocomplete" />
         <input id="id2" name="playertwoid" type="hidden"/>
         <script>
                 <?php
@@ -170,7 +170,7 @@ function disablePlayerDropDownWithSoloSelection(matchtype)
 
 function defaultform() {
 
-	document.singlesform.playeronename.value = "<?= get_userfullname() ?>";
+	document.singlesform.playeronename.value = "<?= addslashes(get_userfullname()) ?>";
 	document.singlesform.playeroneid.value = <?= get_userid() ?>;
 	document.singlesform.playertwoname.focus();
 	
