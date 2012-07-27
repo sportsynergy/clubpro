@@ -316,7 +316,7 @@ function onCancelReservationButtonClicked(){
                
 			    <tr>
 			    	<td>
-			    		<input type="checkbox" name="lock"  <?=$selected?> <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
+			    		<input type="checkbox" name="lock"  <?=$selected?> <? if($isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
 			    		<span class="normal">Lock reservation</span>
 			    	
 			    	</td>
