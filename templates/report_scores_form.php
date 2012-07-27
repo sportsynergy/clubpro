@@ -132,7 +132,7 @@ function onSubmitButtonClicked(){
        </tr>
       
        <tr>
-       		<td class="italitcsm" >
+       		<td  >
        		<br><br>If these are not the player's that played click <a href="court_cancelation.php?time=<?=$restypearray[2]?>&courtid=<?=$restypearray[3]?>">here</a>.</td>
        </tr>
       

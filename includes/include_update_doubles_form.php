@@ -54,6 +54,7 @@
 
 $isPageBeingLoadedForPastReservation = isInPast($time);
 
+
 //Get the players from the reservation (doubles will be teams, singles will be players)
 $teamQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, reservations.reservationid, reservations.locked
                         FROM tblReservations reservations, tblkpUserReservations reservationdetails
@@ -71,13 +72,19 @@ if ($teamRow['usertype'] == 1) {
     $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
     $player1Id = $teamPlayerRow['userid'];
     $player1FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
+	$player1FullName =  htmlspecialchars($player1FullName);
+
     $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
     $player2Id = $teamPlayerRow['userid'];
     $player2FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
+	$player2FullName =  htmlspecialchars($player2FullName);
+	
     $reservationid = $teamRow['reservationid'];
 } else {
     $player1Id = $teamRow['userid'];
     $player1FullName = getFullNameForUserId($teamRow['userid']);
+	$player1FullName =  htmlspecialchars($player1FullName);
+	
     $player2Id = "";
     $player2FullName = "";
     $reservationid = $teamRow['reservationid'];
@@ -89,12 +96,16 @@ if ($teamRow['usertype'] == 1) {
     $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
     $player3Id = $teamPlayerRow['userid'];
     $player3FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
+	$player3FullName =  htmlspecialchars($player3FullName);
+
     $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
     $player4Id = $teamPlayerRow['userid'];
     $player4FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
+	$player4FullName = htmlspecialchars($player4FullName);
 } else {
     $player3Id = $teamRow['userid'];
     $player3FullName = getFullNameForUserId($teamRow['userid']);
+	$player3FullName =  htmlspecialchars($player3FullName);
     $player4Id = "";
     $player4FullName = "";
 }
@@ -114,10 +125,6 @@ function SubDisable(dform) {
 return true;
 }
 
-function tellme(){
-
-	alert("tell me");
-}
 function enabledoubles()
 {
      document.entryform.name1.disabled = "";
@@ -141,8 +148,6 @@ function unsetPlayer(id)
     id.value = "";
 }
 
-
-
 document.onkeypress = function (aEvent)
 {
 
@@ -162,14 +167,22 @@ YAHOO.example.init = function () {
         var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
         oSubmitButton1.on("click", onSubmitButtonClicked);
 
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
-        oCancelButton.on("click", onCancelButtonClicked);
+		var oCancelReservationButton = new YAHOO.widget.Button("cancelReservationbutton", { value: "cancelreservationbuttonvalue" });   
+        oCancelReservationButton.on("click", onCancelReservationButtonClicked);
     });
 
 } ();
 
 
 function onSubmitButtonClicked(){
+
+	document.entryform.cancelall.value=8;
+	submitForm('entryform');
+}
+
+function onCancelReservationButtonClicked(){
+
+	document.entryform.cancelall.value=3;
 	submitForm('entryform');
 }
 
@@ -182,8 +195,8 @@ function onSubmitButtonClicked(){
 
 <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" onSubmit="SubDisable(this);" autocomplete="off">
 	
-	
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
+
+<table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
   <tr class="borderow">
     <td class=clubid<?=get_clubid()?>th>
     
@@ -200,23 +213,13 @@ function onSubmitButtonClicked(){
 
  <tr>
     <td>
-
-    
 		<table>
-		  <tr>
-                 <td colspan="2" class="normal">
-
-                <input type="radio" name="cancelall" value="3" onclick="disabledoubles(this.checked)" <? if($isPageBeingLoadedForPastReservation){?>disabled <? }else{ ?> checked <? }?>> &nbsp;Cancel the whole reservation <br>
-                <input type="radio" name="cancelall" value="8" onclick="javascript:enabledoubles()" <? if($isPageBeingLoadedForPastReservation){?>checked <? } ?>> &nbsp;Update the reservation
-
-                </td>
-                </tr>
 
               
                  <tr>
                  <td>
                  
-                    <input id="name1" name="name1" type="text" size="30" class="form-autocomplete" value="<?=$player1FullName?>" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?> />
+                    <input id="name1" name="name1" type="text" size="35" class="form-autocomplete" value="<?=$player1FullName?>"  />
 	             	<input id="id1" name="player1" type="hidden" value="<?=$player1Id?>"/>
 		    		<script>
 		                <?
@@ -236,7 +239,7 @@ function onSubmitButtonClicked(){
                 </td>
                  <td>
                  
-                <input id="name2" name="name2" type="text" size="30" class="form-autocomplete" value="<?=$player2FullName?>" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?> />
+                <input id="name2" name="name2" type="text" size="35" class="form-autocomplete" value="<?=$player2FullName?>" />
 	            <input id="id2" name="player2" type="hidden" value="<?=$player2Id?>"/>
 		    		<script>
 		                <?
@@ -260,7 +263,7 @@ function onSubmitButtonClicked(){
                 <tr>
                  <td>
                 
-                <input id="name3" name="name3" type="text" size="30" class="form-autocomplete" value="<?=$player3FullName?>" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?> />
+                <input id="name3" name="name3" type="text" size="35" class="form-autocomplete" value="<?=$player3FullName?>"  />
 	            <input id="id3" name="player3" type="hidden" value="<?=$player3Id?>"/>
 		    		<script>
 		                <?
@@ -281,7 +284,7 @@ function onSubmitButtonClicked(){
                 </td>
                  <td>
                  
-                <input id="name4" name="name4" type="text" size="30" class="form-autocomplete" value="<?=$player4FullName?>" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?> />
+                <input id="name4" name="name4" type="text" size="35" class="form-autocomplete" value="<?=$player4FullName?>"  />
 	            <input id="id4" name="player4" type="hidden" value="<?=$player4Id?>" />
 		    		<script>
 		                <?
@@ -346,18 +349,22 @@ function onSubmitButtonClicked(){
 	       <?
 	       //if its locked and its just a player disable the submit button
 	       $disabled="";
-	       if( $locked=='y' && get_roleid()==1){
+	       if( $isPageBeingLoadedForPastReservation || ($locked=='y' && get_roleid()==1) ){
 	       	
 	       	$disabled = "disabled=disabled";
 	       }
 	       
 	       ?>
 	      
-	        <input type="button" id="cancelbutton" value="Cancel" >
-	 		<input type="button" name="submit" value="Update Reservation" <?=$disabled?> id="submitbutton">
+	        
+	 		<input type="button" value="Update Reservation" id="submitbutton">
+			<input type="button" value="Cancel Reservation" <?=$disabled?> id="cancelReservationbutton">
+			<a href="javascript:onCancelButtonClicked()">go back</a>
        </td>
       </tr> 
 	</table>
+	
+	<input type="hidden" name="cancelall" value="">
 	
 	<input type="hidden" name="reservationid" value="<?=$reservationid?>">
 	<input type="hidden" name="courtid" value="<?=$courtid?>">

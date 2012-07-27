@@ -70,6 +70,8 @@ $playerRow = mysql_fetch_array($playersResult);
 $locked = $playerRow['locked'];
 $player1Id = $playerRow['userid'];
 $player1FullName = "$playerRow[fullname]";
+$player1FullName =  htmlspecialchars($player1FullName);
+
 $reservationid = $playerRow['reservationid'];
 $playerRow = mysql_fetch_array($playersResult);
 $player2Id = $playerRow['userid'];
@@ -77,6 +79,7 @@ $player2FullName = "";
 
 if (!empty($player2Id)) {
     $player2FullName = "$playerRow[fullname]";
+	$player2FullName =  htmlspecialchars($player2FullName);
 }
 $emailArray = getEmailAddressesForReservation($reservationid);
 $emailString = implode(",", $emailArray);
@@ -115,8 +118,8 @@ YAHOO.example.init = function () {
         var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
         oSubmitButton1.on("click", onSubmitButtonClicked);
 
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
-        oCancelButton.on("click", onCancelButtonClicked);
+		var oCancelReservationButton = new YAHOO.widget.Button("cancelReservationbutton", { value: "cancelreservationbuttonvalue" });   
+        oCancelReservationButton.on("click", onCancelReservationButtonClicked);
 
 		//Default names
 		document.entryform.name1.value = "<?= addslashes($player1FullName) ?>";
@@ -128,6 +131,14 @@ YAHOO.example.init = function () {
 
 
 function onSubmitButtonClicked(){
+
+	document.entryform.cancelall.value=4;
+	submitForm('entryform');
+}
+
+function onCancelReservationButtonClicked(){
+
+	document.entryform.cancelall.value=3;
 	submitForm('entryform');
 }
 
@@ -173,14 +184,9 @@ function enable()
     </tr>
     <tr>
       <td><table>
+          
           <tr>
-            <td colspan="2" class="normal"><input type="radio" name="cancelall" value="3" onclick="disable(this.checked);" <? if($isPageBeingLoadedForPastReservation){?>disabled <? }else{ ?> checked <? }?>>
-              &nbsp;Cancel the whole reservation <br>
-              <input type="radio" name="cancelall" value="4" onclick="enable();" <? if($isPageBeingLoadedForPastReservation){?>checked <? } ?>>
-              &nbsp;Update the reservation </td>
-          </tr>
-          <tr>
-            <td><input id="name1" name="name1" type="text" size="35" class="form-autocomplete" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?>  />
+            <td><input id="name1" name="name1" type="text" size="35" class="form-autocomplete"   />
               <input id="id1" name="player1" type="hidden" value="<?=$player1Id?>"/>
               <script>
                 <?
@@ -197,7 +203,7 @@ function enable()
                  ?>
 
                 </script></td>
-            <td><input id="name2" name="name2" type="text" size="35" class="form-autocomplete" value="<?=$player2FullName?>" <? if(!$isPageBeingLoadedForPastReservation){?>disabled <? } ?> />
+            <td><input id="name2" name="name2" type="text" size="35" class="form-autocomplete" value="<?=$player2FullName?>"  />
               <input id="id2" name="player2" type="hidden"  value="<?=$player2Id?>"/>
               <script>
 	                <?
@@ -249,17 +255,21 @@ function enable()
         <?
 	       //if its locked and its just a player disable the submit button
 	       $disabled="";
-	       if( $locked=='y' && get_roleid()==1){
+	       if( $isPageBeingLoadedForPastReservation || ($locked=='y' && get_roleid()==1)){
 	       	
 	       	$disabled = "disabled=disabled";
 	       }
 	       
 	       ?>
-        <input type="button" name="submit" value="Submit"  <?=$disabled?> id="submitbutton">
-        <input type="button" value="Cancel" id="cancelbutton"></td>
+        <input type="button" name="submit" value="Update Reservation"  <?=$disabled?> id="submitbutton">
+			<input type="button" value="Cancel Reservation" <?=$disabled?> id="cancelReservationbutton">
+			<a href="javascript:onCancelButtonClicked()">go back</a>
+		</td>
     </tr>
   </table>
-  <input type="hidden" name="reservationid" value="<?=$reservationid?>">
+ 
+ <input type="hidden" name="cancelall" value="">
+ <input type="hidden" name="reservationid" value="<?=$reservationid?>">
   <input type="hidden" name="courtid" value="<?=$courtid?>">
   <input type="hidden" name="time" value="<?=$time?>">
   <input type="hidden" name="matchtype" value="<?=$matchtype?>">
