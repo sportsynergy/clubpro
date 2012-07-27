@@ -18,7 +18,7 @@ function onSubmitButtonClicked(){
 }
 </script>
 
-<div align="center">
+<div>
   <form name="entryform" method="post" action="<?=$ME?>">
     <table width="400" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
       <tr class="borderow">

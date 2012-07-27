@@ -1,17 +1,8 @@
-<?php
-  /*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
-?>
 <script language="JavaScript">
 
 function removeHoursPolicy(policyid)
 {
-
-
 
       document.entryform.policyid.value = policyid;
       document.entryform.submit();

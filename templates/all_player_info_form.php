@@ -1,13 +1,4 @@
-<?
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
-
-
-?>
 <div id="recordscores" class="yui-navset">
     <ul class="yui-nav">
         <li class="selected"><a href="#tab1"><em>Profile</em></a></li>
