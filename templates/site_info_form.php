@@ -47,7 +47,7 @@
 				<td><?=$sitedetail['daysahead']?></td>
 			</tr>	
 			<tr>
-				<td class="label" valign="top">Courts:</td>
+				<td class="label" valign="top">Courts: <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_court.php">add</a></td>
 				<td>
 				<?
 				while($court = mysql_fetch_array($sitecourts)){ ?>

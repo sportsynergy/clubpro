@@ -30,17 +30,12 @@
 * Function list:
 * Classes list:
 */
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-*/
-?>
-<?php
+
+
 
 if (isset($clubid)) {
     $messagequery = "SELECT message, enable
-                        FROM  tblMessages WHERE siteid = " . get_siteid() ." ORDER BY id";
+                        FROM  tblMessages WHERE siteid = " . get_siteid() ." AND messagetypeid = 1 ORDER BY id ";
     $messageresult = db_query($messagequery);
     $messagearray = db_fetch_array($messageresult);
     

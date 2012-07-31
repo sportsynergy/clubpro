@@ -29,7 +29,9 @@
 include ("../application.php");
 require_login();
 
+$_SESSION["selected_site"] = $_REQUEST["siteid"];
 $siteid = $_REQUEST["siteid"];
+
 $sitedetail = getSiteDetail($siteid);
 $sitecourts = getSiteCourts($siteid);
 
