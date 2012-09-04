@@ -99,6 +99,7 @@ function SubDisable(dform) {
 if (document.getElementById) {
 	for (var sch = 0; sch < dform.length; sch++) {
  		if (dform.elements[sch].type.toLowerCase() == "submit") dform.elements[sch].disabled = true;
+		if (dform.elements[sch].type.toLowerCase() == "button") dform.elements[sch].disabled = true;
 	}
 }
 	return true;

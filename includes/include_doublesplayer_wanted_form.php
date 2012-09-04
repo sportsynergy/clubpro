@@ -36,17 +36,6 @@ $DOC_TITLE = "Doubles Court Reservation";
 <script language="Javascript">
 
 
-// please keep these lines on when you copy the source
-// made by: Nicolas - http://www.javascript-page.com
-
-function SubDisable(dform) {
-  if (document.getElementById) {
-   for (var sch = 0; sch < dform.length; sch++) {
-    if (dform.elements[sch].type.toLowerCase() == "submit") dform.elements[sch].disabled = true;
-   }
-  }
-return true;
-}
 
 YAHOO.example.init = function () {
 
@@ -63,6 +52,8 @@ YAHOO.example.init = function () {
 
 
 function onSubmitButtonClicked(){
+	var myButton = YAHOO.widget.Button.getButton('submitbutton'); 		
+	myButton.set('disabled', true);
 	submitForm('entryform');
 }
 

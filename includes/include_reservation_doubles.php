@@ -204,6 +204,8 @@ YAHOO.example.init = function () {
 
 
 function onDoublesSubmitButtonClicked(){
+	var myButton = YAHOO.widget.Button.getButton('doubles-submitbutton'); 		
+	myButton.set('disabled', true);
 	submitForm('doublesform');
 }
 

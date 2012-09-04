@@ -99,17 +99,6 @@ document.onkeypress = function (aEvent)
 }
 
 
-// please keep these lines on when you copy the source
-// made by: Nicolas - http://www.javascript-page.com
-
-function SubDisable(dform) {
-  if (document.getElementById) {
-   for (var sch = 0; sch < dform.length; sch++) {
-    if (dform.elements[sch].type.toLowerCase() == "submit") dform.elements[sch].disabled = true;
-   }
-  }
-return true;
-}
 
 YAHOO.example.init = function () {
 
@@ -131,7 +120,9 @@ YAHOO.example.init = function () {
 
 
 function onSubmitButtonClicked(){
-
+	var myButton = YAHOO.widget.Button.getButton('submitbutton'); 		
+	myButton.set('disabled', true);
+	
 	document.entryform.cancelall.value=4;
 	submitForm('entryform');
 }
@@ -170,7 +161,7 @@ function enable()
 
 </script>
 
-<form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" onSubmit="SubDisable(this);" autocomplete="off">
+<form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" autocomplete="off">
   <table cellspacing="0" cellpadding="20" width="410" class="generictable" id="formtable">
     <tr class="borderow">
       <td class=clubid<?=get_clubid()?>th><span class="whiteh1">

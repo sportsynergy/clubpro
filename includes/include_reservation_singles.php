@@ -108,7 +108,7 @@ pat_autocomplete(array(
     <?}?>
     <tr>
       <td></td>
-      <td><input type="button" name="submit" value="Make Reservation" id="singles-submitbutton">
+      <td><input type="button" name="submit" value="Make Reservation" id="singles-submitbutton"  >
         <input type="button" value="Cancel" id="singles-cancelbutton" ></td>
       <td></td>
       <td></td>
@@ -127,15 +127,20 @@ pat_autocomplete(array(
 
 	        var sinSubmitButton1 = new YAHOO.widget.Button("singles-submitbutton", { value: "submitbuttonvalue" });
 	        sinSubmitButton1.on("click", onSinglesSubmitButtonClicked);
-
+			
+				
 	        var sinCancelButton = new YAHOO.widget.Button("singles-cancelbutton", { value: "cancelbuttonvalue" });   
 	        sinCancelButton.on("click", onSinglesCancelButtonClicked);
+	
 	    });
 
 	} ();
 
 
 	function onSinglesSubmitButtonClicked(){
+
+		var myButton = YAHOO.widget.Button.getButton('singles-submitbutton'); 		
+		myButton.set('disabled', true); 
 		submitForm('singlesform');
 	}
 
