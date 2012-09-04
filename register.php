@@ -132,7 +132,7 @@ function validate_form(&$frm, &$errors) {
 function isClubCodeRightLength($clubcode) {
     $length = strlen($clubcode);
     
-    if ($length > 5 && $length < 11) {
+    if ($length > 5 && $length < 20) {
         return true;
     } else {
         

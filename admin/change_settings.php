@@ -36,12 +36,10 @@ require_login();
 require_priv("2");
 
 //Set the http variables
-$userid = $_GET["userid"];
-$searchname = $_GET["searchname"];
+$userid = $_REQUEST["userid"];
+$searchname = $_REQUEST["searchname"];
 
-if (!isset($userid)) {
-    $userid = get_userid();
-}
+
 $DOC_TITLE = "Player Administration";
 
 // Load up data for view
