@@ -24,80 +24,92 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * $Id:$
  */
-/**
-* Class and Function List:
-* Function list:
-* - send_email()
-* - formatDate()
-* - verify_login()
-* - load_user()
-* - getAllUsersWithIdResult()
-* - amiValidForSite()
-* - isValidForCourtType()
-* - amIaBuddyOf()
-* - isABuddyOfMine()
-* - markMatchType()
-* - is_inabox()
-* - getMatchType()
-* - get_partnerbytid()
-* - isUserInClubLadder()
-* - isUnscoredBoxLeagueReservation()
-* - getBoxIdTheseTwoGuysAreInTogether()
-* - are_boxplayers()
-* - is_logged_in()
-* - require_login()
-* - require_loginwq()
-* - get_clubid()
-* - get_siteid()
-* - isSiteAutoLogin()
-* - isDisplayRecentActivity()
-* - get_displaytime()
-* - isSoloReservationEnabled()
-* - isLadderRankingScheme()
-* - getChallengeRange()
-* - isPointRankingScheme()
-* - isSelfScoreEnabled()
-* - isSiteEnabled()
-* - getRankingAdjustment()
-* - isSiteGuestReservationEnabled()
-* - get_daysahead()
-* - get_facebookurl()
-* - isLiteVersion()
-* - isAllowAllSiteAdvertising()
-* - isNearRankingAdvertising()
-* - isDisplaySiteNavigation()
-* - get_roleid()
-* - get_userid()
-* - get_email()
-* - get_userfullname()
-* - get_userfirstname()
-* - get_clubname()
-* - get_tzdelta()
-* - require_priv()
-* - has_priv()
-* - atleastof_priv()
-* - err()
-* - err2()
-* - username_exists()
-* - username_already_exists()
-* - email_exists()
-* - makeTeamForCurrentUser()
-* - makeTeamForPlayers()
-* - findSelfTeam()
-* - email_players()
-* - email_boxmembers()
-* - confirm_singles()
-* - cancel_singles()
-* - confirm_doubles()
-* - cancel_doubles()
-* - report_scores_singles_simple()
-* - report_scores_singles()
-* - report_scores_singlesbox()
-* - report_scores_doubles_simple()
-* - report_scores_doubles()
-* - record_score()
-* Classes list:
+
+/*
+	Use send grid to send out emails from the admin
 */
+function sendgrid_clubmail($subject, $to_emails, $content, $category ){
+	
+	if (isDebugEnabled(1)) {
+    	logMessage("applicationlib.sendgrid_clubemail: sending email with subject $subject with a size " . count($to_emails) );
+    }
+	
+	// To make backwards compatible with postageapp create
+	$toList = array();
+	$nameList = array();
+	foreach ($to_emails as $k=>$v){
+		$toList[] = $k;
+		$nameList[] = $v['name'];
+	}
+	
+	
+	$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
+
+	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/blank.email.html");
+	
+	$template = str_replace("%sitecode%", get_sitecode(), $file_contents);
+	$template = str_replace("%content%", $content->line1, $template);
+	
+	$mail = new SendGrid\Mail();
+	$mail->
+	  setFrom(get_email())->
+	  setFromName(get_userfullname())->
+	  setSubject($subject)->
+	  setText($content->line1)->
+	  addCategory("Club Email")->
+	  addCategory($content->clubname)->
+	  setTos($toList)->
+	setHtml($template);
+
+	$sendgrid->smtp->send($mail);
+	
+}
+
+/*
+
+	Uses sendgrid to send out system generated emails.  Check out Sendgrid.com
+	
+*/
+function sendgrid_email($subject, $to_emails, $content, $category){
+	
+	if (isDebugEnabled(1)) {
+    	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) . " from $from_email");
+    }
+
+
+	// To make backwards compatible with postageapp create
+	$toList = array();
+	$nameList = array();
+	foreach ($to_emails as $k=>$v){
+		$toList[] = $k;
+		$nameList[] = $v['name'];
+	}
+
+	$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
+
+	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/standard.email.html");
+
+	$template = str_replace("%clubname%", $content->clubname, $file_contents);
+	$template = str_replace("%sitecode%", get_sitecode(), $template);
+	$template = str_replace("%content%", $content->line1, $template);
+
+	$mail = new SendGrid\Mail();
+	$mail->
+	  setFrom('player.mailer@sportsynergy.net')->
+	  setFromName('Sportsynergy')->
+	  setSubject($subject)->
+	  setText($content->line1)->
+	  addCategory($category)->
+	  addCategory($content->clubname)->
+	  setTos($toList)->
+	setHtml($template)->
+	addSubstitution("%firstname%", $nameList);
+
+	$sendgrid->smtp->send($mail);
+	
+	
+}
+
 /**
  * Calls the PostageApp
  *
@@ -112,36 +124,6 @@ function send_email($subject, $to_emails, $from_email, $content, $template) {
     	logMessage("applicationlib.send_email: sending email with subject $subject with a size " . count($to_emails) . " from $from_email");
     }
 
-    // Who's going to receive this email.
-    // The $to field can have the following formats:
-
-    //
-
-    // String:
-
-    //   $to = 'myemail@somewhere.com';
-
-    //
-
-    // Array:
-
-    //   $to = array('myemail@somewhere.com', 'youremail@somewhere.com', ...)
-
-    //
-
-    // Array with variables:
-
-    //   $to = array(
-
-    //     'myemail@somewhere.com'   => array('name' => 'John Smith', ...),
-
-    //     'youremail@somewhere.com' => array('name' => 'Ann Johnson', ...),
-
-    //     ...
-
-    //   )
-
-    // $to = array($to_email => array('name' => $to_name));
 
     $variables = array(
         'line1' => $content->line1,
@@ -1051,7 +1033,7 @@ function email_players($resid, $emailType) {
 			}
 			 
         }
-        $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
         $content = new Object;
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
@@ -1059,7 +1041,7 @@ function email_players($resid, $emailType) {
         $subject = get_clubname() . " - Player's Market Place";
 
         //Send the email
-        send_email($subject, $to_emails, $from_email, $content, $template);
+        sendgrid_email($subject, $to_emails, $content, "Players Wanted");
     }
 
     //email about a doubles court
@@ -1196,6 +1178,7 @@ function email_players($resid, $emailType) {
 					WHERE reservations.reservationid=$resid
 					AND reservations.courtid = courts.courtid
 					AND matchtype.id = reservations.matchtype";
+					
             $rresult = db_query($rquery);
             $robj = mysql_fetch_object($rresult);
             $var->courtname = $robj->courtname;
@@ -1361,7 +1344,8 @@ function email_players($resid, $emailType) {
 	
 				}
         }
-        $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
+
         $content = new Object;
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
@@ -1369,7 +1353,7 @@ function email_players($resid, $emailType) {
         $subject = get_clubname() . " - Player's Market Place";
 
         //Send the email
-        send_email($subject, $to_emails, $from_email, $content, $template);
+        sendgrid_email($subject, $to_emails, $content, "Players Wanted");
     }
 }
 /**
@@ -1440,10 +1424,10 @@ function email_boxmembers($resid, $boxid) {
     $content->clubname = get_clubname();
     $template = get_sitecode();
     $subject = get_clubname() . " - Player's Market Place";
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
 
     //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_email($subject, $to_emails, $content, "Box Members Wanted");
 }
 /**
  *
@@ -1523,14 +1507,15 @@ function confirm_singles($resid, $isNewReservation) {
             );
         }
     }
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
+
     $content = new Object;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
 
     //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_email($subject, $to_emails, $content, "Confirm Singles");
 }
 /**
  *
@@ -1595,7 +1580,7 @@ function cancel_singles($resid) {
             );
         }
     }
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
     $content = new Object;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
@@ -1603,7 +1588,7 @@ function cancel_singles($resid) {
     $subject = "Court Cancellation Notice";
 
     //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_email($subject, $to_emails, $content, "Cancel Singles");
 }
 /**
  * This function only sends out emails to those players who are currently in the
@@ -1671,7 +1656,7 @@ function confirm_doubles($resid, $isNewReservation) {
     $var->fullname4 = $playerObject->firstname . " " . $playerObject->lastname;
     $clubfullname = get_clubname();
     $var->clubfullname = $clubfullname;
-    $var->clubadminemail = "PlayerMailer@sportsynergy.net";
+    $var->clubadminemail = "player.mailer@sportsynergy.net";
 
     // Set the Subject
     
@@ -1714,7 +1699,7 @@ function confirm_doubles($resid, $isNewReservation) {
         );
 
         //Send the email
-        send_email($subject, $to_emails, $from_email, $content, $template);
+        sendgrid_email($subject, $to_emails,  $content, "Confirm Doubles");
     }
 
     //Prepare and send emails to single players where there is more than one person looking for a partner
@@ -1753,7 +1738,7 @@ function confirm_doubles($resid, $isNewReservation) {
         $content->clubname = get_clubname();
 
         //Send the email
-        send_email($subject, $to_emails, $from_email, $content, $template);
+        sendgrid_email($subject, $to_emails, $content, "Confirm Doubles");
     }
 
     //Prepare and send emails to single player where there is only one person needing a partner
@@ -1779,7 +1764,7 @@ function confirm_doubles($resid, $isNewReservation) {
         $content->clubname = get_clubname();
 
         //Send the email
-        send_email($subject, $to_emails, $from_email, $content, $template);
+        sendgrid_email($subject, $to_emails, $content, "Confirm Doubles");
     }
 
     //Now Send emails out to players that acutally are in a team
@@ -1816,7 +1801,7 @@ function confirm_doubles($resid, $isNewReservation) {
     	$content->clubname = get_clubname();
 
     	//Send the email
-    	send_email($subject, $to_emails, $from_email, $content, $template);
+    	sendgrid_email($subject, $to_emails, $content, "Confirm Doubles");
 
 	}
 }
@@ -1898,10 +1883,10 @@ function cancel_doubles($resid) {
     $content->clubname = get_clubname();
     $template = get_sitecode();
     $subject = get_clubname() . " - Court Cancellation Notice";
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
 
     //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_email($subject, $to_emails, $content, "Cancel Doubles");
 }
 /**
  * Sends out emails to the players involved.
@@ -1963,10 +1948,10 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
     $content->clubname = get_clubname();
     $template = get_sitecode();
     $subject = get_clubname() . " - Score Report";
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
 
     //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_email($subject, $to_emails, $content, "Report Singles Score");
     $description = "$var->winnerfull $var->howbad $var->loserfull in a $matchtype match 3-$score ";
     logSiteActivity(get_siteid() , $description);
 }
@@ -2065,10 +2050,9 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $content->clubname = get_clubname();
     $template = get_sitecode();
     $subject = get_clubname() . " - Score Report";
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
     //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_email($subject, $to_emails, $content, "Report Singles Score");
     $description = "$var->winnerfull defeated $var->loserfull in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
     logSiteActivity(get_siteid() , $description);
 }
@@ -2117,7 +2101,7 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
     $content->clubname = get_clubname();
     $template = get_sitecode();
     $subject = get_clubname() . " - Score Report";
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
     $winner_email = array(
         $wobj->email => array(
             'name' => $wobj->firstname
@@ -2125,7 +2109,7 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
     );
 
     //Send the email
-    send_email($subject, $winner_email, $from_email, $content, $template);
+    sendgrid_email($subject, $winner_email, $content, "Report Singles Box");
 
     //Send the email
     $loser_email = array(
@@ -2133,7 +2117,7 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
             'name' => $lobj->firstname
         )
     );
-    send_email($subject, $loser_email, $from_email, $content, $template);
+    sendgrid_email($subject, $loser_email, $content, "Report Singles Box");
 }
 /**
  * Sends out emails to the players involved.
@@ -2201,10 +2185,10 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
     $content->clubname = get_clubname();
     $template = get_sitecode();
     $subject = get_clubname() . " - Score Report";
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
 
     //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_email($subject, $to_emails, $content, "Report Doubles Box");
     $description = "$var->winner $var->howbad $var->loser in a $matchtype match 3-$score ";
     logSiteActivity(get_siteid() , $description);
 }
@@ -2309,10 +2293,10 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $content->clubname = get_clubname();
     $template = get_sitecode();
     $subject = get_clubname() . " - Score Report";
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
 
 		//Send the email
-	    send_email($subject, $to_emails, $from_email, $content, $template);
+	    sendgrid_email($subject, $to_emails, $content, "Report Doubles Box");
 	    $description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
 	
 	    logSiteActivity(get_siteid() , $description);

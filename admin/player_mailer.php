@@ -32,7 +32,7 @@
 * Classes list:
 */
 include ("../application.php");
-require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
+require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
 $DOC_TITLE = "Player Mailer";
 require_loginwq();
 require_priv("2");
@@ -418,7 +418,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
     $template = get_sitecode() . "-blank";
 
     //Send the email
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_clubmail($subject, $to_emails, $content, "Club Email");
     return $emailidresult;
 }
 ?>

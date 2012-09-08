@@ -34,7 +34,7 @@
 * Classes list:
 */
 include ("../application.php");
-require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
+require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 
 // Log user out if they are in the wrong club
@@ -140,7 +140,7 @@ function reset_user_password($userid) {
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
-    send_email($subject, $to_email, $from_email, $content, $template);
+    sendgrid_email($subject, $to_email, $content, "Forgot Password");
 }
 
 /* returns a randomly generated password of length $maxlen.  inspired by

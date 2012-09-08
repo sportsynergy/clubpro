@@ -36,7 +36,7 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
-require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
+require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 
 
@@ -327,7 +327,7 @@ function confirmChallengerTeam($my_partner, $challengees) {
     $content->clubname = get_clubname();
 
     //Send email to the person that make the challenge
-    send_email($subject, $challenger_email, $from_email, $content, $template);
+    sendgrid_email($subject, $challenger_email, $content, "Team Ladder");
     $var->yourpartner = get_userfullname();
     $challenger_emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_doubles_ladder_match_challenger.php", $var);
     $challenger_email_s = $my_partner['firstname'] . " " . $my_partner['lastname'] . " <" . $my_partner['email'] . ">";
@@ -342,7 +342,7 @@ function confirmChallengerTeam($my_partner, $challengees) {
     $content->clubname = get_clubname();
 
     //Send email to the partner of the person that make the challenge
-    send_email($subject, $challenger_email, $from_email, $content, $template);
+    sendgrid_email($subject, $challenger_email, $content, "Team Ladder");
 }
 /**
  * Sends out the emails to the team that has been challenged.  This function uses the get_user() so this should only be called by the current user.
@@ -370,6 +370,6 @@ function confirmChallengeeTeam($challengees, $message) {
     $template = get_sitecode() . "-blank";
 
     //Send the email
-    send_email($subject, $challengee_email, $from_email, $content, $template);
+    sendgrid_email($subject, $challengee_email, $content, "Team Ladder");
 }
 ?>

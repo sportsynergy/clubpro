@@ -600,7 +600,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
     $content = new Object;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
-    send_email($subject, $to_email, $from_email, $content, $template);
+    sendgrid_email($subject, $to_email,  $content, $template);
 
     //send email to the person who created the reservation
     $creatorQuery = "SELECT users.firstname, users.lastname, users.email FROM tblUsers users WHERE users.userid = $var->creator";
@@ -636,7 +636,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
         if (isDebugEnabled(1)) logMessage("reservationlib.confirmCourtEvent: sending the  message to the guy who created this.");
         
         if (isDebugEnabled(1)) logMessage($emailbody);
-        send_email($subject, $to_email, $from_email, $content, $template);
+        sendgrid_email($subject, $to_email,  $content, "Confirm Court Event");
     }
     $to_emails = array();
     $rresult = getCourtEventParticipants($reservationid);
@@ -655,7 +655,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
     $content = new Object;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_email($subject, $to_emails, $content, "Confirm Court Event");
 }
 /**
  * Determines if the reservation is locked or not

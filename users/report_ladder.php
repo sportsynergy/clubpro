@@ -36,7 +36,7 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
-require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
+require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 require_loginwq();
 
@@ -191,7 +191,7 @@ function emailDoublesLadderMatch($winnerid, $loserid, $score, $details, $challen
     }
 
     //Send the email to the loser
-    send_email($subject, $to_emails, $from_email, $content, $template);
+    sendgrid_email($subject, $to_emails, $content, "Ladder Match");
 }
 /**
  * Emails the users the results.  If the challengee wins that means that the ladder stays the same.
@@ -259,7 +259,7 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid, 
             'name' => $winner->firstname
         )
     );
-    send_email($subject, $to_email, $from_email, $content, $template);
+    sendgrid_email($subject, $to_email, $content, "Ladder Match");
 
     //Send the email to the loser
     $to_email = array(
@@ -267,7 +267,7 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid, 
             'name' => $loser->firstname
         )
     );
-    send_email($subject, $to_email, $from_email, $content, $template);
+    sendgrid_email($subject, $to_email, $content, "Ladder Match");
 }
 /**
  * Unlocks the players

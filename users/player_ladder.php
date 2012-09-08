@@ -35,7 +35,7 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
-require ($_SESSION["CFG"]["libdir"] . "/postageapplib.php");
+require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 $DOC_TITLE = "Player Ladder";
 require_loginwq();
@@ -275,10 +275,10 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
     $content = new Object;
     $content->line1 = $challenger_emailbody;
     $content->clubname = get_clubname();
-    $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
+
 
     //Send the email
-    send_email($subject, $challenger_email, $from_email, $content, $template);
+    sendgrid_email($subject, $challenger_email, $content, "Ladder Match");
 
     // Provide Content for Challengee
     $challengee_email = array(
@@ -295,6 +295,6 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
     $subject = get_clubname() . " - You've been challenged in a ladder match";
 
     //Send the email
-    send_email($subject, $challengee_email, $from_email, $content, $template);
+    sendgrid_email($subject, $challengee_email, $content, "Ladder Match");
 }
 ?>

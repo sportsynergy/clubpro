@@ -32,14 +32,14 @@ while (<MYFILE>) {
 	print "INSERT INTO `tblUsers` (`userid`, `username`, `firstname`, `lastname`, `email`, `password`, `gender`)  VALUES ($start,'@personal[2]','@personal[1]','@personal[0]','@personal[2]','$password', $gender);\n";
 	
 	#clubuser
-	#print "INSERT INTO `tblClubUser` (`userid`, `clubid`, `roleid`, `recemail`)  VALUES ($start,'$clubid','$roleid','n');\n";
+	print "INSERT INTO `tblClubUser` (`userid`, `clubid`, `roleid`, `recemail`)  VALUES ($start,'$clubid','$roleid','n');\n";
 		
 	#ranking
-	#print "INSERT INTO `tblUserRankings` (`userid`, `courttypeid`, `ranking`)  VALUES ($start,2,'$ranking');\n";
-	#print "INSERT INTO `tblUserRankings` (`userid`, `courttypeid`, `ranking`)  VALUES ($start,3,'$ranking');\n";
+	print "INSERT INTO `tblUserRankings` (`userid`, `courttypeid`, `ranking`)  VALUES ($start,2,'$ranking');\n";
+	print "INSERT INTO `tblUserRankings` (`userid`, `courttypeid`, `ranking`)  VALUES ($start,3,'$ranking');\n";
 	
 	#auth
-#	print "INSERT INTO `tblkupSiteAuth` (`userid`, `siteid`)  VALUES ($start,$siteid);\n\n";
+	print "INSERT INTO `tblkupSiteAuth` (`userid`, `siteid`)  VALUES ($start,$siteid);\n\n";
 	
 	
 	

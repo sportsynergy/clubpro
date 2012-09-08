@@ -160,14 +160,13 @@ function me() {
      * this function is necessary because PHP_SELF and REQUEST_URI and PATH_INFO
      * return different things depending on a lot of things like your OS, Web
      * server, and the way PHP is compiled (ie. as a CGI, module, ISAPI, etc.) */
-    
+    $me = "";
+	
     if (getenv("REQUEST_URI")) {
         $me = getenv("REQUEST_URI");
     } elseif (getenv("PATH_INFO")) {
         $me = getenv("PATH_INFO");
-    } elseif ($GLOBALS["PHP_SELF"]) {
-        $me = $GLOBALS["PHP_SELF"];
-    }
+    } 
     return strip_querystring($me);
 }
 function mewithq() {
@@ -176,14 +175,14 @@ function mewithq() {
      * this function is necessary because PHP_SELF and REQUEST_URI and PATH_INFO
      * return different things depending on a lot of things like your OS, Web
      * server, and the way PHP is compiled (ie. as a CGI, module, ISAPI, etc.) */
-    
+    $me = "";
+	
     if (getenv("REQUEST_URI")) {
         $me = getenv("REQUEST_URI");
     } elseif (getenv("PATH_INFO")) {
         $me = getenv("PATH_INFO");
-    } elseif ($GLOBALS["PHP_SELF"]) {
-        $me = $GLOBALS["PHP_SELF"];
-    }
+    } 
+
     return $me;
 }
 function qualified_me() {

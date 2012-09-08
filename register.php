@@ -463,7 +463,6 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     //Use default template
     $template = "sportsynergy";
     $subject = get_clubname() . " - Welcome to Sportsynergy";
-    $from_email = "Sportsynergy <support@sportsynergy.net>";
     $to_email = array(
         '$adminFirstName $adminLastName <$adminEmail>' , array(
             'name'
@@ -478,6 +477,6 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     ));*/
 
     //Send the email
-    send_email($subject, $to_email, $from_email, $content, $template);
+    sendgrid_email($subject, $to_email, $content, "Registration");
 }
 ?>
