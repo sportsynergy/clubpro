@@ -46,9 +46,10 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 	$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
 
 	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/blank.email.html");
-	
 	$template = str_replace("%sitecode%", get_sitecode(), $file_contents);
 	$template = str_replace("%content%", $content->line1, $template);
+	$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
+	$template = str_replace("%app_root%", $_SESSION["CFG"]["wwwroot"], $template);
 	
 	$mail = new SendGrid\Mail();
 	$mail->
@@ -73,7 +74,7 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 function sendgrid_email($subject, $to_emails, $content, $category){
 	
 	if (isDebugEnabled(1)) {
-    	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) . " from $from_email");
+    	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) );
     }
 
 
@@ -88,10 +89,11 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 	$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
 
 	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/standard.email.html");
-
 	$template = str_replace("%clubname%", $content->clubname, $file_contents);
 	$template = str_replace("%sitecode%", get_sitecode(), $template);
 	$template = str_replace("%content%", $content->line1, $template);
+	$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
+	$template = str_replace("%app_root%", $_SESSION["CFG"]["wwwroot"], $template);
 
 	$mail = new SendGrid\Mail();
 	$mail->
