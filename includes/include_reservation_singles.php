@@ -55,7 +55,7 @@
                 </script></td>
     </tr>
     <tr>
-      <td class=label>Player&nbsp;Two:</td>
+      <td class="label">Player&nbsp;Two:</td>
       <td><input id="name2" name="playertwoname" type="text" size="35" class="form-autocomplete" />
         <input id="id2" name="playertwoid" type="hidden"/>
         <script>
@@ -74,6 +74,32 @@ pat_autocomplete(array(
 
                 </script></td>
     </tr>
+
+
+	<? if($variableDuration == 'y') { ?>
+	<tr> 
+		 <td class="label">Duration:</td>
+		 <td>
+			<select name="duration">
+				<? 
+				$timetonext = $nexttime - $time;
+				if($timetonext >= 3600 ){ ?>
+					<option value="1">60 Minutes</option>
+				<?}
+				if($timetonext >= 2700 ){ ?>
+					<option value=".75">45 Minutes</option>
+				<?}
+				if($timetonext >= 1800 ){ ?>
+					<option value="1">30 Minutes</option>
+				<?}
+				else if($timetonext >= 900 ){ ?>
+					<option value=".25">15 Minutes</option>
+				<?}?>	
+			</select>
+			</td>
+	</tr>
+	<? } ?>
+	
     <tr>
       <td class="label">Match Type:</td>
       <td><select name="matchtype" onchange="disablePlayerDropDownWithSoloSelection(this)">
@@ -100,6 +126,8 @@ pat_autocomplete(array(
         <? } ?>
         </span></td>
     </tr>
+
+
     <? if( get_roleid()==2 || get_roleid() ==4){ ?>
     <tr>
       <td colspan="2"><input type="checkbox" name="lock" />

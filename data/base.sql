@@ -399,6 +399,7 @@ INSERT INTO `tblCourtType` (`courttypeid`, `sportid`, `courttypename`, `reservat
 -- Table structure for table `tblCourts`
 --
 
+
 CREATE TABLE IF NOT EXISTS `tblCourts` (
   `courtid` int(8) NOT NULL AUTO_INCREMENT,
   `courttypeid` int(8) NOT NULL DEFAULT '0',
@@ -407,6 +408,7 @@ CREATE TABLE IF NOT EXISTS `tblCourts` (
   `enable` tinyint(4) NOT NULL DEFAULT '1',
   `siteid` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `displayorder` smallint(6) NOT NULL DEFAULT '0',
+  `variableduration` ENUM( 'n', 'y' ) NOT NULL DEFAULT 'n',
   `lastmodified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`courtid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;
@@ -776,6 +778,7 @@ CREATE TABLE IF NOT EXISTS `tblReservations` (
   `enddate` timestamp NULL DEFAULT NULL,
   `lastmodified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `locked` enum('y','n') NOT NULL DEFAULT 'n',
+  `duration` int(11) NULL,
   PRIMARY KEY (`reservationid`),
   KEY `courtid` (`courtid`),
   KEY `time` (`time`)

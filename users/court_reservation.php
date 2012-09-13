@@ -861,9 +861,13 @@ function insert_reservation(&$frm) {
         $lock = "y";
     }
 
+	if(isset($frm['duration'])){
+		$duration = $frm['duration'] * 3600;
+	}
+
     // Add the Reservation
     $resquery = "INSERT INTO tblReservations (
-	                courtid, time, matchtype, guesttype, lastmodifier, creator, createdate, locked
+	                courtid, time, matchtype, guesttype, lastmodifier, creator, createdate, locked, duration
 	                ) VALUES (
 	                          '$frm[courtid]'
 	                          ,'$frm[time]'
@@ -872,7 +876,8 @@ function insert_reservation(&$frm) {
 							  , " . get_userid() . "
 							  , " . get_userid() . "
 							  , now() 
-							  , '$lock')";
+							  , '$lock'
+							  ,'$duration')";
     db_query($resquery);
 
     //Now we need to get the reservationid.  (This is what we just inserted )

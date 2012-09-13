@@ -131,6 +131,31 @@
     <tr>
       <td height="3" colspan="2"><hr></td>
     </tr>
+
+	<? if($variableDuration == 'y') { ?>
+	<tr> 
+		 <td class="label">Duration:</td>
+		 <td>
+			<select name="duration">
+				<? 
+				$timetonext = $nexttime - $time;
+				if($timetonext >= 3600 ){ ?>
+					<option value="1">60 Minutes</option>
+				<?}
+				if($timetonext >= 2700 ){ ?>
+					<option value=".75">45 Minutes</option>
+				<?}
+				if($timetonext >= 1800 ){ ?>
+					<option value="1">30 Minutes</option>
+				<?}
+				else if($timetonext >= 900 ){ ?>
+					<option value=".25">15 Minutes</option>
+				<?}?>	
+			</select>
+			</td>
+	</tr>
+	<? } ?>
+
     <tr>
       <td ><span  class="biglabel">Match Type:</span></td>
       <td class="normal" ><select name="matchtype" >

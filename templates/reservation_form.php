@@ -1,7 +1,7 @@
 <?php
   $DOC_TITLE = "Court Reservation";
 
-  $courtformquery = "SELECT courttype.courttypeid, courts.courtid, courttype.reservationtype
+  $courtformquery = "SELECT courttype.courttypeid, courts.courtid, courttype.reservationtype,courts.variableduration
                    FROM tblCourtType courttype, tblCourts courts
                    WHERE courttype.courttypeid = courts.courttypeid
                    AND courts.courtid=$courtid";
@@ -11,7 +11,16 @@
 	// Determine what kind of court reservation form to display
     $row = mysql_fetch_array($courtformresult);
     $reservationType = $row[2];
-
+	$variableDuration = $row[3];
+	
+	//next reservation 
+	$nextreservationquery = "SELECT time FROM tblReservations WHERE courtid = '$courtid' AND enddate IS NULL 
+				AND TIME > $time
+				ORDER BY  `tblReservations`.`reservationid` DESC 
+				LIMIT 1";
+				
+	$result = db_query($nextreservationquery);
+	$nexttime = mysql_result($result,0);
   
 ?>
 

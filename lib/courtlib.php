@@ -35,6 +35,25 @@
 * - printEvent()
 * Classes list:
 */
+
+/**
+* Where the court is setup with variable duration, this will override the duration set on the court hour
+* @param unknown_type $courtId
+*/
+function resetReservationPointer($variableduration, $cd, $rd, $time){
+	
+		//set the duration
+		if($variableduration == 'y'){
+		
+		 if (isDebugEnabled(1)) logMessage("courtlib.resetReservationPointer: Reseting pointer.");
+		
+			$time = $time - $cd*3600;
+			$time = $time + $rd;
+		}
+		
+		return $time;
+}
+
 /**
  *
  * @param unknown_type $courtId
