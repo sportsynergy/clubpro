@@ -448,6 +448,7 @@ if ($clubid) {
                           array_push($stack, $curcourtrow['time']);
                   }
 
+					
 				  ?>
         <td ><table width=<?=$courtWidth?> cellpadding="0" cellspacing="0" align="center" class="scheduletable" >
             <tr valign="top" >
@@ -488,12 +489,14 @@ if ($clubid) {
                    }
                  
                   echo "</tr>\n";
-
-				  $lastspot = false;
+				 
+				  //To keep track of last timeslot displayed
+				  $lastspot = 0;
+				
                   for ( $i = gmmktime ($ohour,$hoursobj->hourstart,0,$currMonth,$currDay,$currYear); 
                   		$i< gmmktime ($chour,0,0,$currMonth,$currDay,$currYear); 
                   		$i = $i + $hoursobj->duration*3600){
-							
+								
 						// Hours exception (override duration if applicable)
 						$hoursQuery = "SELECT exception.duration FROM tblHoursException exception 
 											WHERE exception.dayid = $currDOW 
@@ -510,15 +513,23 @@ if ($clubid) {
 										
 
                          //Check to see if the time is already reserved for this court.  If stack exists,
-                         // in other words at least one reservation has been made for this resource for
+                         // in other words at least one reservation has been made for this court for
                          // this day.  The second thing we find out is if the current time is greater than
                          // the hourly interval.  When it is not we will do the following:
                           if ($stack)
                              {
                                  if ($curtime < $i)
                                  {
-                                     if (in_array ($i, $stack)){
+                                    
+									//reservations made outside of the courts durations
+									$current = current($stack);
+									if( $current > $lastspot  && $current < $i){
+										$i = $current;
+									}
 
+
+								 if (in_array ($i, $stack)){
+										
                                       //Get Reservation ID
                                       $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, lastmodifier, creator, locked, duration
                                                              FROM tblReservations
@@ -679,16 +690,25 @@ if ($clubid) {
                                          }
                                       
                                       }
-                                      
-                                 }else{
+                                      next($stack);
+                                 } else{
                                     printEmptyReservation($i, $courtobj->courtid, false);
                                  }
+								
                            }
 
-                          //after current time but is in stack. So this means that the the resource
+                          //after current time but is in stack. So this means that the the court
                           // can be reserved but it is in a day with at least one other reservation
                           else{
-                               if (in_array ($i, $stack)){
+                               
+
+								//reservations made outside of the courts durations
+								$current = current($stack);
+								if( $current > $lastspot  && $current < $i){
+									$i = $current;
+								}
+							
+							if (in_array ($i, $stack)){
 
                                   //Get Reservation ID
                                   $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, creator, locked, duration
@@ -888,15 +908,21 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
                                                   }
                                        
 
-                                       } ?>
-              <?php } ?>
-              <?php } ?>
-              <?php } else{
+                                       } 
+               }
+               } 
+               
+					next($stack);
+					
+				} else{
                                		printEmptyReservation($i, $courtobj->courtid, true);
                                }
 
-                           } ?>
-              <?php } 
+                           } 
+								
+								
+               
+				} 
 
                          //if stack is not set.  This means that the particular resource does not have
                          // any reservations for this day
@@ -909,11 +935,14 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
                                    	
                                    }
 
-                        } ?>
-              <?php  } ?>
+                        } 
+?>
+
+					<? $lastspot = $i;	?>	
+              <?  } ?>
           </table></td>
-        <?php unset($stack); ?>
-        <?php } ?>
+        <? unset($stack); ?>
+        <? } ?>
         
         <!-- Court Table End--> 
       </tr>

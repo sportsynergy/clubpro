@@ -50,8 +50,6 @@ function resetReservationPointer($variableduration, $courtdur, $reservationdur, 
 			return $time;
 		}
 		
-		 if (isDebugEnabled(1)) logMessage("courtlib.resetReservationPointer: Reseting pointer. $variableduration, $courtdur, $reservationdur, $time");
-		
 			$time = $time - $courtdur*3600;
 			$time = $time + $reservationdur;
 		}
