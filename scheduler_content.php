@@ -489,11 +489,11 @@ if ($clubid) {
                  
                   echo "</tr>\n";
 
-
+				  $lastspot = false;
                   for ( $i = gmmktime ($ohour,$hoursobj->hourstart,0,$currMonth,$currDay,$currYear); 
                   		$i< gmmktime ($chour,0,0,$currMonth,$currDay,$currYear); 
                   		$i = $i + $hoursobj->duration*3600){
-
+							
 						// Hours exception (override duration if applicable)
 						$hoursQuery = "SELECT exception.duration FROM tblHoursException exception 
 											WHERE exception.dayid = $currDOW 
@@ -549,7 +549,7 @@ if ($clubid) {
 		                                      	$guestquery = "SELECT name
 		                                                         FROM tblkpGuestReservations 
 		                                                         INNER JOIN tblReservations ON tblkpGuestReservations.reservationid = tblReservations.reservationid
-		                                                         WHERE (((tblReservations.reservationid)=".$residobj->reservationid."))";
+		                                                         WHERE tblReservations.reservationid=".$residobj->reservationid;
                                       	 
                                                 $guestresult = db_query($guestquery);
                                                 $guestarray = mysql_fetch_array($guestresult);
@@ -595,12 +595,8 @@ if ($clubid) {
 															printEmptyReservation($i, $courtobj->courtid, false);
 														} else{
                                                    	    printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, false, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
-														
-														//set the duration
 														$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
-														
-														
-														
+																	
                                                	    }
          
                                                   } 
@@ -695,7 +691,7 @@ if ($clubid) {
                                if (in_array ($i, $stack)){
 
                                   //Get Reservation ID
-                                  $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, creator, locked
+                                  $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, creator, locked, duration
                                                  FROM tblReservations
                                                  WHERE courtid=$courtobj->courtid
                                                  AND time=$i
@@ -733,6 +729,7 @@ if ($clubid) {
                                             $userid2 = $useridarray['userid'];
                                                 
                                            printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, true, $residobj->creator, $residobj->reservationid);
+$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                          	
                                      	} elseif($residobj->usertype==1) {
 										
@@ -748,6 +745,7 @@ if ($clubid) {
 	                                    	$team2 = $teamidarray['userid'];
 	                                    	
                                      		printDoublesReservationFull($team1, $team2, $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true, true, $residobj->reservationid);
+$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                      	
                                         }
 
@@ -769,7 +767,7 @@ if ($clubid) {
                                               $guestquery = "SELECT name
 	                                                 				FROM tblkpGuestReservations 
 	                                                 				INNER JOIN tblReservations ON tblkpGuestReservations.reservationid = tblReservations.reservationid
-	                                                 				WHERE (((tblReservations.reservationid)=".$residobj->reservationid."))";
+	                                                 				WHERE tblReservations.reservationid=".$residobj->reservationid;
 			                                  $guestresult = db_query($guestquery);
 			                                  $guestarray = mysql_fetch_array($guestresult);  
 
@@ -778,6 +776,7 @@ if ($clubid) {
 			                                  $guest2 = $guestarray['name'];
 			                                  
 			                                  printGuestReservation($guest1, $guest2, $i, $courtobj->courtid, $courtobj->matchtype, true);
+											  $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
 			                           
                                        } else{
 
@@ -794,6 +793,7 @@ if ($clubid) {
                                                    	     $useridarray = db_fetch_array($useridresult);
                                                    	     $userid = $useridarray['userid'];	
                                                    	     printPartialSinglesReservation($userid, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, $residobj->creator);
+$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                                    }
                                                    else{ 
                                                    
@@ -805,8 +805,10 @@ if ($clubid) {
 														// a little defense for corrupt data
 														if( empty($userid1) || empty($userid2) ){
 															printEmptyReservation($i, $courtobj->courtid, true);
+															
 														} else{
                                                    	    printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
+$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                                	    }
                                                    		
                                                    } 
@@ -833,9 +835,11 @@ if ($clubid) {
                                                         // If usertype is 0 at this point then neither team is set.
                                                         if($teamidarray['usertype']==0){
                                                         	printDoublesReservationSinglePlayer($teamidarray['userid'],$residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true);
+$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                                         }
                                                         else{                                                      	
                                                         	printDoublesReservationTeamWanted($teamidarray['userid'], $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true);
+$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                                         }
 
                                                    }
@@ -862,16 +866,19 @@ if ($clubid) {
 				                                                   	// Print full reservation
 				                                                   	if( isset($teamOne) ){
 				                                                   		printDoublesReservationFull($teamOne, $teamidarray['userid'], $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true, false, $residobj->reservationid );
+				$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
 				                                                   	} 
 				                                                   	// Print player wanted
 				                                                   	else if( isset($playerOne) ){
 				                                                   		printDoublesReservationPlayerWanted($teamidarray['userid'], $playerOne, $residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true );
+				$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
 				                                                   	}
 		                                                   
 		                                                   }elseif($teamidarray['usertype']==0){
 
 		                                                   	  // print players wanted
 		                                                   	  printDoublesReservationPlayersWanted($playerOne, $teamidarray['userid'],$residobj->locked, $residobj->matchtype, $i, $courtobj->courtid, $residobj->creator, true );
+		$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
 		                                                 		
 		                                                  }
 		                                                  
