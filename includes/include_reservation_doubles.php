@@ -134,21 +134,24 @@
 
 	<? if($variableDuration == 'y') { ?>
 	<tr> 
-		 <td class="label">Duration:</td>
+		 <td class="biglabel">Duration:</td>
 		 <td>
 			<select name="duration">
 				<? 
 				$timetonext = $nexttime - $time;
+				if($timetonext >= 5400 || $nexttime == null ){ ?>
+					<option value="1.5">90 Minutes</option>
+				<?}
 				if($timetonext >= 3600 || $nexttime == null ){ ?>
 					<option value="1">60 Minutes</option>
 				<?}
-				if($timetonext >= 2700 || $nexttime == null ){ ?>
+				if($timetonext >= 2700 || $nexttime == null){ ?>
 					<option value=".75">45 Minutes</option>
 				<?}
-				if($timetonext >= 1800 || $nexttime == null){ ?>
-					<option value="1">30 Minutes</option>
+				else if($timetonext >= 1800 || $nexttime == null){ ?>
+					<option value=".5">30 Minutes</option>
 				<?}
-				else if($timetonext >= 900 ){ ?>
+				else if($timetonext >= 900 || $nexttime == null){ ?>
 					<option value=".25">15 Minutes</option>
 				<?}?>	
 			</select>

@@ -16,14 +16,14 @@
 	//next reservation 
 	$nextreservationquery = "SELECT time FROM tblReservations WHERE courtid = '$courtid' AND enddate IS NULL 
 				AND TIME > $time
-				ORDER BY  `tblReservations`.`reservationid` DESC 
+				ORDER BY  `tblReservations`.`time`  
 				LIMIT 1";
 				
 	$result = db_query($nextreservationquery);
 	
 	//account for no reservations
 	$nexttime = mysql_result($result,0);
-  
+
 ?>
 
 <div id="reservations" class="yui-navset">
