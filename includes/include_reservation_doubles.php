@@ -139,13 +139,13 @@
 			<select name="duration">
 				<? 
 				$timetonext = $nexttime - $time;
-				if($timetonext >= 3600 ){ ?>
+				if($timetonext >= 3600 || $nexttime == null ){ ?>
 					<option value="1">60 Minutes</option>
 				<?}
-				if($timetonext >= 2700 ){ ?>
+				if($timetonext >= 2700 || $nexttime == null ){ ?>
 					<option value=".75">45 Minutes</option>
 				<?}
-				if($timetonext >= 1800 ){ ?>
+				if($timetonext >= 1800 || $nexttime == null){ ?>
 					<option value="1">30 Minutes</option>
 				<?}
 				else if($timetonext >= 900 ){ ?>

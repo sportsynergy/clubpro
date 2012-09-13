@@ -20,6 +20,8 @@
 				LIMIT 1";
 				
 	$result = db_query($nextreservationquery);
+	
+	//account for no reservations
 	$nexttime = mysql_result($result,0);
   
 ?>
