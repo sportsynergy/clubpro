@@ -140,10 +140,10 @@
 				<? 
 				$timetonext = $nexttime - $time;
 				
-				if($timetonext == 900 || $nexttime == null){ ?>
+				if($timetonext == 900 ){ ?>
 					<option value=".25">15 Minutes</option>
 				<?}
-				 if($timetonext == 1800 || $nexttime == null){ ?>
+				 if($timetonext == 1800 ){ ?>
 					<option value=".5">30 Minutes</option>
 				<?}
 				if($timetonext >= 2700 || $nexttime == null){ ?>
