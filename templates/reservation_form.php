@@ -148,20 +148,30 @@ function unsetplayerfour(fieldname)
 function disableSinglesOptions(repeat)
 {
    if(repeat.value == "norepeat"){
-       document.singlesform.duration.disabled = true;
+       document.singlesform.frequency.disabled = true;
    }
    else{
-      document.singlesform.duration.disabled = "";
+      document.singlesform.frequency.disabled = "";
+   }       
+}
+
+function onlyAllowLessonReoccuring(matchtype)
+{
+   if(matchtype.value == "4"){
+       document.singlesform.repeat.disabled = "";
+   }
+   else{
+      document.singlesform.repeat.disabled = true;
    }       
 }
 
 function disableEventOptions(repeat)
 {
-   if(repeat.value == "norepeat"){
-       document.event_reservation_form.duration.disabled = true;
+   if(repeat.value == "norepeat"){alert("test");
+       document.event_reservation_form.frequency.disabled = true;
    }
    else{
-      document.event_reservation_form.duration.disabled = "";
+      document.event_reservation_form.frequency.disabled = "";
    }       
 }
 </script>

@@ -334,15 +334,9 @@ function validate_form(&$frm, &$errors) {
      * Validate Event Reservation
      ******************************************/
     
-    if ($frm['courttype'] == "event") {
+    if ($frm['courttype'] == "event" || $frm['matchtype'] == "4" ) {
         
-        if (empty($frm["eventid"])) {
-            $errors->event = true;
-            $msg.= "You did not specify an event ";
-        } elseif (empty($frm["repeat"])) {
-            $errors->repeat = true;
-            $msg.= "You did not specify the repeat interval";
-        } elseif ($frm["repeat"] != "norepeat" && empty($frm["duration"])) {
+        if ($frm["repeat"] != "norepeat" && empty($frm["frequency"])) {
             $errors->duration = true;
             $msg.= "You did not specify the duration interval ";
         }
@@ -794,9 +788,7 @@ function update_reservation(&$frm) {
     // Check to see if we are to add a single player to a team in the reservtion.  To do this we
     // will first add the make the team if it doesn't exist already.  Then we will reset the
 
-    // player with the new or existing teamid.  Finally we will reset the usertype on the tlbkpReservation
-
-    // table
+    // player with the new or existing teamid.  Finally we will reset the usertype on the tlbkpReservation table
 
     elseif ($frm['courttype'] == "doubles" && $frm['action'] == "addpartner") {
         
@@ -838,10 +830,13 @@ function insert_reservation(&$frm) {
     // Initialize Guest Type
     $guesttype = 0;
     
-    if ($frm['courttype'] == "event") {
-        makeEventReservation($frm);
+    if ($frm['courttype'] == "event" ||
+		( $frm['matchtype']==4 && $frm['courttype'] == "singles") //also allow reoccuring singles
+		) {
+        makeReoccuringReservation($frm);
         return;
     }
+	
     
     if ($frm['courttype'] == "singles" && $frm['action'] == "create" && (isGuestPlayer($frm['playeroneid'], $frm['playeronename']) || isGuestPlayer($frm['playertwoid'], $frm['playertwoname']))) {
         $guesttype = 1;
@@ -863,6 +858,8 @@ function insert_reservation(&$frm) {
 
 	if(isset($frm['duration'])){
 		$duration = $frm['duration'] * 3600;
+	}else{
+		$duration = "NULL";
 	}
 
     // Add the Reservation
@@ -877,7 +874,7 @@ function insert_reservation(&$frm) {
 							  , " . get_userid() . "
 							  , now() 
 							  , '$lock'
-							  ,'$duration')";
+							  ,$duration)";
     db_query($resquery);
 
     //Now we need to get the reservationid.  (This is what we just inserted )
@@ -898,12 +895,15 @@ function insert_reservation(&$frm) {
     }
     return $residvarresult->reservationid;
 }
+
+
+
 /**
- * Makes an event reservations
+ * Makes an makeReoccuringReservation reservations
  */
-function makeEventReservation(&$frm) {
+function makeReoccuringReservation(&$frm) {
     
-    if (isDebugEnabled(1)) logMessage("court_reservation.MakeEventReservation: Making an Event Reservation");
+    if (isDebugEnabled(1)) logMessage("court_reservation.makeReoccuringReservation: Making a Reoccuring Reservation");
     
 $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
     $clubresult = db_query($clubquery);
@@ -916,13 +916,17 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
         $locked = "y";
     }
     
-    if (isDebugEnabled(1)) logMessage("court_reservation.makeEventReservation: Repeat interval is " . $frm['repeat'] . " and duration inverval is " . $frm['duration']);
+	if(isset($frm['duration'])){
+		$duration = $frm['duration'] * 3600;
+	}else{
+		$duration = "NULL";
+	}
+	
+	
+    if (isDebugEnabled(1)) logMessage("court_reservation.makeReoccuringReservation: Repeat interval is " . $frm['repeat'] . " and frequency inverval is " . $frm['frequency']);
 
-    // Add the non reoccuring event
-    
-    if ($frm['repeat'] == "norepeat") {
         $resquery = "INSERT INTO tblReservations (
-	                 courtid, eventid, time, lastmodifier, creator, createdate, locked
+	                 courtid, eventid, time, lastmodifier, creator, createdate, locked, matchtype, duration
 	                 ) VALUES (
 	                           '$frm[courtid]'
 	                           ,'$frm[eventid]'
@@ -930,21 +934,61 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 							   , " . get_userid() . "
 							   ,  " . get_userid() . "
 							   , now() 
-							   ,'$locked')";
+							   ,'$locked'
+							   , '$frm[matchtype]'
+							   , $duration)";
+							
+		if (isDebugEnabled(1)) logMessage($resquery);	
+						
         $resresult = db_query($resquery);
-    }
+
+		//Now we need to get the reservationid.  (This is what we just inserted )
+	    $residquery = "SELECT reservationid FROM tblReservations WHERE courtid= '$frm[courtid]'
+		                       AND time='$frm[time]' AND enddate IS NULL";
+	    $residresult = db_query($residquery);
+	    $residvarresult = db_fetch_object($residresult);
+		$reservationid = $residvarresult->reservationid;
+
+		if( isset($frm['playeroneid'])  ){
+			 
+			$query = "INSERT INTO tblkpUserReservations (
+			                                reservationid, userid, usertype
+			                                ) VALUES (
+			                                          '$reservationid'
+			                                          ,'$frm[playeroneid]'
+			                                          ,0)";
+
+		        // run the query on the database
+		        $result = db_query($query);
+		}
+			if( isset($frm['playertwoid']) ){
+				$query = "INSERT INTO tblkpUserReservations (
+					                          reservationid, userid, usertype
+					                           ) VALUES (
+					                                     '$reservationid'
+					                                      ,'$frm[playertwoid]'
+					                                      ,0)";
+
+				 // run the query on the database
+				 $result = db_query($query);
+		}
+
 
     // Add the daily event
-    elseif ($frm['repeat'] == "daily") {
-        $initialHourstart = 0;
+    if ($frm['repeat'] == "daily") {
+        
+		$initialHourstart = 0;
 
         //Set the occurance interval
         
-        if ($frm['duration'] == "week") $numdays = 7;
+        if ($frm['frequency'] == "week") $numdays = 7;
         
-        if ($frm['duration'] == "month") $numdays = 30;
+        elseif ($frm['frequency'] == "month") $numdays = 30;
         
-        if ($frm['duration'] == "year") $numdays = 365;
+        elseif ($frm['frequency'] == "year") $numdays = 365;
+
+	if (isDebugEnabled(1)) logMessage("court_reservation.booking a weekly reservation: ". $numdays);
+
         for ($i = 0; $i < $numdays; $i++) {
             $nextday = gmmktime(gmdate("H", $frm['time']) , gmdate("i", $frm['time']) , gmdate("s", $frm['time']) , gmdate("n", $frm['time']) , gmdate("j", $frm['time']) + $i, gmdate("Y", $frm['time']));
 
@@ -963,21 +1007,63 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
                 $startday = $nextday;
                 $initialHourstart = $courtHourArray["hourstart"];
             }
+
             
             if (!isCourtAlreadyReserved($frm['courtid'], $nextday)) {
 
                 //Add as reservation
                 $resquery = "INSERT INTO tblReservations (
-					                 courtid, eventid, time, lastmodifier, creator, locked
+					                 courtid, eventid, time, lastmodifier, creator, locked, matchtype, duration
 					                 ) VALUES (
 					                           '$frm[courtid]'
 					                           ,'$frm[eventid]'
 					                           ,$nextday
 											   , " . get_userid() . "
 											   , " . get_userid() . "
-											   , '$locked')";
+											   , '$locked'
+											   , '$frm[matchtype]'
+											   , $duration)";
                 $resresult = db_query($resquery);
-            }
+
+					//Now we need to get the reservationid.  (This is what we just inserted )
+				    $residquery = "SELECT reservationid FROM tblReservations WHERE courtid= '$frm[courtid]'
+					                       AND time='$nextday' AND enddate IS NULL";
+				    $residresult = db_query($residquery);
+				    $residvarresult = db_fetch_object($residresult);
+					$reservationid = $residvarresult->reservationid;
+					
+				if( isset($frm['playeroneid'])  ){
+
+					if (isDebugEnabled(1)) logMessage("court_reservation:booking for playerone:  $reservationid");	
+					
+					$query = "INSERT INTO tblkpUserReservations (
+					                                reservationid, userid, usertype
+					                                ) VALUES (
+					                                          '$reservationid'
+					                                          ,'$frm[playeroneid]'
+					                                          ,0)";
+
+				        // run the query on the database
+				        $result = db_query($query);
+				}
+					if( isset($frm['playertwoid']) ){
+					 
+					if (isDebugEnabled(1)) logMessage("court_reservation:booking for playertwo: $reservationid");
+					
+						$query = "INSERT INTO tblkpUserReservations (
+							                          reservationid, userid, usertype
+							                           ) VALUES (
+							                                     '$reservationid'
+							                                      ,'$frm[playertwoid]'
+							                                      ,0)";
+
+						 // run the query on the database
+						 $result = db_query($query);
+				}
+
+            }else{
+				if (isDebugEnabled(1)) logMessage("court_reservation:this court is already reserved.");	
+			}
         }
 
         //Add as reoccuring event
@@ -996,12 +1082,13 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 
         //Set the occurance interval
         
-        if ($frm['duration'] == "week") $numdays = 7;
+        if ($frm['frequency'] == "week") $numdays = 7;
         
-        if ($frm['duration'] == "month") $numdays = 30;
+        if ($frm['frequency'] == "month") $numdays = 30;
         
-        if ($frm['duration'] == "year") $numdays = 365;
+        if ($frm['frequency'] == "year") $numdays = 365;
         $initialHourstart = 0;
+
         for ($i = 0; $i < $numdays; $i+= 7) {
             $nextday = gmmktime(gmdate("H", $frm['time']) , gmdate("i", $frm['time']) , gmdate("s", $frm['time']) , gmdate("n", $frm['time']) , gmdate("j", $frm['time']) + $i, gmdate("Y", $frm['time']));
 
@@ -1025,15 +1112,50 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 
                 //Add as reservation
                 $resquery = "INSERT INTO tblReservations (
-			                 courtid, eventid, time, lastmodifier, creator, locked
+			                 courtid, eventid, time, lastmodifier, creator, locked, matchtype, duration
 			                 ) VALUES (
 			                           '$frm[courtid]'
 			                           ,'$frm[eventid]'
 			                           ,$nextday
 									   , " . get_userid() . "
 									   , " . get_userid() . "
-									   , '$locked')";
+									   , '$locked'
+									, '$frm[matchtype]'
+									 , $duration)";
+									
                 $resresult = db_query($resquery);
+
+				//Now we need to get the reservationid.  (This is what we just inserted )
+			    $residquery = "SELECT reservationid FROM tblReservations WHERE courtid= '$frm[courtid]'
+				                       AND time='$nextday' AND enddate IS NULL";
+			    $residresult = db_query($residquery);
+			    $residvarresult = db_fetch_object($residresult);
+				$reservationid = $residvarresult->reservationid;
+				
+				if( isset($frm['playeroneid'])  ){
+
+					$query = "INSERT INTO tblkpUserReservations (
+					                                reservationid, userid, usertype
+					                                ) VALUES (
+					                                          '$reservationid'
+					                                          ,'$frm[playeroneid]'
+					                                          ,0)";
+
+				        // run the query on the database
+				        $result = db_query($query);
+				}
+					if( isset($frm['playertwoid']) ){
+						$query = "INSERT INTO tblkpUserReservations (
+							                          reservationid, userid, usertype
+							                           ) VALUES (
+							                                     '$reservationid'
+							                                      ,'$frm[playertwoid]'
+							                                      ,0)";
+
+						 // run the query on the database
+						 $result = db_query($query);
+				}
+
             }
         }
 
@@ -1054,11 +1176,11 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 
         //Set the occurance interval
         
-        if ($frm['duration'] == "week") $numdays = 7;
+        if ($frm['frequency'] == "week") $numdays = 7;
         
-        if ($frm['duration'] == "month") $numdays = 28;
+        if ($frm['frequency'] == "month") $numdays = 28;
         
-        if ($frm['duration'] == "year") $numdays = 365;
+        if ($frm['frequency'] == "year") $numdays = 365;
         $initialHourstart = 0;
         for ($i = 0; $i < $numdays; $i+= 14) {
             $nextday = gmmktime(gmdate("H", $frm['time']) , gmdate("i", $frm['time']) , gmdate("s", $frm['time']) , gmdate("n", $frm['time']) , gmdate("j", $frm['time']) + $i, gmdate("Y", $frm['time']));
@@ -1083,15 +1205,50 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 
                 //Add as reservation
                 $resquery = "INSERT INTO tblReservations (
-					                 courtid, eventid, time, lastmodifier, creator, locked
+					                 courtid, eventid, time, lastmodifier, creator, locked, matchtype, duration
 					                 ) VALUES (
 					                           '$frm[courtid]'
 					                           ,'$frm[eventid]'
 					                           ,$nextday
 											   , " . get_userid() . "
 											   , " . get_userid() . "
-											   , '$locked')";
+											   , '$locked'
+												, '$frm[matchtype]'
+												, $duration)";
+												
                 $resresult = db_query($resquery);
+
+				//Now we need to get the reservationid.  (This is what we just inserted )
+			    $residquery = "SELECT reservationid FROM tblReservations WHERE courtid= '$frm[courtid]'
+				                       AND time='$nextday' AND enddate IS NULL";
+			    $residresult = db_query($residquery);
+			    $residvarresult = db_fetch_object($residresult);
+				$reservationid = $residvarresult->reservationid;
+					
+				if( isset($frm['playeroneid'])  ){
+
+					$query = "INSERT INTO tblkpUserReservations (
+					                                reservationid, userid, usertype
+					                                ) VALUES (
+					                                          '$reservationid'
+					                                          ,'$frm[playeroneid]'
+					                                          ,0)";
+
+				        // run the query on the database
+				        $result = db_query($query);
+				}
+					if( isset($frm['playertwoid']) ){
+						$query = "INSERT INTO tblkpUserReservations (
+							                          reservationid, userid, usertype
+							                           ) VALUES (
+							                                     '$reservationid'
+							                                      ,'$frm[playertwoid]'
+							                                      ,0)";
+
+						 // run the query on the database
+						 $result = db_query($query);
+				}
+
             }
         }
 
@@ -1112,11 +1269,11 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 
         //Set the occurance interval
         
-        if ($frm['duration'] == "week") $numdays = 1;
+        if ($frm['frequency'] == "week") $numdays = 1;
         
-        if ($frm['duration'] == "month") $numdays = 1;
+        if ($frm['frequency'] == "month") $numdays = 1;
         
-        if ($frm['duration'] == "year") $numdays = 12;
+        if ($frm['frequency'] == "year") $numdays = 12;
         $initialHourstart = 0;
         for ($i = 0; $i < $numdays; $i++) {
             $nextday = gmmktime(gmdate("H", $frm['time']) , gmdate("i", $frm['time']) , gmdate("s", $frm['time']) , gmdate("n", $frm['time']) + $i, gmdate("j", $frm['time']) , gmdate("Y", $frm['time']));
@@ -1141,15 +1298,50 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 
                 //Add as reservation
                 $resquery = "INSERT INTO tblReservations (
-				                 courtid, eventid, time, lastmodifier, creator, locked
+				                 courtid, eventid, time, lastmodifier, creator, locked, matchtype, duration
 				                 ) VALUES (
 				                           '$frm[courtid]'
 				                           ,'$frm[eventid]'
 				                           ,$nextday
 										   , " . get_userid() . "
 										   , " . get_userid() . "
-										   , '$locked')";
+										   , '$locked'
+										   , '$frm[matchtype]'
+									       , $duration)";
+									
                 $resresult = db_query($resquery);
+
+				//Now we need to get the reservationid.  (This is what we just inserted )
+			    $residquery = "SELECT reservationid FROM tblReservations WHERE courtid= '$frm[courtid]'
+				                       AND time='$nextday' AND enddate IS NULL";
+			    $residresult = db_query($residquery);
+			    $residvarresult = db_fetch_object($residresult);
+				$reservationid = $residvarresult->reservationid;
+				
+				if( isset($frm['playeroneid'])  ){
+
+					$query = "INSERT INTO tblkpUserReservations (
+					                                reservationid, userid, usertype
+					                                ) VALUES (
+					                                          '$reservationid'
+					                                          ,'$frm[playeroneid]'
+					                                          ,0)";
+
+				        // run the query on the database
+				        $result = db_query($query);
+				}
+					if( isset($frm['playertwoid']) ){
+						$query = "INSERT INTO tblkpUserReservations (
+							                          reservationid, userid, usertype
+							                           ) VALUES (
+							                                     '$reservationid'
+							                                      ,'$frm[playertwoid]'
+							                                      ,0)";
+
+						 // run the query on the database
+						 $result = db_query($query);
+				}
+
             }
         }
 

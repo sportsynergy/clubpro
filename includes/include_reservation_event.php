@@ -57,14 +57,13 @@ function onEventCancelButtonClicked(){
 }
 </script>
 
-<form name="reservation_form" method="post" action="<?=$ME?>"  autocomplete="off">
+<form name="event_reservation_form" method="post" action="<?=$ME?>"  autocomplete="off">
   <table cellspacing="10" cellpadding="0" width="400" class="tabtable" id="event_formtable">
     <tr>
       <td class="label">Event:</td>
       <td><select name="eventid">
-          <option value="">Select Option</option>
-          <option value="">----------------------------</option>
-          <?  //Get Club Players
+        
+          <? 
                $eventDrpDown = get_site_events(get_siteid());
 
 
@@ -88,9 +87,7 @@ function onEventCancelButtonClicked(){
     </tr>
     <tr>
       <td class="label">Frequency:</td>
-      <td><select name="frequency">
-          <option value="">Select Option</option>
-          <option value="">----------------------------</option>
+      <td><select name="frequency" disabled="true">
           <option value="week">For a Week</option>
           <option value="month">For a Month</option>
           <option value="year">For a Year</option>
@@ -112,4 +109,5 @@ function onEventCancelButtonClicked(){
   <input type="hidden" name="time" value="<?=$_REQUEST["time"]?>">
   <input type="hidden" name="courtid" value="<?=$_REQUEST["courtid"]?>">
   <input type="hidden" name="action" value="create">
+  <input type="hidden" name="matchtype" value="0">
 </form>

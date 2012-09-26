@@ -74,11 +74,27 @@ pat_autocomplete(array(
 
                 </script></td>
     </tr>
-	
+	<tr>
+      <td class="label">Match Type:</td>
+      <td><select name="matchtype" onchange="disablePlayerDropDownWithSoloSelection(this);onlyAllowLessonReoccuring(this)">
+          <? if( isSiteBoxLeageEnabled() ){ ?>
+          <option value="1">Box League</option>
+          <? } ?>
+          <? if ( isPointRankingScheme() ) {?>
+          <option value="2">Challenge</option>
+          <? } ?>
+          <? if( get_roleid() ==2 || get_roleid()==4) {?>
+          <option value="4">Lesson</option>
+          <? } ?>
+          <option value="0" selected>Practice</option>
+          <option value="5">Solo</option>
+        </select></td>
+      <td></td>
+    </tr>
 	<? if( get_roleid()==2 || get_roleid()==4) {?>
 		<tr>
 	      <td class="label">Repeat:</td>
-	      <td><select name="repeat" onchange="disableSinglesOptions(this)">
+	      <td><select name="repeat" onchange="disableSinglesOptions(this)" disabled="true">
 	          <option value="norepeat">None</option>
 	          <option value="daily">Daily</option>
 	          <option value="weekly">Weekly</option>
@@ -129,23 +145,7 @@ pat_autocomplete(array(
 	</tr>
 	<? } ?>
 	
-    <tr>
-      <td class="label">Match Type:</td>
-      <td><select name="matchtype" onchange="disablePlayerDropDownWithSoloSelection(this)">
-          <? if( isSiteBoxLeageEnabled() ){ ?>
-          <option value="1">Box League</option>
-          <? } ?>
-          <? if ( isPointRankingScheme() ) {?>
-          <option value="2">Challenge</option>
-          <? } ?>
-          <? if( get_roleid() ==2 || get_roleid()==4) {?>
-          <option value="4">Lesson</option>
-          <? } ?>
-          <option value="0" selected>Practice</option>
-          <option value="5">Solo</option>
-        </select></td>
-      <td></td>
-    </tr>
+    
     <tr>
       <td colspan="2"><span class="normalsm"> To book a reservation, type in the name of the each player then select from the list.
         For more infomation on the match types, click <a href="../help/squash-matchtypes.html?iframe=true&width=600&height=450" rel="prettyPhoto[iframe]">here</a>.
@@ -172,6 +172,7 @@ pat_autocomplete(array(
     </tr>
   </table>
   <input type="hidden" name="courttype" value="singles">
+  <input type="hidden" name="eventid" value="0">
   <input type="hidden" name="time" value="<?=$_REQUEST["time"]?>">
   <input type="hidden" name="courtid" value="<?=$_REQUEST["courtid"]?>">
   <input type="hidden" name="action" value="create">

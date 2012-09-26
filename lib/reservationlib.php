@@ -410,7 +410,7 @@ function isCourtAlreadyReserved($courtid, $time) {
         return true;
     }
 }
-/**
+/*
  Checks to see if there are any straglers in a singles reservation
  */
 function isSinglesReservationNeedPlayers($time, $courtid) {
