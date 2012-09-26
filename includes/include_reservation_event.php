@@ -57,7 +57,7 @@ function onEventCancelButtonClicked(){
 }
 </script>
 
-<form name="event_reservation_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
+<form name="reservation_form" method="post" action="<?=$ME?>"  autocomplete="off">
   <table cellspacing="10" cellpadding="0" width="400" class="tabtable" id="event_formtable">
     <tr>
       <td class="label">Event:</td>
@@ -78,8 +78,6 @@ function onEventCancelButtonClicked(){
     <tr>
       <td class="label">Repeat:</td>
       <td><select name="repeat" onchange="disableEventOptions(this)">
-          <option value="">Select Option</option>
-          <option value="">----------------------------</option>
           <option value="norepeat">None</option>
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
@@ -89,8 +87,8 @@ function onEventCancelButtonClicked(){
         </select></td>
     </tr>
     <tr>
-      <td class="label">Duration:</td>
-      <td><select name="duration">
+      <td class="label">Frequency:</td>
+      <td><select name="frequency">
           <option value="">Select Option</option>
           <option value="">----------------------------</option>
           <option value="week">For a Week</option>

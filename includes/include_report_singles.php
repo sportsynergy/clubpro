@@ -87,7 +87,7 @@ function enableMatchType()
                  ?>
 
                 </script></td>
-      <td><span class="label"">Defeated</span></td>
+      <td><span class="label">Defeated</span></td>
       <td><input id="name2" name="playertwoname" type="text" size="30" class="form-autocomplete" onchange="enableMatchType()"/>
         <input id="id2" name="player2" type="hidden" />
         <script>

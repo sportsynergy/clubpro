@@ -904,7 +904,8 @@ function insert_reservation(&$frm) {
 function makeEventReservation(&$frm) {
     
     if (isDebugEnabled(1)) logMessage("court_reservation.MakeEventReservation: Making an Event Reservation");
-    $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
+    
+$clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
     $clubresult = db_query($clubquery);
     $clubobj = db_fetch_object($clubresult);
     $courtid = $frm['courtid'];

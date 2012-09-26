@@ -145,15 +145,14 @@ function unsetplayerfour(fieldname)
        }
 }
 
-function disableEventOptions(repeat)
+function disableSinglesOptions(repeat)
 {
-    if(repeat.value == "norepeat"){
-       document.entryform.duration.disabled = true;
-     }
-     else{
-      document.entryform.duration.disabled = "";
-     }
-        
+   if(repeat.value == "norepeat"){
+       document.singlesform.duration.disabled = true;
+   }
+   else{
+      document.singlesform.duration.disabled = "";
+   }       
 }
 
 function disableEventOptions(repeat)

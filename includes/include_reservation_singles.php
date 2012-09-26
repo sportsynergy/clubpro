@@ -74,7 +74,31 @@ pat_autocomplete(array(
 
                 </script></td>
     </tr>
-
+	
+	<? if( get_roleid()==2 || get_roleid()==4) {?>
+		<tr>
+	      <td class="label">Repeat:</td>
+	      <td><select name="repeat" onchange="disableSinglesOptions(this)">
+	          <option value="norepeat">None</option>
+	          <option value="daily">Daily</option>
+	          <option value="weekly">Weekly</option>
+	          <option value="biweekly">Bi-Weekly</option>
+	          <option value="monthly">Monthly</option>
+	          <?err($errors->repeat)?>
+	        </select></td>
+	    </tr>
+		<tr>
+	      <td class="label">Frequency:</td>
+	      <td><select name="frequency" disabled="true">
+	          <option value="">Select Option</option>
+	          <option value="">----------------------------</option>
+	          <option value="week">For a Week</option>
+	          <option value="month">For a Month</option>
+	          <option value="year">For a Year</option>
+	          <?err($errors->duration)?>
+	        </select></td>
+	    </tr>
+	<? } ?>
 
 	<? if($variableDuration == 'y') { ?>
 	<tr> 
