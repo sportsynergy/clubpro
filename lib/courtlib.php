@@ -42,9 +42,6 @@
 */
 function resetReservationPointer($variableduration, $courtdur, $reservationdur, $time){
 	
-		//set the duration
-		if($variableduration == 'y'){
-		
 		//existing reservations on these courts mightn't have the reservationdur set
 		if($reservationdur == null){
 			return $time;
@@ -52,7 +49,6 @@ function resetReservationPointer($variableduration, $courtdur, $reservationdur, 
 		
 			$time = $time - $courtdur*3600;
 			$time = $time + $reservationdur;
-		}
 		
 		return $time;
 }

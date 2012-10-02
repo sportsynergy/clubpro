@@ -94,6 +94,40 @@ function onEventCancelButtonClicked(){
           <?err($errors->duration)?>
         </select></td>
     </tr>
+	<tr> 
+		 <td class="label">Duration:</td>
+		 <td>
+			<select name="duration">
+				<?
+				$timetonext = $nexttime - $time; 
+				
+				if($timetonext == 900 ){ ?>
+					<option value=".25">15 Minutes</option>
+				<?}
+				
+				if($timetonext >= 1800 || $nexttime == null ){ ?>
+					<option value=".5">30 Minutes</option>
+				<?}
+					
+				if($timetonext >= 2700 || $nexttime == null){ ?>
+					<option value=".75">45 Minutes</option>
+				<?}
+						
+				if($timetonext >= 3600 || $nexttime == null){ ?>
+					<option value="1">60 Minutes</option>
+				<? } 
+
+				if($timetonext >= 7200 || $nexttime == null){ ?>
+					<option value="2">2 Hours</option>
+				<? } 
+				
+				if($timetonext >= 10800 || $nexttime == null){ ?>
+					<option value="3">3 Hours</option>
+				<? } ?>
+					
+			</select>
+			</td>
+	</tr>
     <tr>
       <td colspan="2"><input type="checkbox" name="lock" />
         <span class="normal">Lock reservation</span></td>

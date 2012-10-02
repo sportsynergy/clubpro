@@ -43,10 +43,11 @@ if (isset($searchname)) {
     $errormsg = validate_form($searchname);
     $backtopage = $_SESSION["CFG"]["wwwroot"] . "/admin/player_admin.php";
     
+
     if (empty($errormsg)) {
         $playerResults = get_admin_player_search($searchname);
         include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
-        print_players($searchname, $playerResults, $DOC_TITLE, $ME);
+        print_players($backtopage, $playerResults, $DOC_TITLE, $ME);
         include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
         die;
     }
@@ -83,8 +84,8 @@ function validate_form($searchname) {
  * @param $DOC_TITLE
  * @param $ME
  */
-function print_players($searchname, $playerresult, $DOC_TITLE, $ME) {
-    
+function print_players($backtopage, $playerresult, $DOC_TITLE, $ME) {
+     
     if (mysql_num_rows($playerresult) < 1) {
         $errormsg = "Sorry, no results found.";
         include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
@@ -133,7 +134,7 @@ function print_players($searchname, $playerresult, $DOC_TITLE, $ME) {
       <td colspan="2"><div align="center"> <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/change_settings.php')">Edit</a> | <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_delete.php')">Delete</a> </div></td>
       <input type="hidden" name="userid" value="<?=$row['userid']?>">
       <input type="hidden" name="searchname" value="<?=$searchname?>">
-      <input type="hidden" name="DOC_TITLE" value="Player Administration">
+
     </form>
   </tr>
   <?
