@@ -79,6 +79,7 @@
                   <option value="0">Female</option>
                 </select></td>
             </tr>
+
             <tr>
               <td class="label"><? if(isSiteAutoLogin()){ ?>
                 <span class="warning">* </span>
@@ -130,7 +131,7 @@
               <td class="label"><? echo "$availbleSportsArray[courttypename] Ranking" ?>:</td>
               <td><input type="text"
 					name="<? echo "courttype$availbleSportsArray[courttypeid]"?>"
-					size=15 value=""></td>
+					size="15" value="3"></td>
             </tr>
             <?
 			//While closing bracket - DO NOT remove
@@ -169,10 +170,13 @@
               <td class="label" valign="top">User Type:</td>
               <td><select name="usertype">
                   <option value="1">Player</option>
-                  <option value="5">Limited Access Player</option>
+				  <option value="6">Junior</option>
                   <option value="4">Desk User</option>
                   <option value="2">Club Admin</option>
                 </select></td>
+            </tr>
+			<tr>
+              <td colspan="2"><span class="italitcsm">Most regular members will should be set up as "Players".   Use the Junior user type for kids who may not have their own email address.  Desk Users are those guys who generally make reservation on behalf of other people.  Finally, Club Admins are for the racquet pros and or other folks who administer the system for the club.</span></td>
             </tr>
             <tr>
               <td colspan="2" height="20"></td>

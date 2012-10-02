@@ -213,7 +213,7 @@ function onSubmitButtonClicked(){
             <td>
             		<select name="roleid"> 
                         <option value="1" <? if($frm["roleid"]==1) print "selected" ?> >Player</option>
-                        <option value="5" <? if($frm["roleid"]==5) print "selected" ?>>Limited Access Player</option>
+                        <option value="6" <? if($frm["roleid"]==6) print "selected" ?>>Junior</option>
                         <option value="4" <? if($frm["roleid"]==4) print "selected" ?>>Desk User</option>
                         <option value="2" <? if($frm["roleid"]==2) print "selected" ?> >Club Admin</option>
                       </select>

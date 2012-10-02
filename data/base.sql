@@ -808,7 +808,8 @@ INSERT INTO `tblRoles` (`roleid`, `rolename`, `roleaccesslevel`, `lastmodified`)
 (2, 'Club Administrator', 2, '0000-00-00 00:00:00'),
 (3, 'System Administrator', 3, '0000-00-00 00:00:00'),
 (4, 'Desk User', 4, '2009-02-17 13:55:11'),
-(5, 'Limited Access Player', 5, '2009-02-17 13:55:11');
+(5, 'Limited Access Player', 5, '2009-02-17 13:55:11'),
+(6, 'Junior', 6, '2009-02-17 13:55:11'),;
 
 -- --------------------------------------------------------
 

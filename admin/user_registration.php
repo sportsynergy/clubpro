@@ -42,7 +42,7 @@ $extraParametersResult = load_site_parameters();
 
 /* form has been submitted, try to create the new user account */
 
-if (match_referer() && isset($_POST)) {
+if (match_referer() && isset($_POST['username'])) {
     $frm = $_POST;
     $errormsg = validate_form($frm, $errors);
     
@@ -93,6 +93,7 @@ function validate_form(&$frm, &$errors) {
         $msg.= "Please enter a valid email address";
     } elseif (!empty($frm["email"])) {
         
+		if($frm["usertype"]=="6") return;
         if (!isEmailUniqueAtClub($frm["email"], get_clubid())) {
             $errors->email = true;
             $msg.= "The email address <b>" . ov($frm["email"]) . "</b> already exists";

@@ -30,11 +30,7 @@
 * Function list:
 * Classes list:
 */
-/*
- * $LastChangedRevision: 642 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2008-12-28 20:32:46 -0600 (Sun, 28 Dec 2008) $
-*/
+
 ?>
 <table cellspacing="0" cellpadding="0" border="0" width="710" align="center">
   <tr>
