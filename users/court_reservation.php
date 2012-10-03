@@ -938,8 +938,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 							   , '$frm[matchtype]'
 							   , $duration)";
 							
-		if (isDebugEnabled(1)) logMessage($resquery);	
-						
+				
         $resresult = db_query($resquery);
 
 		//Now we need to get the reservationid.  (This is what we just inserted )
@@ -973,6 +972,8 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 				 $result = db_query($query);
 		}
 
+
+		confirm_singles($reservationid, true);
 
     // Add the daily event
     if ($frm['repeat'] == "daily") {
@@ -1060,6 +1061,11 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 						 // run the query on the database
 						 $result = db_query($query);
 				}
+				
+					//Send out confirmation
+					if( isset($frm['playeroneid']) ||  isset($frm['playertwoid']) ){
+							confirm_singles($reservationid, true);
+					}
 
             }else{
 				if (isDebugEnabled(1)) logMessage("court_reservation:this court is already reserved.");	
@@ -1068,12 +1074,12 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 
         //Add as reoccuring event
         $reoccuringQuery = "INSERT INTO tblReoccuringEvents (
-						courtid, eventinterval, starttime, endtime
-						) VALUES (
-		$frm[courtid],
-							86400,
-		$startday,
-		$nextday)";
+								courtid, eventinterval, starttime, endtime
+							) VALUES (
+								$frm[courtid],
+								86400,
+								$startday,
+								$nextday)";
         db_query($reoccuringQuery);
     }
 
@@ -1155,19 +1161,23 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 						 // run the query on the database
 						 $result = db_query($query);
 				}
-
+				
+				//Send out confirmation
+				if( isset($frm['playeroneid']) ||  isset($frm['playertwoid']) ){
+						confirm_singles($reservationid, true);
+				}
+			
             }
         }
 
         //Add as reoccuring event
         $reoccuringQuery = "INSERT INTO tblReoccuringEvents (
-						courtid, eventinterval, starttime, endtime
-						) VALUES (
-		$frm[courtid],
-							604800,
-		$startday,
-		$nextday
-						)";
+								courtid, eventinterval, starttime, endtime
+									) VALUES (
+										$frm[courtid],
+										604800,
+										$startday,
+										$nextday)";
         db_query($reoccuringQuery);
     }
 
@@ -1248,19 +1258,23 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 						 // run the query on the database
 						 $result = db_query($query);
 				}
+				
+					//Send out confirmation
+					if( isset($frm['playeroneid']) ||  isset($frm['playertwoid']) ){
+							confirm_singles($reservationid, true);
+					}
 
             }
         }
 
         //Add as reoccuring event
         $reoccuringQuery = "INSERT INTO tblReoccuringEvents (
-						courtid, eventinterval, starttime, endtime
-						) VALUES (
-		$frm[courtid],
-							604800,
-		$startday,
-		$nextday
-						)";
+								courtid, eventinterval, starttime, endtime
+								) VALUES (
+									$frm[courtid],
+									604800,
+									$startday,
+									$nextday)";
         db_query($reoccuringQuery);
     }
 
@@ -1341,19 +1355,23 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 						 // run the query on the database
 						 $result = db_query($query);
 				}
+				
+					//Send out confirmation
+					if( isset($frm['playeroneid']) ||  isset($frm['playertwoid']) ){
+							confirm_singles($reservationid, true);
+					}
 
             }
         }
 
         //Add as reoccuring event
         $reoccuringQuery = "INSERT INTO tblReoccuringEvents (
-						courtid, eventinterval, starttime, endtime
-						) VALUES (
-		$frm[courtid],
-							2419200,
-		$startday,
-		$nextday
-						)";
+								courtid, eventinterval, starttime, endtime
+							) VALUES (
+								$frm[courtid],
+								2419200,
+								$startday,
+								$nextday)";
         db_query($reoccuringQuery);
     }
 }
@@ -1519,7 +1537,7 @@ function makeDoublesReservation($frm, $guesttype, $reservationid) {
 }
 /**
  * Make a plain old singles reservation.  Thats right, a plain old singles reservation
- * This taks a form object, a guesttype, and the reservationid
+ * This takes a form object, a guesttype, and the reservationid
  */
 function makeSinglesReservation($frm, $guesttype, $reservationid) {
     $playerone = $frm['playeroneid'];
@@ -1583,7 +1601,9 @@ function makeSinglesReservation($frm, $guesttype, $reservationid) {
                                   ,'$reservationid')";
             $result = db_query($query);
         }
-        confirm_singles($reservationid, true);
+        
+		confirm_singles($reservationid, true);
+
     } elseif ($guesttype == 1) {
 
         // playeronename wont' be set with regular players, its disabled.

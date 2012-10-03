@@ -1499,10 +1499,6 @@ function confirm_singles($resid, $isNewReservation) {
 
         //If they don't even bother to put in an email address
         //don't waste your time trying to send them an email.
-
-        //print "This is my email: $emailidrow[4]\n";
-
-        
         if (!empty($emailidrow[4])) {
             $to_emails[$emailidrow[4]] = array(
                 'name' => $emailidrow[2]
