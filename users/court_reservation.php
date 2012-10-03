@@ -856,7 +856,7 @@ function insert_reservation(&$frm) {
         $lock = "y";
     }
 
-	if( isset($frm['duration'])  && $frm['duration']) != 0 ){
+	if( isset($frm['duration'])  && $frm['duration'] != 0 ){
 		$duration = $frm['duration'] * 3600;
 	}else{
 		$duration = "NULL";
