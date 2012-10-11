@@ -42,7 +42,7 @@ $extraParametersResult = load_site_parameters();
 
 /* form has been submitted, try to create the new user account */
 
-if (match_referer() && isset($_POST['username'])) {
+if (match_referer() && isset($_POST['username']) || isset($_POST['memberid']) ) {
     $frm = $_POST;
     $errormsg = validate_form($frm, $errors);
     
