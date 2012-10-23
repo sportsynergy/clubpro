@@ -1062,10 +1062,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 						 $result = db_query($query);
 				}
 				
-					//Send out confirmation
-					if( isset($frm['playeroneid']) ||  isset($frm['playertwoid']) ){
-							confirm_singles($reservationid, true);
-					}
+
 
             }else{
 				if (isDebugEnabled(1)) logMessage("court_reservation:this court is already reserved.");	
@@ -1162,10 +1159,6 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 						 $result = db_query($query);
 				}
 				
-				//Send out confirmation
-				if( isset($frm['playeroneid']) ||  isset($frm['playertwoid']) ){
-						confirm_singles($reservationid, true);
-				}
 			
             }
         }
@@ -1259,10 +1252,6 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 						 $result = db_query($query);
 				}
 				
-					//Send out confirmation
-					if( isset($frm['playeroneid']) ||  isset($frm['playertwoid']) ){
-							confirm_singles($reservationid, true);
-					}
 
             }
         }
@@ -1356,10 +1345,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 						 $result = db_query($query);
 				}
 				
-					//Send out confirmation
-					if( isset($frm['playeroneid']) ||  isset($frm['playertwoid']) ){
-							confirm_singles($reservationid, true);
-					}
+
 
             }
         }
