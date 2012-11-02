@@ -544,6 +544,7 @@ function require_loginwq() {
         redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
     }
 }
+
 /**
  * this function simply returns the clubid.
  */
@@ -628,7 +629,6 @@ function get_facebookurl() {
     return $_SESSION["siteprefs"]["facebookurl"];
 }
 function isLiteVersion() {
-
     /* this function returns if the site is the free version. */
     return $_SESSION["siteprefs"]["isliteversion"] == 'y' ? true : false;
 }
@@ -641,6 +641,14 @@ function isNearRankingAdvertising() {
 function isDisplaySiteNavigation() {
     return $_SESSION["siteprefs"]["displaysitenavigation"] == 'y' ? true : false;
 }
+
+/**
+ * this function simply returns the reminders.
+ */
+function get_reminders() {
+    return $_SESSION["siteprefs"]["reminders"];
+}
+
 function get_roleid() {
 
     /* this function simply returns the roleid. */
@@ -2605,7 +2613,7 @@ function record_score(&$frm, $source) {
 }
 
 
-/**
+/*
  This is done using the USSRA rating system.  This is calculated using the
  following formula:
  --------------------------------------------------------------------------
@@ -2639,7 +2647,7 @@ function calculateRankings($winnerOldRanking, $losersOldRanking) {
 }
 
 
-/**
+/*
  * This is the function used by the box leagues to record how many
  * matches people have played. First we read in the previous games
  * played value for both the person calling this function as 
@@ -4995,6 +5003,7 @@ function getSitePreferencesForCourt($courtid) {
 					sites.displayrecentactivity,
 					sites.challengerange,
 					sites.facebookurl,
+					sites.reminders,
 					clubs.clubname
 	        FROM tblClubSites sites, tblCourts courts, tblClubs clubs
 			WHERE sites.siteid = courts.siteid
@@ -5047,6 +5056,7 @@ function getSitePreferences($siteid) {
 					sites.rankingscheme,
 					sites.challengerange,
 					sites.facebookurl,
+					sites.reminders,
 					clubs.clubname
 	        FROM tblClubSites sites, tblClubs clubs
 			WHERE sites.siteid = '$siteid'
@@ -5408,7 +5418,7 @@ function getFullNameForUserId($userId){
 	 
 }
 
-/**
+/*
  This will return the full name of a and espcaes ', ", and a few others.  Use when putting
  output in database.
  */

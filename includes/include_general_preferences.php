@@ -131,7 +131,7 @@
                 </input>
               </div></td>
           <tr>
-            <td colspan="2" class="spacer"><span class="normal"> If you have a facebook page for your club, you can slap that link here and this will display in the 
+            <td colspan="2" class="spacer"><span class="normal"> If you have a facebook page for your club, you can put that link here and this will display in the 
               top left corner of every page. </span>
               <div class="spacer"/></td>
           </tr>
@@ -158,6 +158,25 @@
               <div class="spacer"/></td>
           </tr>
           <? } ?>
+		 <tr>
+            <td class="label">Email Reminders:</td>
+            <td>
+				<select name="reminders">
+					<option value="">none</option>
+					<option value="24" <?=$generalPreferences["reminders"]=='24' ? "selected":""?> >24 Hours Ahead</option>
+               		<option value="5" <?=$generalPreferences["reminders"]=='5' ? "selected":""?> >5:00 am</option>
+					<option value="6" <?=$generalPreferences["reminders"]=='6' ? "selected":""?> >6:00 am</option>
+					<option value="7" <?=$generalPreferences["reminders"]=='7' ? "selected":""?> >7:00 am</option>
+					<option value="8" <?=$generalPreferences["reminders"]=='8' ? "selected":""?> >8:00 am</option>
+					<option value="9" <?=$generalPreferences["reminders"]=='9' ? "selected":""?> >9:00 am</option>
+					<option value="10" <?=$generalPreferences["reminders"]=='10' ? "selected":""?> >10:00 am</option>
+              	</select>
+			</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="spacer"><span class="normal"> This option is for when the email reminders for any upcoming matches will be sent out to the players. Set it to none to disable this option. </span>
+              <div class="spacer"/></td>
+          </tr>
           <tr>
             <td colspan="2"><input type="button" name="submit" value="Update  General Preferences" id="general-submitbutton"></td>
           </tr>

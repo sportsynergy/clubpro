@@ -97,11 +97,13 @@ if (isset($_POST['action']) && $_POST['action'] == "removeCourtEvent") {
     $query = "DELETE FROM tblEvents where eventid = $eventid";
     db_query($query);
 }
+
 $reservationPolicies = load_reservation_policies(get_siteid());
 $skillRangePolicies = load_skill_range_policies(get_siteid());
 $scrollingMessages = load_scrolling_messages(get_siteid());
 $generalPreferences = load_general_preferences(get_siteid());
 $courtEvents = load_court_events(get_siteid());
+
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/policy_preferences_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
@@ -241,7 +243,8 @@ function load_general_preferences($siteid) {
         						clubsite.allowselfscore, 
         						clubsite.displayrecentactivity,
         						clubsite.challengerange,
-        						clubsite.facebookurl
+        						clubsite.facebookurl,
+								clubsite.reminders
                          FROM tblClubSites clubsite
                          WHERE clubsite.siteid = $siteid");
     return db_fetch_array($qid);
@@ -578,19 +581,17 @@ function update_general_clubprefs(&$frm) {
 				,displayrecentactivity = '$frm[displayrecentactivity]'
 				,challengerange = '$frm[challengerange]'
 				,facebookurl = '$frm[facebookurl]'
+				,reminders = '$frm[reminders]'
                 WHERE siteid = '" . get_siteid() . "'";
 
     // run the query on the database
     $result = db_query($query);
 
-    // Here is a little quirk.  When an administrator sets the player inactivity adjustment, they probably
-    //expect that this be executed starting today, meaning that one month from now people will have their
-
-    //rankings adjusted and 3 weeks from now players may get a warning email sent.  Do to this we have to
-
-    // update the rankings lastupdate time when this value changes since this is how whe know when their ranking
-
-    // was last changed
+    /* Here is a little quirk.  When an administrator sets the player inactivity adjustment, they probably
+    expect that this be executed starting today, meaning that one month from now people will have their
+	rankings adjusted and 3 weeks from now players may get a warning email sent.  Do to this we have to
+	update the rankings lastupdate time when this value changes since this is how whe know when their ranking
+	was last changed */
 
     
     if (getRankingAdjustment() != $frm['inactivity']) {

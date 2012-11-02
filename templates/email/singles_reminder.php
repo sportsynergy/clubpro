@@ -1,0 +1,1 @@
+Just a friendly reminder, you have a $var->matchtype match coming up with $var->otherguy  on $var->courtname at $var->time. Have fun!

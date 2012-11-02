@@ -1,10 +1,4 @@
-<?php
-/**
- * $LastChangedRevision: 814 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-01-26 22:26:08 -0600 (Wed, 26 Jan 2011) $
- */
-?>
+
 </div>
 </div>
 
