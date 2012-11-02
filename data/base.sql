@@ -198,8 +198,9 @@ CREATE TABLE IF NOT EXISTS `tblClubSites` (
   `rankingscheme` enum('point','ladder') NOT NULL DEFAULT 'point',
   `challengerange` tinyint(4) NOT NULL,
   `facebookurl` varchar(255) DEFAULT NULL,
+  `reminders` ENUM(  'none',  '24',  '5',  '6',  '7',  '8',  '9',  '10' ) NOT NULL DEFAULT  'none',
   PRIMARY KEY (`siteid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;
 
 --
 -- Dumping data for table `tblClubSites`
