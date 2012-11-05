@@ -3862,9 +3862,7 @@ function get_sitecode() {
 		return "system";
 	}
 
-	$sitecodequery = "SELECT sitecode from tblClubSites where siteid=$siteid";
-	$sitecodeResult = db_query($sitecodequery);
-	return mysql_result($sitecodeResult, 0);
+	return $_SESSION["siteprefs"]["sitecode"];
 
 }
 
@@ -4984,6 +4982,7 @@ function getSitePreferencesForCourt($courtid) {
 	if( isDebugEnabled(1) ) logMessage("applicationlib.getSitePreferencesForCourt: getting site preferences for site for court: $courtid");
 
 	$query = "SELECT
+					sites.sitecode,
 					sites.siteid, 
 					sites.allowselfcancel, 
 					sites.clubid,
@@ -5037,6 +5036,7 @@ function getSitePreferences($siteid) {
 	if( isDebugEnabled(1) ) logMessage("applicationlib.getSitePreferences: Getting Site Preferences for Site: $siteid");
 
 	$query = "SELECT
+					sites.sitecode,
 					sites.siteid, 
 					sites.allowselfcancel, 
 					sites.clubid,
