@@ -1,5 +1,5 @@
 <div align="left">
-  <form name="entryform" method="post" action="<?=$ME?>">
+  <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
     <table cellspacing="0" cellpadding="20" width="600" class="generictable" id="formtable">
       <tr class="borderow">
         <td class=clubid<?=get_clubid()?>th><span class="whiteh1">
@@ -176,7 +176,7 @@
                 </select></td>
             </tr>
 			<tr>
-              <td colspan="2"><span class="italitcsm">Most regular members will should be set up as "Players".   Use the Junior user type for kids who may not have their own email address.  Desk Users are those guys who generally make reservation on behalf of other people.  Finally, Club Admins are for the racquet pros and or other folks who administer the system for the club.</span></td>
+              <td colspan="2"><span class="italitcsm">Most regular members will should be set up as "Players".   Use the Junior user type for kids who may not have their own email address.  Desk Users are those guys who generally make reservations on behalf of other people, you know, like the people who sit at the front desk.  Finally, Club Admins are for the racquet pros and or other folks who administer the system for the club.</span></td>
             </tr>
             <tr>
               <td colspan="2" height="20"></td>

@@ -176,6 +176,8 @@ YAHOO.example.init = function () {
 
 function onSubmitButtonClicked(){
 
+	var myButton = YAHOO.widget.Button.getButton('submitbutton'); 		
+	myButton.set('disabled', true);
 	document.entryform.cancelall.value=8;
 	submitForm('entryform');
 }
