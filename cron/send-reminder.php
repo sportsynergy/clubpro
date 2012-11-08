@@ -6,7 +6,7 @@ This script runs every minute to send out the reservation reminders
 
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
-
+date_default_timezone_set('GMT');
 
 $service = new ReminderService();
 
@@ -123,7 +123,7 @@ class ReminderService{
 									AND courts.siteid = ".$sites_array['siteid']."
 									AND reservations.guesttype = 0
 									AND reservations.eventid = 0
-									AND reservations.lastmodified > SELECT TIMESTAMPADD(HOUR,-2,NOW())";
+									AND reservations.lastmodified > TIMESTAMPADD(HOUR,-2,NOW())";
 
 			$res_result = db_query($reservations);
 
