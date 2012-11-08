@@ -35,16 +35,17 @@ class ReminderService{
 			$_SESSION["siteprefs"] = $siteprefs;
 						
 			$tzdelta = $sites_array['timezone'] * 3600;
+
 			$curtime = mktime() + $tzdelta;
-						
+		
 			$current_hour = gmdate("G", $curtime);
 			$current_minute = gmdate("i", $curtime);
-						
+
+			if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: current_hour: $current_hour current_minute: $current_minute");
 			if( $current_hour == $sites_array['reminders'] && $current_minute == "00"){
 							
 				//Get all of the reservations for the next 24 hours
 				$in24hours = $curtime + (60*60*24);
-				
 				
 				$reservations = "SELECT reservations.reservationid, 
 									reservations.usertype, 
@@ -63,19 +64,19 @@ class ReminderService{
 
 					$res_result = db_query($reservations);
 
-						if( mysql_num_rows($res_result) == 0 ){
-								continue;
-						}
+					if( mysql_num_rows($res_result) == 0 ){
+							continue;
+					}
 						
-						while( $res_array = mysql_fetch_array($res_result ) ){
+					while( $res_array = mysql_fetch_array($res_result ) ){
 
-							$this->sendReminder($res_array['usertype'],
-										 $res_array['reservationid'],
-										 $res_array['name'],
-										 $res_array['courtname'],
-										 $res_array['time'],
-										 $res_array['clubname']);
-						}	
+						$this->sendReminder($res_array['usertype'],
+									$res_array['reservationid'],
+									$res_array['name'],
+									$res_array['courtname'],
+									$res_array['time'],
+									$res_array['clubname']);
+					}	
 				
 			} 		
 						
@@ -85,6 +86,8 @@ class ReminderService{
 		unset($_SESSION["siteprefs"]);	
 						
 	}
+	
+	
 	
 	public function checkFor24HoursAhead(){
 
@@ -105,9 +108,18 @@ class ReminderService{
 			$tzdelta = $sites_array['timezone'] * 3600;
 			$curtime = mktime() + $tzdelta;
 			
-			$in24hours = $curtime + (60*60*24);
+			$current_hour = gmdate("G", $curtime);
+			$current_minute = gmdate("i", $curtime);
+			$current_month = gmdate("n", $curtime);
+			$current_day = gmdate("j", $curtime);
+			$current_year = gmdate("Y", $curtime);
 
-				if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: target time $in24hours");
+			$interval_time = gmmktime ($current_hour,$current_minute,0,$current_month,$current_day,$current_year)
+			
+			
+			$in24hours = $interval_time + (60*60*24);
+
+			if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: target time $in24hours");
 
 			// Get the reservations 
 			$reservations = "SELECT reservations.reservationid, 
