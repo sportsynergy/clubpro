@@ -1,1 +1,1 @@
-Just a friendly reminder, you and $var->partner have a $var->matchtype match coming up with $var->otherguy1 and $var->otherguy2 on $var->courtname at $var->time. Go get 'em, champ!
+Just a friendly reminder, you and $var->partner have a $var->matchtype match coming up with $var->otherguy1 and $var->otherguy2 on $var->courtname on $var->time. Go get 'em, champ!
