@@ -41,7 +41,8 @@ class ReminderService{
 			$current_hour = gmdate("G", $curtime);
 			$current_minute = gmdate("i", $curtime);
 
-			if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: current_hour: $current_hour current_minute: $current_minute");
+			if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule: current_hour: $current_hour current_minute: $current_minute reminder: ".$sites_array['reminders'] );
+			
 			if( $current_hour == $sites_array['reminders'] && $current_minute == "00"){
 							
 				//Get all of the reservations for the next 24 hours
@@ -75,7 +76,7 @@ class ReminderService{
 									$res_array['name'],
 									$res_array['courtname'],
 									$res_array['time'],
-									$res_array['clubname']);
+									$sites_array['clubname']);
 					}	
 				
 			} 		
@@ -114,12 +115,12 @@ class ReminderService{
 			$current_day = gmdate("j", $curtime);
 			$current_year = gmdate("Y", $curtime);
 
-			$interval_time = gmmktime ($current_hour,$current_minute,0,$current_month,$current_day,$current_year)
+			$interval_time = gmmktime ($current_hour,$current_minute,0,$current_month,$current_day,$current_year);
 			
 			
 			$in24hours = $interval_time + (60*60*24);
 
-			if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: target time $in24hours");
+			if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: checking for reservations at $in24hours");
 
 			// Get the reservations 
 			$reservations = "SELECT reservations.reservationid, 
