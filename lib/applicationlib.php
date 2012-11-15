@@ -1057,7 +1057,6 @@ function email_players($resid, $emailType) {
     //email about a doubles court
     else {
         
-
 		$rquery = "SELECT 
 							courts.courtname, 
 							courts.courttypeid, 
@@ -1164,7 +1163,14 @@ function email_players($resid, $emailType) {
             $var->timestamp = $robj->time;
             $var->time = gmdate("l F j g:i a", $robj->time);
             $extraPlayerArray = mysql_fetch_array($extraPlayerResult);
-            $var->userid = $extraPlayerArray['userid'];
+            
+			// check for invalid reservation
+			if($extraPlayerArray['userid'] == 0){
+				if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: $resid doesn't have any players in it.");
+				return;
+			}
+			
+			$var->userid = $extraPlayerArray['userid'];
             $partnerQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                            FROM tblUsers
                            WHERE tblUsers.userid=$var->userid";

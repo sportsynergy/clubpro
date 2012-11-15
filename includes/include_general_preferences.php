@@ -85,27 +85,8 @@
             <td colspan="2" class="spacer"><span class="normal"> Basically this is the number of days in advance a player can view the court schedule in the drop down on the main scheduling page. </span>
               <div class="spacer"/></td>
           </tr>
-          <tr>
-            <td class="label">Player Inactivty Ranking Adjustment:</td>
-            <td><select name="inactivity">
-                <option value="0" <?=$generalPreferences["rankingadjustment"]==0?"selected":""?>>0%</option>
-                <option value="3" <?=$generalPreferences["rankingadjustment"]==3?"selected":""?>>3%</option>
-                <option value="5" <?=$generalPreferences["rankingadjustment"]==5?"selected":""?>>5%</option>
-                <option value="10" <?=$generalPreferences["rankingadjustment"]==10?"selected":""?>>10%</option>
-                <option value="20" <?=$generalPreferences["rankingadjustment"]==20?"selected":""?>>20%</option>
-                <option value="25" <?=$generalPreferences["rankingadjustment"]==25?"selected":""?>>25%</option>
-              </select></td>
-          </tr>
-          <tr>
-            <td colspan="2" class="spacer"><span class="normal"> This is a friendly way to encourge people to keep playing and recording their scores. If a
-              member does not record a score in thirty days (from the date you set
-              this), their ranking will be adjusted downward by this percentage.
-              Don't worry emails will be sent out to them so that they know. Not
-              only that, a week before we go and adjust their ranking a email will
-              be sent letting them know they need to record a score if they don't
-              want their ranking to be adjust. </span>
-              <div class="spacer"/></td>
-          </tr>
+          
+          
           <tr>
             <td class="label">Allow Players To Score Their Own Reservations:</td>
             <td><select name="allowselfscore">
