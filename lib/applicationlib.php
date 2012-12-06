@@ -763,10 +763,8 @@ function username_already_exists($username, $userid) {
 function email_exists($email) {
 
     /* returns true the email address exists */
-    $query = "SELECT 1 FROM tblUsers users, tblClubUser clubuser
+    $query = "SELECT 1 FROM tblUsers users
 				WHERE users.email = '$email' 
-				AND users.userid = clubuser.userid
-				AND clubuser.clubid = " . get_clubid() . "
 				AND users.enddate IS NULL";
     $qid = db_query($query);
     return db_num_rows($qid);
