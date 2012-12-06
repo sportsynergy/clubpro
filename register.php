@@ -447,7 +447,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/registration_complete.php", $var);
     $emailbody = nl2br($emailbody);
     
-    if (isDebugEnabled(1)) logMessage("register.registerClub: Sent out Confirmation Email...Done");
+    if (isDebugEnabled(1)) logMessage("register.registerClub: Sent out Confirmation Email to ". $var->email);
     
     if (isDebugEnabled(1)) logMessage("register.registerClub: $emailbody");
 
@@ -457,20 +457,12 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     $content->clubname = get_clubname();
 
     //Use default template
-    $template = "sportsynergy";
     $subject = get_clubname() . " - Welcome to Sportsynergy";
-    $to_email = array(
-        '$adminFirstName $adminLastName <$adminEmail>' , array(
-            'name'
-        ) => $adminFirstName
+	$to_email = array(
+        $var->email => array(
+            'name' => $var->firstname
+        )
     );
-	
-	// Was producing an error
-	/*$to_email = array(
-        '$adminFirstName $adminLastName <$adminEmail>' => array(
-            'name'
-        ) => $adminFirstName
-    ));*/
 
     //Send the email
     sendgrid_email($subject, $to_email, $content, "Registration");
