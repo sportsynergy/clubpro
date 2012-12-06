@@ -34,6 +34,8 @@
 * Classes list:
 */
 include ("./application.php");
+require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
+
 $DOC_TITLE = "Register Club";
 
 /* form has been submitted, check if it the user login information is correct */
@@ -116,7 +118,7 @@ function validate_form(&$frm, &$errors) {
         $msg.= "You did not specify your first name.";
     } elseif (email_exists($frm["adminemail"])) {
         $errors->adminemail = true;
-        $msg.= "Whooops!  It looks like this email addres is already in the system.  Something is definitely up here.";
+        $msg.= "Whooops!  It looks like this email addres is already in the system.";
     } elseif (empty($frm['adminlastname'])) {
         $errors->adminlastname = true;
         $msg.= "You did not specify your last name.";
@@ -132,7 +134,7 @@ function validate_form(&$frm, &$errors) {
 function isClubCodeRightLength($clubcode) {
     $length = strlen($clubcode);
     
-    if ($length > 5 && $length < 20) {
+    if ($length > 1 && $length < 20) {
         return true;
     } else {
         
@@ -191,12 +193,6 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     $defaultCloseTime = "22:00:00";
     $defaultAdminRanking = "5";
 
-    //
-    //
-
-    //
-
-    
     if (isDebugEnabled(1)) logMessage("register.registerClub: Club Name: $clubName\nClub Code: $clubCode\n# of Courts:  $numberOfCourts\nCourt Type: $courtType\nAdmin User: $adminUser\nAdmin Pass:$adminPass\nAdmin Email:$adminEmail");
 
     //Get the clubid.  These are not set up as auto increment because
@@ -410,7 +406,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
 
     // Copy standard logo
     
-    if (!copy($_SESSION["CFG"]["dirroot"] . "/clubs/template/0.gif", $_SESSION["CFG"]["dirroot"] . "/clubs/" . $clubCode . "/logo.gif")) {
+    if (!copy($_SESSION["CFG"]["dirroot"] . "/images/0.png", $_SESSION["CFG"]["dirroot"] . "/clubs/" . $clubCode . "/logo.png")) {
         logMessage("Register.registerClub: We ran into a problem copying the default logo");
     }
 
