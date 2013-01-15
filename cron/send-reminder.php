@@ -188,7 +188,7 @@ private function sendReminder($usertype, $reservationid, $matchtype, $courtname,
 	
 private function sendDoublesReminder($reservationid, $matchtype, $courtname, $time, $clubname){
 	
-	if (isDebugEnabled(1)) logMessage("send-reminder.sendDoublesReminder: sending out a doubles reminder");
+	if (isDebugEnabled(1)) logMessage("send-reminder.sendDoublesReminder: sending out a doubles reminder for $clubname");
 	
 	$doubles_query = "SELECT users.firstname, users.lastname, users.email 
 							FROM tblkpUserReservations details
@@ -288,7 +288,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 
 private function sendSinglesReminder($reservationid, $matchtype, $courtname, $time, $clubname){
 	
-	if (isDebugEnabled(1)) logMessage("send-reminder.sendSinglesReminder: sending out a singles reminder");
+	if (isDebugEnabled(1)) logMessage("send-reminder.sendSinglesReminder: sending out a singles reminder for $clubname");
 			
 	$singles_query = "SELECT users.firstname, users.lastname, users.email 
 						FROM tblkpUserReservations details

@@ -579,8 +579,7 @@ if ($clubid) {
 
                                       	$useridresult = getSinglesReservationUser($residobj->reservationid);
                          			   
-                         					
-                                       //$useridarray = db_fetch_array($useridresult);
+        
                                        //All singles reservations are made with a userype of
                                        //0. Doubles with a 1.
                                        if($residobj->usertype==0){
@@ -590,7 +589,7 @@ if ($clubid) {
 
                                                  	$useridarray = db_fetch_array($useridresult);
                                                  	$userid1 = $useridarray['userid']; 
-                                                 	printPartialSinglesReservation($useridarray['userid'], $i, $courtobj->courtid, $residobj->matchtype, false, $residobj->locked, $residobj->creator);
+                                                 	printPartialSinglesReservation($useridarray['userid'], $i, $courtobj->courtid, $residobj->matchtype, false, $residobj->locked, $residobj->creator, $useridarray['ranking']);
 	$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
 	                                                 
                                                      //Display two guys in the reservation
@@ -812,7 +811,7 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
                                                    		
                                                    	     $useridarray = db_fetch_array($useridresult);
                                                    	     $userid = $useridarray['userid'];	
-                                                   	     printPartialSinglesReservation($userid, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, $residobj->creator);
+                                                   	     printPartialSinglesReservation($userid, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, $residobj->creator, $useridarray['ranking']);
 $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                                    }
                                                    else{ 

@@ -728,7 +728,7 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
 /**
  * Prints out a singles reservation if there wasn't more that one person signed up
  */
-function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $inpast, $locked, $creator){
+function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $inpast, $locked, $creator, $ranking){
 	
 	if( isDebugEnabled(1) ) logMessage("courtlib.printPartialSinglesReservation for court $courtid and user $userid");
 	
@@ -768,9 +768,9 @@ function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $i
              <? if(!$inpast){?>
                  
                   <? if($matchtype==5) { ?>
-                 	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>&cmd=cancelall">
+                 	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>&cmd=cancelall" title="ranking: <?=$ranking?>">
                  <? } else {  ?>
-	                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
+	                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>" title="ranking: <?=$ranking?>">
 	              <? } ?> 
 	                
              <? } ?>
