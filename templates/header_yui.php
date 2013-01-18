@@ -103,7 +103,7 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 	include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
 	die;
 } ?>
-	<div id="doc2" class="yui-t1 mainpanel">
+	<div id="doc2" class="yui-t1 mainpanel shadow">
 		<div id="hd">
 			
 			
@@ -213,7 +213,7 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 		</div>
 		<div id="bd">
 			<div class="yui-b">
-				<div style="padding-right: 20px">
+				<div style="padding: 20px">
 					<p>
 						<!-- site-logo -->
 						

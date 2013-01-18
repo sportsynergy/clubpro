@@ -482,11 +482,12 @@ if ($clubid) {
                    	 	$eventStartTime = $curtime;
                    	 }
                    	 
-                   	 echo "<th class=\"blackBackGround\"><a href=\"$wwwroot/admin/event_load.php?time=$eventStartTime&courtid=$courtobj->courtid\">$courtobj->courtname</a></th>";
+                   	 echo "<th class=\"blackBackGround white\"><a href=\"$wwwroot/admin/event_load.php?time=$eventStartTime&courtid=$courtobj->courtid\">$courtobj->courtname</a></th>";
                    }
-                   else{
-                   	 echo "<th>$courtobj->courtname</th>";
-                   }
+                   else{ ?>
+                   	 	<th class="white"><?=$courtobj->courtname?></th>
+                   <?
+					}
                  
                   echo "</tr>\n";
 				 

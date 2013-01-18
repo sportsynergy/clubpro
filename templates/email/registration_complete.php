@@ -1,4 +1,3 @@
-$var->firstname,
 
 Well, we're all done on our end.  You can log in to your brand spanking new online court reservation system.
 

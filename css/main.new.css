@@ -1,6 +1,10 @@
 
 /**********General***************************************************/
 
+.shadow {
+-moz-box-shadow: 0 0 30px 5px #999;
+-webkit-box-shadow: 0 0 30px 5px #999;
+}
 .hideme{
 	display: none;	
 }
@@ -10,11 +14,17 @@
 }
 
 body{
-	margin-top: 15px;
-	margin-bottom: 15px;	
+	margin:0;
+	padding:0;
+	background-color: #e5e5e5;
+	min-height:100%;	
 	font-family: Arial, Helvetica, sans-serif;
 }
-
+#doc2{
+	padding:10px;
+	background-color:#ffffff;
+	min-height:90%;
+}
 .required{
 	color: red;	
 }
@@ -169,7 +179,9 @@ th{
 	text-decoration: none;
 }
 
-
+.white {
+	background-color: #FFFFFF;
+}
 
 /********* For Tables *********************************************************/
 table.activitytable {
@@ -188,6 +200,7 @@ table.scheduletable {
 	border-collapse: collapse;
 	border: 1px solid #000000;
 }
+
 
 table.scheduletable th, table.scheduletable td  {
 	border-top:1px solid #000000;
