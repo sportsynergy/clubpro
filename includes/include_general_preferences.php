@@ -65,7 +65,7 @@
               <div class="spacer"/></td>
           </tr>
           <tr>
-            <td class="label">How far in advanced Players can make a reservation:</td>
+            <td class="label">How Far In Advanced Players Can Make A Reservation:</td>
             <td><select name="daysahead">
                 <? for($i=1; $i<30; ++$i){ ?>
                 <?

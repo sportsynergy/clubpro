@@ -1,13 +1,5 @@
-<?
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
 
-*/
-?>
-
- <div id="policy" class="yui-navset">
+ <div id="policy" class="yui-navset" style="width: 680px">
     <ul class="yui-nav">
     	<li class="selected"><a href="#general" onclick="clearMessage()"><em>General Preferences</em></a></li>
         <li ><a href="#skill" onclick="clearMessage()"><em>Skill Range Policies</em></a></li>

@@ -213,7 +213,7 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 		</div>
 		<div id="bd">
 			<div class="yui-b">
-				<div style="padding: 20px">
+				<div style="padding-right: 20px">
 					<p>
 						<!-- site-logo -->
 						
@@ -232,7 +232,7 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 					
 					
 					
-					
+	<div style="padding: 15px">				
     <?php if( isSystemAdministrationConsole() ){ ?>
     <p>
       <?php include($_SESSION["CFG"]["includedir"]."/include_admin_activity.php"); ?>
@@ -251,6 +251,9 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
     </p>
     <?php } ?>
     <?php } ?>
+	</div>
+
+
   </div>
 			</div>
 
