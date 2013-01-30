@@ -224,7 +224,7 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
       <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/images/0.gif" width="148" height="148" />
       <?php } else{ ?>
       <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?php echo get_sitecode(); ?>" >
-      	<img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/logo.png" width="148" height="148" />
+      	<img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/logo.png"  />
       </a>
       <?php } ?>
     </p>
@@ -232,7 +232,7 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 					
 					
 					
-	<div style="padding: 15px">				
+	<div style="padding-left: 15px">				
     <?php if( isSystemAdministrationConsole() ){ ?>
     <p>
       <?php include($_SESSION["CFG"]["includedir"]."/include_admin_activity.php"); ?>

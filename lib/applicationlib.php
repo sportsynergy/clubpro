@@ -986,16 +986,21 @@ function email_players($resid, $emailType) {
 	                       AND clubuser.clubid=" . get_clubid() . "
 	                       AND clubuser.recemail='y'
 	                       AND rankings.courttypeid=$robj->courttypeid
+						   AND rankings.usertype = 0
 	                       AND users.userid != " . get_userid() . "
 	                       AND clubuser.enable= 'y'
 						   AND clubuser.enddate IS NULL";
+						
         } elseif ($emailType == "2") {
             $emailidquery = "SELECT users.firstname, users.lastname, users.email
-			                        FROM tblUsers users, tblBuddies buddies, tblClubUser clubuser
+			                        FROM tblUsers users, tblBuddies buddies, tblClubUser clubuser, tblUserRankings rankings
 									WHERE users.userid = buddies.buddyid
 			                        AND users.userid = clubuser.userid
 	                                AND clubuser.clubid=" . get_clubid() . "
 			                        AND buddies.userid=" . get_userid() . "
+									AND rankings.courttypeid=$robj->courttypeid
+									AND rankings.usertype = 0
+									AND users.userid = rankings.userid
 			                        AND clubuser.enable= 'y'
 									AND clubuser.enddate IS NULL";
         } elseif ($emailType == "1") {
@@ -1021,6 +1026,7 @@ function email_players($resid, $emailType) {
 				                       AND rankings.ranking<$highrange
 				                       AND clubuser.recemail='y'
 				                       AND rankings.courttypeid=$robj->courttypeid
+									   AND rankings.usertype = 0
 				                       AND users.userid != " . get_userid() . "
 				                       AND clubuser.enable='y'
 									   AND clubuser.enddate IS NULL";
