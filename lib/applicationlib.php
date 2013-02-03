@@ -77,6 +77,10 @@ function sendgrid_email($subject, $to_emails, $content, $category){
     	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) );
     }
 
+	//
+	if (array_key_exists('player.mailer@sportsynergy.net', $to_emails)) {
+	    logMessage("applicationlib.sendgrid_email: sending email to player.mailer" );
+	}
 
 	// To make backwards compatible with postageapp create
 	$toList = array();

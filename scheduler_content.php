@@ -786,6 +786,7 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
                                        if($residobj->eventid){ 
                                      
                                        		printEvent($courtobj->courtid, $i, $residobj->eventid, $residobj->reservationid, true, $residobj->locked);
+											$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                        	
                                        }elseif($residobj->guesttype==1){
                                                     
