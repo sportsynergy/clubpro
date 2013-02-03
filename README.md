@@ -5,4 +5,4 @@ We make software to manage your court schedules, run your leagues and keep your 
 
 About Clubpro
 --------
-Clubpro is our flagship product.
+Clubpro is our product.

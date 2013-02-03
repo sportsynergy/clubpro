@@ -451,8 +451,13 @@ if ($clubid) {
 					
 				  ?>
         <td ><table width=<?=$courtWidth?> cellpadding="0" cellspacing="0" align="center" class="scheduletable" >
-            <tr valign="top" >
-              <th class="ct<?=$ctobj->courttypeid?>cl<?=$clubobj->clubid?>"><?=$ctobj->courttypename?></th>
+          
+ 			<tr valign="top" >
+              <th class="ct<?=$ctobj->courttypeid?>cl<?=$clubobj->clubid?>" style="height: 14px">
+			 	<? if(isDisplayCourtTypeName()=='y'){ ?>
+					<?=$ctobj->courttypename?>
+				<? } ?>	
+				</th>
             </tr>
             <tr>
               <?

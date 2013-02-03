@@ -642,12 +642,14 @@ function isDisplaySiteNavigation() {
     return $_SESSION["siteprefs"]["displaysitenavigation"] == 'y' ? true : false;
 }
 
-/**
- * this function simply returns the reminders.
- */
 function get_reminders() {
     return $_SESSION["siteprefs"]["reminders"];
 }
+
+function isDisplayCourtTypeName() {
+    return $_SESSION["siteprefs"]["displaycourttype"];
+}
+
 
 function get_roleid() {
 
@@ -5013,6 +5015,7 @@ function getSitePreferencesForCourt($courtid) {
 					sites.challengerange,
 					sites.facebookurl,
 					sites.reminders,
+					sites.displaycourttype,
 					clubs.clubname
 	        FROM tblClubSites sites, tblCourts courts, tblClubs clubs
 			WHERE sites.siteid = courts.siteid
@@ -5067,6 +5070,7 @@ function getSitePreferences($siteid) {
 					sites.challengerange,
 					sites.facebookurl,
 					sites.reminders,
+					sites.displaycourttype,
 					clubs.clubname
 	        FROM tblClubSites sites, tblClubs clubs
 			WHERE sites.siteid = '$siteid'
