@@ -5806,7 +5806,8 @@ function getClubEventParticipants($clubeventid){
 			   FROM tblClubEventParticipants participant, tblUsers users
 				WHERE users.userid = participant.userid
 				AND participant.clubeventid = $clubeventid
-				AND participant.enddate is NULL";
+				AND participant.enddate is NULL
+				ORDER BY users.lastname";
 
 	return db_query($query);
 }

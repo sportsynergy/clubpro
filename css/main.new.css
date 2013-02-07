@@ -10,6 +10,15 @@ box-shadow: 0 0 30px 5px #999;
 	display: none;	
 }
 
+.club_event_title{
+	font-size: 32pt;
+	font-weight: bold; 
+}
+
+.club_event_text{
+	font-size:18px;
+}
+
 .mainbody{
 	background-image: url(../images/image001.jpg);
 }
@@ -43,8 +52,7 @@ body{
 .whitenorm { 
 	font-size: 10pt; 
 	font-weight: bold; 
-	color: #FFFFFF; 
-	
+	color: #FFFFFF; 	
 }
 
 h2{ 
@@ -323,9 +331,6 @@ ul.clubnews li{
 padding-bottom: 2px;
 }
 
-ul.whoscoming li {
-padding-bottom: 0px;
-}
 
 ul.ladderactivity li {
 	padding-bottom: 10px;

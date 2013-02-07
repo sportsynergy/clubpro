@@ -1,10 +1,5 @@
 <?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-*/
 
 $clubEvent = mysql_fetch_array($clubEventResult);
 
@@ -100,15 +95,14 @@ document.onkeypress = function (aEvent)
 </form>
 
 
+<div>
 
-		
-
-<div id="leftPanel" style="float:left; width: 330px; margin-right: 20px">
-
-<span class="biglabel"><?=$clubEvent['name']?></span><br/>
+<span class="club_event_title"><?=$clubEvent['name']?></span><br/>
 <span class="italitcsm"><?=formatDateString($clubEvent['eventdate'])?></span>
-<div style="background-color: #DBDDDD; padding: 5px;">
-<span class="normal">
+
+
+<div style="padding: 10px">
+<span class="club_event_text">
 	<?=$clubEvent['description']?>
 </span>
 </div>
@@ -117,7 +111,7 @@ document.onkeypress = function (aEvent)
 </div>
 
 
-<div id="rightPanel" style="float: left">
+<div style="padding-top: 55px">
 <span class="biglabel">Who is coming </span> 
 <? if( is_logged_in() ){
 
@@ -168,35 +162,39 @@ document.onkeypress = function (aEvent)
 </div>
 
 <div id="peoplelistpanel" style="padding-left: 1em; padding-top: 10px;">
-<ul id="peoplelist" class="whoscoming" >
+
 
 <? 
 
 if( mysql_num_rows($clubEventParticipants)==0){ ?>
 	
-	<li>No one has signed up yet. 
+	No one has signed up yet. 
 	
 	<? if( is_logged_in() ){ ?>
 	 	Why don't you be the first one?
 	<? } ?>
 	
-	</li>
-<? }else{
-	while($participant = mysql_fetch_array($clubEventParticipants)){?>
-	<li><?=$participant['firstname']?> <?=$participant['lastname']?> 
 	
-	<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
-	  <span class="normalsm">
-	  <a href="javascript:removeFromEvent(<?=$participant['userid']?>);">
-	 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
-	</a></span>
-	<? }?>
-	</li>
+<? }else{
+	
+	$count = 1;
+	
+	while($participant = mysql_fetch_array($clubEventParticipants)){?>
+		<span class="normalsm" style="white-space:nowrap;"><?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?><?if($count<mysql_num_rows($clubEventParticipants)){print ",";}?></span>
+	
+		<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
+	  		<span class="normalsm">
+	  			<a href="javascript:removeFromEvent(<?=$participant['userid']?>);">
+	 				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
+				</a></span>
+		<? }
+		
+		$count = $count +1;
+		
+		?>
+	
 	<? } }?>
 
-
-
-</ul>
 
 </div>
 
