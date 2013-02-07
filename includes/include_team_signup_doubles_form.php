@@ -158,6 +158,8 @@ function onSubmitButtonClicked(){
 <input type="hidden" name="userid" value="<?=$userid?>">
 <input type="hidden" name="action" value="addteam">
 <input type="hidden" name="lastupdated" value="<?=$lastupdated?>">
+<input type="hidden" name="creator" value="<?=$creator?>">
+
 
 
 	         

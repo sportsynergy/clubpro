@@ -53,7 +53,7 @@ if (!empty($policyid)) {
     $buttonLabel = "Update Skill Range Policy";
 }
 
-/* form has been submitted, try to create the new role */
+/* form has been submitted */
 
 if (match_referer() && isset($_POST['submitme'])) {
     $frm = $_POST;
@@ -71,6 +71,8 @@ if (match_referer() && isset($_POST['submitme'])) {
 } elseif (isset($_POST['skillpolicyid'])) {
     $policy = load_skill_range_policy($_POST['skillpolicyid']);
 }
+
+
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/add_skill_range_policy_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");

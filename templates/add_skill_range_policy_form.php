@@ -31,7 +31,7 @@ YAHOO.example.init = function () {
 
 
 function onSubmitButtonClicked(){
-	submitForm('skill_entryform');
+	document.skill_entryform.submit();
 }
 
 </script>

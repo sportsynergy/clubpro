@@ -172,7 +172,9 @@ function onSubmitButtonClicked(){
                   <input type="hidden" name="submitme" value="submitme"></td>
               </tr>
               <tr>
-                <td><input type="button" name="submit" value="<?=$buttonLabel?>" id="submitbutton"></td>
+                <td>
+					<input type="button" name="submit" value="<?=$buttonLabel?>" id="submitbutton">
+				</td>
               </tr>
             </table></td>
         </tr>

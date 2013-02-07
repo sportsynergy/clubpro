@@ -372,6 +372,7 @@ function onCancelReservationButtonClicked(){
 	<input type="hidden" name="courtid" value="<?=$courtid?>">
 	<input type="hidden" name="time" value="<?=$time?>">
 	<input type="hidden" name="lastupdated" value="<?=$lastupdated?>">
+	<input type="hidden" name="creator" value="<?=$creator?>">
 	
 	
 	</form>

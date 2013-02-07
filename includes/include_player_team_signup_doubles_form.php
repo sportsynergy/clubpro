@@ -198,6 +198,8 @@ function onCancelButtonClicked(){
 <input type="hidden" name="userid" value="<?=$userid?>">
 <input type="hidden" name="matchtype" value="<?=$matchtype?>">
 <input type="hidden" name="action" value="addplayerorteam">
+<input type="hidden" name="creator" value="addplayerorteam">
+<input type="hidden" name="creator" value="<?=$creator?>">
         	
         	
 </form>

@@ -39,6 +39,9 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 	$nameList = array();
 	foreach ($to_emails as $k=>$v){
 		$toList[] = $k;
+		if (isDebugEnabled(1)) {
+		    logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
+		}
 		$nameList[] = $v['name'];
 	}
 	
@@ -76,19 +79,21 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 	if (isDebugEnabled(1)) {
     	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) );
     }
-
-	//
-	if (array_key_exists('player.mailer@sportsynergy.net', $to_emails)) {
-	    logMessage("applicationlib.sendgrid_email: sending email to player.mailer" );
+	
+	if (isDebugEnabled(1)) {
+	    logMessage("applicationlib.sendgrid_email: sending email to: " );
 	}
-
 	// To make backwards compatible with postageapp create
 	$toList = array();
 	$nameList = array();
 	foreach ($to_emails as $k=>$v){
+		if (isDebugEnabled(1)) {
+		    logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
+		}
 		$toList[] = $k;
 		$nameList[] = $v['name'];
 	}
+
 
 	$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
 
@@ -4152,13 +4157,9 @@ function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype
 				if (withinWindow(gmdate("H", $time), $starthour, $endhour)) {
 
 					//Check for a Singles Reservations
-					/*
-					 Note: Doubles reservations are not validated because it would require too much work to
-					court_reservation.php.
+					
 						
-					*/
-						
-					if ($courttype == 'singles') {
+					if ($courttype == 'singles' || $courttype == 'doubles') {
 
 						//Check individual ranking
 						$individualQuery = "SELECT rankings.ranking
@@ -4196,8 +4197,8 @@ function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype
 						}
 
 
-					} //end if singles check
-
+					} //end of check
+	
 				} //endif within window
 
 			} //endif day validiation

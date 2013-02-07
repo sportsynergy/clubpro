@@ -178,7 +178,7 @@ if (match_referer() && isset($_POST['courttype'])) {
  * Get the type of reservation.  This is used a lot.
  ******************************************************************************/
 $newReservation = FALSE;
-$userTypeQuery = "SELECT usertype, matchtype, guesttype, lastmodified, reservationid, locked
+$userTypeQuery = "SELECT usertype, matchtype, guesttype, lastmodified, reservationid, locked, creator
 					FROM tblReservations reservations
 					WHERE reservations.time = $time 
 					AND reservations.courtid = $courtid
@@ -193,6 +193,7 @@ if (mysql_num_rows($userTypeResult) > 0) {
     $lastupdated = $reservationArray['lastmodified'];
     $reservationid = $reservationArray['reservationid'];
     $locked = $reservationArray['locked'];
+	$creator = $reservationArray['creator'];
     
     if (isDebugEnabled(1)) {
         logMessage("court_reservation: setting usertype: $usertype, matchtype: $matchtype, guesttype: $guesttype, and lastupdated:$lastupdated ");
@@ -581,16 +582,34 @@ function validate_form(&$frm, &$errors) {
             
             if (isDebugEnabled(1)) logMessage("court_reservation.validate_form: Validating the addpartners form");
 
+			// Make sure that the skill range policies are ok
+			if(!validateSkillPolicies($frm["userid"], $frm["creator"], $frm['courtid'], $frm['courttype'], $frm['time'])){
+				$msg = "A skill range policy is preventing you from reserving this court with this opponent.";
+				return $msg;
+			}
+			
+			//for buddy matches
+			if($frm['matchtype'] == 3 && (get_roleid() == 1 || get_roleid() == 2 || get_roleid() == 5)){
+				
+				 if (isDebugEnabled(1)) logMessage("court_reservation.validate_form(): Validating Singles Buddy Reservation");
+
+		            if (!amIaBuddyOf($frm['creator'])) {
+		                $fullnameResult = db_query("SELECT firstname, lastname from tblUsers WHERE userid=" . $frm['creator']);
+		                $buddyArray = mysql_fetch_array($fullnameResult);
+		                $msg.= "I am sorry but $buddyArray[firstname] $buddyArray[lastname] is looking for a match with a buddy";
+		            	return $msg;
+					}
+			}
+			
             // Make sure that partner is not userid
-            
             if (isGuestPlayer($frm["partner"], $frm["partnername"])) {
                 $msg.= "Please select your partner from the drop down menu";
             }
 
             // Make sure that partner is not userid
-            
             if (!empty($frm["partner"]) && $frm["partner"] == $frm["userid"]) {
                 $msg.= "Please select a different partner";
+				return $msg;
             }
         }
 
