@@ -2822,12 +2822,15 @@ function update_ladderscore($losersgamepoints, $boxid, $winner, $player1, $playe
 	if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: setting winner: $winner which is ".strlen($winner)." loser $loser ".strlen($loser));
 
 	$pointsforshowing = 1;
-	$pointsforwinning = 1;
 	$winnersgamepoints = 3;
 	
 	if($losersgamepoints == 0){
+		$bonuspoint = 2;
+	} 
+	else if($losersgamepoints == 1){
 		$bonuspoint = 1;
-	} else {
+	}
+	else {
 		$bonuspoint = 0;
 	}
 	
@@ -2849,7 +2852,7 @@ function update_ladderscore($losersgamepoints, $boxid, $winner, $player1, $playe
 
 		if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: updating ladder score for $resultuser where loser is $loser and winner is $winner.");
 			
-		$newwinnerscore = $resultscore + $pointsforshowing + $winnersgamepoints + $pointsforwinning + $bonuspoint;
+		$newwinnerscore = $resultscore + $pointsforshowing + $winnersgamepoints + $bonuspoint;
 		$newloserscore = $resultscore + $losersgamepoints + $pointsforshowing;
 
 		//Give the loser props...for trying
