@@ -2824,6 +2824,13 @@ function update_ladderscore($losersgamepoints, $boxid, $winner, $player1, $playe
 	$pointsforshowing = 1;
 	$pointsforwinning = 1;
 	$winnersgamepoints = 3;
+	
+	if($losersgamepoints == 0){
+		$bonuspoint = 1;
+	} else {
+		$bonuspoint = 0;
+	}
+	
 
 	//First we need to get the score for each player from the database.
 	$ladderscorequery = "SELECT tblkpBoxLeagues.boxid, tblkpBoxLeagues.userid, tblkpBoxLeagues.score
@@ -2842,7 +2849,7 @@ function update_ladderscore($losersgamepoints, $boxid, $winner, $player1, $playe
 
 		if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: updating ladder score for $resultuser where loser is $loser and winner is $winner.");
 			
-		$newwinnerscore = $resultscore + $pointsforshowing + $winnersgamepoints + $pointsforwinning;
+		$newwinnerscore = $resultscore + $pointsforshowing + $winnersgamepoints + $pointsforwinning + $bonuspoint;
 		$newloserscore = $resultscore + $losersgamepoints + $pointsforshowing;
 
 		//Give the loser props...for trying
