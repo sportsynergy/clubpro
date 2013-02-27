@@ -47,12 +47,19 @@ if (match_referer() && isset($_POST['submitme'])) {
     
     if (empty($errormsg) && empty($action)) {
         insert_boxuser($frm);
+		update_box_enddate($frm);
+		
+		$noticemsg = "Box League Updated.  Good Job!<br/><br/>";
     }
 }
-$boxnamequery = "SELECT boxleague.boxname, boxleague.courttypeid
+
+
+$boxnamequery = "SELECT boxleague.boxname, boxleague.courttypeid, boxleague.enddate
                            FROM tblBoxLeagues boxleague
                            WHERE boxid=$boxid";
-logMessage("web_ladder_manage: $boxnamequery");
+
+
+
 
 // run the query on the database
 $result = db_query($boxnamequery);
@@ -76,12 +83,7 @@ function validate_form($frm) {
     $errors = new Object;
     $msg = "";
     
-    if (empty($frm["boxuser"])) {
-        
-        if (isDebugEnabled(1)) logMessage("\t-> boxuser is empty");
-        $errors->boxuser = true;
-        $msg.= "Please select a valid user.";
-    } elseif (!empty($frm['boxuser'])) {
+    if (!empty($frm['boxuser'])) {
         $boxUserQuery = "SELECT userid from tblkpBoxLeagues WHERE userid = $frm[boxuser]";
         $boxUserResult = db_query($boxUserQuery);
         
@@ -94,12 +96,12 @@ function validate_form($frm) {
     }
     return $msg;
 }
+
+
 function insert_boxuser(&$frm) {
 
     // First thing we need to do is find out how many players are
     // in the league.  This will determine what place the user will start with.
-
-    // Build Query
 
     $boxcountquery = "SELECT boxid
                         FROM tblkpBoxLeagues where boxid=$frm[boxid]";
@@ -120,6 +122,21 @@ function insert_boxuser(&$frm) {
     // run the query on the database
     $result = db_query($query);
 }
+
+function update_box_enddate(&$frm) {
+	
+	 $timestamp = gmmktime(0, 0, 0, $frm['enddatemonth'], $frm['enddateday'], $frm['enddateyear']);
+	
+	$datestring = $frm['enddateyear']."-".$frm['enddatemonth']."-".$frm['enddateday'];
+	$query = "UPDATE tblBoxLeagues SET enddate = '$datestring',enddatestamp = $timestamp WHERE boxid = $frm[boxid]";
+	
+	// run the query on the database
+    $result = db_query($query);
+
+	logMessage("web_ladder_manage: $query");
+	
+}
+
 ?>
 
 

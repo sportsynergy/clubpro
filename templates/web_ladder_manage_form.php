@@ -29,9 +29,94 @@ function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
 
+
+
+<?
+
+$thisYear = gmdate("Y", $curtime);
+$daysinFeb = gmdate("t", gmmktime(0,0,0,2,1,$thisYear));
+
+print "var thisyear = new Array(13);
+       thisyear[1] = 31\n
+       thisyear[2] = $daysinFeb\n
+       thisyear[3] = 31\n
+       thisyear[4] = 30\n
+       thisyear[5] = 31\n
+       thisyear[6] = 30\n
+       thisyear[7] = 31\n
+       thisyear[8] = 31\n
+       thisyear[9] = 30\n
+       thisyear[10] = 31\n
+       thisyear[11] = 30\n
+        thisyear[12] = 31\n\n";
+
+ $daysinFeb = gmdate("t", gmmktime(0,0,0,2,1,$thisYear+1));
+
+ print "var nextyear = new Array(13);
+       nextyear[1] = 31\n
+       nextyear[2] = $daysinFeb\n
+       nextyear[3] = 31\n
+       nextyear[4] = 30\n
+       nextyear[5] = 31\n
+       nextyear[6] = 30\n
+       nextyear[7] = 31\n
+       nextyear[8] = 31\n
+       nextyear[9] = 30\n
+       nextyear[10] = 31\n
+       nextyear[11] = 30\n
+        nextyear[12] = 31\n";
+
+?>
+
+     function getDaysForMonth() {
+
+          if(document.entryform.enddateday.value != null){
+               document.entryform.enddateday.options.length = 0;
+          }
+
+          var month = document.entryform.enddatemonth.value;
+
+           if(document.entryform.enddateyear.selectedIndex == 0){
+                 for (i=0; i<thisyear[month]; i++) {
+                          var myDayValue = new String(i+1);
+                          document.entryform.enddateday.options[i] = new Option(i+1, myDayValue);
+
+						if(document.entryform.boxenddatedate.value == i+1){
+							document.entryform.enddateday.options[i].selected=true;
+						}
+						  
+                  }
+           }
+
+           else{
+                  for (i=0; i<nextyear[month]; i++) {
+                          var myDayValue = new String(i+1);
+                          document.entryform.enddateday.options[i] = new Option(i+1, myDayValue);
+
+							if(document.entryform.boxenddatedate.value == i+1){
+								document.entryform.enddateday.options[i].selected=true;
+							}
+                  }
+           }
+     }
+
+
+	
+	
 </script>
 
 <?
+
+// Set some timezone variables
+$clubquery = "SELECT timezone from tblClubs WHERE clubid=".get_clubid()."";
+$clubresult = db_query($clubquery);
+$clubobj = db_fetch_object($clubresult);
+
+$gmtime =   gmmktime();
+$tzdelta = $clubobj->timezone*3600;
+$curtime =   $gmtime+$tzdelta;
+
+
 
 //Set the http variables
 $action = $_REQUEST["action"];
@@ -39,6 +124,7 @@ $boxid = $_REQUEST["boxid"];
 $userid = $_REQUEST["userid"];
 
  if($action=="remove"){
+	
    // Get the box place of the guy who is being removed.
     $oldboxplaceresult = db_query("SELECT boxplace
                              FROM tblkpBoxLeagues
@@ -137,9 +223,66 @@ $userid = $_REQUEST["userid"];
     <td>
 
       <table width="550" cellspacing="5" cellpadding="0" class="borderless">
-      <tr>
+      
+		<tr>
+			<td class="medbold">End Date:</td>
+			<td>
+				<?
+					$datesArray = explode("-", $boxarray["enddate"]);
+				
+				?>
+			<select name="enddatemonth" onChange="getDaysForMonth();">
+               <?
+                
+				// remove leading 0 
+				$currentMonth = ltrim($datesArray[1], "0");
+				$months = get_months();
 
-        <td class="label">Add A User:</td>
+                 for($i=0; $i<count($months); ++$i){
+
+                      if($currentMonth==($i+1)){
+                          $selected = "selected";
+                       }
+                       else{
+                          $selected = " ";
+                      }
+                 ?>
+                    <option value="<?=$i+1?>" <?=$selected?>> <?=$months[$i]?></option>
+
+                     <? unset($selected)?>
+                <? } ?>
+          </select>
+          <?
+
+             //$todaystart = gmmktime (0,0,0,$currMonth,0,$currYear);
+          ?>
+          <select name="enddateday">
+
+          </select>
+
+          <select name="enddateyear" onChange="getDaysForMonth();">
+               <?
+
+               $currYear = gmdate("Y", $curtime);
+
+               for($i=0; $i<2; ++$i){
+                   $year = $currYear + $i;
+               ?>
+                   <option value="<?=$year ?>"><?=$year ?></option>
+              <? }
+
+               ?>
+
+          </select>
+
+		</td>
+		
+		</tr>
+		
+		
+		<tr>
+
+        <td class="medbold">Add A User:</td>
         <td>
             
  				<input id="name1" name="name1" type="text" size="30" class="form-autocomplete" />
@@ -167,6 +310,9 @@ $userid = $_REQUEST["userid"];
             <td>
             	<input type="hidden" name="boxid" value="<?=$boxid ?>">
             	<input type="hidden" name="courttype" value="<?=$courttype?>">
+				<input type="hidden" name="boxenddatemonth" value="<?=ltrim($datesArray[1], '0')?>">
+				<input type="hidden" name="boxenddatedate" value="<?=ltrim($datesArray[2], '0')?>">
+				<input type="hidden" name="boxenddateyear" value="<?=ltrim($datesArray[0], '0')?>">
             	<input type="hidden" name="submitme" value="submitme">
 			</td>
        </tr>
@@ -266,3 +412,7 @@ $userid = $_REQUEST["userid"];
 </tr>
 </table>
 </form>
+
+  <script language="JavaScript">
+          getDaysForMonth();
+   </script>

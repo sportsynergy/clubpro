@@ -233,7 +233,7 @@ print "var thisyear = new Array(13);
 
 
 
-      <table width="550" cellspacing="5" cellpadding="0" class="borderless" >
+      <table width="550" cellspacing="5" cellpadding="0"  >
       <tr>
 
        <td class="label">Box Name:</td>
@@ -361,11 +361,11 @@ print "var thisyear = new Array(13);
        	?>
 
 
-            <tr class="<?=$rc?>">
+            <tr >
             <td class="normal"><?=$row[3]?></td>
             <td class="normal"><?=$row[0]?></td>
 
-            <td>
+            <td align="right">
             <form name="removeWebLadder<?=$rowcount?>" method="post" action="<?=$ME?>">
                  <input type="hidden" name="action" value="remove">
                  <input type="hidden" name="boxid" value="<?=$row[1]?>">
@@ -381,9 +381,11 @@ print "var thisyear = new Array(13);
                   </form>
                
 
-              <a href="javascript:submitForm('removeWebLadder<?=$rowcount?>')"><span>Remove</span></a></td>
-              <td><a href="javascript:submitForm('manageWebLadder<?=$rowcount?>')"><span>Manage</span></a></td>
-               <td><a href="javascript:submitForm('moveupWebLadder<?=$rowcount?>')"><span>Move Up</span></a></td>
+              <a href="javascript:submitForm('removeWebLadder<?=$rowcount?>')"><span>Remove</span></a> 
+				| <a href="javascript:submitForm('manageWebLadder<?=$rowcount?>')"><span>Manage</span></a>
+				| <a href="javascript:submitForm('moveupWebLadder<?=$rowcount?>')"><span>Move Up</span></a>
+				
+				</td>
             </tr>
 
             <? $rowcount = $rowcount - 1; 
