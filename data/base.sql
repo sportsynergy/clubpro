@@ -799,7 +799,7 @@ CREATE TABLE IF NOT EXISTS `tblRoles` (
   `roleaccesslevel` tinyint(4) NOT NULL DEFAULT '0',
   `lastmodified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`roleid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tblRoles`
@@ -811,7 +811,7 @@ INSERT INTO `tblRoles` (`roleid`, `rolename`, `roleaccesslevel`, `lastmodified`)
 (3, 'System Administrator', 3, '0000-00-00 00:00:00'),
 (4, 'Desk User', 4, '2009-02-17 13:55:11'),
 (5, 'Limited Access Player', 5, '2009-02-17 13:55:11'),
-(6, 'Junior', 6, '2009-02-17 13:55:11'),;
+(6, 'Junior', 6, '2009-02-17 13:55:11');
 
 -- --------------------------------------------------------
 
