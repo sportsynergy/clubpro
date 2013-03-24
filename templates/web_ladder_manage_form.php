@@ -381,6 +381,7 @@ $userid = $_REQUEST["userid"];
 	         <td>
 	         	<a href="web_ladder_manage.php?action=remove&boxid=<?=$boxid?>&userid=<?=$row[2]?>"> Remove </a>
 	         	|<a href="web_ladder_manage.php?action=moveup&boxid=<?=$boxid?>&userid=<?=$row[2]?>"> Moveup</a>
+				|<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/web_ladder_history.php?boxid=<?=$boxid?>&userid=<?=$row[2]?>&page=admin"> View History</a>
 	         </td>
 	        
          </tr>

@@ -382,7 +382,7 @@ print "var thisyear = new Array(13);
                
 
               <a href="javascript:submitForm('removeWebLadder<?=$rowcount?>')"><span>Remove</span></a> 
-				| <a href="javascript:submitForm('manageWebLadder<?=$rowcount?>')"><span>Manage</span></a>
+				| <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_manage.php?boxid=<?=$row[1]?>" ><span>Manage</span></a>
 				| <a href="javascript:submitForm('moveupWebLadder<?=$rowcount?>')"><span>Move Up</span></a>
 				
 				</td>

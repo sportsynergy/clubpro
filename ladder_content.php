@@ -157,10 +157,16 @@ $datestring = explode("-",$wlobj->enddate);
 
 <?
                // Now list the players in the ladder
-               $webladderuserquery = "SELECT tblkpBoxLeagues.boxplace,tblUsers.firstname, tblUsers.lastname, tblUsers.email, tblkpBoxLeagues.score
+               $webladderuserquery = "SELECT tblkpBoxLeagues.boxplace,
+										tblUsers.firstname, 
+										tblUsers.lastname, 
+										tblUsers.email, 
+										tblkpBoxLeagues.score,
+										tblUsers.userid,
+										tblkpBoxLeagues.boxid
                                       FROM tblUsers
                                       INNER JOIN tblkpBoxLeagues ON tblUsers.userid = tblkpBoxLeagues.userid
-                                      WHERE (((tblkpBoxLeagues.boxid)=$wlobj->boxid))
+                                      WHERE tblkpBoxLeagues.boxid=$wlobj->boxid
                                       ORDER BY tblkpBoxLeagues.score DESC, tblUsers.lastname";
 
                 $webladderuserresult = db_query($webladderuserquery);
@@ -182,7 +188,10 @@ $datestring = explode("-",$wlobj->enddate);
 	                        </td>
 	                       
 	                        <td>
-	                        	<span class="normal"><?=$wluserobj->score?></span>
+	                        	<span class="normal">
+									<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/web_ladder_history.php?boxid=<?=$wluserobj->boxid?>&userid=<?=$wluserobj->userid?>" title="view history">
+									<?=$wluserobj->score?></span>
+									</a>
 	                        </td>
 
                         </tr>

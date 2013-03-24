@@ -14,6 +14,7 @@
 <!-- Misc -->
 <link rel="icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/icon.ico"
 	type="image/x-icon" />
+	
 
 <!-- Dependency source files -->
 

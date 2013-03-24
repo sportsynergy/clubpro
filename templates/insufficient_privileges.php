@@ -1,11 +1,4 @@
-<?php
-  /*
- * $LastChangedRevision: 2 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2006-05-26 15:46:27 -0500 (Fri, 26 May 2006) $
 
-*/
-?>
 <html>
 <head>
 <title>Insufficient Privileges</title>

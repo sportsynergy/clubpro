@@ -711,6 +711,52 @@ function require_priv($roleid) {
         die;
     }
 }
+
+function require_priv_user($userid) {
+
+    /* just make sure current userid and specified user are in the same club */
+    $my_site = $_SESSION["siteprefs"]["siteid"];
+	$query = "SELECT * FROM tblkupSiteAuth WHERE userid = $userid AND siteid = $my_site";
+	$result = db_query($query);
+	
+    if (mysql_num_rows($result) == 0) {
+        include ($_SESSION["CFG"]["templatedir"] . "/insufficient_privileges.php");
+        die;
+    }
+}
+
+function require_priv_reservation($reservationid) {
+
+    /* just make sure current userid and specified user are in the same club */
+    $my_site = $_SESSION["siteprefs"]["siteid"];
+	$query = "SELECT 1 FROM tblReservations reservations
+				INNER JOIN tblCourts courts ON reservations.courtid = courts.courtid
+				WHERE reservations.reservationid = $reservationid
+				AND courts.siteid = $my_site";
+			
+	$result = db_query($query);
+	
+    if (mysql_num_rows($result) == 0) {
+       	if (isDebugEnabled(1)) logMessage("require_priv_reservation not allowed with site: $my_site and reservationid: $reservationid");
+ 		include ($_SESSION["CFG"]["templatedir"] . "/insufficient_privileges.php");
+        die;
+    }
+}
+
+function require_priv_box($boxid) {
+
+     /* just make sure current user and specified boxid are in the same club */
+    	$query = "SELECT siteid from tblBoxLeagues where boxid = $boxid";
+		$result = db_query($query);
+		$box_site = mysql_result($result,0);
+		
+
+    if ($_SESSION["siteprefs"]["siteid"] != $box_site) {
+        include ($_SESSION["CFG"]["templatedir"] . "/insufficient_privileges.php");
+        die;
+    }
+}
+
 function has_priv($roleid) {
 
     /* returns true if the user has the privilege $priv */
@@ -5006,8 +5052,7 @@ function getClubSiteLadders($siteid){
 */
 function getSitePreferencesForCourt($courtid) {
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.getSitePreferencesForCourt: getting site preferences for site for court: $courtid");
-
+	
 	$query = "SELECT
 					sites.sitecode,
 					sites.siteid, 
@@ -5061,8 +5106,7 @@ function getSitePreferencesForCourt($courtid) {
 */
 function getSitePreferences($siteid) {
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.getSitePreferences: Getting Site Preferences for Site: $siteid");
-
+	
 	$query = "SELECT
 					sites.sitecode,
 					sites.siteid, 
