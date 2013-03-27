@@ -1,4 +1,4 @@
-<?php
+ <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 /* ====================================================================
  * GNU Lesser General Public License
@@ -7,7 +7,7 @@
  * <one line to give the library's name and a brief idea of what it does.>
  *
  * Copyright (C) 2001~2012 Adam Preston
- * Copyright (C) 2012 Nicolas Wegener
+ * 
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
