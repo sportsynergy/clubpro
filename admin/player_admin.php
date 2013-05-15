@@ -47,7 +47,7 @@ if (isset($searchname)) {
     if (empty($errormsg)) {
         $playerResults = get_admin_player_search($searchname);
         include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
-        print_players($backtopage, $playerResults, $DOC_TITLE, $ME);
+        print_players($searchname, $backtopage, $playerResults, $DOC_TITLE, $ME);
         include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
         die;
     }
@@ -84,7 +84,7 @@ function validate_form($searchname) {
  * @param $DOC_TITLE
  * @param $ME
  */
-function print_players($backtopage, $playerresult, $DOC_TITLE, $ME) {
+function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME) {
      
     if (mysql_num_rows($playerresult) < 1) {
         $errormsg = "Sorry, no results found.";

@@ -106,7 +106,7 @@ function validate_form($searchname) {
 function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
     
     if (mysql_num_rows($playerResults) < 1) {
-        $errormsg = "D'oh, nobody by that name here.";
+        $errormsg = "Nobody by that name here.";
         include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
     } else {
         include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");

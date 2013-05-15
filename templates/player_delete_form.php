@@ -56,7 +56,7 @@ YAHOO.example.init = function () {
 
 
 function onSubmitButtonClicked(){
-	submitForm('entryform');
+  document.entryform.submit();
 }
 
 function onCancelButtonClicked(){
