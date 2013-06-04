@@ -132,7 +132,7 @@
       <td height="3" colspan="2"><hr></td>
     </tr>
 	
-	<? if($variableDuration == 'y') { ?>
+	<? if($variableDuration == 'y' || ($variableDuration_admin == 'y' && get_roleid() == 2)){ ?>
 	<tr> 
 		 <td class="biglabel">Duration:</td>
 		 <td>

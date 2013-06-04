@@ -411,6 +411,7 @@ CREATE TABLE IF NOT EXISTS `tblCourts` (
   `siteid` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `displayorder` smallint(6) NOT NULL DEFAULT '0',
   `variableduration` ENUM( 'n', 'y' ) NOT NULL DEFAULT 'n',
+  `variableduration_admin` ENUM( 'n', 'y' ) NOT NULL DEFAULT 'n',
   `lastmodified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`courtid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;

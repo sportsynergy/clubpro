@@ -116,7 +116,7 @@ pat_autocomplete(array(
 	    </tr>
 	<? } ?>
 
-	<? if($variableDuration == 'y') { ?>
+	<? if($variableDuration == 'y' || ($variableDuration_admin == 'y' && get_roleid() == 2)){ ?>
 	<tr> 
 		 <td class="label">Duration:</td>
 		 <td>

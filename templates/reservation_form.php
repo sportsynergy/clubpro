@@ -1,7 +1,7 @@
 <?php
   $DOC_TITLE = "Court Reservation";
 
-  $courtformquery = "SELECT courttype.courttypeid, courts.courtid, courttype.reservationtype,courts.variableduration
+  $courtformquery = "SELECT courttype.courttypeid, courts.courtid, courttype.reservationtype,courts.variableduration,variableDuration_admin
                    FROM tblCourtType courttype, tblCourts courts
                    WHERE courttype.courttypeid = courts.courttypeid
                    AND courts.courtid=$courtid";
@@ -12,9 +12,11 @@
     $row = mysql_fetch_array($courtformresult);
     $reservationType = $row[2];
 	$variableDuration = $row[3];
+  $variableDuration_admin = $row[4];
 	
 	//next reservation 
-	$nextreservationquery = "SELECT time FROM tblReservations WHERE courtid = '$courtid' AND enddate IS NULL 
+	$nextreservationquery = "SELECT time FROM tblReservations 
+  WHERE courtid = '$courtid' AND enddate IS NULL 
 				AND TIME > $time
 				ORDER BY  `tblReservations`.`time`  
 				LIMIT 1";
@@ -167,7 +169,7 @@ function onlyAllowLessonReoccuring(matchtype)
 
 function disableEventOptions(repeat)
 {
-   if(repeat.value == "norepeat"){alert("test");
+   if(repeat.value == "norepeat"){
        document.event_reservation_form.frequency.disabled = true;
    }
    else{
