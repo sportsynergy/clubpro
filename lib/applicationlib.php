@@ -33,6 +33,13 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 	if (isDebugEnabled(1)) {
     	logMessage("applicationlib.sendgrid_clubemail: sending email with subject $subject with a size " . count($to_emails) );
     }
+
+    if( count($to_emails) == 0){
+        if (isDebugEnabled(1)) {
+            logMessage("applicationlib.sendgrid_email: there is a problem with sending mail for $subject, exiting..." );
+        }
+        return;
+    }
 	
 	// To make backwards compatible with postageapp create
 	$toList = array();
@@ -45,7 +52,7 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 		$nameList[] = $v['name'];
 	}
 	
-	
+
 	$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
 
 	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/blank.email.html");
@@ -80,9 +87,6 @@ function sendgrid_email($subject, $to_emails, $content, $category){
     	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) );
     }
 	
-	if (isDebugEnabled(1)) {
-	    logMessage("applicationlib.sendgrid_email: sending email to: " );
-	}
 	// To make backwards compatible with postageapp create
 	$toList = array();
 	$nameList = array();
