@@ -257,6 +257,7 @@ function updateBoxPoints($boxid, $userid, $differential){
 	
 	if (isDebugEnabled(2)) logMessage("web_ladder_update.updateBoxPoints: boxid $boxid, userid $userid, differential $differential ");
 	$query = "UPDATE tblkpBoxLeagues SET score = score+ $differential WHERE boxid = $boxid AND userid = $userid";
+	logMessage($query);
 	db_query($query);
 	
 }

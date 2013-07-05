@@ -119,7 +119,6 @@ function enableMatchType()
       <td><span class="label">Match Type:</span></td>
       <td colspan="2"><select name="matchtype" >
           <option value="practice">Practice</option>
-          <option value="boxleague">Box League</option>
         </select></td>
     </tr>
     <tr>
