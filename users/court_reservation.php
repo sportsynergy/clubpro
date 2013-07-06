@@ -123,7 +123,7 @@ if (match_referer() && isset($_POST['courttype'])) {
     
     if (empty($errormsg)) {
         
-        if (isDebugEnabled(1)) logMessage("Inserting the reservation");
+        
 
         //Actually Make the Reservation
         
@@ -132,6 +132,9 @@ if (match_referer() && isset($_POST['courttype'])) {
         } else {
             $resid = update_reservation($frm);
         }
+
+        if (isDebugEnabled(1)) logMessage("Inserting the reservation $resid");
+
         /**
          * ReDirect the user to the reservation_details screen so they can advertise the match
          */
@@ -337,7 +340,7 @@ function validate_form(&$frm, &$errors) {
     
     if ($frm['courttype'] == "event" || $frm['matchtype'] == "4" ) {
         
-        if ($frm["repeat"] != "norepeat" && empty($frm["frequency"])) {
+        if ($frm["repeat"] != "norepeat" && empty($frm["frequency"]) && $frm["action"] != "addpartner") {
             $errors->duration = true;
             $msg.= "You did not specify the duration interval ";
         }
@@ -698,7 +701,7 @@ function update_reservation(&$frm) {
 
     elseif ($frm['courttype'] == "doubles" && $frm['action'] == "addplayerorteam") {
         
-        if (isDebugEnabled(1)) logMessage("court_reservation.insert_reservation: A Player is updating reservation where one player is looking for a partner and a team is needed too (action: addplayerorteam )");
+        if (isDebugEnabled(1)) logMessage("court_reservation.update_reservation: A Player is updating reservation where one player is looking for a partner and a team is needed too (action: addplayerorteam )");
 
         // Get Court Type for making the team
         $courtTypeId = getCourtTypeIdForCourtId($frm['courtid']);
@@ -743,7 +746,7 @@ function update_reservation(&$frm) {
 
     elseif ($frm['courttype'] == "doubles" && $frm['action'] == "addpartners") {
         
-        if (isDebugEnabled(1)) logMessage("court_reservation.insert_reservation: A player is updating reservation where two players were looking for a partner (action: addpartners)");
+        if (isDebugEnabled(1)) logMessage("court_reservation.update_reservation: A player is updating reservation where two players were looking for a partner (action: addpartners)");
 
         // Get Court Type for making the team
         $courtTypeId = getCourtTypeIdForCourtId($frm['courtid']);
@@ -767,7 +770,7 @@ function update_reservation(&$frm) {
     //Check to see if we are to add a team to a reservation
     elseif ($frm['courttype'] == "doubles" && $frm['action'] == "addteam") {
         
-        if (isDebugEnabled(1)) logMessage("court_reservation.insert_reservation: A Player is updating reservation where a team was looking for another team (action: addteam)");
+        if (isDebugEnabled(1)) logMessage("court_reservation.update_reservation: A Player is updating reservation where a team was looking for another team (action: addteam)");
         
         if (empty($frm['partnerid'])) {
             
@@ -811,7 +814,7 @@ function update_reservation(&$frm) {
 
     elseif ($frm['courttype'] == "doubles" && $frm['action'] == "addpartner") {
         
-        if (isDebugEnabled(1)) logMessage("court_reservation.insert_reservation: A Player is updating reservation where a player was looking for a partner (addpartner)");
+        if (isDebugEnabled(1)) logMessage("court_reservation.update_reservation: A Player is updating reservation where a player was looking for a partner (addpartner)");
         $courtTypeId = getCourtTypeIdForCourtId($frm['courtid']);
         $currentTeamID = getTeamIDForCurrentUser($courtTypeId, $frm['userid']);
 
@@ -840,6 +843,7 @@ function update_reservation(&$frm) {
 /******************************************
  *
  * Insert a reservation
+ * @return the reservation id
  *
  *******************************************/
 function insert_reservation(&$frm) {
@@ -852,8 +856,8 @@ function insert_reservation(&$frm) {
     if ($frm['courttype'] == "event" ||
 		( $frm['matchtype']==4 && $frm['courttype'] == "singles") //also allow reoccuring singles
 		) {
-        makeReoccuringReservation($frm);
-        return;
+        
+        return makeReoccuringReservation($frm);
     }
 	
     
@@ -919,6 +923,7 @@ function insert_reservation(&$frm) {
 
 /**
  * Makes an makeReoccuringReservation reservations
+ * @return the last reservation id made
  */
 function makeReoccuringReservation(&$frm) {
     
@@ -1379,6 +1384,8 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 								$nextday)";
         db_query($reoccuringQuery);
     }
+
+    return $reservationid;
 }
 /**
  * Make a solo reservation

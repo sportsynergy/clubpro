@@ -1,0 +1,1 @@
+Your request for lesson on $var->courtname on $var->time has been made successfully.  As soon as someone signs up, we'll let you know. 

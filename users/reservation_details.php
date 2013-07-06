@@ -106,8 +106,19 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 
 */
 function email_players_about_lesson($resid) {
-    $rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, courttype.courttypeid, rankings.ranking, reservations.matchtype, users.email, users.homephone, users.cellphone, users.workphone
-						courts.courtid, users.userid
+    $rquery = "SELECT   courts.courtname, 
+                        reservations.time, 
+                        users.firstname, 
+                        users.lastname, 
+                        courttype.courttypeid, 
+                        rankings.ranking, 
+                        reservations.matchtype, 
+                        users.email, 
+                        users.homephone, 
+                        users.cellphone, 
+                        users.workphone,
+						courts.courtid, 
+                        users.userid
 	                 FROM tblCourts courts, tblReservations reservations, tblUsers users, tblCourtType courttype, tblUserRankings rankings, tblkpUserReservations reservationdetails
 					 WHERE users.userid = rankings.userid
 					 AND reservations.courtid = courts.courtid
@@ -153,21 +164,24 @@ function email_players_about_lesson($resid) {
     // run the query on the database
     $emailidresult = db_query($emailidquery);
     $template = get_sitecode();
+     if (isDebugEnabled(1)) logMessage("email message: ".$emailbody);
+
     while ($emailidrow = db_fetch_row($emailidresult)) {
         
-        if (isDebugEnabled(1)) logMessage($message);
         $subject = get_clubname() . " - Lesson Available";
         $to_email = array(
             $emailidrow[2] => array(
                 'name' => $emailidrow[0]
             )
         );
-        $to_name = "$emailidrow[0] $emailidrow[1]";
-        $from_email = "PlayerMailer@sportsynergy.net";
-        $content = new Object;
-        $content->line1 = $emailbody;
-        $content->clubname = get_clubname();
-        sendgrid_email($subject, $to_email, $content, "Lesson Wanted");
+
     }
+        
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    sendgrid_email($subject, $to_email, $content, "Lesson Wanted");
+    
 }
+
 ?>

@@ -1525,7 +1525,7 @@ function email_boxmembers($resid, $boxid) {
  */
 function confirm_singles($resid, $isNewReservation) {
     
-    if (isDebugEnabled(1)) logMessage("applicationlib.confirm_singles: sending out emails for a singles reservation");
+     
     $rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name, reservations.usertype
 			           FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblMatchType matchtype, tblClubUser clubuser
 			           WHERE courts.courtid = reservations.courtid
@@ -1537,6 +1537,10 @@ function confirm_singles($resid, $isNewReservation) {
 			           AND clubuser.clubid=" . get_clubid();
     $rresult = db_query($rquery);
     $robj = mysql_fetch_object($rresult);
+
+    $matchtype = $robj->matchtype;
+    if (isDebugEnabled(1)) logMessage("applicationlib.confirm_singles: sending out emails for a singles reservation matchtype: $matchtype");
+   
 
     /* email the user with the new account information    */
     $var = new Object;
@@ -1561,17 +1565,22 @@ function confirm_singles($resid, $isNewReservation) {
     $var->fullname2 = $robj->firstname . " " . $robj->lastname;
     
     if (db_num_rows($rresult) == 1) {
-        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles_looking.php", $var);
-    } elseif ($robj->matchtype == 4) {
+        
+        if($matchtype == 4){
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles_lesson_looking.php", $var);
+        } else {
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles_looking.php", $var);
+        }
+        
+    } elseif ($matchtype == 4) {
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_lesson.php", $var);
-    } elseif ($robj->matchtype == 5) {
+    } elseif ($matchtype == 5) {
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_solo.php", $var);
     } else {
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles.php", $var);
     }
 
     // Set the Subject
-    
     if ($isNewReservation) {
         $subject = get_clubname() . " - Court Reservation Notice";
     } else {
@@ -1591,7 +1600,6 @@ function confirm_singles($resid, $isNewReservation) {
             );
         }
     }
-
 
     $content = new Object;
     $content->line1 = $emailbody;
