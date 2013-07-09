@@ -32,10 +32,6 @@
 * - print_players()
 * Classes list:
 */
-/*
- * $LastChangedRevision: 857 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
 
 */
 include ("../application.php");
@@ -90,10 +86,7 @@ function validate_form($searchname) {
         $msg.= "No speical characters please. ";
     }
     
-    if (get_roleid() == 1 && empty($searchname)) {
-        $errors->searchname = true;
-        $msg.= "Wait...who are you looking for again?. ";
-    }
+  
     return $msg;
 }
 /**
