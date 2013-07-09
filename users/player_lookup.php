@@ -33,7 +33,7 @@
 * Classes list:
 */
 
-*/
+
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 $DOC_TITLE = "Member Directory";
