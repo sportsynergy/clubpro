@@ -152,6 +152,9 @@
 				if($timetonext >= 3600 || $nexttime == null ){ ?>
 					<option value="1">60 Minutes</option>
 				<?}
+        if($timetonext >= 4500 || $nexttime == null ){ ?>
+          <option value="1.25">75 Minutes</option>
+        <?}
 				if($timetonext >= 5400 || $nexttime == null ){ ?>
 					<option value="1.5">90 Minutes</option>
 				<? } ?>
