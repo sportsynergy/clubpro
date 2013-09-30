@@ -70,19 +70,18 @@ if (isset($_SESSION["CFG"]["wwwroot"])) {
 
 if (!isset($_SESSION["CFG"])) {
 
-    
-        $_SESSION["CFG"]["wwwroot"] = "";
-        $_SESSION["CFG"]["imagedir"] = "/images";
-        $_SESSION["CFG"]["dirroot"] = "/opt/clubpro";
-        $_SESSION["CFG"]["templatedir"] = "/opt/clubpro/templates";
-        $_SESSION["CFG"]["libdir"] = "/opt/clubpro/lib";
-        $_SESSION["CFG"]["wordlist"] = "/opt/clubpro/lib/wordlist.txt";
-        $_SESSION["CFG"]["includedir"] = "/opt/clubpro/includes";
-        $_SESSION["CFG"]["dns"] = "www.sportsynergy.net";
-        $_SESSION["CFG"]["support"] = "support@sportsynergy.net";
-        $_SESSION["CFG"]["logFile"] = "/var/log/sportsynergy/application.log";
+    $_SESSION["CFG"]["wwwroot"] = "";
+    $_SESSION["CFG"]["imagedir"] = "/images";
+    $_SESSION["CFG"]["dirroot"] = "/opt/clubpro";
+    $_SESSION["CFG"]["templatedir"] = "/opt/clubpro/templates";
+    $_SESSION["CFG"]["libdir"] = "/opt/clubpro/lib";
+    $_SESSION["CFG"]["wordlist"] = "/opt/clubpro/lib/wordlist.txt";
+    $_SESSION["CFG"]["includedir"] = "/opt/clubpro/includes";
+    $_SESSION["CFG"]["dns"] = "www.sportsynergy.net";
+    $_SESSION["CFG"]["support"] = "support@sportsynergy.net";
+    $_SESSION["CFG"]["logFile"] = "/var/log/sportsynergy/application.log";
 	$_SESSION["CFG"]["sendgriduser"] = "sportfx";
-	$_SESSION["CFG"]["sendgridpass"] = "wramijirap";
+	$_SESSION["CFG"]["sendgridpass"] = "put.your.password.here";
 }
 
 /* load up standard libraries */

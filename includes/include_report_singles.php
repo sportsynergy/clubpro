@@ -119,6 +119,7 @@ function enableMatchType()
       <td><span class="label">Match Type:</span></td>
       <td colspan="2"><select name="matchtype" >
           <option value="practice">Practice</option>
+          <option value="challenge">Challenge</option>
         </select></td>
     </tr>
     <tr>

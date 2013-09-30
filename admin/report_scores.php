@@ -70,6 +70,7 @@ if (match_referer() && isset($_POST['submitme'])) {
                 }
             }
         }
+
         $message = record_scores($frm);
         include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
         include ($_SESSION["CFG"]["includedir"] . "/include_message.php");
@@ -321,6 +322,7 @@ function record_scores(&$frm) {
         if ($frm['matchtype'] == "challenge") {
             $rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
         }
+        
         $newWinnerRanking = $rankingArray['winner'];
         $newWinnerRanking = round($newWinnerRanking, 3);
         $newLoserRanking = $rankingArray['loser'];
