@@ -18,3 +18,42 @@ Getting this running
 3. Update the database setting in step 2 with step 1
 4. Add an apache configuration file that looks something like this:
 
+
+Deploying
+-------
+
+1. Rename build.properties.default to build.properties
+2. Make sure everything looks ok in the properties file
+3. Run ant
+
+
+
+## Troubleshooting
+
+#### If you get this...
+
+BUILD FAILED
+/Users/adampreston/Repository/clubpro-build/build.xml:89: Problem: failed to create task or type scp
+Cause: the class org.apache.tools.ant.taskdefs.optional.ssh.Scp was not found.
+        This looks like one of Ant's optional components.
+Action: Check that the appropriate optional JAR exists in
+        -/usr/share/ant/lib
+        -/Users/adampreston/.ant/lib
+        -a directory added on the command line with the -lib argument
+
+Do not panic, this is a common problem.
+The commonest cause is a missing JAR.
+
+This is not a bug; it is a configuration problem
+
+
+#### Do this
+
+Copy these two files to /usr/share/ant/lib
+
+* ant-jsch-1.7.0.jar
+* jsch-0.1.50.jar (http://www.jcraft.com/jsch/)
+
+
+
+
