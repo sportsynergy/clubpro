@@ -318,11 +318,15 @@ function record_scores(&$frm) {
         $rankingArray = calculateRankings($winnersOldRanking, $losersOldRanking);
 
         //if the match type is challenge then run run this calculation twice
+
+        // ladder is not box league, but rather its a general placeholder.  ok
+        // the back ground here is that this is a special one off feature
+        // request for a client.
         
-        if ($frm['matchtype'] == "challenge") {
+        if ($frm['matchtype'] == "challenge" || $frm['matchtype'] == "ladder") {
             $rankingArray = calculateRankings($rankingArray['winner'], $rankingArray['loser']);
         }
-        
+
         $newWinnerRanking = $rankingArray['winner'];
         $newWinnerRanking = round($newWinnerRanking, 3);
         $newLoserRanking = $rankingArray['loser'];
