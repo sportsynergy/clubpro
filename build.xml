@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<!-- ====================================================================== 
+     Jun 5, 2006 2:10:25 PM                                                        
+
+     project    
+     description: This build script tars and gzips the application
+                   
+     Adam Preston                                                                
+     ====================================================================== -->
+
+
+<project name="project" default="send">
+
+	
+	<description>
+     	This build script tars and gzips the application
+    </description>
+
+	<property file="build.properties" />
+
+	<path id="project.classpath">
+		<pathelement location="${svnjavahl.jar}" />
+		<pathelement location="${svnant.jar}" />
+		<pathelement location="${svnClientAdapter.jar}" />
+		<pathelement location="${jakarta-regexp.jar}" />
+		<pathelement location="${commons-lang.jar}" />
+	</path>
+
+
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" 
+		classpathref="project.classpath" /> 
+
+	<!-- ================================= 
+          target: Tar and GZIP              
+         ================================= -->
+	<target name="archive" depends="generatesvninfo" description="Archive">
+
+		<tar tarfile="clubpro.tar.gz"
+		compression="gzip">
+			<tarfileset dir="${work.dir}" excludes=".git/**, .gitignore/**, .project, clubs/**, application.php"/>
+			<tarfileset file="${version.report}"/>
+		</tar>
+	</target>
+
+	<!-- ================================= 
+          target: incrementbuildnumber                      
+	 ================================= -->
+	<target name="generatesvninfo" depends="checkoutLatest" description="Generating Version Information">
+		
+		<exec executable="git" outputproperty="build.commit" dir="${work.dir}">
+				    <arg value="describe"/>
+				    <arg value="--abbrev=20"/>
+				</exec>
+		
+		<echo file="${version.report}">
+			${build.commit}
+		</echo> 
+	</target>
+
+
+	<!-- ================================= 
+		          target: checkoutLatest              
+    ================================= -->
+
+	<target name="checkoutLatest" description="Checking out from the Repository" depends="clean">
+		<git command = "clone">
+		    <args>
+		        <arg value = "git://github.com/sportsynergy/clubpro.git" />
+		        <arg value = "clubpro_latest" />
+		    </args>
+		</git>
+	</target>
+
+	<!-- ================================= 
+		          target: clean              
+		 ================================= -->
+	<target name="clean" description="Starting from a Clean Slate" >
+		<delete dir="${work.dir}"/>
+		<delete file="${version.report}"/>
+		<delete file="clubpro.tar.gz"/>
+	</target>
+	
+	
+	<target name="send" description="Sends archive to server for deployment" depends="archive">
+		<scp file="clubpro.tar.gz" todir="${deployment.server.user}@${deployment.server}:${deployment.server.dir}" 
+			verbose="on" 
+			keyfile="/Users/adampreston/.ssh/id_rsa"
+			passphrase="${key.passphrase}"
+			trust="on"/>		
+	</target>
+
+	<macrodef name = "git">
+	    <attribute name = "command" />
+	    <attribute name = "dir" default = "" />
+	    <element name = "args" optional = "true" />
+	    <sequential>
+	        <echo message = "git @{command}" />
+	        <exec executable = "git" dir = "@{dir}">
+	            <arg value = "@{command}" />
+	            <args/>
+	        </exec>
+	    </sequential>
+	</macrodef>
+
+	
+
+</project>
+

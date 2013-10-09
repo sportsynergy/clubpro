@@ -1,0 +1,26 @@
+# -----------------------------------------------------------------------------
+# build.properties
+# This file is referenced by the build.xml file.
+# 
+# $Id$
+# -----------------------------------------------------------------------------
+
+svnant.version=1.0.0-rc1
+
+# -----------------------------------------------------------------------------
+# all jar needed
+# -----------------------------------------------------------------------------
+lib.dir=lib
+svnjavahl.jar=${lib.dir}/svnjavahl.jar
+svnant.jar=${lib.dir}/svnant.jar
+svnClientAdapter.jar=${lib.dir}/svnClientAdapter.jar
+jakarta-regexp.jar=${lib.dir}/jakarta-regexp-1.3.jar
+commons-lang.jar=${lib.dir}/commons-lang-2.0.jar
+work.dir=clubpro_latest
+version.report=version.txt
+
+deployment.server=www.sportsynergy.net
+deployment.server.dir=/opt/stage
+deployment.server.user=ec2-user
+key.passphrase=secretpassphrase
+

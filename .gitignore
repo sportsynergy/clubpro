@@ -2,3 +2,8 @@
 clubs/
 /application.php
 .DS_Store
+build.properties
+
+clubpro.tar.gz
+version.txt
+clubpro_latest
