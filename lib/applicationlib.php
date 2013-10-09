@@ -1120,7 +1120,7 @@ function email_players($resid, $emailType) {
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
         $template = get_sitecode();
-        $subject = get_clubname() . " - Player's Market Place";
+        $subject =  "Player's Market Place - ". get_clubname();
 
         //Send the email
         sendgrid_email($subject, $to_emails, $content, "Players Wanted");
@@ -1438,7 +1438,7 @@ function email_players($resid, $emailType) {
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
         $template = get_sitecode();
-        $subject = get_clubname() . " - Player's Market Place";
+        $subject =  "Player's Market Place - ". get_clubname();
 
         //Send the email
         sendgrid_email($subject, $to_emails, $content, "Players Wanted");
@@ -1511,7 +1511,7 @@ function email_boxmembers($resid, $boxid) {
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
-    $subject = get_clubname() . " - Player's Market Place";
+    $subject =  "Player's Market Place - ".get_clubname();
 
 
     //Send the email
@@ -1582,9 +1582,9 @@ function confirm_singles($resid, $isNewReservation) {
 
     // Set the Subject
     if ($isNewReservation) {
-        $subject = get_clubname() . " - Court Reservation Notice";
+        $subject = "Court Reservation Notice - ".get_clubname() ;
     } else {
-        $subject = get_clubname() . " - Updated Court Reservation Notice";
+        $subject = "Updated Court Reservation Notice - ".get_clubname();
     }
 
     //Reset the result pointer to the begining
@@ -1753,9 +1753,9 @@ function confirm_doubles($resid, $isNewReservation) {
     // Set the Subject
     
     if ($isNewReservation) {
-        $subject = get_clubname() . " - Court Reservation Notice";
+        $subject = "Court Reservation Notice - ".get_clubname() ;
     } else {
-        $subject = get_clubname() . " - Updated Court Reservation Notice";
+        $subject = "Updated Court Reservation Notice - ".get_clubname();
     }
 
     //Check to see if there is a single wanting to play
@@ -1974,7 +1974,7 @@ function cancel_doubles($resid) {
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
-    $subject = get_clubname() . " - Court Cancellation Notice";
+    $subject =  "Court Cancellation Notice - ".get_clubname();
 
 
     //Send the email
@@ -2039,7 +2039,7 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
-    $subject = get_clubname() . " - Score Report";
+    $subject =  "Score Report - ".get_clubname();
 
 
     //Send the email
@@ -2141,7 +2141,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
-    $subject = get_clubname() . " - Score Report";
+    $subject =  "Score Report - ".get_clubname();
 
     //Send the email
     sendgrid_email($subject, $to_emails, $content, "Report Singles Score");
@@ -2192,7 +2192,7 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
-    $subject = get_clubname() . " - Score Report";
+    $subject =  "Score Report - ".get_clubname();
 
     $winner_email = array(
         $wobj->email => array(
@@ -2276,7 +2276,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
-    $subject = get_clubname() . " - Score Report";
+    $subject =  "Score Report - ".get_clubname();
 
 
     //Send the email
@@ -2384,7 +2384,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
-    $subject = get_clubname() . " - Score Report";
+    $subject =  "Score Report - ".get_clubname();
 
 
 		//Send the email
