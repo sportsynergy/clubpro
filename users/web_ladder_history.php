@@ -49,14 +49,16 @@ if (match_referer() && isset($_POST['submitme'])) {
 }
 
 // Get the box history for that user
-$query = "SELECT reservations.reservationid FROM 
-		tblBoxHistory history
+$query = "SELECT reservations.reservationid 
+            FROM tblBoxHistory history
 			INNER JOIN tblReservations reservations ON reservations.reservationid = history.reservationid
 			INNER JOIN tblkpUserReservations details ON details.reservationid = reservations.reservationid
 			WHERE boxid = $boxid AND details.userid = $userid
              AND (SELECT sum(outcome) 
                     FROM tblkpUserReservations 
-                    WHERE reservationid = reservations.reservationid GROUP BY reservationid) > 0 ";
+                    WHERE reservationid = reservations.reservationid GROUP BY reservationid) > 0 
+            GROUP BY reservationid
+            ORDER BY reservationid";
 
 
 
