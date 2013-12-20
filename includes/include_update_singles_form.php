@@ -252,13 +252,13 @@ function enable()
 	       }
 	       
 	       ?>
-        <input type="button" name="submit" value="Update Reservation"  <?=$disabled?> id="submitbutton">
+        <input type="button" name="submit" value="Update Reservation" id="submitbutton">
 			<input type="button" value="Cancel Reservation" <?=$disabled?> id="cancelReservationbutton">
 			<a href="javascript:onCancelButtonClicked()">go back</a>
 		</td>
     </tr>
   </table>
- 
+
  <input type="hidden" name="cancelall" value="">
  <input type="hidden" name="reservationid" value="<?=$reservationid?>">
   <input type="hidden" name="courtid" value="<?=$courtid?>">
