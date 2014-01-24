@@ -133,7 +133,7 @@ function onSubmitButtonClicked(){
       
        <tr>
        		<td  >
-       		<br><br>If these are not the player's that played click <a href="court_cancelation.php?time=<?=$restypearray[2]?>&courtid=<?=$restypearray[3]?>">here</a>.</td>
+       		<br><br>If these are not the player's that played or if you need to change the match type, click <a href="court_cancelation.php?time=<?=$restypearray[2]?>&courtid=<?=$restypearray[3]?>">here</a>.</td>
        </tr>
       
        <tr>

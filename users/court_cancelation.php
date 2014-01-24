@@ -198,7 +198,20 @@ function validate_form(&$frm, &$errors) {
             return "Please specify at least one player.";
         } elseif (isAtLeastOnePlayerDuplicatedForSingles($playerOneId, $playerTwoId)) {
             return "Please specify different people in the reservation";
+        } else{
+
+
+        if (isDebugEnabled(1)) logMessage("court_cancelation: validating changing reservation to reservationid. Match Type:  " . $frm['matchtype'] );
+      
+
+            $boxId = getBoxIdTheseTwoGuysAreInTogether($playerOneId, $playerTwoId);
+
+            if( $frm['matchtype'] == "1" && empty($boxId) ){
+                return "These guys aren't in the same box league";
+            }
+
         }
+
     }
     
     if (!canIcancel($frm['courtid'], $frm['time'])) {
@@ -573,15 +586,20 @@ function cancel_court(&$frm) {
 
         elseif ($frm["cancelall"] == 4) {
             
-            if (isDebugEnabled(1)) logMessage("court_cancelation.cancel_court: Just rearranging the reservation cancelall =  " . $frm["cancelall"] . " player1 = " . $frm['player1'] . " player2 = " . $frm['player2']);
+            if (isDebugEnabled(1)) logMessage("court_cancelation.cancel_court: Just rearranging the reservation cancelall =  " . $frm["cancelall"] . " player1 = " . $frm['player1'] . " player2 = " . $frm['player2'] . " and matchtype = ".$frm["matchtypes"]);
             $locked = "n";
             
             if (isset($frm["lock"])) {
                 $locked = "y";
             }
+
+
+
+
             $qid1 = db_query("UPDATE tblReservations
 									  SET lastmodifier = " . get_userid() . "
 									  ,locked = '$locked'
+                                      ,matchtype = " . $frm["matchtype"] ."
                                       WHERE reservationid = $residarray[0]");
             $qid2 = db_query("DELETE FROM tblkpUserReservations
                                       WHERE reservationid = $residarray[0]");

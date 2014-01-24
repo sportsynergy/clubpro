@@ -58,8 +58,6 @@ function enableMatchType()
 		document.singles_entryform.player2.value
 	}
 		
-	
-	
 }
 
 
@@ -117,10 +115,13 @@ function enableMatchType()
     </tr>
     <tr>
       <td><span class="label">Match Type:</span></td>
-      <td colspan="2"><select name="matchtype" >
+      <td colspan="2">
+        <select name="matchtype" >
           <option value="practice">Practice</option>
           <option value="ladder">Ladder</option>
-        </select></td>
+          <option value="league">Box League</option>
+        </select>
+      </td>
     </tr>
     <tr>
       <td><span class="label">Court Type:</span></td>

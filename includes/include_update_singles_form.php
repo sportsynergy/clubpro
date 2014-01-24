@@ -32,11 +32,6 @@
 */
 /*
  *
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
- *
- *
  * The following variables are required before loading this form:
  *
  * 		$userid
@@ -56,9 +51,9 @@ $isPageBeingLoadedForPastReservation = isInPast($time);
 
 //Get the players from the reservation (doubles will be teams, singles will be players)
 $playersQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, concat(users.firstname,' ',users.lastname) AS fullname,
- reservations.locked,reservations.reservationid
-                        FROM tblReservations reservations, tblkpUserReservations reservationdetails, tblUsers users
-                        WHERE reservations.reservationid = reservationdetails.reservationid
+ reservations.locked,reservations.reservationid, reservations.matchtype
+                        FROM tblReservations reservations, tblkpUserReservations reservationdetails, tblUsers users           
+            WHERE reservations.reservationid = reservationdetails.reservationid
                         AND reservations.time=$time
 						AND reservations.courtid=$courtid
 						AND reservations.enddate IS NULL
@@ -71,6 +66,7 @@ $locked = $playerRow['locked'];
 $player1Id = $playerRow['userid'];
 $player1FullName = "$playerRow[fullname]";
 $player1FullName =  htmlspecialchars($player1FullName);
+$matchtype = $playerRow['matchtype'];
 
 $reservationid = $playerRow['reservationid'];
 $playerRow = mysql_fetch_array($playersResult);
@@ -83,6 +79,9 @@ if (!empty($player2Id)) {
 }
 $emailArray = getEmailAddressesForReservation($reservationid);
 $emailString = implode(",", $emailArray);
+
+$matchtypesQuery = "SELECT ";
+
 ?>
 <script language="Javascript">
 
@@ -227,8 +226,29 @@ function enable()
                  	}
                  	
                  ?>
+
           <tr>
-            <td colspan="2"><input type="checkbox" name="lock" <?=$selected?> <? if($isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
+              <td  colspan="2">
+
+                <span class="label" style="margin-right: 20px">Match Type:</span> 
+             
+                  <select name="matchtype">
+                      
+                      <option value="2" <?= $matchtype=="2" ? "selected=selected" : "" ?> >Challenge</option>
+
+                      <? if( isSiteBoxLeageEnabled() ){ ?>
+                      <option value="1" <?= $matchtype=="1" ? "selected=selected" : "" ?> >Box League</option>
+                      <? } ?>
+                      <option value="0" <?= $matchtype=="0" ? "selected=selected" : "" ?> >Practice</option>
+                  </select>
+              </td>
+          </tr>
+          <tr>
+              <td colspan="2" style="height: 20px"></td>
+          </tr>
+          <tr >
+            <td colspan="2" >
+                <input type="checkbox" name="lock" <?=$selected?> <? if($isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
               <span class="normal">Lock reservation</span></td>
           </tr>
           <?}?>
@@ -263,7 +283,6 @@ function enable()
  <input type="hidden" name="reservationid" value="<?=$reservationid?>">
   <input type="hidden" name="courtid" value="<?=$courtid?>">
   <input type="hidden" name="time" value="<?=$time?>">
-  <input type="hidden" name="matchtype" value="<?=$matchtype?>">
   <input type="hidden" name="guylookingformatch" value="<?=$userid?>">
   <input type="hidden" name="lastupdated" value="<?=$lastupdated?>">
 </form>
