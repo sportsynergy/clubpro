@@ -49,9 +49,8 @@ This is not a bug; it is a configuration problem
 
 #### Do this
 
-Copy these two files to /usr/share/ant/lib
+Copy this file to your ant lib folder (/usr/share/ant/lib) 
 
-* ant-jsch-1.7.0.jar
 * jsch-0.1.50.jar (http://www.jcraft.com/jsch/)
 
 
