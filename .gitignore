@@ -3,6 +3,7 @@ clubs/
 /application.php
 .DS_Store
 build.properties
+.vagrant
 
 clubpro.tar.gz
 version.txt

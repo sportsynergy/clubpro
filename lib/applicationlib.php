@@ -1073,6 +1073,8 @@ function email_players($resid, $emailType) {
 									AND clubuser.enddate IS NULL";
         } elseif ($emailType == "1") {
 
+        
+
             //Get the rankdev of the club
             $rankdevquery = "SELECT rankdev FROM tblClubs WHERE clubid=" . get_clubid() . "";
 
@@ -1098,6 +1100,9 @@ function email_players($resid, $emailType) {
 				                       AND users.userid != " . get_userid() . "
 				                       AND clubuser.enable='y'
 									   AND clubuser.enddate IS NULL";
+
+            if (isDebugEnabled(1)) logMessage( $emailidquery );
+
         }
 
         // run the query on the database
@@ -1358,6 +1363,7 @@ function email_players($resid, $emailType) {
 	                       AND users.userid != " . get_userid() . "
 	                       AND clubuser.enable='y'
 						   AND clubuser.enddate IS NULL";
+
         } elseif ($emailType == "2") {
 			
 			 if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: gathering up the names to email to ".get_userfullname()."'s buddy list");
@@ -1397,24 +1403,26 @@ function email_players($resid, $emailType) {
 
             //Now get all players who receive players wanted notifications at the club and are within the set skill range
 
-            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
-				                         FROM tblUsers users, tblTeams teams, tblkpTeams teamdetails, tblUserRankings rankings, tblClubUser clubuser
-										 WHERE users.userid = teamdetails.userid
-				                         AND teams.teamid = teamdetails.teamid
-				                         AND rankings.userid = teamdetails.teamid
-									     AND users.userid = clubuser.userid
+            $emailidquery = "SELECT  users.firstname, users.lastname, users.email
+                                FROM tblUsers users
+                                    INNER JOIN tblUserRankings rankings ON users.userid = rankings.userid
+                                    INNER JOIN tblClubUser clubuser ON users.userid = clubuser.userid
+                                WHERE users.userid = clubuser.userid
 				                         AND clubuser.clubid=" . get_clubid() . "
 				                         AND clubuser.recemail='y'
 				                         AND rankings.ranking>$lowrange
 				                         AND rankings.ranking<$highrange
 										 AND rankings.courttypeid=$courtType
-				                         AND rankings.usertype =1
+				                         AND rankings.usertype =0
 				                         AND users.userid != $player1
 				                         AND users.userid != $player2
 										 AND users.userid != $extraPlayerUserId
 				                         AND clubuser.enable='y'
 										 AND clubuser.enddate IS NULL";
         }
+
+        if (isDebugEnabled(1)) logMessage( $emailidquery );
+
 
         // run the query on the database
         $emailidresult = db_query($emailidquery);
