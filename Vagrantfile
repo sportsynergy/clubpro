@@ -19,10 +19,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   
-
-  
   config.vm.synced_folder ".", "/opt/clubpro"
 
-
+Vagrant.configure("2") do |config|
  
+  config.vm.box = "sportsynergy"
+  config.vm.synced_folder ".", "/opt/clubpro"
+  
+
 end
