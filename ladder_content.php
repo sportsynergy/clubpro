@@ -25,16 +25,7 @@
  * $Id:$
  */
 
-/**
-* Class and Function List:
-* Function list:
-* Classes list:
-*/
-/*
- * $LastChangedRevision: 856 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-03-14 13:29:36 -0500 (Mon, 14 Mar 2011) $
-*/
+
 
 //Load necessary libraries and set the wanturl to get back here.
 $_SESSION["wantsurl"] = qualified_mewithq();

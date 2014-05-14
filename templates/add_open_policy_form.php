@@ -16,7 +16,9 @@ YAHOO.example.init = function () {
 
 
 function onSubmitButtonClicked(){
-	submitForm('entryform');
+
+  submitForm('entryform');
+
 }
 
 function onCancelButtonClicked(){
@@ -244,6 +246,7 @@ print "var thisyear = new Array(13);
            <td colspan="2">
            	<input type="button" name="submit" value="Add Open Policy" id="submitbutton">
            	<input type="button" name="back" value="Go Back" id="cancelbutton">
+            <input type="hidden" name="submitme" value="submitme">
            </td>
     </tr>
  </table>

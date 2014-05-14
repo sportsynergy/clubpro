@@ -38,7 +38,9 @@ $DOC_TITLE = "Club Hours Policy";
 
 /* form has been submitted, try to create the new role */
 
-if (match_referer() && isset($_POST['submit'])) {
+if (match_referer() && isset($_POST['submitme'])) {
+   
+logMessage("im in");
     $frm = $_POST;
     $errormsg = validate_form($frm, $errors);
     $wwwroot = $_SESSION["CFG"]["wwwroot"];
@@ -49,10 +51,13 @@ if (match_referer() && isset($_POST['submit'])) {
         header("Location: " . $_SESSION["CFG"]["wwwroot"] . "/admin/manage_club_policies.php");
         die;
     }
-} elseif (isset($_POST['back'])) {
+} elseif (isset($_POST['back'])) { 
     $wwwroot = $_SESSION["CFG"]["wwwroot"];
     header("Location: $wwwroot/admin/manage_club_policies.php");
 }
+
+
+
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/add_open_policy_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");

@@ -27,9 +27,6 @@
 	</path>
 
 
-	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" 
-		classpathref="project.classpath" /> 
-
 	<!-- ================================= 
           target: Tar and GZIP              
          ================================= -->
@@ -84,7 +81,7 @@
 	<target name="send" description="Sends archive to server for deployment" depends="archive">
 		<scp file="clubpro.tar.gz" todir="${deployment.server.user}@${deployment.server}:${deployment.server.dir}" 
 			verbose="on" 
-			keyfile="/Users/adampreston/.ssh/id_rsa"
+			keyfile="~/.ssh/id_rsa"
 			passphrase="${key.passphrase}"
 			trust="on"/>		
 	</target>
