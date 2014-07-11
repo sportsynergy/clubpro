@@ -998,9 +998,5 @@ function isReoccuringReservation($time, $courtid) {
     }
     return false;
 }
-/**
- *
- */
-function deleteReoccurringEvent() {
-}
+
 ?>

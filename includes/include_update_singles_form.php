@@ -106,8 +106,12 @@ YAHOO.example.init = function () {
         var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
         oSubmitButton1.on("click", onSubmitButtonClicked);
 
-		var oCancelReservationButton = new YAHOO.widget.Button("cancelReservationbutton", { value: "cancelreservationbuttonvalue" });   
+		    var oCancelReservationButton = new YAHOO.widget.Button("cancelReservationbutton", { value: "cancelreservationbuttonvalue" });   
         oCancelReservationButton.on("click", onCancelReservationButtonClicked);
+
+        var oCancelAllReservationButton = new YAHOO.widget.Button("cancelAllReservationbutton", { value: "cancelreservationbuttonvalue" });   
+        oCancelAllReservationButton.on("click", onCancelAllReservationButtonClicked);
+
 
 		//Default names
 		document.entryform.name1.value = "<?= addslashes($player1FullName) ?>";
@@ -127,10 +131,16 @@ function onSubmitButtonClicked(){
 }
 
 function onCancelReservationButtonClicked(){
-
 	document.entryform.cancelall.value=3;
 	submitForm('entryform');
 }
+
+function onCancelAllReservationButtonClicked(){
+  document.entryform.cancelall.value=9;
+  submitForm('entryform');
+}
+
+
 
  function onCancelButtonClicked(){
 
@@ -173,7 +183,9 @@ function enable()
         </span></td>
     </tr>
     <tr>
-      <td><table>
+      <td>
+
+        <table>
           
           <tr>
             <td><input id="name1" name="name1" type="text" size="35" class="form-autocomplete"   />
@@ -274,6 +286,9 @@ function enable()
 	       ?>
         <input type="button" name="submit" value="Update Reservation" id="submitbutton">
 			<input type="button" value="Cancel Reservation" <?=$disabled?> id="cancelReservationbutton">
+     <? if(isReoccuringReservation($time, $courtid)){ ?>
+        <input type="button" value="Cancel All Occurrences" <?=$disabled?> id="cancelAllReservationbutton">
+     <? } ?>
 			<a href="javascript:onCancelButtonClicked()">go back</a>
 		</td>
     </tr>
