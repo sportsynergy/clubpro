@@ -967,36 +967,6 @@ function cancel_court(&$frm) {
         }
     }
 }
-/**
- * Checks to see if this event falls within a reoccuring event.  If this is the last reservation in
- * a set, false is returned as that reservation is not reoccuring.
- *
- * 1. Get all of the current (not already ended) reoccuring events for this court
- * 2.) For each one of these found determine the timestamps for all of the occurances
- * 3.) See if the timestamp of the
- *
- */
-function isReoccuringReservation($time, $courtid) {
 
-    //Get all of the reoccuring event (1)
-    $reOccuringEventQuery = "SELECT reoccuringevents.eventinterval,reoccuringevents.starttime,reoccuringevents.endtime 
-								FROM tblReoccuringEvents reoccuringevents
-								WHERE reoccuringevents.courtid = $courtid
-								AND reoccuringevents.endtime > $time";
-    $reOccuringEventResult = db_query($reOccuringEventQuery);
-    while ($reOccuringEventsArray = mysql_fetch_array($reOccuringEventResult)) {
-        $reoccuringEventsArray = array();
-
-        //Calculate the timestamps for each event in the set (still 1)
-        for ($i = $reOccuringEventsArray['starttime']; $i < $reOccuringEventsArray['endtime']; $i = $i + $reOccuringEventsArray['eventinterval']) {
-            array_push($reoccuringEventsArray, $i);
-        }
-        
-        if (in_array($time, $reoccuringEventsArray)) {
-            return true;
-        }
-    }
-    return false;
-}
 
 ?>

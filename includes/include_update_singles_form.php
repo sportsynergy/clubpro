@@ -289,7 +289,9 @@ function enable()
      <? if(isReoccuringReservation($time, $courtid)){ ?>
         <input type="button" value="Cancel All Occurrences" <?=$disabled?> id="cancelAllReservationbutton">
      <? } ?>
+     <p>
 			<a href="javascript:onCancelButtonClicked()">go back</a>
+    </p>
 		</td>
     </tr>
   </table>
