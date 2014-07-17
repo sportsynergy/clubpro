@@ -109,7 +109,11 @@ YAHOO.example.init = function () {
 		    var oCancelReservationButton = new YAHOO.widget.Button("cancelReservationbutton", { value: "cancelreservationbuttonvalue" });   
         oCancelReservationButton.on("click", onCancelReservationButtonClicked);
 
-       
+         <? if(isReoccuringReservation($time, $courtid)){ ?>
+            var oCancelAllReservationButton = new YAHOO.widget.Button("cancelAllReservationbutton", { value: "cancelreservationbuttonvalue" });   
+            oCancelAllReservationButton.on("click", onCancelAllReservationButtonClicked);
+
+        <? } ?>
 
 		//Default names
 		document.entryform.name1.value = "<?= addslashes($player1FullName) ?>";
@@ -139,9 +143,7 @@ function onCancelAllReservationButtonClicked(){
 }
 
 
-
  function onCancelButtonClicked(){
-
 	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
  }
 
@@ -164,7 +166,11 @@ function enable()
 	<?}?>
 }
 
-	
+
+    
+
+
+      
 
 </script>
 
@@ -284,16 +290,9 @@ function enable()
 	       ?>
         <input type="button" name="submit" value="Update Reservation" id="submitbutton">
 			<input type="button" value="Cancel Reservation" <?=$disabled?> id="cancelReservationbutton">
-     <? if(isReoccuringReservation($time, $courtid)){ ?>
-        
-        <script language="Javascript">
-          var oCancelAllReservationButton = new YAHOO.widget.Button("cancelAllReservationbutton", { value: "cancelreservationbuttonvalue" });   
-          oCancelAllReservationButton.on("click", onCancelAllReservationButtonClicked);
-
-        </script>
+      <? if(isReoccuringReservation($time, $courtid)){ ?>
         <input type="button" value="Cancel All Occurrences" <?=$disabled?> id="cancelAllReservationbutton">
-     <? } ?>
-     
+        <? } ?>
 		</td>
     </tr>
   </table>
