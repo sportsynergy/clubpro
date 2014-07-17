@@ -109,9 +109,7 @@ YAHOO.example.init = function () {
 		    var oCancelReservationButton = new YAHOO.widget.Button("cancelReservationbutton", { value: "cancelreservationbuttonvalue" });   
         oCancelReservationButton.on("click", onCancelReservationButtonClicked);
 
-        var oCancelAllReservationButton = new YAHOO.widget.Button("cancelAllReservationbutton", { value: "cancelreservationbuttonvalue" });   
-        oCancelAllReservationButton.on("click", onCancelAllReservationButtonClicked);
-
+       
 
 		//Default names
 		document.entryform.name1.value = "<?= addslashes($player1FullName) ?>";
@@ -287,11 +285,15 @@ function enable()
         <input type="button" name="submit" value="Update Reservation" id="submitbutton">
 			<input type="button" value="Cancel Reservation" <?=$disabled?> id="cancelReservationbutton">
      <? if(isReoccuringReservation($time, $courtid)){ ?>
+        
+        <script language="Javascript">
+          var oCancelAllReservationButton = new YAHOO.widget.Button("cancelAllReservationbutton", { value: "cancelreservationbuttonvalue" });   
+          oCancelAllReservationButton.on("click", onCancelAllReservationButtonClicked);
+
+        </script>
         <input type="button" value="Cancel All Occurrences" <?=$disabled?> id="cancelAllReservationbutton">
      <? } ?>
-     <p>
-			<a href="javascript:onCancelButtonClicked()">go back</a>
-    </p>
+     
 		</td>
     </tr>
   </table>
