@@ -121,7 +121,7 @@ function saveClubEvent(&$frm) {
     $year = $datearray[2];
     $mysqldateformat = $year . "-" . $month . "-" . $day;
     $eventid = $frm['id'];
-    logMessage("add_club_event.saveClubEvent: this is the date $mysqldateformat");
+    
 
     // Strip Slashes
     
@@ -133,6 +133,8 @@ function saveClubEvent(&$frm) {
         $description = addslashes($frm['description']);
     }
 
+    logMessage("add_club_event.saveClubEvent: this is the date $description");
+
     //Insert the Club Event
     
     if (!empty($eventid)) {
@@ -141,7 +143,7 @@ function saveClubEvent(&$frm) {
 		        UPDATE tblClubEvents SET
 						name = '$subject'
 		                ,eventdate = '$mysqldateformat'
-		                ,description = '$frm[description]'
+		                ,description = '$description'
 		                ,lastmodifier = " . get_userid() . "
 		        WHERE id = '$eventid'";
     } else {
