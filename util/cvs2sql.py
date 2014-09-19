@@ -31,7 +31,7 @@ with open(filename, 'rb') as f:
     	firstname = row[0]
     	lastname = row[1].replace("'", "\\'")
     	email = row[2]
-    	gender = 1 if row[3] =='F' else '0'
+    	gender = 0 if row[3] =='F' else '1'
     	username = firstname.lower()+'.'+lastname.lower()
     	phone = row[4]
     	memberid = row[5]
