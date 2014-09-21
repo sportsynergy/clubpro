@@ -30,10 +30,6 @@
 * Function list:
 * Classes list:
 */
-/*
- * $LastChangedRevision: 807 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-01-05 21:40:19 -0600 (Wed, 05 Jan 2011) $
 
 */
 ?>
