@@ -1,1 +1,1 @@
-$var->partner is looking for a partner to play against $var->fullname1 and $var->fullname2 in a $var->matchtype match on $var->courtname on $var->time. Interested? If so, click here: $var->signupurl
+$var->partner is looking for a partner to play against $var->fullname1 and $var->fullname2 in a $var->matchtype match on $var->courtname on $var->time. Interested? If so, click  

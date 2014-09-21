@@ -171,7 +171,7 @@ function me() {
 }
 function mewithq() {
 
-    /* returns the name of the current script, without the querystring portion.
+    /* returns the name of the current script, with the querystring portion.
      * this function is necessary because PHP_SELF and REQUEST_URI and PATH_INFO
      * return different things depending on a lot of things like your OS, Web
      * server, and the way PHP is compiled (ie. as a CGI, module, ISAPI, etc.) */

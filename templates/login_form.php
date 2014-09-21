@@ -40,6 +40,7 @@ body {
 	color:#FFF;
 	text-align: left;
 	padding:10px;
+  height: 330px;
 }
 a {
 	color:#FFF;

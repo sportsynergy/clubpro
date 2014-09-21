@@ -147,8 +147,10 @@ pat_autocomplete(array(
 	
     
     <tr>
-      <td colspan="2"><span class="normalsm"> To book a reservation, type in the name of the each player then select from the list.
-        For more infomation on the match types, click <a href="../help/squash-matchtypes.html?iframe=true&width=600&height=450" rel="prettyPhoto[iframe]">here</a>.
+      <td colspan="2">
+      	<span class="normal"> To book a reservation, type in the name of the each player then select from the list.
+        For more infomation on match types, click 
+        <a href="javascript:newWindow('../help/squash-matchtypes.html')">here</a>.
         <? if( get_roleid() == 2){ ?>
         If you want to put yourself down as available for a lesson, leave your name in as Player One, leave Player Two blank and set
         the matchtype as Lesson.

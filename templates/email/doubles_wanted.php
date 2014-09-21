@@ -1,1 +1,1 @@
-$var->fullname1 and $var->fullname2 are looking for a $var->matchtype match on $var->courtname on $var->time. Interested? If so, click here: $var->signupurl
+$var->fullname1 and $var->fullname2 are looking for a $var->matchtype match on $var->courtname on $var->time. Interested? If so, click 

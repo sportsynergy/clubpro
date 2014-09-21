@@ -1,1 +1,1 @@
-$var->fullname is available for a lesson on $var->courtname on $var->time. Interested? If so, click here: $var->signupurl
+<a href="mailto:$var->email">$var->fullname</a> is available for a lesson on $var->courtname on $var->time. Interested? If so, click 

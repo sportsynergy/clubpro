@@ -25,8 +25,18 @@
  * $Id:$
  */
 
+
+function get_site_password($siteid){
+    
+    $sitePasswordQuery = "SELECT sites.password FROM tblClubSites sites WHERE sites.siteid = $siteid";
+    $sitePasswordResult = db_query($sitePasswordQuery);
+    return mysql_result($sitePasswordResult, 0);
+}
+
+
+
 /*
-	Use send grid to send out emails from the admin
+    Use send grid to send out emails from the admin
 */
 function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 	
@@ -97,12 +107,14 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 	// To make backwards compatible with postageapp create
 	$toList = array();
 	$nameList = array();
+    $urlList = array();
+
 	foreach ($to_emails as $k=>$v){
-		if (isDebugEnabled(1)) {
-		    logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
-		}
+		if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
+		
 		$toList[] = $k;
 		$nameList[] = $v['name'];
+        $urlList[] = isset($v['url']) ? $v['url'] : "";
 	}
 
 
@@ -124,8 +136,9 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 	  addCategory($category)->
 	  addCategory($content->clubname)->
 	  setTos($toList)->
-	setHtml($template)->
-	addSubstitution("%firstname%", $nameList);
+	  setHtml($template)->
+      addSubstitution("%signupurl%", $urlList)->
+	  addSubstitution("%firstname%", $nameList);
 
 	$sendgrid->smtp->send($mail);
 	
@@ -213,7 +226,8 @@ function verify_login($username, $password, $encodedpassword) {
         			   AND clubuser.enable='y' 
 					   AND clubuser.enddate IS NULL";
     $loginResult = db_query($loginQuery);
-
+if (isDebugEnabled(1)) logMessage("applicationlib.verify_login: Logging in $loginQuery");
+    
     // If the login fails see if the superpassword was used
     
     if (mysql_num_rows($loginResult) == 0) {
@@ -560,8 +574,37 @@ function require_login() {
 function require_loginwq() {
     
     if (!is_logged_in()) {
-        $_SESSION["wantsurl"] = qualified_mewithq();
-        redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+
+        // For clubsites set to auto login, look for username and password REQUEST parameters to 
+        // use for logging in.
+        if( isSiteAutoLogin() ){
+
+            $url_parts = parse_url(qualified_mewithq());
+            parse_str($url_parts['query'], $params);
+            
+            if( isset($params['username']) && isset($params['password']) ){
+                
+                if (isDebugEnabled(1)) logMessage("applicationlib.require_loginwq: logging in autologin user: ". $params['username']);
+        
+                $user = verify_login( $params['username'],$params['password'], false );
+
+                if( $user ){
+                    if (isDebugEnabled(1)) logMessage("applicationlib.require_loginwq: valid user");
+                    $_SESSION["user"] = $user;
+                } else{
+                    redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+                } 
+
+            } else{
+                redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+            }
+
+        } else {
+
+            $_SESSION["wantsurl"] = qualified_mewithq();
+            redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+
+        }
     }
 }
 
@@ -670,16 +713,27 @@ function isDisplayCourtTypeName() {
     return $_SESSION["siteprefs"]["displaycourttype"];
 }
 
-
+// Getter
 function get_roleid() {
 
     /* this function simply returns the roleid. */
-    return $_SESSION["user"]["roleid"];
+    if( isset($_SESSION["user"]) ){
+        return $_SESSION["user"]["roleid"];
+    }
+
+    return;
 }
+
+// Getter
 function get_userid() {
 
     /* this function simply returns the userid. */
-    return $_SESSION["user"]["userid"];
+    if( isset($_SESSION["user"]) ){
+        return $_SESSION["user"]["userid"];
+    }
+
+    return;
+    
 }
 function get_email() {
 
@@ -1042,12 +1096,11 @@ function email_players($resid, $emailType) {
 
         //Set the URL
         $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $var->userid;
-        $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/singles_wanted.php", $var);
         $emailbody = nl2br($emailbody);
         
         if ($emailType == "3") {
-            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email, clubuser.memberid, users.password
 	                       FROM tblUsers users, tblUserRankings rankings, tblClubUser clubuser
 						   WHERE users.userid = rankings.userid
 						   AND users.userid = clubuser.userid
@@ -1060,7 +1113,7 @@ function email_players($resid, $emailType) {
 						   AND clubuser.enddate IS NULL";
 						
         } elseif ($emailType == "2") {
-            $emailidquery = "SELECT users.firstname, users.lastname, users.email
+            $emailidquery = "SELECT users.firstname, users.lastname, users.email, clubuser.memberid, users.password
 			                        FROM tblUsers users, tblBuddies buddies, tblClubUser clubuser, tblUserRankings rankings
 									WHERE users.userid = buddies.buddyid
 			                        AND users.userid = clubuser.userid
@@ -1072,8 +1125,6 @@ function email_players($resid, $emailType) {
 			                        AND clubuser.enable= 'y'
 									AND clubuser.enddate IS NULL";
         } elseif ($emailType == "1") {
-
-        
 
             //Get the rankdev of the club
             $rankdevquery = "SELECT rankdev FROM tblClubs WHERE clubid=" . get_clubid() . "";
@@ -1087,7 +1138,7 @@ function email_players($resid, $emailType) {
             //Now get all players who receive players wanted notifications at the club and are within
             //the set skill range
 
-            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email, clubuser.memberid, users.password
 				                       FROM tblUsers users, tblUserRankings rankings, tblClubUser clubuser
 									   WHERE users.userid = rankings.userid
 									   AND users.userid = clubuser.userid
@@ -1101,19 +1152,26 @@ function email_players($resid, $emailType) {
 				                       AND clubuser.enable='y'
 									   AND clubuser.enddate IS NULL";
 
-            if (isDebugEnabled(1)) logMessage( $emailidquery );
-
         }
 
         // run the query on the database
         $emailidresult = db_query($emailidquery);
+
         $to_emails = array();
         while ($emailidrow = db_fetch_row($emailidresult)) {
             
+            // Append username and password to signup url
+            if( isSiteAutoLogin() ){
+                $rawurl .= "&username=$emailidrow[3]&password=$emailidrow[4]";
+            } 
+
+            $signupurl = "<a href=\"$rawurl\">here</a>.";
+
 			if( !empty($emailidrow[0]) && !empty($emailidrow[1]) && !empty($emailidrow[2])){
 				$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
 	            $to_emails[$to_email] = array(
-	                'name' => $emailidrow[0]
+	                'name' => $emailidrow[0],
+                    'url' => $signupurl
 	            );
 			} else {
 				if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: ".get_userfullname()." not sending to $emailidrow[0] because of incomplete information");
@@ -1210,13 +1268,13 @@ function email_players($resid, $emailType) {
         $var->clubfullname = $clubfullname;
         $var->clubadminemail = "Sportsynergy <player.mailer@sportsynergy.net>";
 
-        //if this reservation is made with a player looking for a partner, something will
-        //be set in the extraPlayerQuery, if so display a different email message .
+        /* if this reservation is made with a player looking for a partner, something will
+            be set in the extraPlayerQuery, if so display a different email message .
 
-        //  $extraPlayerobj->userid will be 0 when taking a player removes himself
+            $extraPlayerobj->userid will be 0 when taking a player removes himself
 
-        //from a reservation where he was looking for a match.
-
+            from a reservation where he was looking for a match.
+        */ 
         $extraPlayerUserId = 0;
 
         //Check for three players wanted
@@ -1256,7 +1314,6 @@ function email_players($resid, $emailType) {
             $partnerobj = mysql_fetch_object($partnerResult);
             $var->single1 = $partnerobj->firstname . " " . $partnerobj->lastname;
             $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $var->userid;
-            $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/threePlayersWanted.php", $var);
         }
 
@@ -1297,7 +1354,6 @@ function email_players($resid, $emailType) {
             $playerTwoobj = mysql_fetch_object($playerTwoResult);
             $var->single2 = $playerTwoobj->firstname . " " . $playerTwoobj->lastname;
             $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $singlePlayerOne;
-            $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/twoPlayersWanted.php", $var);
         }
 
@@ -1314,7 +1370,6 @@ function email_players($resid, $emailType) {
             $partnerobj = mysql_fetch_object($partnerResult);
             $var->partner = $partnerobj->firstname . " " . $partnerobj->lastname;
             $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $extraPlayerUserId;
-            $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/partner_wanted.php", $var);
         }
 
@@ -1327,7 +1382,6 @@ function email_players($resid, $emailType) {
                 return;
             }
             $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $var->teamid;
-            $var->signupurl = "<a href=\"$rawurl\">$rawurl</a>";
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/doubles_wanted.php", $var);
         }
 
@@ -1403,7 +1457,7 @@ function email_players($resid, $emailType) {
 
             //Now get all players who receive players wanted notifications at the club and are within the set skill range
 
-            $emailidquery = "SELECT  users.firstname, users.lastname, users.email
+            $emailidquery = "SELECT  users.firstname, users.lastname, users.email, clubuser.memberid, users.password
                                 FROM tblUsers users
                                     INNER JOIN tblUserRankings rankings ON users.userid = rankings.userid
                                     INNER JOIN tblClubUser clubuser ON users.userid = clubuser.userid
@@ -1432,13 +1486,20 @@ function email_players($resid, $emailType) {
             
             if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: sending email to ".$emailidrow[2]);
             
-				if( !empty($emailidrow[0]) && !empty($emailidrow[1]) && !empty($emailidrow[2])){
-					$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
-	            	$to_emails[$to_email] = array(
-	                	'name' => $emailidrow[0]
-	            		);
-	
-				}
+            // Append username and password to signup url
+            if( isSiteAutoLogin() ){
+                $rawurl .= "&username=$emailidrow[3]&password=$emailidrow[4]";
+            } 
+
+            $signupurl = "<a href=\"$rawurl\">here</a>.";
+
+			if( !empty($emailidrow[0]) && !empty($emailidrow[1]) && !empty($emailidrow[2])){
+				$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+            	$to_emails[$to_email] = array(
+                	'name' => $emailidrow[0],
+                    'url' => $signupurl
+            		);
+			}
         }
 
 

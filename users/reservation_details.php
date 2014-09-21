@@ -148,11 +148,11 @@ function email_players_about_lesson($resid) {
     $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
     $var->fullname = $robj->firstname . " " . $robj->lastname;
     $var->support = $_SESSION["CFG"]["support"];
-    $var->signupurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $var->userid;
+    $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $var->userid;
     $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/lesson_wanted.php", $var);
 
     //Now get all players who receive players wanted notifications at the club
-    $emailidquery = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.email
+    $emailidquery = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.email, tblClubUser.memberid, tblUsers.password
 	                        FROM tblUsers, tblClubUser
 	                        WHERE tblClubUser.recemail='y'
 							AND  tblUsers.userid = tblClubUser.userid
@@ -164,14 +164,22 @@ function email_players_about_lesson($resid) {
     // run the query on the database
     $emailidresult = db_query($emailidquery);
     $template = get_sitecode();
-     if (isDebugEnabled(1)) logMessage("email message: ".$emailbody);
+    if (isDebugEnabled(1)) logMessage("email message: ".$emailbody);
+
+    // Append username and password to signup url
+    if( isSiteAutoLogin() ){
+        $rawurl .= "&username=$emailidrow[3]&password=$emailidrow[4]";
+    } 
+
+    $signupurl = "<a href=\"$rawurl\">here</a>.";
 
     while ($emailidrow = db_fetch_row($emailidresult)) {
-        
+    
         $subject = get_clubname() . " - Lesson Available";
         $to_email = array(
             $emailidrow[2] => array(
-                'name' => $emailidrow[0]
+                'name' => $emailidrow[0],
+                'url' => $signupurl
             )
         );
 

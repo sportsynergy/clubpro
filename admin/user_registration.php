@@ -108,9 +108,7 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
     if (isDebugEnabled(1)) logMessage("user_registration.insert_user ");
     
     if (isSiteAutoLogin()) {
-        $sitePasswordQuery = "SELECT sites.password FROM tblClubSites sites WHERE sites.siteid = " . get_siteid() . "";
-        $sitePasswordResult = db_query($sitePasswordQuery);
-        $password = mysql_result($sitePasswordResult, 0);
+        $password = get_site_password( get_siteid() );
         $username = $frm['memberid'];
     } else {
         $password = md5($frm["password"]);

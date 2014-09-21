@@ -179,12 +179,9 @@
     </tr>
     <tr>
       <td colspan="2"><span class="normal" >
-        <? if( isLadderRankingScheme() ){?>
-        Select Challenge Match you plan on recording the score for the ladder.
-        <? }else{?>
-        Select Challenge Match you plan on recording the score
-        <? } ?>
-        For more infomation on the match types, click <a href="../help/squash-matchtypes.html?iframe=true&width=600&height=450" rel="prettyPhoto[iframe]">here</a>. </span></td>
+        For more infomation on match types, click 
+        <a href="javascript:newWindow('../help/squash-matchtypes.html')">here</a>. 
+        </span></td>
     </tr>
     <? if( get_roleid()==2 || get_roleid() ==4){ ?>
     <tr>
