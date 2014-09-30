@@ -1487,11 +1487,13 @@ function email_players($resid, $emailType) {
             if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: sending email to ".$emailidrow[2]);
             
             // Append username and password to signup url
-            if( isSiteAutoLogin() ){
-                $rawurl .= "&username=$emailidrow[3]&password=$emailidrow[4]";
-            } 
+            if( isSiteAutoLogin() ){ 
+                $customurl =  $rawurl."&username=$emailidrow[3]&password=$emailidrow[4]";
+                $signupurl = "<a href=\"$customurl\">here</a>.";
 
-            $signupurl = "<a href=\"$rawurl\">here</a>.";
+            } else {
+                $signupurl = "<a href=\"$rawurl\">here</a>.";
+            }
 
 			if( !empty($emailidrow[0]) && !empty($emailidrow[1]) && !empty($emailidrow[2])){
 				$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
