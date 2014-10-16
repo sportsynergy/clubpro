@@ -14,7 +14,6 @@ $service->checkFor24HoursAhead();
 $service->checkTimedSchedule();
 
 
-
 class ReminderService{
 	
 	
@@ -64,7 +63,7 @@ class ReminderService{
 								WHERE reservations.time >= $curtime 
 									AND reservations.time <= $in24hours
 									AND reservations.enddate IS NULL
-									AND courts.clubid = ".$sites_array['siteid']."
+									AND courts.siteid = ".$sites_array['siteid']."
 									AND reservations.guesttype = 0
 									AND reservations.eventid = 0";
 
