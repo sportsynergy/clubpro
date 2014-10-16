@@ -250,6 +250,7 @@ if ($newReservation) {
     }
 } else 
 if ($usertype == 1 && isDoublesReservationNeedPlayers($time, $courtid)) {
+
     $teamQuery = "SELECT reservationdetails.userid, reservationdetails.usertype
                         FROM tblReservations reservations, tblkpUserReservations reservationdetails
                         WHERE reservations.reservationid = reservationdetails.reservationid
@@ -280,10 +281,11 @@ if ($usertype == 1 && isDoublesReservationNeedPlayers($time, $courtid)) {
     } elseif ($player1userType == 1 && $player1userId != 0 && $player2userType == 0 && $player2userId != 0) {
         include ($_SESSION["CFG"]["includedir"] . "/include_doublesplayer_wanted_form.php");
     } else {
-        print "error";
+        $supportemail = $_SESSION["CFG"]["support"];
+        print 'This reservation is messed up. Please contact <a href="mailto:$supportemail">$supportemail</a> to sort this out.';
     }
 } else {
-    print "error Invalid form data Error 612";
+    print "Sorry, that match is already fully subscribed. Better luck next time!";
 }
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 

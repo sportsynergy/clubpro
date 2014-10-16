@@ -1162,6 +1162,13 @@ function email_players($resid, $emailType) {
             
             // Append username and password to signup url
             if( isSiteAutoLogin() ){
+
+                //guard
+                if( empty($emailidrow[3]) || empty($emailidrow[4]) ){
+                    if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers:  problems sending email to autologin user: ".$emailidrow[2]);
+                    continue;
+                }
+                
                 $rawurl .= "&username=$emailidrow[3]&password=$emailidrow[4]";
             } 
 

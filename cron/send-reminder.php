@@ -15,10 +15,14 @@ $service->checkTimedSchedule();
 
 
 
-
 class ReminderService{
 	
 	
+	/*
+	*
+	* This is for sending out reminders at a specific time of day
+	*
+	*/
 	public function checkTimedSchedule(){
 		
 		if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule: checking all reservations in the next 24 hour window");
@@ -44,7 +48,8 @@ class ReminderService{
 			if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule: current_hour: $current_hour current_minute: $current_minute reminder: ".$sites_array['reminders'] );
 			
 			if( $current_hour == $sites_array['reminders'] && $current_minute == "00"){
-							
+
+
 				//Get all of the reservations for the next 24 hours
 				$in24hours = $curtime + (60*60*24);
 				
@@ -59,15 +64,13 @@ class ReminderService{
 								WHERE reservations.time >= $curtime 
 									AND reservations.time <= $in24hours
 									AND reservations.enddate IS NULL
-									AND courts.siteid = ".$sites_array['siteid']."
+									AND courts.clubid = ".$sites_array['siteid']."
 									AND reservations.guesttype = 0
 									AND reservations.eventid = 0";
 
 					$res_result = db_query($reservations);
 
-					if( mysql_num_rows($res_result) == 0 ){
-							continue;
-					}
+					if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule:  found ". mysql_num_rows($res_result) ." reservations");
 						
 					while( $res_array = mysql_fetch_array($res_result ) ){
 
@@ -77,11 +80,47 @@ class ReminderService{
 									$res_array['courtname'],
 									$res_array['time'],
 									$sites_array['clubname']);
-					}	
-				
+					}
+
+
+					//Send reminders for Events	 
+					$eventreservations = "SELECT reservations.reservationid, 
+												courts.courtname, 
+												reservations.time,
+												courtevents.eventname,
+												courtevents.playerlimit,
+												courts.courttypeid,
+												courts.clubid,
+												(
+										SELECT COUNT(*) FROM tblCourtEventParticipants participants
+										INNER JOIN tblReservations b on b.reservationid = participants.reservationid
+										WHERE b.reservationid = reservations.reservationid
+												) AS spotstaken
+										FROM tblReservations reservations
+											INNER JOIN tblCourts courts ON courts.courtid = reservations.courtid
+											INNER JOIN tblEvents courtevents ON courtevents.eventid = reservations.eventid
+											LEFT JOIN tblCourtEventParticipants people ON people.reservationid = reservations.reservationid
+										WHERE reservations.time >= $curtime 
+											AND reservations.time <= $in24hours
+											AND reservations.enddate IS NULL
+											AND courts.siteid = ".$sites_array['siteid']."
+											AND reservations.eventid > 0";
+
+					$event_result = db_query($eventreservations);
+
+						
+					while( $event_array = mysql_fetch_array($event_result ) ){
+
+						$this->sendEventReminder($event_array['reservationid'],
+									$event_array['eventname'],
+									$event_array['courtname'],
+									$event_array['time'],
+									$sites_array['clubname'],
+									$event_array['courttypeid'],
+									$sites_array['clubid']);
+					}
 			} 		
-						
-						
+									
 		}
 						
 		unset($_SESSION["siteprefs"]);	
@@ -89,7 +128,11 @@ class ReminderService{
 	}
 	
 	
-	
+	/*
+	*
+	* This is for the option for sending reminders 24 hours in advance
+	*
+	*/
 	public function checkFor24HoursAhead(){
 
 		if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: checking for reservations 24 hours ahead");
@@ -140,9 +183,6 @@ class ReminderService{
 
 			$res_result = db_query($reservations);
 
-			if( mysql_num_rows($res_result) == 0 ){
-				continue;
-			}
 
 			while( $res_array = mysql_fetch_array($res_result ) ){
 				
@@ -153,7 +193,44 @@ class ReminderService{
 						 $res_array['time'],
 						 $sites_array['clubname']);
 			}
-			
+
+			//Send reminders for Events	 
+			$eventreservations = "SELECT reservations.reservationid, 
+										courts.courtname, 
+										reservations.time,
+										courtevents.eventname,
+										courtevents.playerlimit,
+										courts.courttypeid,
+										courts.clubid,
+								(
+								SELECT count(*) FROM tblCourtEventParticipants participants
+								INNER JOIN tblReservations b on b.reservationid = participants.reservationid
+								WHERE b.reservationid = reservations.reservationid
+										) AS spotstaken
+								FROM tblReservations reservations
+									INNER JOIN tblCourts courts ON courts.courtid = reservations.courtid
+									LEFT JOIN tblCourtEventParticipants people ON people.reservationid = reservations.reservationid
+									INNER JOIN tblEvents courtevents ON courtevents.eventid = reservations.eventid
+								WHERE reservations.time = $in24hours 
+									AND reservations.enddate IS NULL
+									AND courts.siteid = ".$sites_array['siteid']."
+									AND reservations.eventid > 0
+									AND reservations.lastmodified < TIMESTAMPADD(HOUR,-2,NOW())";
+
+
+			$event_result = db_query($eventreservations);
+				
+			while( $event_array = mysql_fetch_array($event_result ) ){
+
+				$this->sendEventReminder($event_array['reservationid'],
+							$event_array['eventname'],
+							$event_array['courtname'],
+							$event_array['time'],
+							$sites_array['clubname'],
+							$event_array['courttypeid'],
+							$sites_array['clubid']);
+			}
+
 		}
 
 		unset($_SESSION["siteprefs"]);
@@ -161,6 +238,11 @@ class ReminderService{
 	}
 
 
+/*
+*
+* Sends reminders for doubles and singles
+*
+*/
 private function sendReminder($usertype, $reservationid, $matchtype, $courtname, $time, $clubname){
 	
 		// For singles reservations
@@ -180,12 +262,18 @@ private function sendReminder($usertype, $reservationid, $matchtype, $courtname,
 								$matchtype, 
 								$courtname, 
 								$time, 
-								$clubname);
+								$clubname);			
 
-	}
+		}
+		
 	
 }
 	
+/*
+*
+* This is just for sending out doubles reminders
+*
+*/
 private function sendDoublesReminder($reservationid, $matchtype, $courtname, $time, $clubname){
 	
 	if (isDebugEnabled(1)) logMessage("send-reminder.sendDoublesReminder: sending out a doubles reminder for $clubname");
@@ -286,6 +374,11 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 }
 
 
+/*
+*
+* This is just for sending out singles reminders
+*
+*/
 private function sendSinglesReminder($reservationid, $matchtype, $courtname, $time, $clubname){
 	
 	if (isDebugEnabled(1)) logMessage("send-reminder.sendSinglesReminder: sending out a singles reminder for $clubname");
@@ -346,7 +439,64 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
 	sendgrid_email($subject, $to_emails, $content, "Singles Reminders");
 }
 
+/*
+*
+* This is reminders for events (for the whole club)
+*
+*/
+private function sendEventReminder($reservationid, $eventname, $courtname, $time, $clubname, $courttypeid, $clubid){
 
+	if (isDebugEnabled(1)) logMessage("send-reminder.sendEventReminder: sending out an event reminder for $clubname");
+	
+	$emailidquery = "SELECT  users.firstname, users.lastname, users.email
+					   FROM tblUsers users
+						INNER JOIN tblUserRankings rankings ON rankings.userid = users.userid
+						INNER JOIN tblClubUser clubuser ON users.userid = clubuser.userid
+					   WHERE users.userid = rankings.userid
+					   AND users.userid = clubuser.userid
+					   AND clubuser.recemail='y'
+					   AND clubuser.clubid = $clubid
+					   AND rankings.courttypeid=$courttypeid
+					   AND rankings.usertype = 0
+					   AND clubuser.enable= 'y'
+					   AND clubuser.enddate IS NULL";
+
+	$event_result = db_query($emailidquery);
+
+	 $to_emails = array();
+	 while ($emailidarray = mysql_fetch_array($event_result)) {
+
+	 	if( !empty($emailidarray['firstname']) 
+	 		&& !empty($emailidarray['lastname']) 
+	 		&& !empty($emailidarray['email'])){
+
+				$to_email = $emailidarray['firstname']." ".$emailidarray['lastname']." <".$emailidarray['email'].">";
+	            $to_emails[$to_email] = array(
+	                'name' => $emailidarray['firstname']
+	            );
+			} else {
+				if (isDebugEnabled(1)) logMessage("send-reminder.sendEventReminder: incomplete account for ".$emailidarray['firstname']." ".$emailidarray['lastname']." ".$emailidarray['email']);
+			}
+
+	 }
+	$var = new Object;
+	$var->eventname = $eventname;
+	$var->courtname = $courtname;
+	$var->time = gmdate("l F j g:i a", $time);
+
+	$emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/event_reminder.php", $var);
+	$emailbody = nl2br($emailbody);	
+
+	$content = new Object;
+	$content->line1 = $emailbody;
+	$content->clubname = $clubname;
+	$subject = "$clubname - There are still spots available for the $eventname";
+
+	//Send the email
+    sendgrid_email($subject, $to_emails, $content, "Event Reminders");
+
+
+}
 
 }
 
