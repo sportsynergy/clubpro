@@ -110,13 +110,17 @@ class ReminderService{
 						
 					while( $event_array = mysql_fetch_array($event_result ) ){
 
-						$this->sendEventReminder($event_array['reservationid'],
+						if( $event_array['playerlimit'] > $event_array['spotstaken'] ){
+
+							$this->sendEventReminder($event_array['reservationid'],
 									$event_array['eventname'],
 									$event_array['courtname'],
 									$event_array['time'],
 									$sites_array['clubname'],
 									$event_array['courttypeid'],
 									$sites_array['clubid']);
+						}
+						
 					}
 			} 		
 									
@@ -221,13 +225,15 @@ class ReminderService{
 				
 			while( $event_array = mysql_fetch_array($event_result ) ){
 
-				$this->sendEventReminder($event_array['reservationid'],
-							$event_array['eventname'],
-							$event_array['courtname'],
-							$event_array['time'],
-							$sites_array['clubname'],
-							$event_array['courttypeid'],
-							$sites_array['clubid']);
+				if( $event_array['playerlimit'] > $event_array['spotstaken'] ){
+					$this->sendEventReminder($event_array['reservationid'],
+								$event_array['eventname'],
+								$event_array['courtname'],
+								$event_array['time'],
+								$sites_array['clubname'],
+								$event_array['courttypeid'],
+								$sites_array['clubid']);
+				}
 			}
 
 		}
