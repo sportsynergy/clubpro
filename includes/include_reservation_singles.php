@@ -118,13 +118,13 @@ pat_autocomplete(array(
 
 	<? if($variableDuration == 'y' || ($variableDuration_admin == 'y' && get_roleid() == 2)){ ?>
 	<tr> 
-		 <td class="label">Duration:</td>
+		 <td class="label">Duration:d</td>
 		 <td>
 			<select name="duration">
 				<?
 				$timetonext = $nexttime - $time; 
 				
-				if($timetonext == 900 ){ ?>
+				if($timetonext >= 900 || $nexttime == null ){ ?>
 					<option value=".25">15 Minutes</option>
 				<?}
 				
