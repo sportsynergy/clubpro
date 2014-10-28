@@ -2,19 +2,19 @@
 
  function disable(disableIt)
 {
-        document.entryform.opponentplayer1.disabled = disableIt;
-        document.entryform.opponentplayer2.disabled = disableIt;
+        document.addschedulepolicyform.opponentplayer1.disabled = disableIt;
+        document.addschedulepolicyform.opponentplayer2.disabled = disableIt;
 }
 
 function toggle()
 {
 
-        if(document.entryform.starttime.disabled != "" ){
-             document.entryform.starttime.disabled = "";
-             document.entryform.endtime.disabled = "";
+        if(document.addschedulepolicyform.starttime.disabled != "" ){
+             document.addschedulepolicyform.starttime.disabled = "";
+             document.addschedulepolicyform.endtime.disabled = "";
         }else{
-              document.entryform.starttime.disabled = "true";
-             document.entryform.endtime.disabled = "true";
+              document.addschedulepolicyform.starttime.disabled = "true";
+             document.addschedulepolicyform.endtime.disabled = "true";
         }
 }
 
