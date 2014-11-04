@@ -150,7 +150,7 @@
 					<option value=".75">45 Minutes</option>
 				<?}
 				if($timetonext >= 3600 || $nexttime == null ){ ?>
-					<option value="1">60 Minutes</option>
+					<option value="1" selected="selected">60 Minutes</option>
 				<?}
         if($timetonext >= 4500 || $nexttime == null ){ ?>
           <option value="1.25">75 Minutes</option>
