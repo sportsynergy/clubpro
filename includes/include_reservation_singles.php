@@ -118,7 +118,7 @@ pat_autocomplete(array(
 
 	<? if($variableDuration == 'y' || ($variableDuration_admin == 'y' && get_roleid() == 2)){ ?>
 	<tr> 
-		 <td class="label">Duration:d</td>
+		 <td class="label">Duration:</td>
 		 <td>
 			<select name="duration">
 				<?

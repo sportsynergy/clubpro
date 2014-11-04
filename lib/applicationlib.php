@@ -1413,7 +1413,7 @@ function email_players($resid, $emailType) {
            
 			 if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: gathering up the names to email to the whole club");
 			
- 			$emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+ 			$emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email,clubuser.memberid, users.password
 	                       FROM tblUsers users, tblUserRankings rankings, tblClubUser clubuser
 						   WHERE users.userid = rankings.userid
 						   AND users.userid = clubuser.userid
@@ -1429,7 +1429,7 @@ function email_players($resid, $emailType) {
 			
 			 if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: gathering up the names to email to ".get_userfullname()."'s buddy list");
 			
-            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email
+            $emailidquery = "SELECT DISTINCTROW users.firstname, users.lastname, users.email,clubuser.memberid, users.password
 			                        FROM tblUsers users, tblBuddies buddies, tblClubUser clubuser
 			 						WHERE users.userid = buddies.buddyid
 									AND users.userid = clubuser.userid
