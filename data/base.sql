@@ -200,6 +200,7 @@ CREATE TABLE IF NOT EXISTS `tblClubSites` (
   `facebookurl` varchar(255) DEFAULT NULL,
   `reminders` ENUM(  'none',  '24',  '5',  '6',  '7',  '8',  '9',  '10' ) NOT NULL DEFAULT  'none',
   `displaycourttype` ENUM(  'y',  'n' ) NOT NULL DEFAULT  'y',
+  `showplayernames` ENUM('y','n') NOT NULL DEFAULT 'y' COMMENT 'Display the player names on the main reservation page',
   PRIMARY KEY (`siteid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;
 

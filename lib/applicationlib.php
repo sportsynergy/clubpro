@@ -713,6 +713,10 @@ function isDisplayCourtTypeName() {
     return $_SESSION["siteprefs"]["displaycourttype"];
 }
 
+function isShowPlayerNames() {
+    return $_SESSION["siteprefs"]["showplayernames"] == 'y' ? true : false;
+}
+
 // Getter
 function get_roleid() {
 
@@ -5173,7 +5177,8 @@ function getSitePreferencesForCourt($courtid) {
 					sites.facebookurl,
 					sites.reminders,
 					sites.displaycourttype,
-					clubs.clubname
+					clubs.clubname,
+                    sites.showplayernames
 	        FROM tblClubSites sites, tblCourts courts, tblClubs clubs
 			WHERE sites.siteid = courts.siteid
 			AND sites.clubid = clubs.clubid
@@ -5227,7 +5232,8 @@ function getSitePreferences($siteid) {
 					sites.facebookurl,
 					sites.reminders,
 					sites.displaycourttype,
-					clubs.clubname
+					clubs.clubname,
+                    sites.showplayernames
 	        FROM tblClubSites sites, tblClubs clubs
 			WHERE sites.siteid = '$siteid'
 			AND sites.clubid = clubs.clubid";

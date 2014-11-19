@@ -269,35 +269,47 @@ function getBuddyEmailAddresses($userId) {
  * With the userid, print out the users first and last name
  */
 function printPlayer($firstname, $lastname, $userId, $creator) {
-    echo "$firstname $lastname";
     
-    if ($creator == $userId) {
-        echo "*";
-    }
+     if( is_logged_in() || isShowPlayerNames()){ 
+        echo "$firstname $lastname";
+
+        if ($creator == $userId) {
+            echo "*";
+        }
+        echo "<br/>";
+     }
+    
+    
 }
 /**
  * Prints the two players first and last names
  */
 function printTeam($teamId, $creator) {
-    $teamnamequery = "SELECT users.firstname, users.lastname, users.userid
-					      FROM tblUsers users,  tblkpTeams teams
-					   WHERE users.userid = teams.userid
-					   AND teams.teamid=$teamId";
-    $teamnameresult = db_query($teamnamequery);
-    $teamnamearray = db_fetch_array($teamnameresult);
-    echo "$teamnamearray[0] $teamnamearray[1]";
     
-    if ($creator == $teamnamearray[2]) {
-        echo "*";
-    }
-    echo "<br/>";
-    $teamnamearray = db_fetch_array($teamnameresult);
-    echo "$teamnamearray[0] $teamnamearray[1]";
-    
-    if ($creator == $teamnamearray[2]) {
-        echo "*";
-    }
-    echo "<br/>";
+
+    if( is_logged_in() || isShowPlayerNames()){ 
+
+            $teamnamequery = "SELECT users.firstname, users.lastname, users.userid
+        					      FROM tblUsers users,  tblkpTeams teams
+        					   WHERE users.userid = teams.userid
+        					   AND teams.teamid=$teamId";
+            $teamnameresult = db_query($teamnamequery);
+            $teamnamearray = db_fetch_array($teamnameresult);
+            echo "$teamnamearray[0] $teamnamearray[1]";
+            
+            if ($creator == $teamnamearray[2]) {
+                echo "*";
+            }
+            echo "<br/>";
+            $teamnamearray = db_fetch_array($teamnameresult);
+            echo "$teamnamearray[0] $teamnamearray[1]";
+            
+            if ($creator == $teamnamearray[2]) {
+                echo "*";
+            }
+            echo "<br/>";
+
+      }
 }
 /**
  * Gets pretty much everything needed for the court reservation screen for a user.

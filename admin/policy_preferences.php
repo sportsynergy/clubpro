@@ -244,7 +244,8 @@ function load_general_preferences($siteid) {
         						clubsite.displayrecentactivity,
         						clubsite.challengerange,
         						clubsite.facebookurl,
-								clubsite.reminders
+								clubsite.reminders,
+                                clubsite.showplayernames
                          FROM tblClubSites clubsite
                          WHERE clubsite.siteid = $siteid");
     return db_fetch_array($qid);
@@ -582,6 +583,7 @@ function update_general_clubprefs(&$frm) {
 				,challengerange = '$frm[challengerange]'
 				,facebookurl = '$frm[facebookurl]'
 				,reminders = '$frm[reminders]'
+                ,showplayernames = '$frm[showplayernames]'
                 WHERE siteid = '" . get_siteid() . "'";
 
     // run the query on the database

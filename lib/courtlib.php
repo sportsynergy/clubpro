@@ -710,8 +710,8 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
                  <?}  ?>
                 
                 <?=gmdate("g:i",$time)?><br/>
-                <?=printPlayer($user1Array[0], $user1Array[1], $userid1, $creator)?><br/>
-                <?=printPlayer($user2Array[0], $user2Array[1], $userid2, $creator)?><br/>
+                <?=printPlayer($user1Array[0], $user1Array[1], $userid1, $creator)?>
+                <?=printPlayer($user2Array[0], $user2Array[1], $userid2, $creator)?>
                 
                  <? if(!$inpast && !$scored && ($matchtype==0 || $matchtype==1 || $matchtype==2 || $matchtype==3)) { ?>
                        </a>
@@ -776,7 +776,7 @@ function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $i
              <? } ?>
              
              <?=gmdate("g:i",$time)?><br> 
-             <?=printPlayer($userArray[0], $userArray[1], $userid, $creator)?><br/>
+             <?=printPlayer($userArray[0], $userArray[1], $userid, $creator)?>
              
               <?
               if($matchtype==4){ 
