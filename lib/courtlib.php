@@ -342,10 +342,14 @@ function printDoublesReservationSinglePlayer($userid, $lock, $matchType, $time, 
 	                      <? if(!$inpast) { ?>
 	                      		<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
 	                      <? } ?>
-	                      <?=gmdate("g:i",$time)?><br>
-	                      <?=printPlayer($userArray[0],  $userArray[1], $playerOne, $creator)?>
-	                      <?=$verb?> some players
 	                      
+                          <?=gmdate("g:i",$time)?><br>
+	                      <?=printPlayer($userArray[0],  $userArray[1], $playerOne, $creator)?>
+	                      
+                          <? if( is_logged_in() || isShowPlayerNames()){ ?>
+                          <?=$verb?> some players
+	                      <? } ?>
+
 	                       <? if(!$inpast) { ?>
 	                      		</a>
 	                      <? } ?>
@@ -389,8 +393,11 @@ function printDoublesReservationTeamWanted($teamid, $lock, $matchType, $time, $c
 			  
 			  <?=gmdate("g:i",$time)?><br>
 	          <?=printTeam($teamid,  $creator)?>
+
+              <? if( is_logged_in() || isShowPlayerNames()){ ?>
 	         	<?=$verb?> some players
-	         	
+	         <? } ?>	
+
 	          <? if( !$inpast){ ?>
 			  	</a>
 			  <? } ?>	
@@ -442,10 +449,12 @@ function printDoublesReservationPlayerWanted($teamid, $userid, $lock, $matchType
                      
 		             <?=gmdate("g:i",$time)?><br>
 		             <?=printTeam($teamid, $creator)?>
-				    <?=printPlayer($userArray[0], $userArray[1], $userid, $creator)?><br>
+				     <?=printPlayer($userArray[0], $userArray[1], $userid, $creator)?>
+                    
+                    <? if( is_logged_in() || isShowPlayerNames()){ ?>
 					        <?=$verb?> a partner</br>
-				    
-		    
+                     <? } ?>
+
 		    		<? if(!$inpast) { ?>
                        </a>
                      <? } ?>
@@ -492,17 +501,23 @@ function printDoublesReservationPlayersWanted($userid1, $userid2, $lock, $matchT
                      <? } ?>
 					
 		             <?=gmdate("g:i",$time)?><br>
-				    <?=printPlayer($userArray[0], $userArray[1], $userid1, $creator)?><br>
-					        <?=$verb?> a partner</br>
-				    <?
-				    
+				    <?=printPlayer($userArray[0], $userArray[1], $userid1, $creator)?>
+					 
+                     <? if( is_logged_in() || isShowPlayerNames()){ ?>       
+                            <?=$verb?> a partner</br>
+				     <? } ?> 
+
+                    <?
 				    $fullNameResult = getFullNameResultForUserId($userid2);
 				    $userArray = mysql_fetch_array($fullNameResult); 
 				    
 				    ?>
 				    
-				    <?=printPlayer($userArray[0], $userArray[1], $userid2, $creator)?><br>
-					        <?=$verb?> a partner</br>   
+				    <?=printPlayer($userArray[0], $userArray[1], $userid2, $creator)?>
+				    
+                    <? if( is_logged_in() || isShowPlayerNames()){ ?>      
+                            <?=$verb?> a partner</br> 
+                   <? } ?>  
 					
 					<? if(!$inpast) { ?>
                        </a>
@@ -779,16 +794,18 @@ function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $i
              <?=printPlayer($userArray[0], $userArray[1], $userid, $creator)?>
              
               <?
-              if($matchtype==4){ 
-             	print $lessontext;
-              } 
-              else if($matchtype==0 || $matchtype==1|| $matchtype==2){
-              	print $portext;
-              }
-              else if($matchtype==3){
-              		print $buddytext;
-              }
-             
+
+              if( is_logged_in() || isShowPlayerNames()){   
+                  if($matchtype==4){ 
+                 	print $lessontext;
+                  } 
+                  else if($matchtype==0 || $matchtype==1|| $matchtype==2){
+                  	print $portext;
+                  }
+                  else if($matchtype==3){
+                  		print $buddytext;
+                  }
+             } 
               
               if(!$inpast){?>
                   </a>
