@@ -562,6 +562,9 @@ function is_logged_in() {
  */
 function require_login() {
     
+    if (isDebugEnabled(1)) logMessage("applicationlib.require_login: Requiring login");
+                  
+
     if (!is_logged_in()) {
         $_SESSION["wantsurl"] = qualified_me();
         redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
@@ -715,6 +718,10 @@ function isDisplayCourtTypeName() {
 
 function isShowPlayerNames() {
     return $_SESSION["siteprefs"]["showplayernames"] == 'y' ? true : false;
+}
+
+function isRequireLogin() {
+    return $_SESSION["siteprefs"]["requirelogin"] == 'y' ? true : false;
 }
 
 // Getter
@@ -5178,7 +5185,8 @@ function getSitePreferencesForCourt($courtid) {
 					sites.reminders,
 					sites.displaycourttype,
 					clubs.clubname,
-                    sites.showplayernames
+                    sites.showplayernames,
+                    sites.requirelogin
 	        FROM tblClubSites sites, tblCourts courts, tblClubs clubs
 			WHERE sites.siteid = courts.siteid
 			AND sites.clubid = clubs.clubid
@@ -5233,7 +5241,8 @@ function getSitePreferences($siteid) {
 					sites.reminders,
 					sites.displaycourttype,
 					clubs.clubname,
-                    sites.showplayernames
+                    sites.showplayernames,
+                    sites.requirelogin
 	        FROM tblClubSites sites, tblClubs clubs
 			WHERE sites.siteid = '$siteid'
 			AND sites.clubid = clubs.clubid";

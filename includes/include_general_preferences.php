@@ -159,10 +159,10 @@
               <div class="spacer"/></td>
           </tr>
 
-               <tr>
+          <tr>
             <td class="label">Display Player Names:</td>
             <td>
-                <select name="showplayernames">
+                <select name="requirelogin">
                   <option value="y"
                   <? 
 
@@ -179,6 +179,25 @@
               <div class="spacer"/></td>
           </tr>
 
+          <tr>
+            <td class="label">Require Login:</td>
+            <td>
+                <select name="showplayernames">
+                  <option value="y"
+                  <? 
+
+                  if (isDebugEnabled(1)) logMessage(   $generalPreferences["requirelogin"] );
+    
+                  if($generalPreferences["requirelogin"] =='y'){ echo "selected";} ?>>Yes</option>
+                    <option value="n"
+                  <? if($generalPreferences["requirelogin"] =='n'){ echo "selected";} ?>>No</option>
+              </select>
+           </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="spacer"><span class="normal"> Require all users to login before access the booking page.</span>
+              <div class="spacer"/></td>
+          </tr>
 
           <tr>
             <td colspan="2"><input type="button" name="submit" value="Update  General Preferences" id="general-submitbutton"></td>

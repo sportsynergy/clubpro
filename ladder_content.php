@@ -31,6 +31,8 @@
 $_SESSION["wantsurl"] = qualified_mewithq();
 $_SESSION["siteprefs"] = getSitePreferences($siteid);
 
+if (isRequireLogin()) require_login();
+
 //Set the footer message
 
 if (!isset($_SESSION["footermessage"])) {

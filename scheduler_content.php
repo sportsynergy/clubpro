@@ -29,6 +29,10 @@
 * Function list:
 * Classes list:
 */
+
+
+
+
 require ($_SESSION["CFG"]["libdir"] . "/reservationlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/courtlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
@@ -45,6 +49,8 @@ if($userRelation->isUserLoggedin()){
 $_SESSION["wantsurl"] = qualified_mewithq();
 $siteprefs = getSitePreferences($siteid);
 $_SESSION["siteprefs"] = $siteprefs;
+
+if (isRequireLogin()) require_login();
 
 //Only load the site ladders if the ranking scheme is configured as such
 
