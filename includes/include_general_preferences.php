@@ -195,7 +195,7 @@
            </td>
           </tr>
           <tr>
-            <td colspan="2" class="spacer"><span class="normal"> Require all users to login before access the booking page.</span>
+            <td colspan="2" class="spacer"><span class="normal"> Require all users to login before accessing the booking page.</span>
               <div class="spacer"/></td>
           </tr>
 
