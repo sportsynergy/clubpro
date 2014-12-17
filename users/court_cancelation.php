@@ -586,7 +586,7 @@ function cancel_court(&$frm) {
 
         elseif ($frm["cancelall"] == 4) {
             
-            if (isDebugEnabled(1)) logMessage("court_cancelation.cancel_court: Just rearranging the reservation cancelall =  " . $frm["cancelall"] . " player1 = " . $frm['player1'] . " player2 = " . $frm['player2'] . " and matchtype = ".$frm["matchtypes"]);
+            if (isDebugEnabled(1)) logMessage("court_cancelation.cancel_court: Just rearranging the reservation cancelall =  " . $frm["cancelall"] . " player1 = " . $frm['player1'] . " player2 = " . $frm['player2'] . " and matchtype = ".$frm["matchtype"]);
             $locked = "n";
             
             if (isset($frm["lock"])) {
