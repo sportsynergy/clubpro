@@ -56,8 +56,8 @@
     </tr>
     <tr>
       <td class="label">Player&nbsp;Two:</td>
-      <td><input id="name2" name="playertwoname" type="text" size="35" class="form-autocomplete" />
-        <input id="id2" name="playertwoid" type="hidden"/>
+      <td><input id="name2" name="playertwoname" type="text" size="35" class="form-autocomplete" autocomplete="off"/>
+        <input id="id2" name="playertwoid" type="hidden" />
         <script>
                 <?php
 $wwwroot = $_SESSION["CFG"]["wwwroot"];
@@ -134,6 +134,10 @@ pat_autocomplete(array(
 					
 				if($timetonext >= 2700 || $nexttime == null){ ?>
 					<option value=".75">45 Minutes</option>
+				<?}
+
+				if($timetonext >= 3000 || $nexttime == null){ ?>
+					<option value=".83334">50 Minutes</option>
 				<?}
 						
 				if($timetonext >= 3600 || $nexttime == null){ ?>
