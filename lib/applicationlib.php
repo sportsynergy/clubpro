@@ -5036,7 +5036,8 @@ function load_court_events($siteid){
 	$query = "SELECT events.eventid, events.eventname,
 	                          events.playerlimit
 	                   FROM tblEvents events
-	                   WHERE events.siteid = $siteid";
+	                   WHERE events.siteid = $siteid
+                       ORDER BY events.eventname";
 
 
 
