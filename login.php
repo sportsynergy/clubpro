@@ -95,10 +95,14 @@ if (match_referer() && isset($_POST)) {
     }
 }
 
-$rSql = "SELECT clubname FROM tblClubs WHERE clubid =%s";
+$rSql = "SELECT tblClubs.clubname,tblClubSites.sitecode 
+FROM tblClubs 
+INNER JOIN tblClubSites on tblClubs.clubid = tblClubSites.clubid
+WHERE tblClubs.clubid =%s";
+
 $clubNameSql = sprintf($rSql,get_clubid());
 unset($rSql);
-list($clubName) = mysql_fetch_row(db_query($clubNameSql));
+list($clubName, $sitecode) = mysql_fetch_row(db_query($clubNameSql));
 
 include ($_SESSION["CFG"]["templatedir"] . "/login_form.php");
 ?>

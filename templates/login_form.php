@@ -46,6 +46,8 @@ a {
 	color:#FFF;
 }
 </style>
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=$sitecode?>/main.css" rel=stylesheet type=text/css>
+
 </head>
 <?php
 	$rememberLast = $_COOKIE["remembercookie"];
