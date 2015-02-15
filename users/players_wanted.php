@@ -314,7 +314,7 @@ else{
 				
               }
               elseif( $needThreePlayer ){
-              	 echo "<font class=normal><a href=\"$wwwroot/users/court_reservation.php?time=$playerOneArray[time]&courtid=$playerOneArray[courtid]&userid=$lonelyuserid\">".gmdate(" l F j h:i A",$playerOneArray['time'])."</a> $reallyLonelyuser is looking for some doubles squash. ";
+              	 echo "<font class=normal><a href=\"$wwwroot/users/court_reservation.php?time=$playerOneArray[time]&courtid=$playerOneArray[courtid]&userid=$lonelyuserid\">".gmdate(" l F j h:i A",$playerOneArray['time'])."</a> $reallyLonelyuser is looking for some doubles. ";
 				
               }
               elseif( $needOnePlayer ){
