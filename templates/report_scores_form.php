@@ -123,9 +123,15 @@ function onSubmitButtonClicked(){
 	        <td>
 	        <span class="label">Score:</span>
 	             <select name="score">
-	                     <option value="0">3-0</option>
-	                     <option value="1">3-1</option>
-	                     <option value="2">3-2</option>
+               <?
+                while($matchscore = mysql_fetch_array($matchscores)){  
+                  $gameswon = $matchscore['gameswon'];
+                  ?>
+
+                  <option value="<?=$matchscore['gameslost']?>"><?=$matchscore['gameswon']?>-<?=$matchscore['gameslost']?></option>
+
+               <? } ?>
+	                     
 	             </select>
 	           </td>
 
@@ -155,6 +161,7 @@ function onSubmitButtonClicked(){
 			   <input type="hidden" name="matchtype" value="<?=$restypearray['matchtype'] ?>">
 			   <input type="hidden" name="source" value="<?=$source ?>">
 			   <input type="hidden" name="submitme" value="submitme">
+         <input type="hidden" name="gameswon" value"<?=$gameswon?>">
 
 </form>
 

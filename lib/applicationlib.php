@@ -26,6 +26,20 @@
  */
 
 
+/*
+Gets the possible outcomes for a match
+*/
+function getMatchScores($reservationid){
+
+    $query = "SELECT gameswon,gameslost 
+                FROM tblMatchScore 
+                INNER JOIN tblCourts ON tblMatchScore.courttypeid = tblCourts.courttypeid
+                INNER JOIN tblReservations ON tblCourts.courtid = tblReservations.courtid
+                WHERE tblReservations.reservationid = $reservationid";
+
+    return db_query($query);
+}
+
 function get_site_password($siteid){
     
     $sitePasswordQuery = "SELECT sites.password FROM tblClubSites sites WHERE sites.siteid = $siteid";
@@ -2491,41 +2505,33 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
  */
 function record_score(&$frm, $source) {
     
-    if (isDebugEnabled(1)) logMessage("applicationlib.record_score: source is $source");
+    if (isDebugEnabled(1)) logMessage("applicationlib.record_score: source is $source: " + $frm['gameswon']);
 
-    /* Record score */
+    /* Record score 
 
-    //The winner userid is passed in the post vars, the loser is passed
-    //in either the player1 or player2 post vars.  Also, the outcome is
-
+    // The winner userid is passed in the post vars, the loser is passed
+    // in either the player1 or player2 post vars.  Also, the outcome is
     // either a 0 which is a 3-0 match score, a 1 which is a 3-1 match
-
     // score or finally a 2 which is a 3-2 match score.
-
     // Set the winner and loser variables so we know who is who
-
-    //If the boxid variable is set this is being called from
-
-    //the web ladder or from a reservation was made as a league
-
+    // If the boxid variable is set this is being called from
+    // the web ladder or from a reservation was made as a league
     // reservation.  In any event we will figure out who who with
-
     // the fancy get_matchresults.
 
     // 03/27/2003    John now suggested that the box league matches count for
-
     //               twice that of a practice match
-
     // 10/01/2005    John now suggested that the challenge match count for thrice
-
     //               thhat of a practice match.
 
+    */
     $results = get_matchresults($frm['winner'], $frm['Player1'], $frm['Player2']);
     $winner = $results['winner'];
     $loser = $results['loser'];
+    $gameswon = $frm['gameswon'];
 
     // Update the winners outcome
-    $winnersquery = "UPDATE tblkpUserReservations SET outcome=3
+    $winnersquery = "UPDATE tblkpUserReservations SET outcome='$frm[gameswon]'
 	                      WHERE reservationid='$frm[reservationid]'
 	                      AND userid=$winner";
     $winnerresult = db_query($winnersquery);
@@ -3487,13 +3493,13 @@ function get_singlesCourtTypesForSite($currentSiteId) {
 
 function get_doublesCourtTypesForSite($currentSiteId) {
 
-	$courttypeQuery = "SELECT courttype.courttypeid, courttype.courttypename
-	                   FROM tblCourtType courttype, tblCourts courts
-	                   WHERE courts.siteid = $currentSiteId
-					   AND courts.courttypeid = courttype.courttypeid
-					   AND (courttype.reservationtype = 2 
-							OR courttype.reservationtype = 1)
-						ORDER BY courttype.courttypeid";
+	$courttypeQuery = "SELECT DISTINCT courttype.courttypeid, courttype.courttypename
+               FROM tblCourtType courttype
+               INNER JOIN tblCourts ON courttype.courttypeid = tblCourts.courttypeid
+               WHERE tblCourts.siteid = $currentSiteId
+               AND (courttype.reservationtype = 2 
+                    OR courttype.reservationtype = 1)
+                ORDER BY courttype.courttypeid";
 
 	return db_query($courttypeQuery);
 

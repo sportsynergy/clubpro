@@ -10,12 +10,69 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblMatchScore`
+--
+
+CREATE TABLE IF NOT EXISTS `tblMatchScore` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `courttypeid` INT NOT NULL,
+  `gameswon` INT NOT NULL,
+  `gameslost` INT NOT NULL,
+  PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('2', '3', '0');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('2', '3', '1');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('2', '3', '2');
+
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('3', '3', '0');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('3', '3', '1');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('3', '3', '2');
+
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('4', '3', '0');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('4', '3', '1');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('4', '3', '2');
+
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('5', '3', '0');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('5', '3', '1');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('5', '3', '2');
+
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('6', '3', '0');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('6', '3', '1');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('6', '3', '2');
+
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('7', '7', '6');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('7', '7', '5');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('7', '6', '4');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('7', '6', '3');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('7', '6', '2');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('7', '6', '1');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('7', '6', '0');
+
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('8', '3', '0');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('8', '3', '1');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('8', '3', '2');
+
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('9', '7', '6');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('9', '7', '5');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('9', '6', '4');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('9', '6', '3');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('9', '6', '2');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('9', '6', '1');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('9', '6', '0');
+
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('10', '3', '0');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('10', '3', '1');
+INSERT INTO `tblMatchScore` (`courttypeid`, `gameswon`, `gameslost`) VALUES ('10', '3', '2');
 
 -- --------------------------------------------------------
 

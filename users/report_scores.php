@@ -101,6 +101,10 @@ if (match_referer() && isset($_POST["submitme"])) {
         die;
     }
 }
+
+
+$matchscores = getMatchScores($reservationid);
+
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/report_scores_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
