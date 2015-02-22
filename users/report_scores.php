@@ -63,6 +63,9 @@ if (match_referer() && isset($_POST["submitme"])) {
         
         if ($frm['matchtype'] == 1) {
 
+            if (isDebugEnabled(1)) logMessage("applicationlib.record_score: This reporting a score for a box league: gameswon is ".$frm['gameswon'] );
+
+
             //Get Box Id
             $query = "SELECT history.boxid 
 									FROM tblBoxHistory history 

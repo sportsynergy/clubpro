@@ -155,13 +155,14 @@ function onSubmitButtonClicked(){
 </table>
 
 				<input type="hidden" name="usertype" value="<?=$restypearray['usertype'] ?>">
-               <input type="hidden" name="Player1" value="<?=$userarray[0] ?>">
-			   <input type="hidden" name="Player2" value="<?=$userarray[1] ?>">
-			   <input type="hidden" name="reservationid" value="<?=$reservationid ?>">
-			   <input type="hidden" name="matchtype" value="<?=$restypearray['matchtype'] ?>">
-			   <input type="hidden" name="source" value="<?=$source ?>">
-			   <input type="hidden" name="submitme" value="submitme">
-         <input type="hidden" name="gameswon" value"<?=$gameswon?>">
+        <input type="hidden" name="Player1" value="<?=$userarray[0] ?>">
+			  <input type="hidden" name="Player2" value="<?=$userarray[1] ?>">
+			  <input type="hidden" name="reservationid" value="<?=$reservationid ?>">
+        <input type="hidden" name="gameswon" value="<?=$gameswon ?>">
+			  <input type="hidden" name="matchtype" value="<?=$restypearray['matchtype'] ?>">
+			  <input type="hidden" name="source" value="<?=$source ?>">
+			  <input type="hidden" name="submitme" value="submitme">
+        
 
 </form>
 
