@@ -30,38 +30,7 @@
  * Classes list:
  */
 ?>
-<script language="Javascript">
 
-document.onkeypress = function (aEvent)
-{
-    if(!aEvent) aEvent=window.event;
-  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
-    if( key == 13 ) // enter key
-    {
-        return false; // this will prevent bubbling ( sending it to children ) the event!
-    }
-  	
-}
-
-function unsetplayers()
-{
-        document.singles_entryform.playeronename.value = "";
-        document.singles_entryform.player1.value = "";
-        document.singles_entryform.playertwoname.value = "";
-        document.singles_entryform.player2.value = "";
-}
-
-function enableMatchType()
-{
-	if(document.singles_entryform.player1.value != "" &&
-		document.singles_entryform.player2.value != ""){
-		document.singles_entryform.player2.value
-	}
-		
-}
-
-
-</script>
 
 <div style="height: 25px;"></div>
 <form name="singles_entryform" method="post" action="<?=$ME?>" autocomplete="off">
@@ -107,11 +76,8 @@ function enableMatchType()
     </tr>
     <tr>
       <td><span class="label">Score:</span></td>
-      <td colspan="2"><select name="score">
-          <option value="2">3-2</option>
-          <option value="1">3-1</option>
-          <option value="0">3-0</option>
-        </select></td>
+      <td colspan="2"><select name="score"> </select>
+        </td>
     </tr>
     <tr>
       <td><span class="label">Match Type:</span></td>
@@ -124,7 +90,8 @@ function enableMatchType()
     </tr>
     <tr>
       <td><span class="label">Court Type:</span></td>
-      <td colspan="2"><select name="courttype" id="courttype" onchange="unsetplayers()">
+      <td colspan="2">
+        <select name="courttype" id="courttype" onchange="unsetplayers();setMatchScore()">
           <?
 		                 while($row = mysql_fetch_row($singlesCourtTypeDropDown)) {
 		                      echo "<option value=\"$row[0]\">$row[1]</option>\n";
@@ -143,3 +110,37 @@ function enableMatchType()
     </tr>
   </table>
 </form>
+
+
+<script language="Javascript">
+
+document.onkeypress = function (aEvent)
+{
+    if(!aEvent) aEvent=window.event;
+    key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+    if( key == 13 ) // enter key
+    {
+        return false; // this will prevent bubbling ( sending it to children ) the event!
+    }
+    
+}
+
+function unsetplayers()
+{
+        document.singles_entryform.playeronename.value = "";
+        document.singles_entryform.player1.value = "";
+        document.singles_entryform.playertwoname.value = "";
+        document.singles_entryform.player2.value = "";
+}
+
+function enableMatchType()
+{
+  if(document.singles_entryform.player1.value != "" &&
+    document.singles_entryform.player2.value != ""){
+    document.singles_entryform.player2.value
+  }
+    
+}
+
+
+</script>

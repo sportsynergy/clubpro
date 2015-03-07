@@ -31,35 +31,7 @@
  */
 ?>
 
-<script language="Javascript">
 
-document.onkeypress = function (aEvent)
-{
-    if(!aEvent) aEvent=window.event;
-  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
-    if( key == 13 ) // enter key
-    {
-        return false; // this will prevent bubbling ( sending it to children ) the event!
-    }
-  	
-}
-
-
-function unsetplayers()
-{
-        document.doubles_entryform.playeronename.value = "";
-        document.doubles_entryform.player1.value = "";
-        document.doubles_entryform.playertwoname.value = "";
-        document.doubles_entryform.player2.value = "";
-        document.doubles_entryform.playerthreename.value = "";
-        document.doubles_entryform.player3.value = "";
-        document.doubles_entryform.playerfourname.value = "";
-        document.doubles_entryform.player4.value = "";
-}
-
-
-
-</script>
 
 <div style="height: 25px;"></div>
 
@@ -169,18 +141,14 @@ function unsetplayers()
                  <tr>
                 	<td> <span class="label">Score:</span></td>
                 	<td colspan="2">
-						  <select name="score">
-						    <option value="2">3-2</option>
-						    <option value="1">3-1</option>
-						    <option value="0">3-0</option>
-						  </select>
+						  <select name="score"></select>
    					</td>
                 </tr>
                 <tr>
                 	<td> <span class="label">Match Type:</span></td>
                 	<td colspan="2">
 						  <select name="matchtype">
-						  <option value="practice"  >Practice</option>
+						  <option value="practice">Practice</option>
 						    <option value="challenge" >Challenge</option>
 						  </select>
    					</td>
@@ -189,7 +157,7 @@ function unsetplayers()
                 	<td><span class="label">Court Type:</span></td>
                 	 
 		            <td>   
-		                 <select name="courttype" onchange="unsetplayers()" id="courttype">
+		                 <select name="courttype" onchange="unsetplayers();setMatchScore()" id="courttype">
 		                 <?
 		                 while($row = mysql_fetch_row($doublesCourtTypeDropDown)) {
 		                      echo "<option value=\"$row[0]\">$row[1]</option>\n";
@@ -209,8 +177,34 @@ function unsetplayers()
                 <tr>
  	</table>
 
-
-
-
-
 </form>
+
+
+<script language="Javascript">
+
+document.onkeypress = function (aEvent)
+{
+    if(!aEvent) aEvent=window.event;
+    key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+    if( key == 13 ) // enter key
+    {
+        return false; // this will prevent bubbling ( sending it to children ) the event!
+    }  
+}
+
+
+function unsetplayers()
+{
+        document.doubles_entryform.playeronename.value = "";
+        document.doubles_entryform.player1.value = "";
+        document.doubles_entryform.playertwoname.value = "";
+        document.doubles_entryform.player2.value = "";
+        document.doubles_entryform.playerthreename.value = "";
+        document.doubles_entryform.player3.value = "";
+        document.doubles_entryform.playerfourname.value = "";
+        document.doubles_entryform.player4.value = "";
+}
+
+
+
+</script>

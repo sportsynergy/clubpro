@@ -84,6 +84,43 @@ function onSinglesSubmitButtonClicked(){
 	submitForm('singles_entryform');
 }
 
+function setMatchScore(){
+
+    document.singles_entryform.score.options.length = 0;
+ 
+    // Singles
+    var optioncount = 0;
+    for (i=0; i < matchscores.length; i++) {
+
+        if(matchscores[i].courttypeid == document.singles_entryform.courttype.value){
+            var opt = new Option( matchscores[i].gameswon+' - '+matchscores[i].gameslost, matchscores[i].gameslost);
+            document.singles_entryform.score.options[optioncount] = opt;
+            ++optioncount;
+        }
+      }  
+
+    //Doubles
+    var optioncount = 0;
+    for (i=0; i < matchscores.length; i++) {
+
+        if(matchscores[i].courttypeid == document.doubles_entryform.courttype.value){
+            var opt = new Option( matchscores[i].gameswon+' - '+matchscores[i].gameslost, matchscores[i].gameslost);
+            document.doubles_entryform.score.options[optioncount] = opt;
+            ++optioncount;
+        }
+      }        
+}
+
+var matchscores = new Array();
+
+<? 
+//print out the java script
+while ($matchscore = db_fetch_array($allmatchscores)) { ?>
+    matchscores.push({courttypeid:<?=$matchscore['courttypeid']?>, gameswon:<?=$matchscore['gameswon']?>, gameslost:<?=$matchscore['gameslost']?>});
+ <? } ?>
+
+setMatchScore();
+
 
 </script>
 

@@ -2504,8 +2504,8 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
  * @param unknown_type $source
  */
 function record_score(&$frm, $source) {
-    
-    if (isDebugEnabled(1)) logMessage("applicationlib.record_score: source is $source: " + $frm['gameswon']);
+
+
 
     /* Record score 
 
@@ -2529,6 +2529,8 @@ function record_score(&$frm, $source) {
     $winner = $results['winner'];
     $loser = $results['loser'];
     $gameswon = $frm['gameswon'];
+
+    if (isDebugEnabled(1)) logMessage("applicationlib.record_score: source is $source and gameswon: $gameswon" );
 
     // Update the winners outcome
     $winnersquery = "UPDATE tblkpUserReservations SET outcome='$frm[gameswon]'
@@ -2840,6 +2842,8 @@ function calculateRankings($winnerOldRanking, $losersOldRanking) {
  */
 function update_gamesplayed($playerOneId, $playerTwoId, $boxId) {
 
+    if(isDebugEnabled(1) ) logMessage("applicationlib.update_gamesplayed: playerone: $playerOneId, playerTwoId $playerTwoId, boxid: $boxId");
+
 	$boxgamesplayedquery = "SELECT tblkpBoxLeagues.boxid, tblkpBoxLeagues.userid, tblkpBoxLeagues.games
 	                         FROM tblkpBoxLeagues
 	                         WHERE (((tblkpBoxLeagues.userid)=$playerOneId
@@ -2979,7 +2983,6 @@ function update_ladderscore($losersgamepoints, $boxid, $winner, $player1, $playe
 	$loser = $results['loser'];
 	$loser = rtrim ($loser);
 
-	if(isDebugEnabled(1) ) logMessage("applicationlib.update_ladderscore: setting winner: $winner which is ".strlen($winner)." loser $loser ".strlen($loser));
 
 	$pointsforshowing = 1;
 	$winnersgamepoints = 3;
@@ -3474,11 +3477,11 @@ function load_auth_sites($userid) {
 function get_singlesCourtTypesForSite($currentSiteId) {
 
 	$courttypeQuery = "SELECT DISTINCT courttype.courttypeid, courttype.courttypename
-	                   FROM tblCourtType courttype, tblCourts courts
-	                   WHERE courts.siteid = $currentSiteId
-					   AND courts.courttypeid = courttype.courttypeid
-					   AND (courttype.reservationtype = 0 
-							OR courttype.reservationtype = 1)";
+            FROM tblCourtType courttype
+            INNER JOIN tblCourts courts ON courts.courttypeid = courttype.courttypeid
+            WHERE courts.siteid = $currentSiteId
+                AND (courttype.reservationtype = 0 
+            OR courttype.reservationtype = 1)";
 
 	return  db_query($courttypeQuery);
 
@@ -3506,8 +3509,49 @@ function get_doublesCourtTypesForSite($currentSiteId) {
 
 }
 
+/*
+ Gets the matchscores for each court types at a site
+*/
+function get_singlesMatchscoresForSite($siteid){
+
+    $query = "SELECT DISTINCT tblCourts.courttypeid,gameswon, gameslost 
+                FROM tblMatchScore 
+                INNER JOIN tblCourts ON tblMatchScore.courttypeid = tblCourts.courttypeid
+                INNER JOIN tblCourtType courttype ON tblCourts.courttypeid = courttype.courttypeid
+                   AND (courttype.reservationtype = 0 
+                            OR courttype.reservationtype = 1)
+                WHERE tblCourts.siteid = $siteid";
+
+    return db_query($query);
+}
 
 
+/*
+Gets the matchscores for each court types at a site
+*/
+function get_doublesMatchscoresForSite($siteid){
+
+    $query = "SELECT DISTINCT tblCourts.courttypeid,gameswon, gameslost 
+                FROM tblMatchScore 
+                INNER JOIN tblCourts ON tblMatchScore.courttypeid = tblCourts.courttypeid
+                INNER JOIN tblCourtType courttype ON tblCourts.courttypeid = courttype.courttypeid
+                   AND (courttype.reservationtype = 2 
+                            OR courttype.reservationtype = 1)
+                WHERE tblCourts.siteid = $siteid";
+
+    return db_query($query);
+}
+
+/*
+ This returns all of the match scores
+**/
+function getAllMatchScores(){
+
+    $query = "SELECT courttypeid, gameswon, gameslost 
+                FROM clubpro_main.tblMatchScore";
+
+    return db_query($query);
+}
 /************************************************************************************************************************/
 
 /*
