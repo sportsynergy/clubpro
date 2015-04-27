@@ -530,13 +530,32 @@ if ($clubid) {
                          // the hourly interval.  When it is not we will do the following:
                           if ($stack)
                              {
+                                 
                                  if ($curtime < $i)
                                  {
-                                    
+                                     
 									//reservations made outside of the courts durations
 									$current = current($stack);
-									if( $current > $lastspot  && $current < $i){
+								
+									// Display reservation whether its been on the courts 
+									// duration or not.
+									if( $current > $lastspot  
+										&& $current < $i){
 										$i = $current;
+									}
+
+									// Make sure that all off-court duration reservations
+									// are displayed.
+									foreach ($stack as $stacktime){
+ 										
+ 										// if there is a value in the stack between i
+ 										// and what is $current, then set that to $i
+ 										if($i < $stacktime &&
+ 											$stacktime < $i + $hoursobj->duration*3600){
+ 											$i = $stacktime;
+ 											
+ 										}
+ 										
 									}
 
 
@@ -586,7 +605,8 @@ if ($clubid) {
       
 											printGuestReservation($guest1, $guest2, $i, $courtobj->courtid, $residobj->matchtype, false );
 											$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
-                                       
+                                      
+
                                       } else{ 
 
                                       	$useridresult = getSinglesReservationUser($residobj->reservationid);
@@ -618,7 +638,8 @@ if ($clubid) {
 														} else{
                                                    	    printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, false, $residobj->locked, false, $residobj->creator, $residobj->reservationid);
 														$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
-																	
+														
+		
                                                	    }
          
                                                   } 
@@ -971,4 +992,5 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
     <?php
 }
 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+
 ?>
