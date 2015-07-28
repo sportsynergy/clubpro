@@ -231,7 +231,7 @@ function onCancelReservationButtonClicked(){
 								'source'=>'name1',
 								'target'=>'id1',
 								'className'=>'autocomplete',
-								'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
+								'parameters'=> "action=autocomplete&name={name1}&userid=0&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
 								'progressStyle'=>'throbbing',
 								'minimumCharacters'=>3,
 								));
@@ -251,7 +251,7 @@ function onCancelReservationButtonClicked(){
 								'source'=>'name2',
 								'target'=>'id2',
 								'className'=>'autocomplete',
-								'parameters'=> "action=autocomplete&name={name2}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
+								'parameters'=> "action=autocomplete&name={name2}&userid=0&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
 								'progressStyle'=>'throbbing',
 								'minimumCharacters'=>3,
 								));
@@ -275,7 +275,7 @@ function onCancelReservationButtonClicked(){
 								'source'=>'name3',
 								'target'=>'id3',
 								'className'=>'autocomplete',
-								'parameters'=> "action=autocomplete&name={name3}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
+								'parameters'=> "action=autocomplete&name={name3}&userid=0&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
 								'progressStyle'=>'throbbing',
 								'minimumCharacters'=>3,
 								));
@@ -296,7 +296,7 @@ function onCancelReservationButtonClicked(){
 								'source'=>'name4',
 								'target'=>'id4',
 								'className'=>'autocomplete',
-								'parameters'=> "action=autocomplete&name={name4}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
+								'parameters'=> "action=autocomplete&name={name4}&userid=0&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
 								'progressStyle'=>'throbbing',
 								'minimumCharacters'=>3,
 								));
