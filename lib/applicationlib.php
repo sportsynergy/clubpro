@@ -2095,6 +2095,9 @@ function cancel_doubles($resid) {
  * @param unknown_type $matchtype
  */
 function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr, $score, $matchtype) {
+    
+    global $bad, $not_bad, $close;
+
     $rquery = "SELECT users.firstname, users.lastname, users.email
 				FROM tblUsers users
 				WHERE users.userid = $wUserid
@@ -2106,13 +2109,16 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
     $var = new Object;
     
     if ($score == 0) {
-        $var->howbad = "pounded";
+        $rand_key = array_rand($bad,1);
+        $var->howbad = $bad[$rand_key];
         $var->loserscore = 0;
     } elseif ($score == 2) {
-        $var->howbad = "edged out";
+        $rand_key = array_rand($close,1);
+        $var->howbad = $close[$rand_key];
         $var->loserscore = 2;
     } else {
-        $var->howbad = "defeated";
+        $rand_key = array_rand($not_bad,1);
+        $var->howbad = $not_bad[$rand_key];
         $var->loserscore = 1;
     }
     $var->support = $_SESSION["CFG"]["support"];
@@ -2161,6 +2167,10 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
  * @param unknown_type $score
  */
 function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
+    
+    global $bad, $not_bad, $close;
+
+
     $rquery = "SELECT DISTINCTROW courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservationdetails.outcome, reservations.matchtype, users.gender, matchtype.name
 	           FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblUserRankings rankings, tblMatchType matchtype, tblClubUser clubuser
 			   WHERE courts.courtid = reservations.courtid
@@ -2190,18 +2200,21 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
     } else {
         $losersex = "she";
     }
+
     mysql_data_seek($rresult, 0);
     $robj = mysql_fetch_object($rresult);
     
     if ($score == 0) {
-        $var->howbad1 = "beat";
-        $var->howbad2 = "like $losersex owed $winnersex money";
+        $rand_key = array_rand($bad,1);
+        $var->howbad1 = $bad[$rand_key];
         $var->loserscore = 0;
     } elseif ($score == 2) {
-        $var->howbad1 = "defeated";
+        $rand_key = array_rand($not_bad,1);
+        $var->howbad1 = $not_bad[$rand_key];
         $var->loserscore = 2;
     } else {
-        $var->howbad1 = "defeated";
+        $rand_key = array_rand($close,1);
+        $var->howbad = $close[$rand_key];
         $var->loserscore = 1;
     }
     $var->courtname = $robj->courtname;
@@ -2327,6 +2340,9 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
  * @param unknown_type $matchtype
  */
 function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr, $score, $matchtype) {
+    
+    global $bad, $not_bad, $close;
+
     $rquery = "SELECT users.firstname, users.lastname, users.email
 				FROM tblUsers users, tblkpTeams teamdetails
 				WHERE users.userid = teamdetails.userid
@@ -2340,13 +2356,16 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
     $var = new Object;
     
     if ($score == 0) {
-        $var->howbad = "pounded";
+        $rand_key = array_rand($bad,1);
+        $var->howbad = $bad[$rand_key];
         $var->loserscore = 0;
     } elseif ($score == 2) {
-        $var->howbad = "edged out";
+        $rand_key = array_rand($close,1);
+        $var->howbad = $close[$rand_key];
         $var->loserscore = 2;
     } else {
-        $var->howbad = "defeated";
+        $rand_key = array_rand($not_bad,1);
+        $var->howbad = $not_bad[$rand_key];
         $var->loserscore = 1;
     }
     $var->support = $_SESSION["CFG"]["support"];
@@ -2398,6 +2417,9 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
  * @param unknown_type $score
  */
 function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
+    
+    global $bad, $not_bad, $close;
+
     $rquery = "SELECT DISTINCT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservationdetails.outcome, reservations.matchtype, matchtype.name
 	            FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblkpTeams teamdetails, tblMatchType matchtype,tblClubUser clubuser
 				WHERE reservations.reservationid = reservationdetails.reservationid
@@ -2423,14 +2445,18 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     /* email the user with the new account information    */
     $var = new Object;
     
+    #bad/not_bad/close
     if ($score == 0) {
-        $var->howbad = "completely creamed";
+        $rand_key = array_rand($bad,1);
+        $var->howbad = $bad[$rand_key];
         $var->loserscore = 0;
     } elseif ($score == 2) {
-        $var->howbad = "squeaked by";
+        $rand_key = array_rand($close,1);
+        $var->howbad = $close[$rand_key];
         $var->loserscore = 2;
     } else {
-        $var->howbad = "defeated";
+        $rand_key = array_rand($not_bad,1);
+        $var->howbad = $not_bad[$rand_key];
         $var->loserscore = 1;
     }
     $var->courtname = $robj->courtname;
@@ -2504,8 +2530,6 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
  * @param unknown_type $source
  */
 function record_score(&$frm, $source) {
-
-
 
     /* Record score 
 
@@ -6135,6 +6159,78 @@ function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts
 	}
 	return $url;
 }
+
+$bad = array(
+"trounced",
+"crushed",
+"clobbered",
+"slaughtered",
+"demolished",
+"skunked",
+"totally flummoxed",
+"humbled",
+"destroyed",
+"wrecked",
+"made mincemeat of",
+"wiped the floor with",
+"pasted",
+"walloped",
+"ran the table against",
+"blitzed",
+"trashed",
+"walked all over",
+"tyrannized",
+"had their way with",
+"sped past");
+
+$not_bad = array(
+"conquered",
+"triumphed over",
+"confounded",
+"vanquished",
+"overwhelmed",
+"baffled",
+"subdued",
+"derailed",
+"scuttled",
+"stymied",
+"overpowered",
+"foiled",
+"outplayed",
+"frustrated",
+"subjugated",
+"thwarted",
+"stumped",
+"reigned supreme over",
+"eclipsed",
+"held the upper hand with",
+"handled",
+"glided by"
+    );
+
+$close = array(
+"beat",
+"got by",
+"edged",
+"stole by",
+"surmounted",
+"disappointed",
+"narrowly defeated",
+"barely beat",
+"slipped past",
+"held on to beat",
+"inched by",
+"snuck by",
+"overcame",
+"weaseled past",
+"prevailed over",
+"nosed by",
+"shuffled past",
+"crept by",
+"eked out a victory over",
+"squeezed past",
+"battled past"
+    );
 
 
 ?>
