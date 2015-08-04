@@ -5338,6 +5338,25 @@ function getSitePreferences($siteid) {
 		$array['boxenabled'] = 'false';
 	}
 
+    // This only matters if the user is logged in.
+    if( is_logged_in() ){
+
+    
+        // Get user parameters
+        $query = "SELECT tblPreferencesOverride.preference, tblPreferencesOverride.override FROM clubpro_main.tblParameterValue 
+                    INNER JOIN tblParameterOptions on tblParameterValue.parametervalue = tblParameterOptions.optionvalue
+                    INNER JOIN tblPreferencesOverride ON tblParameterOptions.parameteroptionid = tblPreferencesOverride.parameteroptionid
+                    WHERE userid =  ". get_userid();
+
+        $qid = db_query($query);
+        while( $override = db_fetch_array($qid) ){
+            if( isDebugEnabled(1) )  logMessage("applicationlib.getSitePreferences: Found override: ". $override['preference']);
+                $array[$override['preference']] = $override['override'];
+
+        }
+
+    }
+
 	return $array;
 }
 

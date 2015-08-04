@@ -19,6 +19,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 -- --------------------------------------------------------
 
+CREATE TABLE `tblPreferencesOverride` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `preference` VARCHAR(45) NOT NULL COMMENT 'the column name from the tblClubSites ',
+  `parameterid` VARCHAR(45) NOT NULL,
+  `override` VARCHAR(45) NULL COMMENT 'This is what will be overridden',
+  PRIMARY KEY (`id`));
+
 --
 -- Table structure for table `tblMatchScore`
 --
