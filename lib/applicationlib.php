@@ -6186,7 +6186,6 @@ $bad = array(
 "slaughtered",
 "demolished",
 "skunked",
-"totally flummoxed",
 "humbled",
 "destroyed",
 "wrecked",
