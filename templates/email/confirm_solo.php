@@ -1,1 +1,1 @@
-Just to let you know, you are all set for  $var->courtname on $var->time.
+Just to let you know, you are all set for a reservation all to yourself on $var->courtname on $var->time.

@@ -1671,14 +1671,14 @@ function confirm_singles($resid, $isNewReservation) {
         
         if($matchtype == 4){
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles_lesson_looking.php", $var);
+        } elseif($matchtype == 5){
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_solo.php", $var);
         } else {
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles_looking.php", $var);
         }
         
     } elseif ($matchtype == 4) {
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_lesson.php", $var);
-    } elseif ($matchtype == 5) {
-        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_solo.php", $var);
     } else {
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles.php", $var);
     }
