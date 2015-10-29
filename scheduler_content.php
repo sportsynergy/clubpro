@@ -555,7 +555,7 @@ if ($clubid) {
  										if($i < $stacktime &&
  											$stacktime < $i + $hoursobj->duration*3600){
  											$i = $stacktime;
- 											
+ 											break;
  										}
  										
 									}
