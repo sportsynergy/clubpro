@@ -552,7 +552,7 @@ if ($clubid) {
  										
  										// if there is a value in the stack between i
  										// and what is $current, then set that to $i
- 										if($i < $stacktime &&
+ 										if($i <= $stacktime &&
  											$stacktime < $i + $hoursobj->duration*3600){
  											$i = $stacktime;
  											break;
