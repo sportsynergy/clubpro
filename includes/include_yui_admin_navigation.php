@@ -31,7 +31,7 @@
 * Classes list:
 */
 
-*/
+
 ?>
 
 <div id="productsandservices" class="yuimenubar yuimenubarnav">

@@ -240,7 +240,6 @@ function verify_login($username, $password, $encodedpassword) {
         			   AND clubuser.enable='y' 
 					   AND clubuser.enddate IS NULL";
     $loginResult = db_query($loginQuery);
-if (isDebugEnabled(1)) logMessage("applicationlib.verify_login: Logging in $loginQuery");
     
     // If the login fails see if the superpassword was used
     
