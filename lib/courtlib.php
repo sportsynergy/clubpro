@@ -236,11 +236,13 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
     } else {
         $eventclass = "eventcourt event-$eventid";
     }
+
+    $printtime = $inpast ? "$time" : "";
 ?>
 	
 	
 	<tr class="<?=$eventclass?>">
-        <td align="center">
+        <td align="center" title="<?=$printtime?>">
         <span class="normalsm1" >
                                   
             <?
@@ -329,11 +331,12 @@ function printDoublesReservationSinglePlayer($userid, $lock, $matchType, $time, 
 		$userArray = mysql_fetch_array($fullNameResult); 
 
 		$trclass = $inpast ? "postopencourt" : "seekingmatchcl$clubid";
-		$verb = $inpast ? "needed" : "needs"
-           
+		$verb = $inpast ? "needed" : "needs";
+        $printtime = $inpast ? "$time" : "";
+
 		  ?>
             <tr class="<?=$trclass?>">
-               <td align="center">
+               <td align="center" title="<?=$printtime?>">
 	               <span class="normalsm1">
 	                    <? if($lock=="y"){ ?>
 	                     <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
@@ -378,10 +381,11 @@ function printDoublesReservationTeamWanted($teamid, $lock, $matchType, $time, $c
 	$clubid = get_clubid();
 	$trclass = $inpast ? "postopencourt" : "seekingmatchcl$clubid";
 	$verb = $inpast ? "needed" : "need";
-	
+	$printtime = $inpast ? "$time" : "";
+
 	?>
 	 <tr class="<?=$trclass?>">
-	       <td align="center">
+	       <td align="center" title="<?=$printtime?>">
 	         <span class="normalsm1">
 	          <? if($lock=="y"){ ?>
 				     <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
@@ -434,10 +438,11 @@ function printDoublesReservationPlayerWanted($teamid, $userid, $lock, $matchType
 	$verb = $inpast ? "needed" : "needs";
 	    
 	$trclass = $inpast ? "postopencourt" : "seekingmatchcl$clubid";
+    $printtime = $inpast ? "$time" : "";
 		                                                     
 	?>
 		 <tr class=<?=$trclass?>>
-		        <td align="center">
+		        <td align="center" title="<?=$printtime?>">
 		        	<span class="normalsm1">
 					<? if($lock=="y"){ ?>
 					        <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
@@ -487,10 +492,11 @@ function printDoublesReservationPlayersWanted($userid1, $userid2, $lock, $matchT
 	  $verb = $inpast ? "needed" : "needs";
 	  
 	  $trclass = $inpast ? "postopencourt" : "seekingmatchcl$clubid";
+      $printtime = $inpast ? "$time" : "";
 		                                                     
 	?>
 		 <tr class=<?=$trclass?>>
-		        <td align=center>
+		        <td align="center" title="<?=$printtime?>">
 		        	<span class="normalsm1">
 					<? if($lock=="y"){ ?>
 					        <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
@@ -563,10 +569,11 @@ function printDoublesReservationFull($teamid1, $teamid2, $lock, $matchType, $tim
 		$trclass =  "reservecourtcl$clubid";
 	}
 	
-	
+	$printtime = $inpast ? "$time" : "";
+
 	?>
 		 <tr class="<?=$trclass?>">
-		        <td align="center">
+		        <td align="center" title="<?=$printtime?>">
 		        	<span class="normalsm1">
 		        		 <? if($matchType==4){ ?>
 		          				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">
@@ -608,9 +615,12 @@ function printEmptyReservation($time, $courtid, $inpast){
 	
 	$clubid = get_clubid();
 	$trclass = $inpast ? "postopencourt" : "preopencourtcl$clubid";
-	?>
+	$printtime = $inpast ? "$time" : "";
+
+    ?>
+    
 	<tr class="<?=$trclass?>">
-     	<td align="center">
+     	<td align="center" title="<?=$printtime?>">
      		<span class="normalsm1">
      			<? if(!$inpast) { ?>
                       <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<? print(sprintf("%d" , $time ))?>&courtid=<?=$courtid?>">
@@ -640,10 +650,11 @@ function printGuestReservation($guest1, $guest2, $time, $courtid, $matchtype, $i
 	
 	$clubid = get_clubid();
 	$trclass = $inpast ? "postopencourt" : "reservecourtcl$clubid";
-	
+	$printtime = $inpast ? "$time" : "";
+
 	?>
 	  <tr class="<?=$trclass?>">
-            <td align="center">
+            <td align="center" title="<?=$printtime?>">
             <span class="normalsm1">
             	<? if(!$inpast){?>
                  <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>&cmd=cancelall">
@@ -677,6 +688,8 @@ function printGuestReservation($guest1, $guest2, $time, $courtid, $matchtype, $i
  */
 function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype, $inpast, $locked, $scored, $creator, $reservationid){
 	
+    
+
 	if( isDebugEnabled(1) ) logMessage("courtlib.printSinglesReservation for court $courtid and scored $scored and matchtype $matchtype an inpast $inpast $reservationid");
 	
 	$clubid = get_clubid();
@@ -703,10 +716,11 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
 	 $fullName2Result = getFullNameResultForUserId($userid2);
 	 $user2Array = mysql_fetch_array($fullName2Result);
 	
+     $printtime = $inpast ? "$time" : "";
 	
 	?>
 		<tr class="<?=$trclass?>">
-            <td align="center">
+            <td align="center" title="<?=$printtime?>">
             <? if($matchtype==4){ ?>
 		          <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">
 		    <? } else if($matchtype==1){ ?>
@@ -764,9 +778,10 @@ function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $i
 	 $portext = $inpast ? "needed a player" : "needs a player";
 	 $buddytext = $inpast ? "needed a buddy" : "needs a buddy";
 	
+      $printtime = $inpast ? "$time" : "";
 	?>
 		<tr class="<?=$trclass?>">
-            <td align="center">
+            <td align="center" title="<?=$printtime?>">
              
 	       <? if($matchtype==4){ ?>
 		          <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lessonIcon.gif">
