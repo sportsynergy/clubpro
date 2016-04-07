@@ -172,6 +172,7 @@
       <td ><span  class="biglabel">Match Type:</span></td>
       <td class="normal" ><select name="matchtype" >
           <option value="0" selected>Practice</option>
+          <option value="0" selected>Tournament</option>
           <? if ( isPointRankingScheme() ) {?>
           <option value="2">Challenge</option>
           <? } ?>
