@@ -172,7 +172,7 @@
       <td ><span  class="biglabel">Match Type:</span></td>
       <td class="normal" ><select name="matchtype" >
           <option value="0" selected>Practice</option>
-          <option value="0" selected>Tournament</option>
+          <option value="0">Tournament</option>
           <? if ( isPointRankingScheme() ) {?>
           <option value="2">Challenge</option>
           <? } ?>
@@ -211,6 +211,12 @@
   <input type="hidden" name="action" value="create">
 </form>
 <script language="Javascript">
+
+
+document.getElementById('dname1').setAttribute("autocomplete", "off");
+document.getElementById('dname2').setAttribute("autocomplete", "off");
+document.getElementById('dname3').setAttribute("autocomplete", "off");
+document.getElementById('dname4').setAttribute("autocomplete", "off");
 
 
 document.onkeypress = function (aEvent)
