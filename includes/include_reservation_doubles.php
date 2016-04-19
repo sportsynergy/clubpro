@@ -30,7 +30,7 @@
 * Classes list:
 */
 ?>
-<form name="doublesform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
+<form name="doubles_reservation_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
   <table cellspacing="5" cellpadding="0" width="540" class="tabtable" id="doubles-formtable">
     <tr>
       <td><input id="dname1" name="playeronename" type="text" size="30" class="form-autocomplete"  
@@ -213,10 +213,6 @@
 <script language="Javascript">
 
 
-document.getElementById('dname1').setAttribute("autocomplete", "off");
-document.getElementById('dname2').setAttribute("autocomplete", "off");
-document.getElementById('dname3').setAttribute("autocomplete", "off");
-document.getElementById('dname4').setAttribute("autocomplete", "off");
 
 
 document.onkeypress = function (aEvent)
@@ -234,6 +230,13 @@ YAHOO.example.init = function () {
 
     YAHOO.util.Event.onContentReady("doubles-formtable", function () {
 
+
+        document.getElementById('dname1').setAttribute("autocomplete", "off");
+        document.getElementById('dname2').setAttribute("autocomplete", "off");
+        document.getElementById('name3').setAttribute("autocomplete", "off");
+        document.getElementById('name4').setAttribute("autocomplete", "off");
+
+
         var dblSubmitButton = new YAHOO.widget.Button("doubles-submitbutton", { value: "doubles-submitvalue" });
         dblSubmitButton.on("click", onDoublesSubmitButtonClicked);
 
@@ -247,7 +250,7 @@ YAHOO.example.init = function () {
 function onDoublesSubmitButtonClicked(){
 	var myButton = YAHOO.widget.Button.getButton('doubles-submitbutton'); 		
 	myButton.set('disabled', true);
-	submitForm('doublesform');
+	submitForm('doubles_reservation_form');
 }
 
  function onDoublesCancelButtonClicked(){
