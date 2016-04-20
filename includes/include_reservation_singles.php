@@ -189,6 +189,10 @@ pat_autocomplete(array(
 
 	    YAHOO.util.Event.onContentReady("singles-formtable", function () {
 
+
+	    	document.getElementById('name1').setAttribute("autocomplete", "off");
+	    	document.getElementById('name2').setAttribute("autocomplete", "off");
+
 	        var sinSubmitButton1 = new YAHOO.widget.Button("singles-submitbutton", { value: "submitbuttonvalue" });
 	        sinSubmitButton1.on("click", onSinglesSubmitButtonClicked);
 			

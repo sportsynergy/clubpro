@@ -164,6 +164,11 @@ YAHOO.example.init = function () {
 
     YAHOO.util.Event.onContentReady("formtable", function () {
 
+    	document.getElementById('name1').setAttribute("autocomplete", "off");
+    	document.getElementById('name2').setAttribute("autocomplete", "off");
+    	document.getElementById('name3').setAttribute("autocomplete", "off");
+    	document.getElementById('name4').setAttribute("autocomplete", "off");
+
         var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
         oSubmitButton1.on("click", onSubmitButtonClicked);
 
