@@ -633,7 +633,7 @@ function printLadderEventRow($id, $challenger, $challengee, $challengeDate, $sco
 	$isinreservation = $inreservation ? true : false;
 	$loserscore = 3 - abs($scored);
 	
-	if( isDebugEnabled(1) ) logMessage("ladderlib.printChallengeMatch: challengerName: $challenger->fullname challengeeName $challengee->fullname scored: $isscored isinreservation: $isinreservation");
+	if( isDebugEnabled(1) ) logMessage("ladderlib.printChallengeMatch: challengerName: $challenger->fullname challengeeName $challengee->fullname scored: $isscored isinreservation: $isinreservation id: $id");
 	
 	?>
 	

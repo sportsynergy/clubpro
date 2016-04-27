@@ -30,12 +30,8 @@
 * Function list:
 * Classes list:
 */
-/*
- * $LastChangedRevision: 823 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-06 22:50:11 -0600 (Sun, 06 Feb 2011) $
 
-*/
+
 ?>
 
 <div>

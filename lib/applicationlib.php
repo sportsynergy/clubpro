@@ -3961,7 +3961,7 @@ function is_email_valid($emailaddress) {
 
 function get_admin_player_search($searchname) {
 
-	$playerquery = "SELECT users.firstname, users.lastname, users.email, users.workphone, users.homephone, users.userid, clubuser.msince, users.cellphone
+	$playerquery = "SELECT users.firstname, users.lastname, users.email, users.workphone, users.homephone, users.userid, clubuser.msince, users.cellphone, clubuser.memberid
 	                        FROM tblUsers users, tblClubUser clubuser
 	                        WHERE users.userid = clubuser.userid
 							AND clubuser.clubid =" . get_clubid() . "
