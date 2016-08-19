@@ -8,3 +8,4 @@ build.properties
 clubpro.tar.gz
 version.txt
 clubpro_latest
+vendor/
