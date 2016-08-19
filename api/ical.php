@@ -27,7 +27,7 @@ $result = db_query($query);
 $array = db_fetch_array($result);
 
 
-$Dtz = new Helper_DateTimeZone(Helper_DateTimeZone::tzOffsetToName($array['timezone']));
+$Dtz = new Helper_DateTimeZone(Helper_DateTimeZone::tzOffsetToName($array['tzoffset']));
 
 
 $vTimezone = new \Eluceo\iCal\Component\Timezone($Dtz->getName());
