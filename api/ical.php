@@ -18,7 +18,7 @@ if (!isset($userid)){
 
 
 // get club info
-$query = "SELECT concat(tblClubs.timezone,'00') as tzoffset, tblClubs.clubname 			FROM tblUsers 
+$query = "SELECT tblClubs.timezone as tzoffset, tblClubs.clubname 			FROM tblUsers 
 		INNER JOIN tblClubUser on tblUsers.userid = tblClubUser.userid
 		INNER JOIN tblClubs on tblClubUser.clubid = tblClubs.clubid
 		WHERE tblUsers.userid = '$userid'";
@@ -27,7 +27,7 @@ $result = db_query($query);
 $array = db_fetch_array($result);
 
 
-$Dtz = new Helper_DateTimeZone(Helper_DateTimeZone::tzOffsetToName(-6));
+$Dtz = new Helper_DateTimeZone(Helper_DateTimeZone::tzOffsetToName($array['timezone']));
 
 
 $vTimezone = new \Eluceo\iCal\Component\Timezone($Dtz->getName());
