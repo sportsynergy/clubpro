@@ -27,7 +27,14 @@ $result = db_query($query);
 $array = db_fetch_array($result);
 
 
-$Dtz = new Helper_DateTimeZone(Helper_DateTimeZone::tzOffsetToName($array['tzoffset']));
+// roughly
+$monthago = mktime() - (60*60*24*30);
+$intwomonths = mktime() + (60*60*24*30*2);
+
+
+// account for timezone
+$Dtz = new Helper_DateTimeZone(Helper_DateTimeZone::tzOffsetToName($array['tzoffset'] + date("I") ));
+
 
 
 $vTimezone = new \Eluceo\iCal\Component\Timezone($Dtz->getName());
@@ -46,11 +53,16 @@ $query = "SELECT tblReservations.time,tblCourts.courtname, tblClubs.clubname, tb
 			INNER JOIN tblClubs ON tblCourts.clubid = tblClubs.clubid
 			INNER JOIN tblCourtType ON tblCourts.courttypeid = tblCourtType.courttypeid
 			INNER JOIN tblSportType ON tblCourtType.sportid = tblSportType.sportid
-			WHERE tblkpUserReservations.userid = '$userid' 
+			WHERE tblkpUserReservations.userid = '$userid'
+			AND tblReservations.usertype = 0 
+			AND tblReservations.time > $monthago
+			AND tblReservations.time < $intwomonths
 			ORDER by tblReservations.time DESC
 			LIMIT 500";
 
 // union doubles
+
+			
 
 // Get all reservations for the user including: court name, time and
 $result = db_query($query);
