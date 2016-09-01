@@ -57,6 +57,7 @@ $query = "SELECT tblReservations.time,tblCourts.courtname, tblClubs.clubname, tb
 			AND tblReservations.usertype = 0 
 			AND tblReservations.time > $monthago
 			AND tblReservations.time < $intwomonths
+			AND tblReservations.enddate is NULL
 			ORDER by tblReservations.time DESC
 			LIMIT 500";
 
