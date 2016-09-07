@@ -46,7 +46,7 @@ $vCalendar->setTimezone($vTimezone);
 
 
 // Get singles
-$query = " (SELECT tblReservations.time,tblCourts.courtname, tblClubs.clubname, tblSportType.sportname, tblMatchType.name AS 'matchtype'
+$query = " (SELECT tblReservations.time,tblCourts.courtname, tblClubs.clubname, tblSportType.sportname, tblMatchType.name AS 'matchtype', tblReservations.duration
 			FROM tblReservations 
 			INNER JOIN tblkpUserReservations ON tblReservations.reservationid = tblkpUserReservations.reservationid
 			INNER JOIN tblCourts ON tblReservations.courtid = tblCourts.courtid
@@ -64,7 +64,7 @@ $query = " (SELECT tblReservations.time,tblCourts.courtname, tblClubs.clubname, 
 			)
 			UNION ALL
 
-			(SELECT tblReservations.time,tblCourts.courtname, tblClubs.clubname, tblSportType.sportname,tblMatchType.name AS 'matchtype'
+			(SELECT tblReservations.time,tblCourts.courtname, tblClubs.clubname, tblSportType.sportname,tblMatchType.name AS 'matchtype', tblReservations.duration
 			FROM tblReservations 
 			INNER JOIN tblkpUserReservations ON tblReservations.reservationid = tblkpUserReservations.reservationid
 			INNER JOIN tblCourts ON tblReservations.courtid = tblCourts.courtid
@@ -95,9 +95,15 @@ while($array = db_fetch_array($result)) {
 	if ($array['matchtype'] == 'lesson') {
 		$matchtype = ucfirst ( $array['matchtype'] ).' ';
 	}
-	
+
 	$start = gmdate("Y-m-d H:i",$array['time']);
-	$endtime = $array['time'] + 3600;
+	
+	$duration = 1;
+	if( isset($array['duration']) ){
+		$duration = $array['duration'];
+	}
+	
+	$endtime = $array['time'] + ($duration * 3600);
 	
 	$end = gmdate("Y-m-d H:i",$endtime);
 
