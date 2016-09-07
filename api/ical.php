@@ -84,7 +84,7 @@ $query = " (SELECT tblReservations.time,tblCourts.courtname, tblClubs.clubname, 
 			LIMIT 500
 			) ORDER by time DESC ";
 
-	
+
 
 // Get all reservations for the user including: court name, time and
 $result = db_query($query);
@@ -98,12 +98,12 @@ while($array = db_fetch_array($result)) {
 
 	$start = gmdate("Y-m-d H:i",$array['time']);
 	
-	$duration = 1;
+	$duration = 3600;
 	if( isset($array['duration']) ){
 		$duration = $array['duration'];
 	}
-	
-	$endtime = $array['time'] + ($duration * 3600);
+
+	$endtime = $array['time'] + $duration;
 	
 	$end = gmdate("Y-m-d H:i",$endtime);
 
