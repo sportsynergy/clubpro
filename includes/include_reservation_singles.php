@@ -147,8 +147,15 @@ pat_autocomplete(array(
 			</select>
 			</td>
 	</tr>
-	<? } ?>
-	
+	<? }  else { ?>
+		<tr>
+		<td>
+			<input type="hidden" name="duration" value="<?=$reservation_duration  ?>">
+		</td>
+		<td></td>
+		</tr>
+		
+	<? }  ?>
     
     <tr>
       <td colspan="2">
