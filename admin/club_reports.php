@@ -52,6 +52,8 @@ if (match_referer() && isset($_POST['submitme'])) {
             run_member_activity_report($frm);
         } elseif ($frm["report"] == "courtutil") {
             run_court_utilization_report($frm);
+        } elseif ($frm["report"] == "courtbookinglog") {
+            run_court_booking_report($frm);
         }
         include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
         die;
@@ -77,6 +79,9 @@ function validate_form(&$frm, &$errors) {
     }
     return $msg;
 }
+
+
+
 function run_member_activity_report(&$frm) {
     
     if (isDebugEnabled(1)) logMessage("club_reports.php.run_court_utilization_report");
@@ -386,6 +391,16 @@ function run_court_utilization_report(&$frm) {
 
 
    </td>
+  </tr>
+   <tr>
+    <td height="15"></td>
+   </tr>     
+  <tr>
+    <td>
+     <a href="javascript:submitForm('exportDataForm')">Export Booking Log</a>
+      <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/booking_log.php" method="post">
+</form>
+    </td>
   </tr>
   </table>
 <?
