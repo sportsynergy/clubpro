@@ -10,10 +10,10 @@ include '../application.php';
 $time = $_REQUEST["time"];
 $vendor = $_REQUEST["vendor"];
 $userid = $_REQUEST["userid"];
-$targetpage = $_REQUEST["target-page"];
+$page = $_REQUEST["page"];
 $value = $_REQUEST["value"];
 
-if (!isset($time) || !isset($vendor) || !isset($userid) || !isset($time) || !isset($targetpage) || !isset($value) ){
+if (!isset($time) || !isset($vendor) || !isset($userid) ||  !isset($page) || !isset($value) ){
 	die("invalid request");
 } 
 
