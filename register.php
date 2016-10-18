@@ -34,8 +34,7 @@
 * Classes list:
 */
 include ("./application.php");
-require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
-
+require 'vendor/autoload.php';
 $DOC_TITLE = "Register Club";
 
 /* form has been submitted, check if it the user login information is correct */

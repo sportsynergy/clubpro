@@ -36,7 +36,8 @@
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/courtlib.php");
-require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
+require 'vendor/autoload.php';
+
 $DOC_TITLE = "Record Scores";
 $ct = $_REQUEST["ct"];
 require_loginwq();

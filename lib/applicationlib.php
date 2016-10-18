@@ -55,12 +55,12 @@ function get_site_password($siteid){
 function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 	
 	if (isDebugEnabled(1)) {
-    	logMessage("applicationlib.sendgrid_clubemail: sending email with subject $subject with a size " . count($to_emails) );
+    	logMessage("applicationlib.sendgrid_clubmail: sending email with subject $subject with a size " . count($to_emails) );
     }
 
     if( count($to_emails) == 0){
         if (isDebugEnabled(1)) {
-            logMessage("applicationlib.sendgrid_email: there is a problem with sending mail for $subject, exiting..." );
+            logMessage("applicationlib.sendgrid_clubmail: there is a problem with sending mail for $subject, exiting..." );
         }
         return;
     }
@@ -71,7 +71,7 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 	foreach ($to_emails as $k=>$v){
 		$toList[] = $k;
 		if (isDebugEnabled(1)) {
-		    logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
+		    logMessage("applicationlib.sendgrid_clubmail: sending email to: $k with subject $subject and cateogry $category" );
 		}
 		$nameList[] = $v['name'];
 	}
@@ -118,19 +118,6 @@ function sendgrid_email($subject, $to_emails, $content, $category){
         return;
     }
     
-	// To make backwards compatible with postageapp create
-	$toList = array();
-	$nameList = array();
-    $urlList = array();
-
-	foreach ($to_emails as $k=>$v){
-		if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
-		
-		$toList[] = $k;
-		$nameList[] = $v['name'];
-        $urlList[] = isset($v['url']) ? $v['url'] : "";
-	}
-
 
 	$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
 
@@ -141,21 +128,34 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 	$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
 	$template = str_replace("%app_root%", $_SESSION["CFG"]["wwwroot"], $template);
 
-	$mail = new SendGrid\Mail();
+
+    $personalization = new Personalization();
+
+    foreach ($to_emails as $k=>$v){
+    
+    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
+    
+    $email = new Email($v['name'], $k);
+    $personalization->addTo($email);
+    $personalization->addSubstitution("%firstname%", $v['name']);
+    $personalization->addSubstitution("%signupurl%", $v['url']);
+    }
+
+    $from_email = new Email("Sportsynergy", $_SESSION["CFG"]["mailer.email"]);
+    $mail->setFrom($email);
+    $html_content = new Content("text/html", $template);
+
+    $mail = new SendGrid\Mail();
 	$mail->
-	  setFrom('player.mailer@sportsynergy.net')->
-	  setFromName('Sportsynergy')->
+	  setFrom($from_email)->
 	  setSubject($subject)->
 	  setText($content->line1)->
 	  addCategory($category)->
 	  addCategory($content->clubname)->
-	  setTos($toList)->
-	  setHtml($template)->
-      addSubstitution("%signupurl%", $urlList)->
-	  addSubstitution("%firstname%", $nameList);
+	  addPersonalization($personalization)->
+      addContent($html_content);
 
 	$sendgrid->smtp->send($mail);
-	
 	
 }
 
@@ -1072,7 +1072,7 @@ function findSelfTeam($array) {
  */
 function email_players($resid, $emailType) {
     
-    if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: emailing Players about reservation id: $resid for a $emailType kind of email");
+    if (isDebugEnabled(1)) logMessage("applicationlib.email_players: emailing Players about reservation id: $resid for a $emailType kind of email");
 
     //Check to see if the reservation is for a doubles court
     $usertypequery = "SELECT usertype FROM tblReservations WHERE reservationid=$resid";

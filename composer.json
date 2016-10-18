@@ -1,5 +1,6 @@
 {
     "require": {
-        "eluceo/ical": "^0.10.1"
+        "eluceo/ical": "^0.10.1",
+        "sendgrid/sendgrid": "~5.1"
     }
 }

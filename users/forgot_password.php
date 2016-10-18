@@ -34,7 +34,7 @@
 * Classes list:
 */
 include ("../application.php");
-require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
+require '/vendor/autoload.php';
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 
 // Log user out if they are in the wrong club

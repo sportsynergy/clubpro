@@ -1,7 +1,7 @@
 <?
 
 include("../application.php");
-require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
+require 'vendor/autoload.php';
 
 date_default_timezone_set('GMT');
 

@@ -32,7 +32,8 @@
 * Classes list:
 */
 include ("../application.php");
-require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
+require 'vendor/autoload.php';
+
 $DOC_TITLE = "Player Mailer";
 require_loginwq();
 require_priv("2");

@@ -79,6 +79,7 @@ if (!isset($_SESSION["CFG"])) {
     $_SESSION["CFG"]["includedir"] = "/opt/clubpro/includes";
     $_SESSION["CFG"]["dns"] = "www.sportsynergy.net";
     $_SESSION["CFG"]["support"] = "support@sportsynergy.net";
+    $_SESSION["CFG"]["mailer.email"] = "player.mailer@sportsynergy.net";
     $_SESSION["CFG"]["logFile"] = "/var/log/sportsynergy/application.log";
 	$_SESSION["CFG"]["sendgriduser"] = "sportfx";
 	$_SESSION["CFG"]["sendgridpass"] = "put.your.password.here";

@@ -36,7 +36,7 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
-require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
+require 'vendor/autoload.php';
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 
 
