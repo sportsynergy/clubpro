@@ -73,7 +73,7 @@ if (match_referer() && isset($_POST["submitme"])) {
             $result = db_query($query);
             
             if (mysqli_num_rows($result) == 1) {
-                $boxId = mysql_result($result, 0);
+                $boxId = mysqli_result($result, 0);
             }
 
             // if not found, set it in box history (this was changed to a box league
@@ -131,7 +131,7 @@ function validate_form(&$frm, &$errors) {
                                  FROM tblReservations
                                  WHERE (((tblReservations.reservationid)='$frm[reservationid]'))";
     $reservationTypeResult = db_query($reservationTypeQuery);
-    $reservationTypeValue = mysql_result($reservationTypeResult, 0);
+    $reservationTypeValue = mysqli_result($reservationTypeResult, 0);
 
     //Check singles reservation
     

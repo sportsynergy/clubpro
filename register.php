@@ -199,7 +199,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
 
     $query = "SELECT max(clubid) FROM tblClubs";
     $result = db_query($query);
-    $maxclubid = mysql_result($result, 0);
+    $maxclubid = mysqli_result($result, 0);
     $clubid = $maxclubid + 1;
 
     //Add the stuff to the database
@@ -235,7 +235,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     // Get the site id
     $query = "SELECT max(siteid) FROM tblClubSites";
     $result = db_query($query);
-    $siteid = mysql_result($result, 0);
+    $siteid = mysqli_result($result, 0);
 
     // Add Courts
     for ($i = 1; $i <= $numberOfCourts; ++$i) {
@@ -255,7 +255,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
         if (isDebugEnabled(1)) logMessage("register.registerClub: Insert Court $i...Done");
         $query = "SELECT max(courtid) FROM tblCourts";
         $result = db_query($query);
-        $courtid = mysql_result($result, 0);
+        $courtid = mysqli_result($result, 0);
 
         // Now add Court Hours for each day of the week
         for ($j = 0; $j < 7; ++$j) {
@@ -298,7 +298,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     if (isDebugEnabled(1)) logMessage("register.registerClub: Insert Admin User...Done");
     $query = "SELECT max(userid) FROM tblUsers";
     $result = db_query($query);
-    $adminid = mysql_result($result, 0);
+    $adminid = mysqli_result($result, 0);
     $query = "INSERT INTO tblClubUser (
 	                userid, clubid, msince, roleid, memberid
 	                ) VALUES (

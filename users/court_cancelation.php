@@ -265,7 +265,7 @@ function canIcancel($courtid, $time) {
         $isGuestReservation = mysqli_num_rows($guesttyperesult);
         
         if ($isGuestReservation > 0) {
-            $guestcreator = mysql_result($guesttyperesult, 0);
+            $guestcreator = mysqli_result($guesttyperesult, 0);
 
             //if the user is an admin of the current club, let them through
             
@@ -931,7 +931,7 @@ function cancel_court(&$frm) {
 
                                 // run the query on the database
                                 $partneridresult = db_query($partneridquery);
-                                $partneridval = mysql_result($partneridresult, 0);
+                                $partneridval = mysqli_result($partneridresult, 0);
                                 $qid2 = db_query("Update tblkpUserReservations set userid=$partneridval
 							                                                                                  WHERE reservationid = $residarray[0]
 							                                                                                  AND userid=$teamresarray[1]");

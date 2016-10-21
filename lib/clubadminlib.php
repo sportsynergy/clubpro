@@ -73,7 +73,10 @@ function addToClubEvent($userid, $clubeventid) {
 					AND participants.clubeventid = $clubeventid
 					AND participants.enddate IS NULL";
     $checkResult = db_query($check);
-    $num = mysql_result($checkResult, 0);
+    
+    $numArray = mysqli_fetch_array($checkResult);
+    $num = $numArray[0];
+
     
     if ($num == 0) {
         $query = "INSERT INTO tblClubEventParticipants (

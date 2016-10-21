@@ -76,7 +76,7 @@ $box_name_result = db_query($boxuserquery);
 
 
 //Set some variables for the form
-$DOC_TITLE = "Box League History for ".mysql_result($box_name_result,0);
+$DOC_TITLE = "Box League History for ".mysqli_result($box_name_result,0);
 
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/web_ladder_history_form.php");

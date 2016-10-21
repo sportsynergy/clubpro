@@ -61,7 +61,7 @@ function adjustDoublesClubLadder($winner1userid, $winner2userid, $loser1userid, 
 						AND ladder.userid = $winner1userid
 						AND ladder.enddate IS NULL";
     $winner1result = db_query($winner1query);
-    $winner1position = mysql_result($winner1result, 0);
+    $winner1position = mysqli_result($winner1result, 0);
 
     //winner 2
     $winner2query = "SELECT ladder.ladderposition 
@@ -71,7 +71,7 @@ function adjustDoublesClubLadder($winner1userid, $winner2userid, $loser1userid, 
 						AND ladder.userid = $winner2userid
 						AND ladder.enddate IS NULL";
     $winner2result = db_query($winner2query);
-    $winner2position = mysql_result($winner2result, 0);
+    $winner2position = mysqli_result($winner2result, 0);
 
     //loser 1
     $loser1query = "SELECT ladder.ladderposition 
@@ -81,7 +81,7 @@ function adjustDoublesClubLadder($winner1userid, $winner2userid, $loser1userid, 
 						AND ladder.userid = $loser1userid
 						AND ladder.enddate IS NULL";
     $loser1result = db_query($loser1query);
-    $loser1position = mysql_result($loser1result, 0);
+    $loser1position = mysqli_result($loser1result, 0);
 
     //loser 2
     $loser2query = "SELECT ladder.ladderposition 
@@ -91,7 +91,7 @@ function adjustDoublesClubLadder($winner1userid, $winner2userid, $loser1userid, 
 						AND ladder.userid = $loser2userid
 						AND ladder.enddate IS NULL";
     $loser2result = db_query($loser2query);
-    $loser2position = mysql_result($loser2result, 0);
+    $loser2position = mysqli_result($loser2result, 0);
 
     //if the winners is already ahead of the losers don't do anything
     

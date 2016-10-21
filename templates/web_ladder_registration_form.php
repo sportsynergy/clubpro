@@ -13,7 +13,7 @@ $boxid = $_REQUEST["boxid"];
                              WHERE boxid = $boxid
                              AND siteid = ".get_siteid()." ");
 
-   $boxrankval = mysql_result($oldboxplaceresult, 0);
+   $boxrankval = mysqli_result($oldboxplaceresult, 0);
 
    //Remove Box
    $qid1 = db_query("DELETE FROM tblBoxLeagues
@@ -92,7 +92,7 @@ $boxid = $_REQUEST["boxid"];
                              WHERE boxid = $boxid");
 
 
-   $boxrankval = mysql_result($oldboxrankresult, 0);
+   $boxrankval = mysqli_result($oldboxrankresult, 0);
 
    // Get around the problem of moving up a box who is in first
    if ( $boxrankval > 1){

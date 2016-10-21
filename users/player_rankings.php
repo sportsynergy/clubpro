@@ -67,7 +67,7 @@ if (isset($_POST['submitme']) || isset($_POST['cmd']) || isset($_POST['origin'])
         $clubid = get_clubid();
         $query = "SELECT count(*) from tblClubLadder where clubid = $clubid and courttypeid = $courttypeid AND enddate IS NULL";
         $result = db_query($query);
-        $position = mysql_result($result, 0) + 1;
+        $position = mysqli_result($result, 0) + 1;
         
         if (isDebugEnabled(2)) logMessage("player_rankings: adding user $userid to club ladder for club $clubid for courttypeid $courttypeid in position $position");
         $query = "INSERT INTO tblClubLadder (
@@ -88,7 +88,7 @@ if (isset($_POST['submitme']) || isset($_POST['cmd']) || isset($_POST['origin'])
         //get current position
         $query = "SELECT ladderposition from tblClubLadder where clubid = $clubid and courttypeid = $courttypeid AND userid = $userid AND enddate IS NULL";
         $result = db_query($query);
-        $position = mysql_result($result, 0);
+        $position = mysqli_result($result, 0);
         
         if (isDebugEnabled(2)) logMessage("player_rankings: removing user $userid to club ladder for club $clubid for courttypeid $courttypeid");
         $query = "UPDATE tblClubLadder SET enddate = NOW() WHERE userid = $userid AND  courttypeid = $courttypeid AND clubid = $clubid";

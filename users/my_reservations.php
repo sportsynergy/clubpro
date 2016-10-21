@@ -416,7 +416,7 @@ function printDoublesUpcomingReservation($reservationID){
 
             if ($numrows!=2){
 
-                 if ((mysql_result($ddetailsresult,0,3))==0 && (mysql_result($ddetailsresult,2,3))==0){
+                 if ((mysqli_result($ddetailsresult,0,3))==0 && (mysqli_result($ddetailsresult,2,3))==0){
 
                     //reset the results pointer
                     $int = mysqli_data_seek($ddetailsresult,0);
@@ -476,7 +476,7 @@ function printSinglesPastReservation($reservationID){
 
 
            //If the score has not been reported
-           if ((mysql_result($courtdetailsresult,0,4))==0 && (mysql_result($courtdetailsresult,1,4))==0){
+           if ((mysqli_result($courtdetailsresult,0,4))==0 && (mysqli_result($courtdetailsresult,1,4))==0){
             $int = mysqli_data_seek($courtdetailsresult,0);
 
             while($courtdetailsrow = db_fetch_row($courtdetailsresult)) {
@@ -562,7 +562,7 @@ function printDoublesPastReservation($reservationID){
 
             if ($numrows!=2){
 
-                 if ((mysql_result($ddetailsresult,0,3))==0 && (mysql_result($ddetailsresult,2,3))==0){
+                 if ((mysqli_result($ddetailsresult,0,3))==0 && (mysqli_result($ddetailsresult,2,3))==0){
 
                     //reset the results pointer
                     $int = mysqli_data_seek($ddetailsresult,0);
@@ -594,7 +594,7 @@ function isDoublesPartialReservation($resId){
 	
 	$partialQuery = "SELECT count(*) FROM tblkpUserReservations where reservationid = $resId and usertype <> 0";
 	$partialResult  = db_query($partialQuery);
-	$count = mysql_result($partialResult,0);
+	$count = mysqli_result($partialResult,0);
 	
 	if($count<2){
 		return true;
@@ -613,7 +613,7 @@ function isDoublesPartialReservation($resId){
  	
  	$partialQuery = "SELECT count(*) FROM tblkpUserReservations where reservationid = $resId and userid <> 0";
  	$partialResult  = db_query($partialQuery);
-	$count = mysql_result($partialResult,0);
+	$count = mysqli_result($partialResult,0);
 	
 	if($count<2){
 		return true;

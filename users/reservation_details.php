@@ -129,7 +129,7 @@ function email_players_about_lesson($resid) {
 	                 AND reservations.reservationid = $resid
 					 AND rankings.usertype=0";
     $rresult = db_query($rquery);
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var = new Object;
 
     /* email the user with the new account information    */

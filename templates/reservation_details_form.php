@@ -8,7 +8,7 @@
 
    // run the query on the database
    $rankdevresult = db_query($rankdevquery);
-   $rankdev = mysql_result($rankdevresult, 0)
+   $rankdev = mysqli_result($rankdevresult, 0)
 
 ?>
 

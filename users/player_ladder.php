@@ -79,7 +79,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         				AND courttypeid = $courttypeid 
         				AND enddate IS NULL";
         $checkResult = db_query($check);
-        $exists = mysql_result($checkResult, 0);
+        $exists = mysqli_result($checkResult, 0);
         
         if ($exists == 0) {
             $position = $frm['placement'];
@@ -109,7 +109,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         //get current position
         $query = "SELECT ladderposition from tblClubLadder where clubid = $clubid and courttypeid = $courttypeid AND userid = $userid AND enddate IS NULL";
         $result = db_query($query);
-        $position = mysql_result($result, 0);
+        $position = mysqli_result($result, 0);
         
         if (isDebugEnabled(1)) logMessage("player_ladder: removing user $userid to club ladder for club $clubid for courttypeid $courttypeid");
         $query = "UPDATE tblClubLadder SET enddate = NOW() WHERE userid = $userid AND  courttypeid = $courttypeid AND clubid = $clubid";

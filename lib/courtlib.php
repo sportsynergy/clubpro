@@ -78,7 +78,8 @@ function getCourtTypeName($courtTypeId) {
 				FROM tblCourtType courttype
 				WHERE courttype.courttypeid = $courtTypeId";
     $result = db_query($query);
-    return mysql_result($result, 0);
+    $resultArray = mysqli_fetch_array($result);
+    return $resultArray[0];
 }
 
 /******************************************************************************
@@ -122,8 +123,11 @@ function printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $current
     }
 
     //If already displaying first court dont't print the link
-    $veryFirstCourt = mysql_result($totalCourtResult, 0);
-    $firstCourtDisplayed = mysql_result($currentCourtResult, 0);
+    $veryFirstCourtArray = mysqli_fetch_array($totalCourtResult);
+    $veryFirstCourt = $veryFirstCourtArray[0];
+
+    $firstCourtDisplayedArray = mysqli_fetch_array($currentCourtResult);
+    $firstCourtDisplayed = $firstCourtDisplayedArray[0];
     
     if ($veryFirstCourt == $firstCourtDisplayed) {
         return;
@@ -153,9 +157,9 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
     }
 
     //If already displaying last court dont't print the link
-    $veryLastCourt = mysql_result($totalCourtResult, $totalCourts - 1);
-    $firstCourtDisplayed = mysql_result($totalCourtResult, 0);
-    $lastCourtDisplayed = mysql_result($currentCourtResult, $totalCurrentCourts - 1);
+    $veryLastCourt = mysqli_result($totalCourtResult, $totalCourts - 1);
+    $firstCourtDisplayed = mysqli_result($totalCourtResult, 0);
+    $lastCourtDisplayed = mysqli_result($currentCourtResult, $totalCurrentCourts - 1);
 
     // The courts will be in numerical order but not necessarily sequential.  If the
     // last court is within the courts that are displayed, then there is no need to
@@ -176,17 +180,18 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
     $nextCourtWindowResult = db_query($nextCourtWindow);
     $numberInNextWindow = mysqli_num_rows($nextCourtWindowResult);
 
-    //If the next window does not contain a full 6 courts, set the setCourtId to
-    // 6 back from th elast one.
+    //If the next window does not contain a full 6 courts, set the setCourtId to 6 back from the last one.
 
-    
     if ($numberInNextWindow < 6) {
-        $startCourtId = mysql_result($currentCourtResult, $numberInNextWindow);
+        
+        $startCourtIdArray = mysqli_result($currentCourtResult, $numberInNextWindow);
     }
 
     //Otherwise set this to the first
     else {
-        $startCourtId = mysql_result($nextCourtWindowResult, 0);
+        
+        $startCourtIdArray = mysqli_fetch_array($nextCourtWindowResult);
+        $startCourtId = $startCourtIdArray[0];
     }
 
     //Print the Form

@@ -248,7 +248,7 @@ if ($newReservation) {
 
      $hoursquery = "SELECT duration from tblCourtHours WHERE courtid='$courtid' AND dayid ='$currDOW' ";
      $hoursresult = db_query($hoursquery);
-     $reservation_duration = mysql_result($hoursresult,0);
+     $reservation_duration = mysqli_result($hoursresult,0);
 
     include ($_SESSION["CFG"]["templatedir"] . "/reservation_form.php");
 } elseif ($usertype == 0 && isSinglesReservationNeedPlayers($time, $courtid)) {

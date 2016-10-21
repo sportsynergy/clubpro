@@ -510,7 +510,7 @@ function addToCourtEvent($userid, $reservationid) {
 					AND participants.reservationid = $reservationid
 					AND participants.enddate IS NULL";
     $checkResult = db_query($check);
-    $num = mysql_result($checkResult, 0);
+    $num = mysqli_result($checkResult, 0);
     
     if ($num == 0) {
         $query = "INSERT INTO tblCourtEventParticipants (
@@ -579,7 +579,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
 				AND matchtype.id = reservations.matchtype
 				AND events.eventid = reservations.eventid";
     $timeResult = db_query($timeQuery);
-    $timeObject = mysql_fetch_object($timeResult);
+    $timeObject = mysqli_fetch_object($timeResult);
     $var = new Object;
     $var->courtname = $timeObject->courtname;
     $var->time = gmdate("l F j g:i a", $timeObject->time);
@@ -675,7 +675,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
 function isReservationLocked($time, $courtid) {
     $query = "SELECT locked FROM tblReservations WHERE courtid = $courtid AND time = $time AND enddate IS NULL";
     $result = db_query($query);
-    return mysql_result($result, 0) == "y" ? true : false;
+    return mysqli_result($result, 0) == "y" ? true : false;
 }
 
 /**

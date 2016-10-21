@@ -335,7 +335,7 @@ else{
 
 
               $teamRankResult = db_query($teamRankQuery);
-              $teamRankValue = mysql_result($teamRankResult,0);
+              $teamRankValue = mysqli_result($teamRankResult,0);
 
 
                  echo "<font class=normal><a href=\"$wwwroot/users/court_reservation.php?time=$playerOneArray[time]&courtid=$playerOneArray[courtid]&userid=$lonelyuserid\">".gmdate(" l F j h:i A",$playerOneArray['time'])."</a> $lonelyuser needs a partner to play against $teamnamesrow[0] $teamnamesrow[1] and ";
@@ -364,7 +364,7 @@ else{
 
 
               $teamRankResult = db_query($teamRankQuery);
-              $teamRankValue = mysql_result($teamRankResult,0);
+              $teamRankValue = mysqli_result($teamRankResult,0);
                   
                    echo "<font class=normal><a href=\"$wwwroot/users/court_reservation.php?time=$playerTwoArray[time]&courtid=$playerTwoArray[courtid]&userid=$playerTwoArray[userid]\">".gmdate(" l F j h:i A",$playerTwoArray['time'])."</a> $teamnamesrow[0] $teamnamesrow[1] and ";
                   //Get the next player

@@ -131,7 +131,7 @@ $userid = $_REQUEST["userid"];
                              WHERE boxid = $boxid
                              AND userid = $userid ");
 
-   $boxplaceval = mysql_result($oldboxplaceresult, 0);
+   $boxplaceval = mysqli_result($oldboxplaceresult, 0);
 
 
    //Remove Buddy
@@ -176,7 +176,7 @@ $userid = $_REQUEST["userid"];
                              AND userid = $userid ");
 
 
-   $boxplaceval = mysql_result($oldboxplaceresult, 0);
+   $boxplaceval = mysqli_result($oldboxplaceresult, 0);
 
    // Get around the problem of moving up a play who is in first
    if ( $boxplaceval > 1){

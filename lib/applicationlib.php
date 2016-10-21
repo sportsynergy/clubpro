@@ -29,6 +29,13 @@
 /*
 Gets the possible outcomes for a match
 */
+
+function mysqli_result($res, $row, $field=0) { 
+    $res->data_seek($row); 
+    $datarow = $res->fetch_array(); 
+    return $datarow[$field]; 
+} 
+
 function getMatchScores($reservationid){
 
     $query = "SELECT gameswon,gameslost 
@@ -1107,7 +1114,7 @@ function email_players($resid, $emailType) {
 		                 AND reservations.reservationid = $resid
 						 AND rankings.usertype=0";
         $rresult = db_query($rquery);
-        $robj = mysql_fetch_object($rresult);
+        $robj = mysqli_fetch_object($rresult);
         $var = new Object;
         
         if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: courtid " . $robj->courtid);
@@ -1267,7 +1274,7 @@ function email_players($resid, $emailType) {
 					
 					
         $rresult = db_query($rquery);
-        $robj = mysql_fetch_object($rresult);
+        $robj = mysqli_fetch_object($rresult);
         $extraPlayerQuery = "SELECT reservationdetails.userid
 		                        FROM tblReservations reservations, tblkpUserReservations reservationdetails
 		                        WHERE reservations.reservationid = reservationdetails.reservationid
@@ -1298,7 +1305,7 @@ function email_players($resid, $emailType) {
         $var->teamid = $robj->teamid;
 
         //Get the next result
-        $robj = mysql_fetch_object($rresult);
+        $robj = mysqli_fetch_object($rresult);
         $player2 = $robj->userid;
         $var->firstname2 = $robj->firstname;
         $var->lastname2 = $robj->lastname;
@@ -1338,7 +1345,7 @@ function email_players($resid, $emailType) {
 					AND matchtype.id = reservations.matchtype";
             
 			$rresult = db_query($rquery);
-            $robj = mysql_fetch_object($rresult);
+            $robj = mysqli_fetch_object($rresult);
             $var->courtname = $robj->courtname;
             $var->courtid = $robj->courtid;
             $var->matchtype = $robj->name;
@@ -1358,7 +1365,7 @@ function email_players($resid, $emailType) {
                            WHERE tblUsers.userid=$var->userid";
 
             $partnerResult = db_query($partnerQuery);
-            $partnerobj = mysql_fetch_object($partnerResult);
+            $partnerobj = mysqli_fetch_object($partnerResult);
             $var->single1 = $partnerobj->firstname . " " . $partnerobj->lastname;
             $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $var->userid;
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/threePlayersWanted.php", $var);
@@ -1377,7 +1384,7 @@ function email_players($resid, $emailType) {
 					AND matchtype.id = reservations.matchtype";
 					
             $rresult = db_query($rquery);
-            $robj = mysql_fetch_object($rresult);
+            $robj = mysqli_fetch_object($rresult);
             $var->courtname = $robj->courtname;
             $var->matchtype = $robj->name;
             $var->time = gmdate("l F j g:i a", $robj->time);
@@ -1388,7 +1395,7 @@ function email_players($resid, $emailType) {
                            FROM tblUsers
                            WHERE ((tblUsers.userid)=$singlePlayerOne) ";
             $playerOneResult = db_query($playerOneQuery);
-            $playerOneobj = mysql_fetch_object($playerOneResult);
+            $playerOneobj = mysqli_fetch_object($playerOneResult);
             $var->single1 = $playerOneobj->firstname . " " . $playerOneobj->lastname;
 
             //Single Player Two
@@ -1398,7 +1405,7 @@ function email_players($resid, $emailType) {
                            FROM tblUsers
                            WHERE ((tblUsers.userid)=$singlePlayerTwo) ";
             $playerTwoResult = db_query($playerTwoQuery);
-            $playerTwoobj = mysql_fetch_object($playerTwoResult);
+            $playerTwoobj = mysqli_fetch_object($playerTwoResult);
             $var->single2 = $playerTwoobj->firstname . " " . $playerTwoobj->lastname;
             $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $singlePlayerOne;
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/twoPlayersWanted.php", $var);
@@ -1414,7 +1421,7 @@ function email_players($resid, $emailType) {
 			                      FROM tblUsers WHERE tblUsers.userid=$extraPlayerUserId";
            
  			$partnerResult = db_query($partnerQuery);
-            $partnerobj = mysql_fetch_object($partnerResult);
+            $partnerobj = mysqli_fetch_object($partnerResult);
             $var->partner = $partnerobj->firstname . " " . $partnerobj->lastname;
             $rawurl = "http://" . $var->dns . "" . $var->wwwroot . "/users/court_reservation.php?time=" . $var->timestamp . "&courtid=" . $var->courtid . "&userid=" . $extraPlayerUserId;
             $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/partner_wanted.php", $var);
@@ -1585,7 +1592,7 @@ function email_boxmembers($resid, $boxid) {
     $rresult = db_query($rquery);
 
     //Get the next result
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
     $var = new Object;
@@ -1656,7 +1663,7 @@ function confirm_singles($resid, $isNewReservation) {
 					   AND users.userid = clubuser.userid
 			           AND clubuser.clubid=" . get_clubid();
     $rresult = db_query($rquery);
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
 
     $matchtype = $robj->matchtype;
     if (isDebugEnabled(1)) logMessage("applicationlib.confirm_singles: sending out emails for a singles reservation matchtype: $matchtype");
@@ -1679,7 +1686,7 @@ function confirm_singles($resid, $isNewReservation) {
     $var->fullname1 = $robj->firstname . " " . $robj->lastname;
 
     //Get the second player
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->firstname2 = $robj->firstname;
     $var->lastname2 = $robj->lastname;
     $var->fullname2 = $robj->firstname . " " . $robj->lastname;
@@ -1746,7 +1753,7 @@ function cancel_singles($resid) {
 			   AND users.userid = clubuser.userid
 			   AND clubuser.clubid=" . get_clubid();
     $rresult = db_query($rquery);
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
     $var = new Object;
@@ -1765,7 +1772,7 @@ function cancel_singles($resid) {
     $var->fullname1 = $robj->firstname . " " . $robj->lastname;
 
     //Get the second player
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->firstname2 = $robj->firstname;
     $var->lastname2 = $robj->lastname;
     $var->fullname2 = $robj->firstname . " " . $robj->lastname;
@@ -1824,7 +1831,7 @@ function confirm_doubles($resid, $isNewReservation) {
 				AND reservations.courtid = courts.courtid
 				AND matchtype.id = reservations.matchtype";
     $timeResult = db_query($timeQuery);
-    $timeObject = mysql_fetch_object($timeResult);
+    $timeObject = mysqli_fetch_object($timeResult);
     $var->courtname = $timeObject->courtname;
     $var->matchtype = $timeObject->name;
     $var->time = gmdate("l F j g:i a", $timeObject->time);
@@ -1838,7 +1845,7 @@ function confirm_doubles($resid, $isNewReservation) {
 	            AND reservationdetails.reservationid=$resid
 				AND reservationdetails.usertype = 1";
     $playerResult = db_query($playerQuery);
-    $playerObject = mysql_fetch_object($playerResult);
+    $playerObject = mysqli_fetch_object($playerResult);
     $numofrows = mysqli_num_rows($playerResult);
     $var->dns = $_SESSION["CFG"]["dns"];
     $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
@@ -1850,19 +1857,19 @@ function confirm_doubles($resid, $isNewReservation) {
     $var->fullname1 = $playerObject->firstname . " " . $playerObject->lastname;
 
     //Get the second player of team 1
-    $playerObject = mysql_fetch_object($playerResult);
+    $playerObject = mysqli_fetch_object($playerResult);
     $var->firstname2 = $playerObject->firstname;
     $var->lastname2 = $playerObject->lastname;
     $var->fullname2 = $playerObject->firstname . " " . $playerObject->lastname;
 
     //Get the first player of team 2
-    $playerObject = mysql_fetch_object($playerResult);
+    $playerObject = mysqli_fetch_object($playerResult);
     $var->firstname3 = $playerObject->firstname;
     $var->lastname3 = $playerObject->lastname;
     $var->fullname3 = $playerObject->firstname . " " . $playerObject->lastname;
 
     //Get the second player of team 2
-    $playerObject = mysql_fetch_object($playerResult);
+    $playerObject = mysqli_fetch_object($playerResult);
     $var->firstname4 = $playerObject->firstname;
     $var->lastname4 = $playerObject->lastname;
     $var->fullname4 = $playerObject->firstname . " " . $playerObject->lastname;
@@ -1886,7 +1893,7 @@ function confirm_doubles($resid, $isNewReservation) {
 		                        AND reservationdetails.reservationid=$resid
 		                        AND reservationdetails.usertype=0";
     $extraPlayerResult = db_query($extraPlayerQuery);
-    $extraPlayerobj = mysql_fetch_object($extraPlayerResult);
+    $extraPlayerobj = mysqli_fetch_object($extraPlayerResult);
 
     //Prepare and send emails to single player where there is just one player in the whole reservation
     
@@ -1922,7 +1929,7 @@ function confirm_doubles($resid, $isNewReservation) {
 		$var->fullname1 = getFullNameForUserId($extraPlayerobj->userid);
 
         //Get the next player
-        $extraPlayerobj = mysql_fetch_object($extraPlayerResult);
+        $extraPlayerobj = mysqli_fetch_object($extraPlayerResult);
         $var->fullname2 = getFullNameForUserId($extraPlayerobj->userid);
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_doubles_for_players_looking.php", $var);
 
@@ -1938,7 +1945,7 @@ function confirm_doubles($resid, $isNewReservation) {
         );
 
         //Get next player
-        $extraPlayerobj = mysql_fetch_object($extraPlayerResult);
+        $extraPlayerobj = mysqli_fetch_object($extraPlayerResult);
         $to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
         $to_emails[$to_email] = array(
             'name' => $extraPlayerobj->firstname
@@ -2000,7 +2007,7 @@ function confirm_doubles($resid, $isNewReservation) {
     
     	if (mysqli_num_rows($playerResult) > 0) mysqli_data_seek($playerResult, 0);
     	$to_emails = array();
-    	while ($playerObject = mysql_fetch_object($playerResult)) {
+    	while ($playerObject = mysqli_fetch_object($playerResult)) {
         
         	if (isDebugEnabled(1)) logMessage($emailbody);
         	$to_email = "$playerObject->firstname $playerObject->lastname <$playerObject->email>";
@@ -2037,7 +2044,7 @@ function cancel_doubles($resid) {
 	            AND reservationdetails.usertype=1
 	            AND rankings.usertype=1";
     $rresult = db_query($rquery);
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
     $var = new Object;
@@ -2056,19 +2063,19 @@ function cancel_doubles($resid) {
     $var->fullname1 = $robj->firstname . " " . $robj->lastname;
 
     //Get the second player of team 1
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->firstname2 = $robj->firstname;
     $var->lastname2 = $robj->lastname;
     $var->fullname2 = $robj->firstname . " " . $robj->lastname;
 
     //Get the first player of team 2
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->firstname3 = $robj->firstname;
     $var->lastname3 = $robj->lastname;
     $var->fullname3 = $robj->firstname . " " . $robj->lastname;
 
     //Get the second player of team 2
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->firstname4 = $robj->firstname;
     $var->lastname4 = $robj->lastname;
     $var->fullname4 = $robj->firstname . " " . $robj->lastname;
@@ -2120,7 +2127,7 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
 				WHERE users.userid = $wUserid
 				OR users.userid = $lUserid";
     $rresult = db_query($rquery);
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
     $var = new Object;
@@ -2200,7 +2207,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	           AND clubuser.clubid=" . get_clubid() . "
 	           ORDER BY reservationdetails.outcome DESC";
     $rresult = db_query($rquery);
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
     $var = new Object;
@@ -2210,7 +2217,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
     } else {
         $winnersex = "her";
     }
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     
     if ($robj->gender == 1) {
         $losersex = "he";
@@ -2219,7 +2226,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
     }
 
     mysqli_data_seek($rresult, 0);
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     
     if ($score == 0) {
         $rand_key = array_rand($bad,1);
@@ -2253,7 +2260,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $var->winnerfull = $robj->firstname . " " . $robj->lastname;
 
     //Get the second player
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->loserfname = $robj->firstname;
     $var->loserlname = $robj->lastname;
     $var->loserfull = $robj->firstname . " " . $robj->lastname;
@@ -2296,12 +2303,12 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
 	                    FROM tblUsers
 	                    WHERE (((tblUsers.userid)=$wid))";
     $wresult = db_query($winnernamequery);
-    $wobj = mysql_fetch_object($wresult);
+    $wobj = mysqli_fetch_object($wresult);
     $losernamequery = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.email
 	                    FROM tblUsers
 	                    WHERE (((tblUsers.userid)=$lid))";
     $lresult = db_query($losernamequery);
-    $lobj = mysql_fetch_object($lresult);
+    $lobj = mysqli_fetch_object($lresult);
 
     /* email the user with the new account information    */
     $var = new Object;
@@ -2367,7 +2374,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
 				AND (teamdetails.teamid = $wTeamid
 				OR teamdetails.teamid = $lTeamid)";
     $rresult = db_query($rquery);
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
     $var = new Object;
@@ -2395,7 +2402,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
     $var->winner = getFullNamesForTeamId($wTeamid);
 
     //Get the next One
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->loser = getFullNamesForTeamId($lTeamid);
     $var->loserscore = $score;
     $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/report_scores_doubles_simple.php", $var);
@@ -2449,7 +2456,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	            AND clubuser.clubid=" . get_clubid() . "
 	            ORDER BY reservationdetails.outcome DESC";
     $rresult = db_query($rquery);
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
 
 	// A little defense for a problem where teams don't have rankings
 	if( mysqli_num_rows($rresult) < 4 ){
@@ -2497,19 +2504,19 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $var->fullname1 = $robj->firstname . " " . $robj->lastname;
 
     //Get the second player of team 1
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->firstname2 = $robj->firstname;
     $var->lastname2 = $robj->lastname;
     $var->fullname2 = $robj->firstname . " " . $robj->lastname;
 
     //Get the first player of team 2
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->firstname3 = $robj->firstname;
     $var->lastname3 = $robj->lastname;
     $var->fullname3 = $robj->firstname . " " . $robj->lastname;
 
     //Get the second player of team 2
-    $robj = mysql_fetch_object($rresult);
+    $robj = mysqli_fetch_object($rresult);
     $var->firstname4 = $robj->firstname;
     $var->lastname4 = $robj->lastname;
     $var->fullname4 = $robj->firstname . " " . $robj->lastname;
@@ -5035,10 +5042,9 @@ function getDurationToday($time, $courtid) {
 	                   AND hours.dayid=$dow";
 
 	$result = db_query($query);
-	$duration = mysql_result($result, 0);
+    $resultArray = mysqli_fetch_array($result);
 
-
-	return $duration;
+	return $resultArray[0];
 
 }
 
@@ -5203,7 +5209,9 @@ function getCourtDuration($courtid, $time, $dow){
 				AND dayid = $dow";
 
 	$result = db_query($query);
-	return mysql_result($result,0);
+    $resultArray = mysqli_fetch_array($result);
+	
+    return $resultArray[0];
 }
 
 /**
@@ -5476,7 +5484,9 @@ function isDoublesReservation($reservationID){
 				WHERE reservations.reservationid = $reservationID";
 
 	$qid = db_query($query);
-	$usertype = mysql_result($qid, 0);
+	$usertypeArray = mysqli_fetch_array($qid);
+    $usertype = $usertypeArray[0];
+
 	return $usertype==1 ? true: false;
 
 
@@ -5775,8 +5785,10 @@ function getFullNamesForTeamId($teamId){
 					WHERE teamdetails.teamid =  $teamId";
 		
 	$teamResult = db_query($teamsQuery);
-	$playerOne = mysql_result($teamResult, 0);
-	$playerTwo = mysql_result($teamResult, 1);
+	$playerOneArray = mysqli_fetch_array($teamResult);
+    $playerOne = $playerOneArray[0];
+	$playerTwoArray = mysqli_fetch_array($teamResult, 1);
+    $playerTwo = $playerTwoArray[0];
 
 	return getFullNameForUserId($playerOne)." and ".getFullNameForUserId($playerTwo);
 
@@ -5878,7 +5890,9 @@ function determineLastLoginText($theTimeTheyLastLoggedIn, $clubid){
 
 	$clubquery = "SELECT timezone from tblClubs WHERE clubid=$clubid";
 	$clubresult = db_query($clubquery);
-	$timezoneval = mysql_result($clubresult,0);
+	$timezonevalArray = mysqli_fetch_array($clubresult);
+    $timezoneval = $timezonevalArray[0];
+
 	$tzdelta = $timezoneval*3600;
 	$theTimeItIsRightNow =   mktime()+$tzdelta;
 
