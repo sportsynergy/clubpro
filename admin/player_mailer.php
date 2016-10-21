@@ -45,8 +45,8 @@ if (match_referer() && isset($_POST['submitme'])) {
     if (empty($errormsg)) {
         $emailResult = send_message($frm['subject'], $frm['message'], get_siteid() , $frm['who'], $frm['sport'], $frm['ranking']);
         
-        if (mysql_num_rows($emailResult) > 0) {
-            $noticemsg = " Message sent to " . mysql_num_rows($emailResult) . " people";
+        if (mysqli_num_rows($emailResult) > 0) {
+            $noticemsg = " Message sent to " . mysqli_num_rows($emailResult) . " people";
             unset($frm);
         } else {
             $errormsg = "Hey, nobody was found at your club like this";

@@ -124,7 +124,7 @@ print "var thisyear = new Array(13);
                       //Get Club Players
                  $clubsDropDown = get_allsites_dropdown();
 
-                 while($row = mysql_fetch_array($clubsDropDown)) {
+                 while($row = mysqli_fetch_array($clubsDropDown)) {
                   echo "<option value=\"$row[siteid]\">$row[sitename] ($row[clubname])</option>\n";
                  }
                  ?>

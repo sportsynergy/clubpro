@@ -301,7 +301,7 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid) {
 						AND ladder.userid = $winneruserid
 						AND ladder.enddate IS NULL";
     $winnerresult = db_query($winnerquery);
-    $winnerarray = mysql_fetch_array($winnerresult);
+    $winnerarray = mysqli_fetch_array($winnerresult);
     $winnerposition = $winnerarray['ladderposition'];
     $winnergoing = $winnerarray['going'];
     $var->winneroldspot = $winnerposition;
@@ -313,7 +313,7 @@ function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid) {
 						AND ladder.userid = $loseruserid
 						AND ladder.enddate IS NULL";
     $loserresult = db_query($loserquery);
-    $loserarray = mysql_fetch_array($loserresult);
+    $loserarray = mysqli_fetch_array($loserresult);
     $loserposition = $loserarray['ladderposition'];
     $losergoing = $loserarray['going'];
     $var->loseroldspot = $loserposition;
@@ -465,7 +465,7 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid) {
 				AND ladder.userid = $userid
 				AND ladder.enddate IS NULL";
     $result = db_query($query);
-    $movingUpArray = mysql_fetch_array($result);
+    $movingUpArray = mysqli_fetch_array($result);
     
     if ($movingUpArray['ladderposition'] == 1) {
         if (isDebugEnabled(2)) logMessage("ladderlib: moveUpOneInClubLadder: already on top. exiting...");
@@ -485,7 +485,7 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid) {
 				AND ladder.ladderposition = $oneup
 				AND ladder.enddate IS NULL";
     $result = db_query($query);
-    $movingDownArray = mysql_fetch_array($result);
+    $movingDownArray = mysqli_fetch_array($result);
     
     if (isDebugEnabled(2)) logMessage("ladderlib: moveUpOneInClubLadder:  userid " . $movingDownArray['userid'] . " is moving down");
 
@@ -764,7 +764,7 @@ function getDoublesChallengeMatches($siteid, $courttypeid, $limit){
 	
 	$array = array();
 	
-	while($ladder = mysql_fetch_array($result)){
+	while($ladder = mysqli_fetch_array($result)){
 		
 		//get users for team id
 		
@@ -841,7 +841,7 @@ function loadLadderMatch($challengeMatchId){
 	//print $curresidquery;
 	$result = db_query($curresidquery);
 	
-	$ladder = mysql_fetch_array($result);
+	$ladder = mysqli_fetch_array($result);
 		
 	$array = array('id' => $ladder['id'], 
 				'score' => $ladder['score'], 
@@ -883,7 +883,7 @@ function loadDoublesLadderMatch($challengeMatchId){
 	//print $curresidquery;
 	$result = db_query($curresidquery);
 	
-	$ladder = mysql_fetch_array($result);
+	$ladder = mysqli_fetch_array($result);
 	
 	//get users for team id
 	$challengerarray = getFullnameForTeamPlayers($ladder['challengerid']);

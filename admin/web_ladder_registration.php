@@ -96,7 +96,7 @@ function insert_box(&$frm) {
                           FROM tblBoxLeagues
                           WHERE siteid=" . get_siteid() . "";
     $useridresult = db_query($useridquery);
-    $numberofrows = mysql_num_rows($useridresult);
+    $numberofrows = mysqli_num_rows($useridresult);
     $lastboxrank = $numberofrows + 1;
     $query = "INSERT INTO tblBoxLeagues (
                 boxname, siteid, courttypeid, boxrank, enddate, enddatestamp

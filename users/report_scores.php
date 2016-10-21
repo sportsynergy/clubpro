@@ -72,7 +72,7 @@ if (match_referer() && isset($_POST["submitme"])) {
 									WHERE history.reservationid = $frm[reservationid]";
             $result = db_query($query);
             
-            if (mysql_num_rows($result) == 1) {
+            if (mysqli_num_rows($result) == 1) {
                 $boxId = mysql_result($result, 0);
             }
 

@@ -510,7 +510,7 @@ function update_message_clubprefs(&$frm) {
 
         //Check to see if club has a message
         $qid = db_query("SELECT id, message, enable FROM tblMessages WHERE siteid = " . get_siteid() . " AND messagetypeid = 1 order by id");
-        $numrows = mysql_num_rows($qid);
+        $numrows = mysqli_num_rows($qid);
 	    $messagearray = db_fetch_array($qid);
         
         if ($numrows == 0) {

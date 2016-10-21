@@ -84,11 +84,11 @@ function db_connect($dbhost, $dbname, $dbuser, $dbpass) {
 
 	global $DB_DIE_ON_FAIL, $DB_DEBUG;
 
-	if (!$dbh = mysql_connect($dbhost, $dbuser, $dbpass)) {
+	if (!$dbh = mysqli_connect($dbhost, $dbuser, $dbpass)) {
 
 		if ($DB_DEBUG) {
 			echo "<h2>Can't connect to $dbhost as $dbuser</h2>";
-			echo "<p><b>MySQL Error</b>: ", mysql_error();
+			echo "<p><b>MySQL Error</b>: ", mysqli_connect_error();
 		} else {
 			echo "<h2>Database error encountered</h2>";
 		}
@@ -99,11 +99,11 @@ function db_connect($dbhost, $dbname, $dbuser, $dbpass) {
 		}
 	}
 
-	if (!mysql_select_db($dbname)) {
+	if (!mysqli_select_db($dbh,$dbname)) {
 
 		if ($DB_DEBUG) {
 			echo "<h2>Can't select database $dbname</h2>";
-			echo "<p><b>MySQL Error</b>: ", mysql_error();
+			echo "<p><b>MySQL Error</b>: ", mysqli_error($dbh);
 		} else {
 			echo "<h2>Database error encountered</h2>";
 		}
@@ -139,7 +139,7 @@ function db_disconnect() {
  */
 function db_query($query, $debug = false, $die_on_debug = true, $silent = false) {
 
-	global $DB_DIE_ON_FAIL, $DB_DEBUG;
+	global $DB_DIE_ON_FAIL, $DB_DEBUG, $dbh;
 
 	if ($debug) {
 		echo "<pre>" . htmlspecialchars($query) . "</pre>";
@@ -147,14 +147,14 @@ function db_query($query, $debug = false, $die_on_debug = true, $silent = false)
 			die;
 		}
 	}
-	$qid = mysql_query($query);
+	$qid = mysqli_query($dbh, $query);
 
 	if (!$qid && !$silent) {
 
 		if ($DB_DEBUG) {
 			echo "<h2>Can't execute query</h2>";
 			echo "<pre>" . htmlspecialchars($query) . "</pre>";
-			echo "<p><b>MySQL Error</b>: ", mysql_error();
+			echo "<p><b>MySQL Error</b>: ", mysqli_error($dbh);
 		} else {
 			echo "<h2>Database error encountered</h2>";
 		}
@@ -174,7 +174,7 @@ function db_query($query, $debug = false, $die_on_debug = true, $silent = false)
  * @param unknown_type $qid
  */
 function db_fetch_array($qid) {
-	return mysql_fetch_array($qid);
+	return mysqli_fetch_array($qid);
 }
 
 /**
@@ -184,7 +184,7 @@ function db_fetch_array($qid) {
  * @param unknown_type $qid
  */
 function db_fetch_row($qid) {
-	return mysql_fetch_row($qid);
+	return mysqli_fetch_row($qid);
 }
 
 /**
@@ -194,7 +194,7 @@ function db_fetch_row($qid) {
  * @param unknown_type $qid
  */
 function db_fetch_object($qid) {
-	return mysql_fetch_object($qid);
+	return mysqli_fetch_object($qid);
 }
 
 /**
@@ -204,7 +204,7 @@ function db_fetch_object($qid) {
  * @param unknown_type $qid
  */
 function db_num_rows($qid) {
-	return mysql_num_rows($qid);
+	return mysqli_num_rows($qid);
 }
 
 /**

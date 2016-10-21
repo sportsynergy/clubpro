@@ -28,7 +28,7 @@
 
 					$total_points = 0;
 						
-					 while($row = mysql_fetch_array($result) ) {
+					 while($row = mysqli_fetch_array($result) ) {
 
 						//get the other player
 						$query = "SELECT users.userid, users.firstname, users.lastname, details.outcome, reservations.time
@@ -41,7 +41,7 @@
 						// run the query on the database
 						$history_result = db_query($query);
 						
-						$history_row = mysql_fetch_array($history_result);
+						$history_row = mysqli_fetch_array($history_result);
 						$time  = gmdate("l F j",$history_row['time']) ;
 						$loser_score = $history_row['outcome'];
 							
@@ -54,7 +54,7 @@
 								$opponent = $history_row['firstname']." ".$history_row['lastname'];
 							}
 						
-						$history_row = mysql_fetch_array($history_result);
+						$history_row = mysqli_fetch_array($history_result);
 						
 							if( $history_row['userid']==$userid ){
 								$outcome_indicator = "Won";

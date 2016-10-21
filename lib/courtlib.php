@@ -67,7 +67,7 @@ function getCourtTypeIdForCourtId($courtId) {
                                             WHERE courts.courttypeid = courttype.courttypeid
                                             AND courts.courtid ='$courtId'";
     $courttyperesult = db_query($courttypequery);
-    $courttypearray = mysql_fetch_array($courttyperesult);
+    $courttypearray = mysqli_fetch_array($courttyperesult);
     return $courttypearray[0];
 }
 /**
@@ -132,7 +132,7 @@ function printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $current
     //Get 6 less than the first court or the very first court, which ever is less
     $nextCourtWindow = "SELECT court.courtid FROM tblCourts court WHERE court.siteid= $siteid AND court.courtid < $firstCourtDisplayed AND court.enable = 1 ORDER BY court.courtid DESC LIMIT 6";
     $nextCourtWindowResult = db_query($nextCourtWindow);
-    while ($courtidArray = mysql_fetch_array($nextCourtWindowResult)) {
+    while ($courtidArray = mysqli_fetch_array($nextCourtWindowResult)) {
         $startCourtId = $courtidArray[0];
     }
 
@@ -174,7 +174,7 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
 							AND court.courtid > $lastCourtDisplayed 
 							ORDER BY court.courtid ASC LIMIT 6";
     $nextCourtWindowResult = db_query($nextCourtWindow);
-    $numberInNextWindow = mysql_num_rows($nextCourtWindowResult);
+    $numberInNextWindow = mysqli_num_rows($nextCourtWindowResult);
 
     //If the next window does not contain a full 6 courts, set the setCourtId to
     // 6 back from th elast one.
@@ -212,7 +212,7 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
               				FROM tblEvents events
               				WHERE events.eventid = $eventid ";
     $eventresult = db_query($eventquery);
-    $eventarray = mysql_fetch_array($eventresult, 0);
+    $eventarray = mysqli_fetch_array($eventresult, 0);
 
     // if this is unlocked and needs players and is !ispast set the color to seeking match, otherwise event
     // $eventclass = $eventarray['playerlimit'] > 0 && !$ispast && $locked=="n" ? "seekingmatchcl$clubid" : "eventcourt";
@@ -225,7 +225,7 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
              		AND participant.enddate IS NULL
              		AND participant.userid = user.userid";
     $result = db_query($query);
-    $spotsleft = $eventarray['playerlimit'] - mysql_num_rows($result);
+    $spotsleft = $eventarray['playerlimit'] - mysqli_num_rows($result);
     $eventid = $eventarray['eventid'];
     
     if ($ispast) {
@@ -287,7 +287,7 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
 					 </a>
              	<?} 
              	
-             	while($array = mysql_fetch_array($result)){ ?>
+             	while($array = mysqli_fetch_array($result)){ ?>
              		<div class="normalsm"> <? print "$array[firstname] $array[lastname]";?></div>
              	<? 
              	}
@@ -328,7 +328,7 @@ function printDoublesReservationSinglePlayer($userid, $lock, $matchType, $time, 
 		
 		$clubid = get_clubid();
 		$fullNameResult = getFullNameResultForUserId($userid);
-		$userArray = mysql_fetch_array($fullNameResult); 
+		$userArray = mysqli_fetch_array($fullNameResult); 
 
 		$trclass = $inpast ? "postopencourt" : "seekingmatchcl$clubid";
 		$verb = $inpast ? "needed" : "needs";
@@ -433,7 +433,7 @@ function printDoublesReservationPlayerWanted($teamid, $userid, $lock, $matchType
 	
 	$clubid = get_clubid();
 	$fullNameResult = getFullNameResultForUserId($userid);
-	$userArray = mysql_fetch_array($fullNameResult); 
+	$userArray = mysqli_fetch_array($fullNameResult); 
 	
 	$verb = $inpast ? "needed" : "needs";
 	    
@@ -487,7 +487,7 @@ function printDoublesReservationPlayersWanted($userid1, $userid2, $lock, $matchT
 	if( isDebugEnabled(1) ) logMessage("courtlib.printDoublesReservationPlayersWanted: userid $userid1 userid2 $userid2 courtid $courtid");
 	
 	  $fullNameResult = getFullNameResultForUserId($userid1);
-	  $userArray = mysql_fetch_array($fullNameResult); 
+	  $userArray = mysqli_fetch_array($fullNameResult); 
 	  $clubid = get_clubid();
 	  $verb = $inpast ? "needed" : "needs";
 	  
@@ -515,7 +515,7 @@ function printDoublesReservationPlayersWanted($userid1, $userid2, $lock, $matchT
 
                     <?
 				    $fullNameResult = getFullNameResultForUserId($userid2);
-				    $userArray = mysql_fetch_array($fullNameResult); 
+				    $userArray = mysqli_fetch_array($fullNameResult); 
 				    
 				    ?>
 				    
@@ -711,10 +711,10 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
 	
 	
 	 $fullName1Result = getFullNameResultForUserId($userid1);
-	 $user1Array = mysql_fetch_array($fullName1Result); 
+	 $user1Array = mysqli_fetch_array($fullName1Result); 
 	 
 	 $fullName2Result = getFullNameResultForUserId($userid2);
-	 $user2Array = mysql_fetch_array($fullName2Result);
+	 $user2Array = mysqli_fetch_array($fullName2Result);
 	
      $printtime = $inpast ? "$time" : "";
 	
@@ -772,7 +772,7 @@ function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $i
 	}
 	
 	 $fullNameResult = getFullNameResultForUserId($userid);
-	 $userArray = mysql_fetch_array($fullNameResult); 
+	 $userArray = mysqli_fetch_array($fullNameResult); 
 	 
 	 $lessontext = $inpast ? "was available for a lesson" : "is available for a lesson";
 	 $portext = $inpast ? "needed a player" : "needs a player";

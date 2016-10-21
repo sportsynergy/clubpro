@@ -80,7 +80,7 @@ if (match_referer() && isset($_POST['submitme']) ) {
     if (empty($errormsg)) {
         update_settings($frm, $extraParametersResult);
         
-        if (mysql_num_rows($extraParametersResult) > 0) {
+        if (mysqli_num_rows($extraParametersResult) > 0) {
             mysql_data_seek($extraParametersResult, 0);
         }
         $noticemsg = "Your profile was saved.  Good Job!<br/><br/>";
@@ -177,7 +177,7 @@ function update_settings(&$frm, $extraParametersResult) {
         WHERE userid = '$userid'");
 
     // Update the Custom Parameters
-    while ($parameterArray = mysql_fetch_array($extraParametersResult)) {
+    while ($parameterArray = mysqli_fetch_array($extraParametersResult)) {
         $parameterId = $parameterArray['parameterid'];
         
         if ($frm["parameter-$parameterId"]) {

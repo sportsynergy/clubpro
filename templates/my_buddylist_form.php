@@ -99,10 +99,10 @@ if(isset($action) && $action=="remove"){
        // run the query on the database
        $result = db_query($query); 
        
-        if( isDebugEnabled(1) ) logMessage("my_buddylist_form: found ". mysql_num_rows($result). "buddies");
+        if( isDebugEnabled(1) ) logMessage("my_buddylist_form: found ". mysqli_num_rows($result). "buddies");
         
         
-        if( mysql_num_rows($result) == 0 ){ ?>
+        if( mysqli_num_rows($result) == 0 ){ ?>
           <tr>
             <td colspan="2"> You don't have any buddies. Why don't you add one now. </td>
           </tr>
@@ -113,7 +113,7 @@ if(isset($action) && $action=="remove"){
                   <td></td>
                   <?php
 				              $sportsResult = load_registered_sports(get_userid());
-				               while($sportRow = mysql_fetch_array($sportsResult)){  ?>
+				               while($sportRow = mysqli_fetch_array($sportsResult)){  ?>
                   <?php if($sportRow['reservationtype']<2){ ?>
                   <td align="center"><span class="medbold">
                     <?=$sportRow['courttypename']?>
@@ -123,7 +123,7 @@ if(isset($action) && $action=="remove"){
                   <td></td>
                 </tr>
                 <?
-				       $rownum = mysql_num_rows($result);
+				       $rownum = mysqli_num_rows($result);
 				       while($row = mysql_fetch_row($result)) { 
 				        $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "lightrow" : "darkrow";
 				       	?>
@@ -135,7 +135,7 @@ if(isset($action) && $action=="remove"){
                     </span></td>
                   <?
 					                mysql_data_seek($sportsResult,0);
-					                while($sportRow = mysql_fetch_array($sportsResult)){
+					                while($sportRow = mysqli_fetch_array($sportsResult)){
 					                        $historyArray = get_record_history(get_userid(),$row[3], $sportRow['courttypeid']);
 					                        if($sportRow['reservationtype']<2){
 					                        ?>
@@ -157,7 +157,7 @@ if(isset($action) && $action=="remove"){
 		</tr>
 	</table>
 </form>
-<?php   if( mysql_num_rows($result) > 0 ){  ?>
+<?php   if( mysqli_num_rows($result) > 0 ){  ?>
 <div style="height: 2em;"></div>
 <div>
 <?php

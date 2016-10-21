@@ -37,7 +37,7 @@ function manageClubEvent(eventid)
 	
 		
 <? 
-if(  mysql_num_rows($clubEvents) == 0 ){ ?>
+if(  mysqli_num_rows($clubEvents) == 0 ){ ?>
 <div>
 	There aren't any special events loaded.  Why don't you <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_club_event.php">add one now</a>?
 </div>
@@ -54,8 +54,8 @@ if(  mysql_num_rows($clubEvents) == 0 ){ ?>
 </tr>
 
 <? 
-	  $rownum = mysql_num_rows($clubEvents);
-      while ($clubEventsArray = mysql_fetch_array($clubEvents)) {
+	  $rownum = mysqli_num_rows($clubEvents);
+      while ($clubEventsArray = mysqli_fetch_array($clubEvents)) {
 			$rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow"; ?>
  		
  		<tr class="<?=$rc?>" >

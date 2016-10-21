@@ -105,8 +105,8 @@ function run_member_activity_report(&$frm) {
 
     // run the query on the database
     $memberresult = db_query($memberquery);
-    for ($i = 0; $i < mysql_num_rows($memberresult); $i++) {
-        $row = mysql_fetch_array($memberresult);
+    for ($i = 0; $i < mysqli_num_rows($memberresult); $i++) {
+        $row = mysqli_fetch_array($memberresult);
 
         //Now For each member run a sub query to see how many reservations
         $howmanyreservationsquery = "SELECT tblkpUserReservations.reservationid, tblkpUserReservations.userid
@@ -118,7 +118,7 @@ function run_member_activity_report(&$frm) {
                                                      AND ((tblReservations.time)>$monthagotime))
 													 AND tblReservations.enddate IS NULL";
         $howmanyreservationsresult = db_query($howmanyreservationsquery);
-        $reservationCount = mysql_num_rows($howmanyreservationsresult);
+        $reservationCount = mysqli_num_rows($howmanyreservationsresult);
         $dataArray[$i] = array(
             "rescount" => $reservationCount,
             "firstname" => $row['firstname'],
@@ -277,7 +277,7 @@ function run_court_utilization_report(&$frm) {
  		//Get the number of available reservations
 		for ($i=0; $i<30; $i++){
 			
-	        while($courtArray = mysql_fetch_array($courtResult)){
+	        while($courtArray = mysqli_fetch_array($courtResult)){
 			
 				$openTime = getOpenTimeToday($time, $courtArray['courtid']);
 				$closeTime = getCloseTimeToday($time, $courtArray['courtid']);
@@ -302,9 +302,9 @@ function run_court_utilization_report(&$frm) {
 
 		
 		//Get the number of booked reservations
-        for ($i=0; $i<mysql_num_rows($courtResult); $i++) {
+        for ($i=0; $i<mysqli_num_rows($courtResult); $i++) {
                 
-                $row = mysql_fetch_array($courtResult);
+                $row = mysqli_fetch_array($courtResult);
                 
                  //Now For each member run a sub query to see how many reservations
                  $howmanyreservationsquery = "SELECT tblReservations.reservationid, tblReservations.time
@@ -313,7 +313,7 @@ function run_court_utilization_report(&$frm) {
                                               AND ((tblReservations.courtid)=$row[courtid]))";
 
                  $howmanyreservationsresult = db_query($howmanyreservationsquery);
-                 $reservationCount = mysql_num_rows($howmanyreservationsresult);
+                 $reservationCount = mysqli_num_rows($howmanyreservationsresult);
 
                  //Multiply the number of reservations by the duration
                   $hoursOfUse = $reservationCount * $dailyDuration;

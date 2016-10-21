@@ -61,7 +61,7 @@ $playersQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, 
 						ORDER BY reservationdetails.usertype DESC, reservationdetails.userid DESC";
 						
 $playersResult = db_query($playersQuery);
-$playerRow = mysql_fetch_array($playersResult);
+$playerRow = mysqli_fetch_array($playersResult);
 $locked = $playerRow['locked'];
 $player1Id = $playerRow['userid'];
 $player1FullName = "$playerRow[fullname]";
@@ -69,7 +69,7 @@ $player1FullName =  htmlspecialchars($player1FullName);
 $matchtype = $playerRow['matchtype'];
 
 $reservationid = $playerRow['reservationid'];
-$playerRow = mysql_fetch_array($playersResult);
+$playerRow = mysqli_fetch_array($playersResult);
 $player2Id = $playerRow['userid'];
 $player2FullName = "";
 

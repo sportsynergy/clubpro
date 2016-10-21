@@ -220,7 +220,7 @@ function getLadder($courttypeid) {
 function isPlayingInLadder($userid, $courttypeid) {
     $query = "SELECT 1 FROM tblClubLadder WHERE userid = $userid AND courttypeid = $courttypeid AND clubid = " . get_clubid() . " AND enddate IS NULL";
     $result = db_query($query);
-    $rows = mysql_num_rows($result);
+    $rows = mysqli_num_rows($result);
     
     if ($rows > 0) {
         return true;

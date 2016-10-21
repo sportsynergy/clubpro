@@ -189,7 +189,7 @@ function add_events(&$frm) {
                 $dayOfWeek = gmdate("w", $startTime);
                 $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtId";
                 $courtHourResult = db_query($courtHourQuery);
-                $courtHourArray = mysql_fetch_array($courtHourResult);
+                $courtHourArray = mysqli_fetch_array($courtHourResult);
                 $eventinterval = 3600 * $courtHourArray["duration"];
 
                 //Adjust the start and endtimes.  If this is the second reservation then compare the hourstarts
@@ -243,7 +243,7 @@ function add_events(&$frm) {
                 $dayOfWeek = gmdate("w", $startTime);
                 $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtId";
                 $courtHourResult = db_query($courtHourQuery);
-                $courtHourArray = mysql_fetch_array($courtHourResult);
+                $courtHourArray = mysqli_fetch_array($courtHourResult);
                 $eventinterval = 3600 * $courtHourArray["duration"];
 
                 //Adjust the start and endtimes.  If this is the second reservation then compare the hourstarts
@@ -297,7 +297,7 @@ function add_events(&$frm) {
                 $dayOfWeek = gmdate("w", $startTime);
                 $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtId";
                 $courtHourResult = db_query($courtHourQuery);
-                $courtHourArray = mysql_fetch_array($courtHourResult);
+                $courtHourArray = mysqli_fetch_array($courtHourResult);
                 $eventinterval = 3600 * $courtHourArray["duration"];
 
                 //Adjust the start and endtimes.  If this is the second reservation then compare the hourstarts
@@ -351,7 +351,7 @@ function add_events(&$frm) {
                 $dayOfWeek = gmdate("w", $startTime);
                 $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtId";
                 $courtHourResult = db_query($courtHourQuery);
-                $courtHourArray = mysql_fetch_array($courtHourResult);
+                $courtHourArray = mysqli_fetch_array($courtHourResult);
 
                 //Adjust the start and endtimes.  If this is the second reservation then compare the hourstarts
                 //to see if an adjustment needs to be made.  For example, if the hourstart of the first day is 15
@@ -529,7 +529,7 @@ function cancelReservation($time, $courtId) {
     $reservationTypeQuery = "SELECT * from tblReservations where enddate IS NULL 
 							AND time = $time AND courtId = $courtId";
     $reservationResult = db_query($reservationTypeQuery);
-    $reservationArray = mysql_fetch_array($reservationResult);
+    $reservationArray = mysqli_fetch_array($reservationResult);
 
     //End Date the Reservation
     $endDateRservationQuery = "UPDATE tblReservations SET enddate = NOW() 

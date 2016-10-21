@@ -50,7 +50,7 @@
 				<td class="label" valign="top">Courts: <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_court.php">add</a></td>
 				<td>
 				<?
-				while($court = mysql_fetch_array($sitecourts)){ ?>
+				while($court = mysqli_fetch_array($sitecourts)){ ?>
 					<div><?=$court['courtname']?></div>
 				<? } ?>	
 	

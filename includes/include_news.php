@@ -36,12 +36,12 @@
 
 $clubNewsResult = getClubNews( get_siteid() );
 
-if(mysql_num_rows($clubNewsResult)>0){   ?>
+if(mysqli_num_rows($clubNewsResult)>0){   ?>
     <h2 style="padding-top: 15px">Club News</h2>
     <hr class="hrline"/>
     <?
 $counter = 0;
-while($clubNews = mysql_fetch_array($clubNewsResult)){ ?>
+while($clubNews = mysqli_fetch_array($clubNewsResult)){ ?>
     <? 
 	if($counter>0){ ?>
     <hr class="hrlinesm"/>

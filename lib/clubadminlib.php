@@ -46,8 +46,8 @@
 function isClubEventParticipant(&$clubEventParticipantsResult) {
     $isSignedup = false;
     logMessage("clubadminlib.isClubEventParticipant: Checking to see if " . get_userid() . " is signed up");
-    $numrows = mysql_num_rows($clubEventParticipantsResult);
-    while ($participant = mysql_fetch_array($clubEventParticipantsResult)) {
+    $numrows = mysqli_num_rows($clubEventParticipantsResult);
+    while ($participant = mysqli_fetch_array($clubEventParticipantsResult)) {
         
         if ($participant['userid'] == get_userid()) {
             $isSignedup = true;
@@ -56,7 +56,7 @@ function isClubEventParticipant(&$clubEventParticipantsResult) {
 
     // Reset the results
     
-    if (mysql_num_rows($clubEventParticipantsResult) > 0) {
+    if (mysqli_num_rows($clubEventParticipantsResult) > 0) {
         mysql_data_seek($clubEventParticipantsResult, 0);
     }
     return $isSignedup;

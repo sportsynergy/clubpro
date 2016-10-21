@@ -58,16 +58,16 @@
         </tr>
       </table>
       <table width="400" cellpadding="1" cellspacing="0" border="0">
-        <?  if( mysql_num_rows($reservationPolicies) < 1){   ?>
+        <?  if( mysqli_num_rows($reservationPolicies) < 1){   ?>
         <tr>
           <td class="normal" colspan="2">No Scheduling Policies Defined.</td>
         </tr>
         <?   } else {    ?>
         <? 
-                                	$rownum = mysql_num_rows($reservationPolicies);
+                                	$rownum = mysqli_num_rows($reservationPolicies);
                                 	
                                 	
-                                	while($reservationPolicy = mysql_fetch_array($reservationPolicies)){
+                                	while($reservationPolicy = mysqli_fetch_array($reservationPolicies)){
                                 		$rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
                                 	  
                                 	?>

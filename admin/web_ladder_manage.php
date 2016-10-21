@@ -63,7 +63,7 @@ $boxnamequery = "SELECT boxleague.boxname, boxleague.courttypeid, boxleague.endd
 
 // run the query on the database
 $result = db_query($boxnamequery);
-$boxarray = mysql_fetch_array($result);
+$boxarray = mysqli_fetch_array($result);
 
 //Set some variables for the form
 $DOC_TITLE = "Box League - $boxarray[0] ";
@@ -87,7 +87,7 @@ function validate_form($frm) {
         $boxUserQuery = "SELECT userid from tblkpBoxLeagues WHERE userid = $frm[boxuser]";
         $boxUserResult = db_query($boxUserQuery);
         
-        if (mysql_num_rows($boxUserResult) > 0) {
+        if (mysqli_num_rows($boxUserResult) > 0) {
             
             if (isDebugEnabled(1)) logMessage("\t-> boxuser is not in a box");
             $errors->boxuser = true;
@@ -108,7 +108,7 @@ function insert_boxuser(&$frm) {
 
     // run the query on the database
     $boxcountresult = db_query($boxcountquery);
-    $boxcountval = mysql_num_rows($boxcountresult);
+    $boxcountval = mysqli_num_rows($boxcountresult);
     $boxcountval = $boxcountval + 1;
 
     /* add the new user into the database */

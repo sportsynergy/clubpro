@@ -126,10 +126,10 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 		                      							AND site.displaysitenavigation='y'";
 				$siteResult = db_query($siteQuery);
 					
-				if(mysql_num_rows($siteResult)>1){
+				if(mysqli_num_rows($siteResult)>1){
 
 					$sitecounter = 0;
-					while($siteRow = mysql_fetch_array($siteResult)){
+					while($siteRow = mysqli_fetch_array($siteResult)){
 
 						// Display Pipes between Site Links
 						if($sitecounter!=0){

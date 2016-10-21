@@ -229,7 +229,7 @@ function print_players(&$frm) {
 
                <? //Don't display the header if no rows are found.
                      $rankresult = db_query($rankquery);
-                    $Numrows = mysql_num_rows($rankresult);
+                    $Numrows = mysqli_num_rows($rankresult);
                    //Temporary - This whole page is due to be rewritten
                     if($Numrows < 1 && $sporttypearray['reservationtype']==0){  ?>
 
@@ -258,7 +258,7 @@ function print_players(&$frm) {
                             //This is the courts with a usertype of 0 or a singles court
                             //Now we just need to print the the player names with their ranking
 
-                            $Numrows = mysql_num_rows($rankresult);
+                            $Numrows = mysqli_num_rows($rankresult);
                             $counter = 1;
                            
                             while ( $rankrow = db_fetch_row($rankresult)){

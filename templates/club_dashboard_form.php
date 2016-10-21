@@ -16,7 +16,7 @@
 			$memberTotal = 0;
 			$resrevationsTotal = 0;
 			
-			while($club = mysql_fetch_array($clubs)){ 
+			while($club = mysqli_fetch_array($clubs)){ 
 				
 			if($club['clubname']=="System"){
 				continue;
@@ -31,7 +31,7 @@
 			
 			$sites = loadClubSites($club['clubid']);
 			
-			while ($site = mysql_fetch_array($sites)) { 
+			while ($site = mysqli_fetch_array($sites)) { 
 				
 				$members = countSiteMembers($site['siteid']);
 				$resrevations = countSiteReservations($site['siteid']);

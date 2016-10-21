@@ -144,7 +144,7 @@
               <td class="label" valign="top">Authorized Sites:</td>
               <td class="normal"><?
 
-				while($availableSitesArray = mysql_fetch_array($availableSitesResult)){
+				while($availableSitesArray = mysqli_fetch_array($availableSitesResult)){
 					$checked = "checked";
 
 					if(!amiValidForSite($availableSitesArray['siteid'])){

@@ -89,7 +89,7 @@ function printSQL($courtid){
 	$query = "SELECT * from tblReservations where courtid = $courtid and time > $now";
 	$result = db_query($query);
 	
-	while( $reservationArray = mysql_fetch_array($result)){
+	while( $reservationArray = mysqli_fetch_array($result)){
 		
 		if( gmdate("l",$reservationArray['time']) == "Friday"){
 			$reservationid = $reservationArray['reservationid'];

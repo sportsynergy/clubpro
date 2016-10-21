@@ -133,7 +133,7 @@ function onSubmitButtonClicked(){
 				  		<td class="label">Timezone:</td>
 				    <td>
 				    <select name="timezone">
-				       <? while($timezoneArray = mysql_fetch_array($availbleTimezones)){ ?>
+				       <? while($timezoneArray = mysqli_fetch_array($availbleTimezones)){ ?>
 				       	<option value="<?=$timezoneArray['offset']?>"><?=$timezoneArray['name']?></option>
 				       <? }?>
 				    </select>

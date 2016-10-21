@@ -14,50 +14,49 @@ import csv
 #   Last    First   Home    Work    Cell    E-mail RANK  Gender
 
 # Set these variables for the club
-index = 8587
-clubid = 57
-siteid = 100
-courttype = 9
-password = '55fc5d4ae696bbd974f4401508d0aad2' 
+index = 11364
+clubid = 64
+siteid = 107
+courttype = 2
+password = '57e6a100b25ef0eb8159b064ed5ba7a5' 
 
 
 #### You probably don't need to do anything below this line ##
 
 filename = sys.argv[-1]
-with open(filename, 'rb') as f:
+with open(filename, 'r') as f:
     reader = csv.reader(f)
     for row in reader:
 
-        ranking = row[0]
-        lastname = row[1].replace("'", "\\'")
-    	firstname = row[2]
-    	homephone = ''
-        workphone = row[4]
-        cellphone = row[5]
-    	email = row[6]
-
-    	gender = 0 if row[7] =='F' else '1'
-    	username = firstname.lower()+'.'+lastname.lower()
+        ranking = '3'
+        lastname = row[2].replace("'", "\\'")
+        firstname = row[1].replace("'", "\\'")
+        homephone = ''
+        workphone = ''
+        cellphone = ''
+        email = row[3]
+        gender = 0 if row[4] =='F' else '1'
+        username = firstname.lower()+'.'+lastname.lower()
         memberid = ''
 
 
     	#users
-    	sys.stdout.write(
+        sys.stdout.write(
     		"INSERT INTO `tblUsers` (`userid`, `username`, `firstname`, `lastname`, `email`, `password`, `gender`, `homephone`,`workphone`,`cellphone`, `pager`, `useraddress`)  VALUES ("+str(index)+",'"+username+"','"+firstname+"','"+lastname+"','"+email+"','"+password+"', '"+str(gender)+"', '"+homephone+"','"+workphone+"','"+cellphone+"', '','');\n"
     		)
 
         #clubuser
-    	sys.stdout.write( 
+        sys.stdout.write( 
     		"INSERT INTO `tblClubUser` (`userid`, `clubid`, `roleid`, `recemail`, `memberid`)  VALUES ("+str(index)+","+str(clubid)+",'1','n', '"+str(memberid)+"');\n"
     		)
 
     	# rankings 
-    	sys.stdout.write( 
+        sys.stdout.write( 
     		"INSERT INTO `tblUserRankings` (`userid`, `courttypeid`, `ranking`)  VALUES ("+str(index)+","+str(courttype)+",'"+str(ranking)+"');\n"
     		)
 
     	#auth
-    	sys.stdout.write(
+        sys.stdout.write(
     		"INSERT INTO `tblkupSiteAuth` (`userid`, `siteid`)  VALUES ("+str(index)+","+str(siteid)+");\n\n"
     		)
 

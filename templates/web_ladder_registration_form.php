@@ -30,7 +30,7 @@ $boxid = $_REQUEST["boxid"];
    $historyQuery = "SELECT reservationid from tblBoxHistory WHERE boxid = $boxid";
    $historyResult = db_query($historyQuery);
 
-   while($historyArray = mysql_fetch_array($historyResult)){
+   while($historyArray = mysqli_fetch_array($historyResult)){
           markMatchType($historyArray[reservationid],0);
    }
 
@@ -351,7 +351,7 @@ print "var thisyear = new Array(13);
         </tr>
         
         <?
-       $numrows = mysql_num_rows($result);
+       $numrows = mysqli_num_rows($result);
        $rowcount =  $numrows;
        $i=1;
        while($row = mysql_fetch_row($result)) { 

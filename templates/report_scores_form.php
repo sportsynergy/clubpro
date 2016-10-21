@@ -124,7 +124,7 @@ function onSubmitButtonClicked(){
 	        <span class="label">Score:</span>
 	             <select name="score">
                <?
-                while($matchscore = mysql_fetch_array($matchscores)){  
+                while($matchscore = mysqli_fetch_array($matchscores)){  
                   $gameswon = $matchscore['gameswon'];
                   ?>
 

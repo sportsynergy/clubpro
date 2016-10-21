@@ -74,7 +74,7 @@ function manageCourtEvent(eventid)
 </tr>
 <tr>
   <td><table width="450" cellpadding="1" cellspacing="0" border="0" class="bordertable">
-    <?  if( mysql_num_rows($courtEvents) < 1){   ?>
+    <?  if( mysqli_num_rows($courtEvents) < 1){   ?>
     <tr>
       <td class="normal" colspan="2">No Court Events Defined.  Why don't you add some.</td>
     </tr>
@@ -86,9 +86,9 @@ function manageCourtEvent(eventid)
     </tr>
     <? 
                                 
-                                $rownum = mysql_num_rows($courtEvents);
+                                $rownum = mysqli_num_rows($courtEvents);
                                 
-                                while($courtEvent = mysql_fetch_array($courtEvents)){
+                                while($courtEvent = mysqli_fetch_array($courtEvents)){
                                 		$rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
                                 ?>
     <tr class="<?=$rc?>" >

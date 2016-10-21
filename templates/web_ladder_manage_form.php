@@ -359,7 +359,7 @@ $userid = $_REQUEST["userid"];
        </tr>
        
        <? 
-        $rownum = mysql_num_rows($result);
+        $rownum = mysqli_num_rows($result);
         
        
         while($row = mysql_fetch_row($result)) {

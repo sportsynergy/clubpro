@@ -1,7 +1,7 @@
 <?
 
 
-$clubEvent = mysql_fetch_array($clubEventResult);
+$clubEvent = mysqli_fetch_array($clubEventResult);
 
 ?>
 
@@ -166,7 +166,7 @@ document.onkeypress = function (aEvent)
 
 <? 
 
-if( mysql_num_rows($clubEventParticipants)==0){ ?>
+if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 	
 	No one has signed up yet. 
 	
@@ -179,8 +179,8 @@ if( mysql_num_rows($clubEventParticipants)==0){ ?>
 	
 	$count = 1;
 	
-	while($participant = mysql_fetch_array($clubEventParticipants)){?>
-		<span class="normalsm" style="white-space:nowrap;"><?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?><?if($count<mysql_num_rows($clubEventParticipants)){print ",";}?></span>
+	while($participant = mysqli_fetch_array($clubEventParticipants)){?>
+		<span class="normalsm" style="white-space:nowrap;"><?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?><?if($count<mysqli_num_rows($clubEventParticipants)){print ",";}?></span>
 	
 		<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
 	  		<span class="normalsm">

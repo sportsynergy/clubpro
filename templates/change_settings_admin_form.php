@@ -230,8 +230,8 @@ function onSubmitButtonClicked(){
 
              $autSitesStack = array();
 
-             for($i=0; $i<mysql_num_rows($authSites); ++$i){
-             $authSitesArray = mysql_fetch_array($authSites);
+             for($i=0; $i<mysqli_num_rows($authSites); ++$i){
+             $authSitesArray = mysqli_fetch_array($authSites);
 
                    array_push($autSitesStack, $authSitesArray['siteid']);
 
@@ -244,8 +244,8 @@ function onSubmitButtonClicked(){
 
              }
 
-                 for($j=0; $j<mysql_num_rows($availableSites); ++$j){
-                 $row = mysql_fetch_array($availableSites);
+                 for($j=0; $j<mysqli_num_rows($availableSites); ++$j){
+                 $row = mysqli_fetch_array($availableSites);
 
 
                         if(in_array($row['siteid'],$autSitesStack)){
@@ -275,12 +275,12 @@ function onSubmitButtonClicked(){
 
 
 
-        for ( $i=0; $i<mysql_num_rows($availbleSports); ++$i){
+        for ( $i=0; $i<mysqli_num_rows($availbleSports); ++$i){
 
         	$availbleSportsArray = db_fetch_array($availbleSports);
 
                   //Match up the users ranking with the availbe court types
-                 for ($j=0; $j<mysql_num_rows($registeredSports); ++$j){
+                 for ($j=0; $j<mysqli_num_rows($registeredSports); ++$j){
 
                    $registeredArray = db_fetch_array($registeredSports);
                        //Put the results in a nice little string to be passed up in the post vars.
@@ -299,7 +299,7 @@ function onSubmitButtonClicked(){
                  }
 
 
-               if(mysql_num_rows($registeredSports)>0){
+               if(mysqli_num_rows($registeredSports)>0){
                     mysql_data_seek($registeredSports,0);
                }
 

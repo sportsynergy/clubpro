@@ -58,7 +58,7 @@ print implode(",", $csvHeaderArray);
 print "\n";
 
 // Print the Data
-while ($row = mysql_fetch_array($playerresult)) {
+while ($row = mysqli_fetch_array($playerresult)) {
     $csvDataArray = array();
     array_push($csvDataArray, wrapWithDoubleQuotes($row['firstname']));
     array_push($csvDataArray, wrapWithDoubleQuotes($row['lastname']));
@@ -69,7 +69,7 @@ while ($row = mysql_fetch_array($playerresult)) {
     array_push($csvDataArray, wrapWithDoubleQuotes($row['email']));
     array_push($csvDataArray, wrapWithDoubleQuotes($row['memberid']));
     
-    if (mysql_num_rows($extraParametersResult) > 0) {
+    if (mysqli_num_rows($extraParametersResult) > 0) {
         mysql_data_seek($extraParametersResult, 0);
     }
     while ($parameterArray = db_fetch_array($extraParametersResult)) {

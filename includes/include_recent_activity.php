@@ -31,7 +31,7 @@
 */
 $siteActivityResult = getRecentSiteActivity(get_siteid());
 
-if (mysql_num_rows($siteActivityResult) > 0) { ?>
+if (mysqli_num_rows($siteActivityResult) > 0) { ?>
 
 <h2 style="padding-top: 15px">Recent Activity</h2>
 <hr class="hrline"/>
@@ -41,7 +41,7 @@ if (mysql_num_rows($siteActivityResult) > 0) { ?>
 
 <?
 $lastactivity = "";
-while($siteActivity = mysql_fetch_array($siteActivityResult)){ ?>
+while($siteActivity = mysqli_fetch_array($siteActivityResult)){ ?>
 	
 	<li><?=$siteActivity['description']?></li>
 	

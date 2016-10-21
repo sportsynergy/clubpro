@@ -47,7 +47,7 @@ if (match_referer() && isset($_POST)) {
             $usersResult = getAllUsersWithIdResult($_POST["username"], $user['clubid']);
             $username = $_POST["username"];
             
-            if (mysql_num_rows($usersResult) > 1) {
+            if (mysqli_num_rows($usersResult) > 1) {
 
                 include ($_SESSION["CFG"]["templatedir"] . "/pick_user_form.php");
                 die;

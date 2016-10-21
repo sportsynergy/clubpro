@@ -47,7 +47,7 @@ if (isset($username) && isset($password) && !is_logged_in()) {
 
     $usersResult = getAllUsersWithIdResult($username, $clubid);
     
-    if (mysql_num_rows($usersResult) > 1) {
+    if (mysqli_num_rows($usersResult) > 1) {
 
         include ($_SESSION["CFG"]["templatedir"] . "/pick_user_form.php");
         die;
@@ -166,7 +166,7 @@ $datestring = explode("-",$wlobj->enddate);
                 //Set the place variable
                 $n=1;
                 
-                $rownum = mysql_num_rows($webladderuserresult);
+                $rownum = mysqli_num_rows($webladderuserresult);
                 while ($wluserobj = db_fetch_object($webladderuserresult)) {
 
                 	 $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";

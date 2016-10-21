@@ -75,7 +75,7 @@ function recordScore(matchid,laddertype){
 
 $challengeMatchResult = getChallengeMatches( get_siteid(), $courttypeid, 15 );
 
-if(mysql_num_rows($challengeMatchResult) > 0){ ?>
+if(mysqli_num_rows($challengeMatchResult) > 0){ ?>
   <table class="activitytable" width="450">
     <tr>
       <th>Date</th>
@@ -85,7 +85,7 @@ if(mysql_num_rows($challengeMatchResult) > 0){ ?>
     </tr>
     <?
 	
-while($challengeMatch = mysql_fetch_array($challengeMatchResult)){ 
+while($challengeMatch = mysqli_fetch_array($challengeMatchResult)){ 
 		
 		$scored = $challengeMatch['score'];
 		

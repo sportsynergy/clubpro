@@ -130,15 +130,15 @@ function get_playerswanted() {
     $doublesArray = array();
 
     //Jam our two subtlely different doubles reservation types together
-    for ($i = 0; $i < mysql_num_rows($doublesspwresult); $i++) {
-        $data = mysql_fetch_array($doublesspwresult);
+    for ($i = 0; $i < mysqli_num_rows($doublesspwresult); $i++) {
+        $data = mysqli_fetch_array($doublesspwresult);
         $doublesArray1[$i] = array(
             "time" => $data['time'],
             "reservationid" => $data['reservationid']
         );
     }
-    for ($i = 0; $i < mysql_num_rows($doublesspwresult2); $i++) {
-        $data = mysql_fetch_array($doublesspwresult2);
+    for ($i = 0; $i < mysqli_num_rows($doublesspwresult2); $i++) {
+        $data = mysqli_fetch_array($doublesspwresult2);
         $newEntry = array(
             "time" => $data['time'],
             "reservationid" => $data['reservationid']
@@ -163,7 +163,7 @@ function get_playerswanted() {
 
     $anyboxesresult = db_query($anyboxesquery);
 
-    if(mysql_num_rows($anyboxesresult)>0){
+    if(mysqli_num_rows($anyboxesresult)>0){
 
          echo "\t<tr>\n";
          echo "\t\t<td>\n";
@@ -176,7 +176,7 @@ echo "\t\t<td>\n";
 
 
 
-if(mysql_num_rows($singlespwresult)==0 && mysql_num_rows($doublesspwresult)==0 && mysql_num_rows($doublesspwresult2)==0 && mysql_num_rows($lessonpwresult)==0){
+if(mysqli_num_rows($singlespwresult)==0 && mysqli_num_rows($doublesspwresult)==0 && mysqli_num_rows($doublesspwresult2)==0 && mysqli_num_rows($lessonpwresult)==0){
    echo "<table>";
    echo "<tr>";
    echo "<td width=\"30\"></td>";
@@ -192,14 +192,14 @@ else{
 
 
 
-   if(mysql_num_rows($singlespwresult)>0){
+   if(mysqli_num_rows($singlespwresult)>0){
      ?>
        <tr>
         <td colspan="2"><font class="bigbanner">Players looking for a Singles Match</font></td>
        </tr>
      <?
 
-               while($row = mysql_fetch_array($singlespwresult)){
+               while($row = mysqli_fetch_array($singlespwresult)){
                  //Now for each returned reservationid we need to get the details of the court for the singles reservations
 
                  $scourtdetailsquery = "SELECT DISTINCTROW reservations.time, users.firstname, users.lastname, courts.courtname, reservations.courtid, rankings.ranking, reservations.matchtype, users.userid
@@ -273,8 +273,8 @@ else{
 
                  // run the query on the database
                  $dcourtdetailsresult = mysql_query($dcourtdetailsquery);
-				$playerOneArray = mysql_fetch_array($dcourtdetailsresult);
-				$playerTwoArray = mysql_fetch_array($dcourtdetailsresult);
+				$playerOneArray = mysqli_fetch_array($dcourtdetailsresult);
+				$playerTwoArray = mysqli_fetch_array($dcourtdetailsresult);
 
 				//Get Users for reservation needing one player
 	           if($playerOneArray['usertype']=="0" && $playerOneArray['userid']!="0" && $playerTwoArray['usertype']=="1"){
@@ -380,14 +380,14 @@ else{
  }
 
 }
-   if(mysql_num_rows($lessonpwresult)>0){
+   if(mysqli_num_rows($lessonpwresult)>0){
 ?>
        <tr>
         <td colspan="2"><font class="bigbanner">Club Pro Available for a Lesson</font></td>
        </tr>
  <?
 
-    while($row = mysql_fetch_array($lessonpwresult)){
+    while($row = mysqli_fetch_array($lessonpwresult)){
     $scourtdetailsquery = "SELECT DISTINCTROW reservations.time, users.firstname, users.lastname, courts.courtname, reservations.courtid, rankings.ranking, reservations.matchtype
                            FROM tblReservations reservations, tblUserRankings rankings, tblUsers users, tblCourts courts, tblCourtType courttype, tblkpUserReservations reservationdetails, tblClubUser clubuser
 						   WHERE rankings.userid = users.userid

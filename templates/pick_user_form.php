@@ -71,7 +71,7 @@ function onSubmitButtonClicked(){
 					
 								<? 
 									//variable set in login.php
-									while($user = mysql_fetch_array($usersResult)){ ?>
+									while($user = mysqli_fetch_array($usersResult)){ ?>
                         			<option value="<?=$user['userid']?>" ><? print $user['firstname']?></option>
                         	   <? } ?>
                     </select>

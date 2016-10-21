@@ -233,7 +233,7 @@ function canIcancel($courtid, $time) {
                        AND sites.siteid = " . get_siteid() . "
 					   AND enddate IS NULL";
     $eventQueryResult = db_query($eventQuery);
-    $eventTypeRow = mysql_fetch_array($eventQueryResult);
+    $eventTypeRow = mysqli_fetch_array($eventQueryResult);
 
     //Right off the bat check to see if site policy allows this
     
@@ -262,7 +262,7 @@ function canIcancel($courtid, $time) {
                                     AND reservation.time=$time
 									AND reservation.enddate is NULL";
         $guesttyperesult = db_query($guesttypequery);
-        $isGuestReservation = mysql_num_rows($guesttyperesult);
+        $isGuestReservation = mysqli_num_rows($guesttyperesult);
         
         if ($isGuestReservation > 0) {
             $guestcreator = mysql_result($guesttyperesult, 0);
@@ -408,7 +408,7 @@ function cancel_court(&$frm) {
 
     // run the query on the database
     $residresult = db_query($residquery);
-    $residarray = mysql_fetch_array($residresult);
+    $residarray = mysqli_fetch_array($residresult);
 
     //Update the event
     
@@ -451,7 +451,7 @@ function cancel_court(&$frm) {
 								WHERE reoccuringevents.courtid = $frm[courtid]
 								AND reoccuringevents.endtime >= $frm[time]";
         $reOccuringEventResult = db_query($reOccuringEventQuery);
-        while ($reOccuringEventsArray = mysql_fetch_array($reOccuringEventResult)) {
+        while ($reOccuringEventsArray = mysqli_fetch_array($reOccuringEventResult)) {
             $workingEventsArray = array();
 
             //Put all of these events in an array (just those that are in the future)
@@ -501,7 +501,7 @@ function cancel_court(&$frm) {
             mysql_data_seek($reOccuringEventResult, 0);
 
             // Go through this and for any reoccuring entry with the same block id, remove.
-            while ($reOccuringEventsArray = mysql_fetch_array($reOccuringEventResult)) {
+            while ($reOccuringEventsArray = mysqli_fetch_array($reOccuringEventResult)) {
 
                 //Reinitialize this thing.
                 $workingEventsArray = array();
@@ -822,8 +822,8 @@ function cancel_court(&$frm) {
 
                 // run the query on the database
                 $needpartnerresult = db_query($needpartnerquery);
-                $playerOneArray = mysql_fetch_array($needpartnerresult);
-                $playerTwoArray = mysql_fetch_array($needpartnerresult);
+                $playerOneArray = mysqli_fetch_array($needpartnerresult);
+                $playerTwoArray = mysqli_fetch_array($needpartnerresult);
 
                 //If this is like, a doubles reservation that only
                 //has one person send out the notice using the
@@ -887,7 +887,7 @@ function cancel_court(&$frm) {
 							                                                          AND usertype = 0";
                         $amilookingforpartnerresult = db_query($amilookingforpartner);
                         
-                        if (mysql_num_rows($amilookingforpartnerresult) == 1) {
+                        if (mysqli_num_rows($amilookingforpartnerresult) == 1) {
                             $qid1 = db_query("UPDATE tblReservations
 																					  SET lastmodifier = " . get_userid() . "
 										                                              WHERE reservationid = $residarray[0]");

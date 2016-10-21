@@ -9,7 +9,7 @@
 	$courtformresult = db_query($courtformquery);
 	
 	// Determine what kind of court reservation form to display
-    $row = mysql_fetch_array($courtformresult);
+    $row = mysqli_fetch_array($courtformresult);
     $reservationType = $row[2];
 	$variableDuration = $row[3];
   $variableDuration_admin = $row[4];

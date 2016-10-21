@@ -414,7 +414,7 @@ function isCourtAlreadyReserved($courtid, $time) {
 							AND reservations.time = $time
 							AND reservations.enddate IS NULL";
     $notReservedResult = db_query($notReservedQuery);
-    $numberOfReservations = mysql_num_rows($notReservedResult);
+    $numberOfReservations = mysqli_num_rows($notReservedResult);
     
     if ($numberOfReservations < 1) {
         return false;
@@ -439,7 +439,7 @@ function isSinglesReservationNeedPlayers($time, $courtid) {
 			 ORDER BY tblkpUserReservations.usertype, tblkpUserReservations.userid";
     $result = db_query($query);
     
-    if (mysql_num_rows($result) > 0) {
+    if (mysqli_num_rows($result) > 0) {
         
         if (isDebugEnabled(1)) logMessage("court_reservation.isSinglesReservationFull: Yep, there are some openings for singles");
         return TRUE;
@@ -468,7 +468,7 @@ function isDoublesReservationNeedPlayers($time, $courtid) {
 
     // if nobody is looking, display an error (sounds shady)
     
-    if (mysql_num_rows($result) < 2) {
+    if (mysqli_num_rows($result) < 2) {
         
         if (isDebugEnabled(1)) logMessage("court_reservation.isDoublesReservationFull: No, there are some openings for doubles");
         return TRUE;
@@ -483,8 +483,8 @@ function isDoublesReservationNeedPlayers($time, $courtid) {
 function isCourtEventParticipant(&$courtEventParticipantsResult) {
     $isSignedup = false;
     logMessage("reservationlib.isCourtEventParticipant: Checking to see if " . get_userid() . " is signed up");
-    $numrows = mysql_num_rows($courtEventParticipantsResult);
-    while ($participant = mysql_fetch_array($courtEventParticipantsResult)) {
+    $numrows = mysqli_num_rows($courtEventParticipantsResult);
+    while ($participant = mysqli_fetch_array($courtEventParticipantsResult)) {
         
         if ($participant['userid'] == get_userid()) {
             $isSignedup = true;
@@ -493,7 +493,7 @@ function isCourtEventParticipant(&$courtEventParticipantsResult) {
 
     // Reset the results
     
-    if (mysql_num_rows($courtEventParticipantsResult) > 0) {
+    if (mysqli_num_rows($courtEventParticipantsResult) > 0) {
         mysql_data_seek($courtEventParticipantsResult, 0);
     }
     return $isSignedup;
@@ -587,7 +587,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
     $var->creator = $timeObject->creator;
     $userQuery = "SELECT users.firstname, users.lastname, users.email FROM tblUsers users WHERE users.userid = $userid";
     $userResult = db_query($userQuery);
-    $userArray = mysql_fetch_array($userResult);
+    $userArray = mysqli_fetch_array($userResult);
     $var->firstname = $userArray['firstname'];
     $var->lastname = $userArray['lastname'];
     $var->fullname = "$var->firstname $var->lastname";
@@ -617,7 +617,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
     //send email to the person who created the reservation
     $creatorQuery = "SELECT users.firstname, users.lastname, users.email FROM tblUsers users WHERE users.userid = $var->creator";
     $creatorResult = db_query($creatorQuery);
-    $creatorArray = mysql_fetch_array($creatorResult);
+    $creatorArray = mysqli_fetch_array($creatorResult);
     $var->adminfirstname = $creatorArray['firstname'];
     $var->adminlastname = $creatorArray['lastname'];
     $var->adminfullname = "$var->adminfirstname $var->adminlastname";
@@ -652,7 +652,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
     }
     $to_emails = array();
     $rresult = getCourtEventParticipants($reservationid);
-    while ($player = mysql_fetch_array($rresult)) {
+    while ($player = mysqli_fetch_array($rresult)) {
         
         if (!empty($player['email']) && $player['userid'] != $userid) {
             
@@ -695,7 +695,7 @@ function isReoccuringReservation($time, $courtid) {
                                 WHERE reoccuringevents.courtid = $courtid
                                 AND reoccuringevents.endtime > $time";
     $reOccuringEventResult = db_query($reOccuringEventQuery);
-    while ($reOccuringEventsArray = mysql_fetch_array($reOccuringEventResult)) {
+    while ($reOccuringEventsArray = mysqli_fetch_array($reOccuringEventResult)) {
         $reoccuringEventsArray = array();
 
         //Calculate the timestamps for each event in the set (still 1)

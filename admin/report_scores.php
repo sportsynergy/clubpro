@@ -191,9 +191,9 @@ function record_scores(&$frm) {
 
         $winnerTeamId = getTeamIDForPlayers($frm["courttype"], $frm["player1"], $frm["player2"]);
         $winnerResult = getUserIdsForTeamIdWithCourtType($winnerTeamId, $frm["courttype"]);
-        $playerRow = mysql_fetch_array($winnerResult);
+        $playerRow = mysqli_fetch_array($winnerResult);
         $winnersOldRanking = $playerRow['ranking'];
-        $playerRow = mysql_fetch_array($winnerResult);
+        $playerRow = mysqli_fetch_array($winnerResult);
         $winnersOldRanking+= $playerRow['ranking'];
         $winnersOldRanking = $winnersOldRanking / 2;
 
@@ -202,9 +202,9 @@ function record_scores(&$frm) {
         
         if (isDebugEnabled(1)) logMessage("report_scores.record_scores: The Winning Team Id $winnerTeamId has a ranking of $winnersOldRanking for courttype: " . $frm["courttype"]);
         $loserResult = getUserIdsForTeamIdWithCourtType($loserTeamId, $frm["courttype"]);
-        $playerRow = mysql_fetch_array($loserResult);
+        $playerRow = mysqli_fetch_array($loserResult);
         $losersOldRanking = $playerRow['ranking'];
-        $playerRow = mysql_fetch_array($loserResult);
+        $playerRow = mysqli_fetch_array($loserResult);
         $losersOldRanking+= $playerRow['ranking'];
         $losersOldRanking = $losersOldRanking / 2;
         
@@ -381,7 +381,7 @@ function isUserValidForCourtType($user, $courtType) {
 				AND rankings.usertype = 0";
     $result = db_query($query);
     
-    if (mysql_num_rows($result) > 0) {
+    if (mysqli_num_rows($result) > 0) {
         return true;
     }
     return false;

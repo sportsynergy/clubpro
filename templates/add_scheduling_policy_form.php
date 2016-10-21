@@ -88,7 +88,7 @@ function onSubmitButtonClicked(){
                     <?
                  $courtsDropDown = get_sitecourts_dropdown(get_siteid());
 
-                 while($row = mysql_fetch_array($courtsDropDown)) { ?>
+                 while($row = mysqli_fetch_array($courtsDropDown)) { ?>
                     <option value="<?=$row['courtid']?>" <?=$schedulePolicy['courtid']==$row['courtid']? "selected": ""?>>
                     <?=$row['courtname']?>
                     </option>
@@ -112,7 +112,7 @@ function onSubmitButtonClicked(){
                     <?
                  $dowList = get_dow_dropdown();
 
-                 while($row = mysql_fetch_array($dowList)) { ?>
+                 while($row = mysqli_fetch_array($dowList)) { ?>
                     <option value="<?=$row['dayid']?>" <?=$schedulePolicy['dayid']==$row['dayid'] ? "selected": "" ?>>
                     <?=$row['name']?>
                     </option>

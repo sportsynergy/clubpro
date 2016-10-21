@@ -53,7 +53,7 @@ if (isset($searchname)) {
     if (empty($errormsg)) {
         $playerResults = get_all_player_search($searchname);
         
-        if (isDebugEnabled(1)) logMessage("player_lookup: Found " . mysql_num_rows($playerResults) . " results");
+        if (isDebugEnabled(1)) logMessage("player_lookup: Found " . mysqli_num_rows($playerResults) . " results");
         include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
         print_players($searchname, $playerResults, $DOC_TITLE, $ME);
         include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
@@ -94,14 +94,14 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
     
     if (isDebugEnabled(1)) logMessage("player_lookup.print_players: searchname: $searchname");
     
-    if (mysql_num_rows($playerResults) < 1) {
+    if (mysqli_num_rows($playerResults) < 1) {
         $errormsg = "Sorry, no results found.";
         include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
     } else {
         include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");
         mysql_data_seek($playerResults, 0);
         $num_fields = mysql_num_fields($playerResults);
-        $num_rows = mysql_num_rows($playerResults);
+        $num_rows = mysqli_num_rows($playerResults);
 ?>
 
 				<table cellpadding="20" width="650" class="bordertable">
@@ -116,8 +116,8 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
                 <?
 
 
-		$rownum = mysql_num_rows($playerResults);
-		while ($playerarray = mysql_fetch_array($playerResults)) {
+		$rownum = mysqli_num_rows($playerResults);
+		while ($playerarray = mysqli_fetch_array($playerResults)) {
 
 			 $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
 			

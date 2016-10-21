@@ -64,17 +64,17 @@ $teamQuery = "SELECT reservationdetails.userid, reservationdetails.usertype, res
 						AND reservations.enddate IS NULL
 						ORDER BY reservationdetails.usertype DESC, reservationdetails.userid DESC";
 $teamResult = db_query($teamQuery);
-$teamRow = mysql_fetch_array($teamResult);
+$teamRow = mysqli_fetch_array($teamResult);
 $locked = $teamRow['locked'];
 
 if ($teamRow['usertype'] == 1) {
     $teamPlayerResult = getUserIdsForTeamId($teamRow['userid']);
-    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
+    $teamPlayerRow = mysqli_fetch_array($teamPlayerResult);
     $player1Id = $teamPlayerRow['userid'];
     $player1FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
 	$player1FullName =  htmlspecialchars($player1FullName);
 
-    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
+    $teamPlayerRow = mysqli_fetch_array($teamPlayerResult);
     $player2Id = $teamPlayerRow['userid'];
     $player2FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
 	$player2FullName =  htmlspecialchars($player2FullName);
@@ -89,16 +89,16 @@ if ($teamRow['usertype'] == 1) {
     $player2FullName = "";
     $reservationid = $teamRow['reservationid'];
 }
-$teamRow = mysql_fetch_array($teamResult);
+$teamRow = mysqli_fetch_array($teamResult);
 
 if ($teamRow['usertype'] == 1) {
     $teamPlayerResult = getUserIdsForTeamId($teamRow['userid']);
-    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
+    $teamPlayerRow = mysqli_fetch_array($teamPlayerResult);
     $player3Id = $teamPlayerRow['userid'];
     $player3FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
 	$player3FullName =  htmlspecialchars($player3FullName);
 
-    $teamPlayerRow = mysql_fetch_array($teamPlayerResult);
+    $teamPlayerRow = mysqli_fetch_array($teamPlayerResult);
     $player4Id = $teamPlayerRow['userid'];
     $player4FullName = "$teamPlayerRow[firstname] $teamPlayerRow[lastname]";
 	$player4FullName = htmlspecialchars($player4FullName);

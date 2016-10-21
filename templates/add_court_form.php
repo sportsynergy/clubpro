@@ -52,7 +52,7 @@ function onSubmitButtonClicked(){
             <td><select name="courttypeid">
             		<?
 
-            		while($courttype = mysql_fetch_array($courttypes)){ ?>
+            		while($courttype = mysqli_fetch_array($courttypes)){ ?>
             			<option value="<?=$courttype['courttypeid']?>"> <?=$courttype['courttypename']?></option>
             			
             		<? } ?>

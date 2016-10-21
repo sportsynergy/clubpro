@@ -6,7 +6,7 @@
 
        $courtTypeQuery = "SELECT usertype, eventid, reservationid, time, courtid FROM tblReservations WHERE time = $time and courtid = $courtid AND enddate IS NULL";
        $courtTypeResult = db_query($courtTypeQuery);
-       $courtTypeArray = mysql_fetch_array($courtTypeResult);
+       $courtTypeArray = mysqli_fetch_array($courtTypeResult);
         
 
        if($courtTypeArray['eventid']!=0){

@@ -47,7 +47,7 @@ mysql_data_seek($ladderplayers,0);
 
 
 <?
-$numrows = mysql_num_rows($ladderplayers);
+$numrows = mysqli_num_rows($ladderplayers);
 if($numrows ==0) { ?>
 
 Nobody has signed up for the ladder yet.
@@ -118,7 +118,7 @@ to add your name now.
 							//Reset pointer
 							mysql_data_seek($ladderplayers,0);
 
-							$numrows = mysql_num_rows($ladderplayers);
+							$numrows = mysqli_num_rows($ladderplayers);
 							while ( $playerarray = db_fetch_array($ladderplayers)){
 								$rc = (($numrows/2 - intval($numrows/2)) > .1) ? "lightrow_plain" : "darkrow_plain";
 
@@ -230,7 +230,7 @@ to add your name now.
 				Spot: <select name="placement">
 				<?
 				mysql_data_seek($ladderplayers,0);
-				for ( $i = 1; $i<= mysql_num_rows($ladderplayers)+1; ++$i){
+				for ( $i = 1; $i<= mysqli_num_rows($ladderplayers)+1; ++$i){
 
 					if($i == count($ladderplayers)+1 ){
 						$selected = "selected=\"selected\"";

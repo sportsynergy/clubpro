@@ -188,8 +188,8 @@ $userTypeQuery = "SELECT usertype, matchtype, guesttype, lastmodified, reservati
 					AND reservations.enddate is NULL";
 $userTypeResult = db_query($userTypeQuery);
 
-if (mysql_num_rows($userTypeResult) > 0) {
-    $reservationArray = mysql_fetch_array($userTypeResult);
+if (mysqli_num_rows($userTypeResult) > 0) {
+    $reservationArray = mysqli_fetch_array($userTypeResult);
     $usertype = $reservationArray['usertype'];
     $matchtype = $reservationArray['matchtype'];
     $guesttype = $reservationArray['guesttype'];
@@ -269,10 +269,10 @@ if ($usertype == 1 && isDoublesReservationNeedPlayers($time, $courtid)) {
 						AND reservations.enddate IS NULL
 						ORDER BY reservationdetails.usertype DESC, reservationdetails.userid DESC";
     $teamResult = db_query($teamQuery);
-    $teamRow = mysql_fetch_array($teamResult);
+    $teamRow = mysqli_fetch_array($teamResult);
     $player1userId = $teamRow['userid'];
     $player1userType = $teamRow['usertype'];
-    $teamRow = mysql_fetch_array($teamResult);
+    $teamRow = mysqli_fetch_array($teamResult);
     $player2userId = $teamRow['userid'];
     $player2userType = $teamRow['usertype'];
 
@@ -343,7 +343,7 @@ function validate_form(&$frm, &$errors) {
 
     //this is just a way to know if this is a new reservation.
     $residresult = db_query($residquery);
-    $resArray = mysql_fetch_array($residresult);
+    $resArray = mysqli_fetch_array($residresult);
     $reservationTimeStamp = $resArray['lastmodified'];
 
     /******************************************
@@ -425,7 +425,7 @@ function validate_form(&$frm, &$errors) {
             
             if (!amIaBuddyOf($frm['guylookingformatch'])) {
                 $fullnameResult = db_query("SELECT firstname, lastname from tblUsers WHERE userid=" . $frm['guylookingformatch']);
-                $buddyArray = mysql_fetch_array($fullnameResult);
+                $buddyArray = mysqli_fetch_array($fullnameResult);
                 $msg.= "I am sorry but $buddyArray[firstname] $buddyArray[lastname] is looking for a match with a buddy";
             }
         }
@@ -491,14 +491,14 @@ function validate_form(&$frm, &$errors) {
 					WHERE users.userid = teamdetails.userid
 					AND teamdetails.teamid=" . $frm['teamid'];
             $fullNameSearchResult = db_query($fullNameSearchQuery);
-            $playerArray = mysql_fetch_array($fullNameSearchResult);
+            $playerArray = mysqli_fetch_array($fullNameSearchResult);
             
             if (amIaBuddyOf($playerArray[0])) {
                 $iHaveABuddy = TRUE;
             }
             $firstName0 = $playerArray[1];
             $lastName0 = $playerArray[2];
-            $playerArray = mysql_fetch_array($fullNameSearchResult);
+            $playerArray = mysqli_fetch_array($fullNameSearchResult);
             
             if (amIaBuddyOf($playerArray[0])) {
                 $iHaveABuddy = TRUE;
@@ -576,9 +576,9 @@ function validate_form(&$frm, &$errors) {
             
             if (isDebugEnabled(1)) logMessage("court_reservation.validate_form: Validating the addteam form");
             $teamThatsAlreadyPlayingResult = getUserIdsForTeamId($frm["userid"]);
-            $playerRow = mysql_fetch_array($teamThatsAlreadyPlayingResult);
+            $playerRow = mysqli_fetch_array($teamThatsAlreadyPlayingResult);
             $teamPlayerOne = $playerRow['userid'];
-            $playerRow = mysql_fetch_array($teamThatsAlreadyPlayingResult);
+            $playerRow = mysqli_fetch_array($teamThatsAlreadyPlayingResult);
             $teamPlayerTwo = $playerRow['userid'];
 
             //make sure they aren't signing up with someone already in the reservation
@@ -610,7 +610,7 @@ function validate_form(&$frm, &$errors) {
 
 		            if (!amIaBuddyOf($frm['creator'])) {
 		                $fullnameResult = db_query("SELECT firstname, lastname from tblUsers WHERE userid=" . $frm['creator']);
-		                $buddyArray = mysql_fetch_array($fullnameResult);
+		                $buddyArray = mysqli_fetch_array($fullnameResult);
 		                $msg.= "I am sorry but $buddyArray[firstname] $buddyArray[lastname] is looking for a match with a buddy";
 		            	return $msg;
 					}
@@ -673,8 +673,8 @@ function update_reservation(&$frm) {
     $residresult = db_query($residquery);
 
     //this is just a way to know if this is a new reservation.
-    $reservation = mysql_num_rows($residresult);
-    $resArray = mysql_fetch_array($residresult);
+    $reservation = mysqli_num_rows($residresult);
+    $resArray = mysqli_fetch_array($residresult);
     $residval = $resArray['reservationid'];
     $matchtype = $resArray['matchtype'];
     
@@ -1033,7 +1033,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
             $dayOfWeek = gmdate("w", $nextday);
             $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtid";
             $courtHourResult = db_query($courtHourQuery);
-            $courtHourArray = mysql_fetch_array($courtHourResult);
+            $courtHourArray = mysqli_fetch_array($courtHourResult);
 
             //Save off the first reservation time
             
@@ -1135,7 +1135,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
             $dayOfWeek = gmdate("w", $nextday);
             $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtid";
             $courtHourResult = db_query($courtHourQuery);
-            $courtHourArray = mysql_fetch_array($courtHourResult);
+            $courtHourArray = mysqli_fetch_array($courtHourResult);
 
             //Save off the first reservation time
             
@@ -1228,7 +1228,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
             $dayOfWeek = gmdate("w", $nextday);
             $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtid";
             $courtHourResult = db_query($courtHourQuery);
-            $courtHourArray = mysql_fetch_array($courtHourResult);
+            $courtHourArray = mysqli_fetch_array($courtHourResult);
 
             //Save off the first reservation time
             
@@ -1321,7 +1321,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
             $dayOfWeek = gmdate("w", $nextday);
             $courtHourQuery = "SELECT * from tblCourtHours WHERE dayid = $dayOfWeek AND courtid = $courtid";
             $courtHourResult = db_query($courtHourQuery);
-            $courtHourArray = mysql_fetch_array($courtHourResult);
+            $courtHourArray = mysqli_fetch_array($courtHourResult);
 
             //Save off the first reservation time
             

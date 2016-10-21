@@ -57,7 +57,7 @@ $currentuserteamresult = db_query($currentuserteamquery);
 
 //Build an single dimensional array for current user teams
 $currentUserStack = array();
-while ($currentuserteamarray = mysql_fetch_array($currentuserteamresult)) {
+while ($currentuserteamarray = mysqli_fetch_array($currentuserteamresult)) {
     array_push($currentUserStack, $currentuserteamarray['teamid']);
 }
 
@@ -72,7 +72,7 @@ $currentuserpartnerteamresult = db_query($currentuserpartnerteamquery);
 
 //Build an single dimensional array for current users partners teams
 $currentUserPartnerStack = array();
-while ($currentuserpartnerteamarray = mysql_fetch_array($currentuserpartnerteamresult)) {
+while ($currentuserpartnerteamarray = mysqli_fetch_array($currentuserpartnerteamresult)) {
     array_push($currentUserPartnerStack, $currentuserpartnerteamarray['teamid']);
 }
 $teamexistsarray = array_intersect($currentUserStack, $currentUserPartnerStack);

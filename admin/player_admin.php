@@ -86,14 +86,14 @@ function validate_form($searchname) {
  */
 function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME) {
      
-    if (mysql_num_rows($playerresult) < 1) {
+    if (mysqli_num_rows($playerresult) < 1) {
         $errormsg = "Sorry, no results found.";
         include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
     } else {
         include ($_SESSION["CFG"]["templatedir"] . "/player_admin_form.php");
         mysql_data_seek($playerresult, 0);
         $num_fields = mysql_num_fields($playerresult);
-        $num_rows = mysql_num_rows($playerresult);
+        $num_rows = mysqli_num_rows($playerresult);
 ?>
 
 <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/csvServer.php" method="post">
@@ -110,8 +110,8 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
     <th colspan="2"></th>
   </tr>
   <?php
-        $rownum = mysql_num_rows($playerresult);
-        while ($row = mysql_fetch_array($playerresult)) {
+        $rownum = mysqli_num_rows($playerresult);
+        while ($row = mysqli_fetch_array($playerresult)) {
             $rc = (($rownum / 2 - intval($rownum / 2)) > .1) ? "lightrow" : "darkrow";
 ?>
   <tr class="<?=$rc?>">

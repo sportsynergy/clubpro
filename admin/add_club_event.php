@@ -39,7 +39,7 @@ $eventid = $_REQUEST["clubeventid"];
 
 if (isset($eventid)) {
     $clubEventResult = loadClubEvent($eventid);
-    $clubEventArray = mysql_fetch_array($clubEventResult);
+    $clubEventArray = mysqli_fetch_array($clubEventResult);
     $frm = $clubEventArray;
 }
 

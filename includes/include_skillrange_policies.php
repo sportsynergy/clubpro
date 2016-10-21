@@ -61,16 +61,16 @@ function removeSkillRangePolicy(policyid)
         </tr>
       </table>
       <table width="450" cellpadding="1" cellspacing="0" border="0">
-        <?  if( mysql_num_rows($skillRangePolicies) < 1){   ?>
+        <?  if( mysqli_num_rows($skillRangePolicies) < 1){   ?>
         <tr>
           <td class="normal" colspan="2">No Skill Range Policies Defined.</td>
         </tr>
         <?   } else {    ?>
         <? 
                                 
-                                $rownum = mysql_num_rows($skillRangePolicies);
+                                $rownum = mysqli_num_rows($skillRangePolicies);
                                 
-                                while($skillRangePolicy = mysql_fetch_array($skillRangePolicies)){
+                                while($skillRangePolicy = mysqli_fetch_array($skillRangePolicies)){
                                 		$rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
                                 ?>
         <tr class="<?=$rc?>" >

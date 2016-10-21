@@ -41,7 +41,7 @@
            </tr>
           <?
 
-              $rownum = mysql_num_rows($userHistoryResult);
+              $rownum = mysqli_num_rows($userHistoryResult);
               while ($userHistory = db_fetch_array($userHistoryResult)) {
 
 

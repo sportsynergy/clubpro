@@ -83,7 +83,7 @@ function onSubmitButtonClicked(){
                       //Get Club Players
                  $courtsDropDown = get_sitecourts_dropdown(get_siteid());
 
-                 while($row = mysql_fetch_array($courtsDropDown)) { ?>
+                 while($row = mysqli_fetch_array($courtsDropDown)) { ?>
                 <option value="<?=$row['courtid']?>" <?=$skillRangePolicy['courtid']==$row['courtid'] ? "selected" : "" ?> >
                 <?=$row['courtname']?>
                 </option>
@@ -102,7 +102,7 @@ function onSubmitButtonClicked(){
                       //Get Club Players
                  $dowList = get_dow_dropdown();
 
-                 while($row = mysql_fetch_array($dowList)) { ?>
+                 while($row = mysqli_fetch_array($dowList)) { ?>
                 <option value="<?=$row['dayid']?>" <?=$skillRangePolicy['dayid'] == $row['dayid'] ? "selected" : ""?>>
                 <?=$row['name']?>
                 </option>

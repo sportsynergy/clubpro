@@ -38,7 +38,7 @@ if ($command == $next) {
 				AND clubs.clubid = clubuser.clubid";
     $result = db_query($query);
     
-    if (mysql_num_rows($result) == 0) {
+    if (mysqli_num_rows($result) == 0) {
         $response = "no users found";
     } else {
         $timezone = mysql_result($result, 0);
@@ -59,7 +59,7 @@ if ($command == $next) {
 						LIMIT 1";
         $result = db_query($query);
         
-        if (mysql_num_rows($result) == 0) {
+        if (mysqli_num_rows($result) == 0) {
             $response = "No upcoming reservations found.";
         } else {
             $resObj = db_fetch_object($result);
@@ -73,7 +73,7 @@ if ($command == $next) {
             $date = gmdate("l F j", $resObj->time);
             $hour = gmdate("g:i a", $resObj->time);
             
-            if (mysql_num_rows($result2) < 2) {
+            if (mysqli_num_rows($result2) < 2) {
                 $response = "$playerOneObj->firstname $playerOneObj->lastname is looking for a game on $resObj->courtname at $hour";
             } else {
                 $response = "$playerOneObj->firstname $playerOneObj->lastname and $playerTwoObj->firstname $playerTwoObj->lastname are playing on $resObj->courtname $date at $hour";

@@ -18,38 +18,5 @@ if (!isset($time) || !isset($vendor) || !isset($userid) ||  !isset($page) || !is
 } 
 
  
-// Decode the "expected" signature
-// - urldecode is not used, causes problems with "+" turning into " " (space)
-// - base64_decode
-$signature = base64_decode($value);
-if (isDebugEnabled(1)) logMessage("choe3: signature: ". $signature);
-
- 
-// Concat params
-$args = $time.'|'.$vendor.'|'.$userid.'|'.$targetpage;
-if (isDebugEnabled(1)) logMessage("choe3: args: ". $args);
- 
-// Convert to correct encoding
-$data = mb_convert_encoding($args, "UTF-16LE");
-if (isDebugEnabled(1)) logMessage("choe3: data: ". $data);
- 
-
-// Turn setting into public key (string -> key)
-$pubkeyid = openssl_get_publickey('./csc_pub.pem');
- 
-// Get Result of verification of signature
-$ok = openssl_verify($data, $signature, $pubkeyid);
-
-if ($ok == 1) {
- 
-	// All good, signature is ok
-} elseif ($ok == 0) {
-	if (isDebugEnabled(1)) logMessage("choe3: Invalid Request From Club Website ");
-
-	return false;
-} else {
-	// echo "ugly, error checking signature";
-	if (isDebugEnabled(1)) logMessage("choe3: Problem checking signagure ");
-	return;
-}
+header( 'Location: http://www.sportsynergy.net/'.$_SESSION["CFG"]["wwwroot"]."clubs/cs-squash/index.php?username=."$userid".&password=bff23476a33b6bfe3b0353826940edd3" ) ; 
 ?>

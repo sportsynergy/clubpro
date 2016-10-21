@@ -98,14 +98,14 @@ function validate_form($searchname) {
  */
 function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
     
-    if (mysql_num_rows($playerResults) < 1) {
+    if (mysqli_num_rows($playerResults) < 1) {
         $errormsg = "Nobody by that name here.";
         include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
     } else {
         include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");
         mysql_data_seek($playerResults, 0);
         $num_fields = mysql_num_fields($playerResults);
-        $num_rows = mysql_num_rows($playerResults);
+        $num_rows = mysqli_num_rows($playerResults);
 ?>
 <table cellpadding="20" width="100%" class="bordertable">
   <tr class="loginth">
@@ -118,8 +118,8 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
     <th></th>
   </tr>
   <?php
-        $rownum = mysql_num_rows($playerResults);
-        while ($playerarray = mysql_fetch_array($playerResults)) {
+        $rownum = mysqli_num_rows($playerResults);
+        while ($playerarray = mysqli_fetch_array($playerResults)) {
             $rc = (($rownum / 2 - intval($rownum / 2)) > .1) ? "darkrow" : "lightrow";
 ?>
   <tr class="<?=$rc?>" >

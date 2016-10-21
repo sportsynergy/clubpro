@@ -74,7 +74,7 @@ ORDER BY reservations.time";
 $result = db_query($query);
 
 // Print the Data
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
     $csvDataArray = array();
     $time = gmdate("g:i a", $row['time'] );
     $date = gmdate("l F j, Y", $row['time'] );

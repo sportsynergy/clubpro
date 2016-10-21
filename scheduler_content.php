@@ -85,7 +85,7 @@ if (isset($_POST["frompickform"])) {
 if (isset($username) && isset($password) && !is_logged_in()) {
     $usersResult = getAllUsersWithIdResult($username, $clubid);
     
-    if (mysql_num_rows($usersResult) > 1) {
+    if (mysqli_num_rows($usersResult) > 1) {
         include ($_SESSION["CFG"]["templatedir"] . "/pick_user_form.php");
         die;
     } else {
@@ -118,7 +118,7 @@ if (isset($courtGroupFromForm)) {
 
 // Set the Court Group ID
 
-if (mysql_num_rows($groupingResult) > 0 && !isset($_SESSION["courtGroup"][$siteid])) {
+if (mysqli_num_rows($groupingResult) > 0 && !isset($_SESSION["courtGroup"][$siteid])) {
     $_SESSION["courtGroup"][$siteid] = mysql_result($groupingResult, 0);
     unset($_SESSION["courtWindowStart"]);
 }
@@ -127,7 +127,7 @@ if (mysql_num_rows($groupingResult) > 0 && !isset($_SESSION["courtGroup"][$sitei
 // someone already has the some session variable set (very rare!)
 
 
-if (mysql_num_rows($groupingResult) == 0) {
+if (mysqli_num_rows($groupingResult) == 0) {
     unset($_SESSION["courtGroup"]);
 }
 
@@ -192,7 +192,7 @@ else {
 $currentCourtResult = db_query($courtquery);
 
 //We are going to need this.
-$totalCurrentCourts = mysql_num_rows($currentCourtResult);
+$totalCurrentCourts = mysqli_num_rows($currentCourtResult);
 
 //Get the Total Court Count.  If courts are grouped, get this, if not count all of the courts
 
@@ -210,7 +210,7 @@ if (isset($_SESSION["courtGroup"][$siteid])) {
 
 //Get the total courts for the site (not all will be displayed)
 $totalCourtResult = db_query($totalCourtsQuery);
-$totalCourts = mysql_num_rows($totalCourtResult);
+$totalCourts = mysqli_num_rows($totalCourtResult);
 
 //Get General Club info
 $clubquery = "SELECT * from tblClubs WHERE clubid='" . $clubid . "'";
@@ -257,8 +257,8 @@ $hourspolicyQuery = "SELECT * from tblHoursPolicy WHERE siteid='$siteid'
                     AND day = $currDay";
 $hourPolicyResult = db_query($hourspolicyQuery);
 
-if (mysql_num_rows($hourPolicyResult) > 0) {
-    $policyArray = mysql_fetch_array($hourPolicyResult);
+if (mysqli_num_rows($hourPolicyResult) > 0) {
+    $policyArray = mysqli_fetch_array($hourPolicyResult);
     $otimearray = explode(":", $policyArray[opentime]);
     $ctimearray = explode(":", $policyArray[closetime]);
     $ohour = $otimearray[0];
@@ -345,7 +345,7 @@ if ($clubid) {
 	
 			 $groupingResult = db_query($grouping);
 			 
-			 if ( mysql_num_rows($groupingResult) > 0 ) { 
+			 if ( mysqli_num_rows($groupingResult) > 0 ) { 
 			 	
 			 ?>
 <tr>
@@ -422,7 +422,7 @@ if ($clubid) {
                   
                   
 	                  
-	              if(mysql_num_rows($hourPolicyResult)==0){
+	              if(mysqli_num_rows($hourPolicyResult)==0){
 	                  $otimearray = explode (":", $hoursobj->opentime);
 	                  $ctimearray = explode (":", $hoursobj->closetime);
 	                  $ohour = $otimearray[0];
@@ -519,7 +519,7 @@ if ($clubid) {
 						
 						$hoursResult = db_query($hoursQuery);
 						
-						if( mysql_num_rows($hoursResult) > 0){
+						if( mysqli_num_rows($hoursResult) > 0){
 							$hoursDuration = mysql_result($hoursResult,0);
 							$i = $i + $hoursDuration * 60;
 						}
@@ -595,12 +595,12 @@ if ($clubid) {
 		                                                         WHERE tblReservations.reservationid=".$residobj->reservationid;
                                       	 
                                                 $guestresult = db_query($guestquery);
-                                                $guestarray = mysql_fetch_array($guestresult);
+                                                $guestarray = mysqli_fetch_array($guestresult);
                                                 $guest1 = $guestarray['name'];
                                                 $guest2 = "";
                                                 	
-	                                      	if( mysql_num_rows($guestresult) > 1){ 
-				                                       $guestarray = mysql_fetch_array($guestresult); 
+	                                      	if( mysqli_num_rows($guestresult) > 1){ 
+				                                       $guestarray = mysqli_fetch_array($guestresult); 
 				                                       $guest2 = $guestarray['name'];
 				                             }
       
@@ -618,7 +618,7 @@ if ($clubid) {
                                        if($residobj->usertype==0){
 
                                                  //Check to see if this was made needing a player
-                                                 if ( mysql_num_rows($useridresult)==1){
+                                                 if ( mysqli_num_rows($useridresult)==1){
 
                                                  	$useridarray = db_fetch_array($useridresult);
                                                  	$userid1 = $useridarray['userid']; 
@@ -630,7 +630,7 @@ if ($clubid) {
                                                   	
                                                   	$useridarray = db_fetch_array($useridresult);
                                                   	$userid1 = $useridarray['userid'];
-                                                  	$useridarray = mysql_fetch_array($useridresult); 
+                                                  	$useridarray = mysqli_fetch_array($useridresult); 
                                                   	$userid2 = $useridarray['userid'];
                                                   	
                                                   		// a little defense for corrupt data
@@ -778,7 +778,7 @@ if ($clubid) {
 										    $useridarray = db_fetch_array($useridresult);
 										
                                          	$userid1 = $useridarray['userid'];
-                                            $useridarray = mysql_fetch_array($useridresult); 
+                                            $useridarray = mysqli_fetch_array($useridresult); 
                                             $userid2 = $useridarray['userid'];
                                                 
                                            printSinglesReservation($userid1, $userid2, $i, $courtobj->courtid, $residobj->matchtype, true, $residobj->locked, true, $residobj->creator, $residobj->reservationid);
@@ -823,10 +823,10 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
 	                                                 				INNER JOIN tblReservations ON tblkpGuestReservations.reservationid = tblReservations.reservationid
 	                                                 				WHERE tblReservations.reservationid=".$residobj->reservationid;
 			                                  $guestresult = db_query($guestquery);
-			                                  $guestarray = mysql_fetch_array($guestresult);  
+			                                  $guestarray = mysqli_fetch_array($guestresult);  
 
 			                                  $guest1 = $guestarray['name'];
-			                                  $guestarray = mysql_fetch_array($guestresult);
+			                                  $guestarray = mysqli_fetch_array($guestresult);
 			                                  $guest2 = $guestarray['name'];
 			                                  
 			                                  printGuestReservation($guest1, $guest2, $i, $courtobj->courtid, $courtobj->matchtype, true);
@@ -841,7 +841,7 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
 
 		                                  		$useridresult = getSinglesReservationUser($residobj->reservationid);
      
-                                                   if( mysql_num_rows($useridresult)==1 ) { 
+                                                   if( mysqli_num_rows($useridresult)==1 ) { 
                                                   		
                                                    		
                                                    	     $useridarray = db_fetch_array($useridresult);

@@ -35,7 +35,7 @@ function removeHoursPolicy(policyid)
 		            <td class="medbold">Close Time</td>
 		            <td></td>
 		       </tr>
-		       <? while($clubPolicy = mysql_fetch_array($clubPolicies)){?>
+		       <? while($clubPolicy = mysqli_fetch_array($clubPolicies)){?>
 		
 		        <tr>
 		            <td class="normal"><?=$clubPolicy['clubname'] ?></td>

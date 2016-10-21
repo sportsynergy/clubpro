@@ -45,7 +45,7 @@
 <?
 $clubEventsResult = getClubEvents( get_clubid() );
 
-if(mysql_num_rows($clubEventsResult) > 0){ ?>
+if(mysqli_num_rows($clubEventsResult) > 0){ ?>
 	
 	
 <h2 style="padding-top: 15px">Club Events</h2>
@@ -53,7 +53,7 @@ if(mysql_num_rows($clubEventsResult) > 0){ ?>
 
 <?
 	
-while($clubEvent = mysql_fetch_array($clubEventsResult)){ ?>
+while($clubEvent = mysqli_fetch_array($clubEventsResult)){ ?>
 	
 	<li>
 	<a href="javascript:submitForm('loadClubEventForm<?=$clubEvent['id']?>')">

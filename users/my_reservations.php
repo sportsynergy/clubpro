@@ -74,7 +74,7 @@ $anyboxesquery = "SELECT tblBoxLeagues.boxid
 
 $anyboxesresult = db_query($anyboxesquery);
 
-if(mysql_num_rows($anyboxesresult)>0){
+if(mysqli_num_rows($anyboxesresult)>0){
 
 ?>
 
@@ -325,7 +325,7 @@ function printSinglesUpcomingReservation($reservationID){
 
   // run the query on the database
   $courtdetailsresult = db_query($courtdetailsquery);
-  $numrows = mysql_num_rows($courtdetailsresult);
+  $numrows = mysqli_num_rows($courtdetailsresult);
 
    //Find out if the player is in need of an opponent.  If only one row is in the result, we
    // can assume that the player doesn't have a partner
@@ -412,7 +412,7 @@ function printDoublesUpcomingReservation($reservationID){
             $ddetailsresult = db_query($ddetailsquery);
 
             //Get the number of rows in the result
-            $numrows = mysql_num_rows($ddetailsresult);
+            $numrows = mysqli_num_rows($ddetailsresult);
 
             if ($numrows!=2){
 
@@ -464,7 +464,7 @@ function printSinglesPastReservation($reservationID){
 
 
   //Get the number of rows in the result
-  $numrows = mysql_num_rows($courtdetailsresult);
+  $numrows = mysqli_num_rows($courtdetailsresult);
 
    //Find out if the player is in need of an opponent.  If only one row is in the result, we
    // can assume that the player doesn't have a partner
@@ -558,7 +558,7 @@ function printDoublesPastReservation($reservationID){
             $ddetailsresult = db_query($ddetailsquery);
 
             //Get the number of rows in the result
-            $numrows = mysql_num_rows($ddetailsresult);
+            $numrows = mysqli_num_rows($ddetailsresult);
 
             if ($numrows!=2){
 

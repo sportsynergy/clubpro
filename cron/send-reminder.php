@@ -33,7 +33,7 @@ class ReminderService{
 						WHERE sites.reminders IN ('5','6','7','8','9','10')";
 	
 	  	$result = db_query($query);
-		while($sites_array = mysql_fetch_array($result) ){
+		while($sites_array = mysqli_fetch_array($result) ){
 				
 			$siteprefs = getSitePreferences($sites_array['siteid']);
 			$_SESSION["siteprefs"] = $siteprefs;
@@ -70,9 +70,9 @@ class ReminderService{
 
 					$res_result = db_query($reservations);
 
-					if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule:  found ". mysql_num_rows($res_result) ." reservations");
+					if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule:  found ". mysqli_num_rows($res_result) ." reservations");
 						
-					while( $res_array = mysql_fetch_array($res_result ) ){
+					while( $res_array = mysqli_fetch_array($res_result ) ){
 
 						$this->sendReminder($res_array['usertype'],
 									$res_array['reservationid'],
@@ -109,7 +109,7 @@ class ReminderService{
 					$event_result = db_query($eventreservations);
 
 						
-					while( $event_array = mysql_fetch_array($event_result ) ){
+					while( $event_array = mysqli_fetch_array($event_result ) ){
 
 						if( $event_array['playerlimit'] > $event_array['spotstaken'] ){
 
@@ -148,7 +148,7 @@ class ReminderService{
 					WHERE reminders = '24'";
 
 		$result = db_query($query);
-		while($sites_array = mysql_fetch_array($result) ){
+		while($sites_array = mysqli_fetch_array($result) ){
 
 			$siteprefs = getSitePreferences($sites_array['siteid']);
 			$_SESSION["siteprefs"] = $siteprefs;
@@ -188,7 +188,7 @@ class ReminderService{
 			$res_result = db_query($reservations);
 
 
-			while( $res_array = mysql_fetch_array($res_result ) ){
+			while( $res_array = mysqli_fetch_array($res_result ) ){
 				
 				$this->sendReminder($res_array['usertype'],
 						 $res_array['reservationid'],
@@ -224,7 +224,7 @@ class ReminderService{
 
 			$event_result = db_query($eventreservations);
 				
-			while( $event_array = mysql_fetch_array($event_result ) ){
+			while( $event_array = mysqli_fetch_array($event_result ) ){
 
 				if( $event_array['playerlimit'] > $event_array['spotstaken'] ){
 					$this->sendEventReminder($event_array['reservationid'],
@@ -294,15 +294,15 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 							
 	$doubles_result = db_query($doubles_query);
 
-	if(mysql_num_rows($doubles_result) != 4 ){
+	if(mysqli_num_rows($doubles_result) != 4 ){
 		if (isDebugEnabled(1)) logMessage("send-reminder: $reservationid is not a full doubles reservation, skipping");
 		return;
 	}
 		
-	$player_one = mysql_fetch_array($doubles_result);
-	$player_two = mysql_fetch_array($doubles_result);
-	$player_three = mysql_fetch_array($doubles_result);
-	$player_four = mysql_fetch_array($doubles_result);
+	$player_one = mysqli_fetch_array($doubles_result);
+	$player_two = mysqli_fetch_array($doubles_result);
+	$player_three = mysqli_fetch_array($doubles_result);
+	$player_four = mysqli_fetch_array($doubles_result);
 		
 	// partner, matchtype, otherguy1, otherguy2, courtname, time
 	$var = new Object;
@@ -397,13 +397,13 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
 						
 	$singles_result = db_query($singles_query);
 	
-	if(mysql_num_rows($singles_result) != 2 ){
+	if(mysqli_num_rows($singles_result) != 2 ){
 		if (isDebugEnabled(1)) logMessage("send-reminder: $reservationid is not a full singles reservations, skipping");
 		return;
 	}
 	
-	$player_one = mysql_fetch_array($singles_result);
-	$player_two = mysql_fetch_array($singles_result);
+	$player_one = mysqli_fetch_array($singles_result);
+	$player_two = mysqli_fetch_array($singles_result);
 	
 	// matchtype, courtname, time, otherguy
 	$var = new Object;
@@ -470,7 +470,7 @@ private function sendEventReminder($reservationid, $eventname, $courtname, $time
 	$event_result = db_query($emailidquery);
 
 	 $to_emails = array();
-	 while ($emailidarray = mysql_fetch_array($event_result)) {
+	 while ($emailidarray = mysqli_fetch_array($event_result)) {
 
 	 	if( !empty($emailidarray['firstname']) 
 	 		&& !empty($emailidarray['lastname']) 

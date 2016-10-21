@@ -44,7 +44,7 @@ $eventQuery = "SELECT events.eventid, events.playerlimit, reservations.locked FR
 									AND events.eventid = reservations.eventid
 									AND reservations.enddate IS NULL";
 $eventIdResult = db_query($eventQuery);
-$eventArray = mysql_fetch_array($eventIdResult);
+$eventArray = mysqli_fetch_array($eventIdResult);
 ?>
 
 <script>
@@ -249,7 +249,7 @@ function onCancelButtonClicked(){
 				 <tr>
 				 	<td>
 				 		<span class="label">Here is who is coming to this: </span>
-				 		<? if($eventArray['playerlimit'] != mysql_num_rows($eventplayerResult )
+				 		<? if($eventArray['playerlimit'] != mysqli_num_rows($eventplayerResult )
 				 		|| $amISignedup 
 				 		) { ?>
 				 		<span class="normalsm">
@@ -273,12 +273,12 @@ function onCancelButtonClicked(){
 				 <?
 				 }
 				 
-				 	if( mysql_num_rows($eventplayerResult) > 0 ){ 
+				 	if( mysqli_num_rows($eventplayerResult) > 0 ){ 
 				 		
 				 		//If anyone has signed up, don't let the administrator change the event
 				 		$allowChangeEvent = false;
 				 		
-						while($player = mysql_fetch_array($eventplayerResult)){ ?>
+						while($player = mysqli_fetch_array($eventplayerResult)){ ?>
 							<tr>
 								<td style="padding: 1px">
 								<?=$player['firstname']?> <?=$player['lastname']?>

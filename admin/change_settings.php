@@ -72,15 +72,15 @@ if (isset($_POST['submitme'])) {
 
         // Reset these pointers
         
-        if (mysql_num_rows($extraParametersResult) > 0) {
+        if (mysqli_num_rows($extraParametersResult) > 0) {
             mysql_data_seek($extraParametersResult, 0);
         }
         
-        if (mysql_num_rows($availbleSports) > 0) {
+        if (mysqli_num_rows($availbleSports) > 0) {
             mysql_data_seek($availbleSports, 0);
         }
         
-        if (mysql_num_rows($availableSites) > 0) {
+        if (mysqli_num_rows($availableSites) > 0) {
             mysql_data_seek($availableSites, 0);
         }
 
@@ -168,8 +168,8 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
 
         //Now set the sites
 
-        for ($i = 0; $i < mysql_num_rows($availbleSports); ++$i) {
-            $courtTypeArray = mysql_fetch_array($availbleSports);
+        for ($i = 0; $i < mysqli_num_rows($availbleSports); ++$i) {
+            $courtTypeArray = mysqli_fetch_array($availbleSports);
             
             if ($frm["courttype$courtTypeArray[courttypeid]"]) {
                 
@@ -190,10 +190,10 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
         }
 
         //Now set the sites
-        for ($i = 0; $i < mysql_num_rows($availableSites); ++$i) {
+        for ($i = 0; $i < mysqli_num_rows($availableSites); ++$i) {
             
             if (isDebugEnabled(1)) logMessage("Going through the available sites");
-            $siteArray = mysql_fetch_array($availableSites);
+            $siteArray = mysqli_fetch_array($availableSites);
             
             if ($frm["clubsite$siteArray[siteid]"]) {
                 
@@ -272,7 +272,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
     }
 
     // Update the Custom Parameters
-    while ($parameterArray = mysql_fetch_array($extraParametersResult)) {
+    while ($parameterArray = mysqli_fetch_array($extraParametersResult)) {
         $parameterId = $parameterArray['parameterid'];
         
         if ($frm["parameter-$parameterId"]) {

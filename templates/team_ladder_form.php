@@ -7,7 +7,7 @@ $playerlocked = false;
 $myteamid =0;
 $userid = get_userid();
 $teams = getTeamsForUser($userid);
-$teamrows = mysql_num_rows($teams);
+$teamrows = mysqli_num_rows($teams);
 $teamINClause = array();
 
 //build in clause
@@ -26,8 +26,8 @@ if(count($teamINClause) > 0 ){
 	$query = sprintf($rawQuery, implode(',',$teamINClause), $courttypeid, get_clubid() );
 
 	$result = db_query($query);
-	if( mysql_num_rows($result) > 0 ){
-		$ladderplayer = mysql_fetch_array($result);
+	if( mysqli_num_rows($result) > 0 ){
+		$ladderplayer = mysqli_fetch_array($result);
 		$playerposition = $ladderplayer['ladderposition'];
 		$playerlocked = $ladderplayer['locked']=="y" ? true : false;
 		$myteamid = $ladderplayer['userid'];

@@ -236,7 +236,7 @@ function getLadderTeam($courttypeid, $clubid) {
 				ORDER BY ladder.ladderposition";
     $result = db_query($query);
     $array = array();
-    while ($player = mysql_fetch_array($result)) {
+    while ($player = mysqli_fetch_array($result)) {
 
         //get users for team id
         $playerarray = getFullnameForTeamPlayers($player['userid']);
@@ -268,7 +268,7 @@ function isPlayingInLadder($userid, $courttypeid) {
     
     if (isDebugEnabled(1)) logMessage("team_ladder.isPlayingInLadder checking userid $userid and courttypeid $courttypeid");
     $teams = getTeamsForUser($userid);
-    $teamrows = mysql_num_rows($teams);
+    $teamrows = mysqli_num_rows($teams);
     $teamINClause = "";
 
     //if they aren't on any teams, they sure as hell aren't on the ladder
@@ -279,7 +279,7 @@ function isPlayingInLadder($userid, $courttypeid) {
 
     //build in clause
     for ($i = 0; $i < $teamrows; ++$i) {
-        $team = mysql_fetch_array($teams);
+        $team = mysqli_fetch_array($teams);
         
         if ($i != 0) {
             $teamINClause.= ",";
@@ -288,7 +288,7 @@ function isPlayingInLadder($userid, $courttypeid) {
     }
     $query = "SELECT 1 FROM tblClubLadder WHERE userid IN ($teamINClause) AND courttypeid = $courttypeid AND clubid = " . get_clubid() . " AND enddate IS NULL";
     $result = db_query($query);
-    $rows = mysql_num_rows($result);
+    $rows = mysqli_num_rows($result);
     $value = $rows > 0 ? "is" : "is not";
     
     if (isDebugEnabled(1)) logMessage("team_ladder.isPlayingInLadder: $userid  $value in the ladder for courttype $courttypeid.");

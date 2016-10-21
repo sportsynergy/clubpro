@@ -162,8 +162,8 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
     $clubUserResult = db_query($clubUserQuery);
 
     //Now set the rankings
-    for ($i = 0; $i < mysql_num_rows($availbleSports); ++$i) {
-        $courtTypeArray = mysql_fetch_array($availbleSports);
+    for ($i = 0; $i < mysqli_num_rows($availbleSports); ++$i) {
+        $courtTypeArray = mysqli_fetch_array($availbleSports);
         
         if ($frm["courttype$courtTypeArray[courttypeid]"]) {
             $query = "INSERT INTO `tblUserRankings`
@@ -174,8 +174,8 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
     }
 
     //Now set the sites
-    for ($i = 0; $i < mysql_num_rows($availableSites); ++$i) {
-        $siteArray = mysql_fetch_array($availableSites);
+    for ($i = 0; $i < mysqli_num_rows($availableSites); ++$i) {
+        $siteArray = mysqli_fetch_array($availableSites);
         
         if ($frm["clubsite$siteArray[siteid]"]) {
             db_query("INSERT INTO `tblkupSiteAuth` ( `userid` , `siteid` ) VALUES ($userid, " . $siteArray['siteid'] . ")");
@@ -183,7 +183,7 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
     }
 
     // Finally add in the extra parameters
-    while ($parameterArray = mysql_fetch_array($extraParametersResult)) {
+    while ($parameterArray = mysqli_fetch_array($extraParametersResult)) {
         $parameterId = $parameterArray['parameterid'];
         
         if ($frm["parameter-$parameterId"]) {

@@ -55,7 +55,7 @@ function getSiteDetail($siteid){
 	
 	$query = "SELECT * from tblClubSites where siteid = '$siteid' ";
 	$result = db_query($query);
-	return mysql_fetch_array($result);
+	return mysqli_fetch_array($result);
 }
 
 ?>

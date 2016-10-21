@@ -243,7 +243,7 @@ function verify_login($username, $password, $encodedpassword) {
     
     // If the login fails see if the superpassword was used
     
-    if (mysql_num_rows($loginResult) == 0) {
+    if (mysqli_num_rows($loginResult) == 0) {
 
         //encode the superpassword
         // If they used the superpassword, then just get the user.
@@ -348,7 +348,7 @@ function amIaBuddyOf($userid) {
     $imabuddy = FALSE;
     $imabuddyQuery = "SELECT buddyid FROM tblBuddies WHERE userid=$userid";
     $imabuddyResult = db_query($imabuddyQuery);
-    while ($imabuddyArray = mysql_fetch_array($imabuddyResult)) {
+    while ($imabuddyArray = mysqli_fetch_array($imabuddyResult)) {
         
         if ($imabuddyArray['buddyid'] == get_userid()) {
             $imabuddy = TRUE;
@@ -365,7 +365,7 @@ function isABuddyOfMine($buddyid) {
     $isABuddy = FALSE;
     $imabuddyQuery = "SELECT buddyid FROM tblBuddies WHERE userid=" . get_userid();
     $imabuddyResult = db_query($imabuddyQuery);
-    while ($imabuddyArray = mysql_fetch_array($imabuddyResult)) {
+    while ($imabuddyArray = mysqli_fetch_array($imabuddyResult)) {
         
         if ($imabuddyArray['buddyid'] == $buddyid) {
             $isABuddy = TRUE;
@@ -406,7 +406,7 @@ function is_inabox($courtid, $userid) {
     // run the query on the database
     $amiinaboxresult = db_query($amiinaboxquery);
     
-    if (mysql_num_rows($amiinaboxresult) > 0) {
+    if (mysqli_num_rows($amiinaboxresult) > 0) {
         $amIinThisBox = TRUE;
     }
     return $amIinThisBox;
@@ -437,7 +437,7 @@ function get_partnerbytid($tid) {
 	                      AND teamdetails.teamid=$tid
 	                      AND users.userid !=" . get_userid();
     $firstandlastresult = db_query($firstandlastquery);
-    $firstandlastarray = mysql_fetch_array($firstandlastresult);
+    $firstandlastarray = mysqli_fetch_array($firstandlastresult);
     return "$firstandlastarray[0] $firstandlastarray[1]";
 }
 /**
@@ -451,7 +451,7 @@ function isUserInClubLadder($userid, $courttypeid, $clubid) {
     $query = "SELECT 1 FROM tblClubLadder ladder WHERE ladder.userid = $userid AND ladder.courttypeid = $courttypeid AND ladder.clubid = $clubid";
     $result = db_query($query);
     
-    if (mysql_num_rows($result) > 0) {
+    if (mysqli_num_rows($result) > 0) {
         return true;
     } else {
         return false;
@@ -475,7 +475,7 @@ function isUnscoredBoxLeagueReservation($reservationid) {
 
     //If reservation hasnt't been scored
     
-    if (mysql_num_rows($results) == 2) {
+    if (mysqli_num_rows($results) == 2) {
         return true;
     }
     return false;
@@ -808,7 +808,7 @@ function require_priv_user($userid) {
 	$query = "SELECT * FROM tblkupSiteAuth WHERE userid = $userid AND siteid = $my_site";
 	$result = db_query($query);
 	
-    if (mysql_num_rows($result) == 0) {
+    if (mysqli_num_rows($result) == 0) {
         include ($_SESSION["CFG"]["templatedir"] . "/insufficient_privileges.php");
         die;
     }
@@ -825,7 +825,7 @@ function require_priv_reservation($reservationid) {
 			
 	$result = db_query($query);
 	
-    if (mysql_num_rows($result) == 0) {
+    if (mysqli_num_rows($result) == 0) {
        	if (isDebugEnabled(1)) logMessage("require_priv_reservation not allowed with site: $my_site and reservationid: $reservationid");
  		include ($_SESSION["CFG"]["templatedir"] . "/insufficient_privileges.php");
         die;
@@ -1261,7 +1261,7 @@ function email_players($resid, $emailType) {
 		                        AND reservationdetails.usertype=0
 								ORDER BY reservationdetails.userid";
         $extraPlayerResult = db_query($extraPlayerQuery);
-        $extraPlayerArray = mysql_fetch_array($extraPlayerResult);
+        $extraPlayerArray = mysqli_fetch_array($extraPlayerResult);
 
         //Get Court Type.  The reason this is done here is that in the cases of partial
         //reservations, this is empty in the query above.
@@ -1328,7 +1328,7 @@ function email_players($resid, $emailType) {
             $var->matchtype = $robj->name;
             $var->timestamp = $robj->time;
             $var->time = gmdate("l F j g:i a", $robj->time);
-            $extraPlayerArray = mysql_fetch_array($extraPlayerResult);
+            $extraPlayerArray = mysqli_fetch_array($extraPlayerResult);
             
 			// check for invalid reservation
 			if($extraPlayerArray['userid'] == 0){
@@ -1376,7 +1376,7 @@ function email_players($resid, $emailType) {
             $var->single1 = $playerOneobj->firstname . " " . $playerOneobj->lastname;
 
             //Single Player Two
-            $extraPlayerArray = mysql_fetch_array($extraPlayerResult);
+            $extraPlayerArray = mysqli_fetch_array($extraPlayerResult);
             $singlePlayerTwo = $extraPlayerArray['userid'];
             $playerTwoQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                            FROM tblUsers
@@ -1599,7 +1599,7 @@ function email_boxmembers($resid, $boxid) {
     // run the query on the database
     $emailidresult = db_query($emailidquery);
     $to_emails = array();
-    while ($emailidrow = mysql_fetch_array($emailidresult)) {
+    while ($emailidrow = mysqli_fetch_array($emailidresult)) {
         
         if (!hasPlayedBoxWith(get_userid() , $emailidrow[userid], $boxid)) {
             
@@ -1821,7 +1821,7 @@ function confirm_doubles($resid, $isNewReservation) {
 				AND reservationdetails.usertype = 1";
     $playerResult = db_query($playerQuery);
     $playerObject = mysql_fetch_object($playerResult);
-    $numofrows = mysql_num_rows($playerResult);
+    $numofrows = mysqli_num_rows($playerResult);
     $var->dns = $_SESSION["CFG"]["dns"];
     $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
     $var->support = $_SESSION["CFG"]["support"];
@@ -1872,7 +1872,7 @@ function confirm_doubles($resid, $isNewReservation) {
 
     //Prepare and send emails to single player where there is just one player in the whole reservation
     
-    if (mysql_num_rows($extraPlayerResult) == 1 && mysql_num_rows($playerResult) == 0) {
+    if (mysqli_num_rows($extraPlayerResult) == 1 && mysqli_num_rows($playerResult) == 0) {
         
 		if (isDebugEnabled(1)) logMessage("applicationlib.confirm_doubles: send emails to single player where there is only one");
 		
@@ -1897,7 +1897,7 @@ function confirm_doubles($resid, $isNewReservation) {
     }
 
     //Prepare and send emails to single players where there is more than one person looking for a partner
-    elseif (mysql_num_rows($extraPlayerResult) == 2) {
+    elseif (mysqli_num_rows($extraPlayerResult) == 2) {
         
 		if (isDebugEnabled(1)) logMessage("applicationlib.confirm_doubles: send out emails to single players where more than one is looking");
 		
@@ -1910,7 +1910,7 @@ function confirm_doubles($resid, $isNewReservation) {
 
         //Reset Counter
         
-        if (mysql_num_rows($extraPlayerResult) > 0) mysql_data_seek($extraPlayerResult, 0);
+        if (mysqli_num_rows($extraPlayerResult) > 0) mysql_data_seek($extraPlayerResult, 0);
         $to_emails = array();
         
         if (isDebugEnabled(1)) logMessage($emailbody);
@@ -1936,7 +1936,7 @@ function confirm_doubles($resid, $isNewReservation) {
     }
 
     //Prepare and send emails to single player where there is only one person needing a partner
-    elseif (mysql_num_rows($extraPlayerResult) == 1) {
+    elseif (mysqli_num_rows($extraPlayerResult) == 1) {
        
 		if (isDebugEnabled(1)) logMessage("applicationlib.confirm_doubles: send out emails where there is only one person needing a partner");
 		
@@ -1980,7 +1980,7 @@ function confirm_doubles($resid, $isNewReservation) {
     	//Reset the result pointer to the begining
 
     
-    	if (mysql_num_rows($playerResult) > 0) mysql_data_seek($playerResult, 0);
+    	if (mysqli_num_rows($playerResult) > 0) mysql_data_seek($playerResult, 0);
     	$to_emails = array();
     	while ($playerObject = mysql_fetch_object($playerResult)) {
         
@@ -2058,7 +2058,7 @@ function cancel_doubles($resid) {
     $var->clubfullname = $clubfullname;
     $var->clubadminemail = "PlayerMailer@sportsynergy.net";
     
-    if (mysql_num_rows($rresult) == 4) {
+    if (mysqli_num_rows($rresult) == 4) {
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/cancel_doubles.php", $var);
     } else {
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/cancel_doubles_looking.php", $var);
@@ -2434,7 +2434,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $robj = mysql_fetch_object($rresult);
 
 	// A little defense for a problem where teams don't have rankings
-	if( mysql_num_rows($rresult) < 4 ){
+	if( mysqli_num_rows($rresult) < 4 ){
 	
 		if (isDebugEnabled(2)) logMessage("applicationlib.report_scores_doubles: there is some bad things happening for reservation $resid");
 		return;
@@ -2585,17 +2585,17 @@ function record_score(&$frm, $source) {
         // (this will be averaged to calculate
 
         $winnerResult = getUserIdsForTeamIdWithCourtType($winner, $ctidarray[0]);
-        $playerRow = mysql_fetch_array($winnerResult);
+        $playerRow = mysqli_fetch_array($winnerResult);
         $winnerRanking = $playerRow['ranking'];
-        $playerRow = mysql_fetch_array($winnerResult);
+        $playerRow = mysqli_fetch_array($winnerResult);
         $winnerRanking+= $playerRow['ranking'];
         $winnerRanking = $winnerRanking / 2;
         
         if (isDebugEnabled(1)) logMessage("applicationlib.record_scores: Team Id $winner has a ranking of $winnerRanking");
         $loserResult = getUserIdsForTeamIdWithCourtType($loser, $ctidarray[0]);
-        $playerRow = mysql_fetch_array($loserResult);
+        $playerRow = mysqli_fetch_array($loserResult);
         $loserRanking = $playerRow['ranking'];
-        $playerRow = mysql_fetch_array($loserResult);
+        $playerRow = mysqli_fetch_array($loserResult);
         $loserRanking+= $playerRow['ranking'];
         $loserRanking = $loserRanking / 2;
         
@@ -2614,9 +2614,9 @@ function record_score(&$frm, $source) {
         mysql_data_seek($winnerResult, 0);
         mysql_data_seek($loserResult, 0);
         $winners = array();
-        $playerRow = mysql_fetch_array($winnerResult);
+        $playerRow = mysqli_fetch_array($winnerResult);
         array_push($winners, $playerRow['userid']);
-        $playerRow = mysql_fetch_array($winnerResult);
+        $playerRow = mysqli_fetch_array($winnerResult);
         array_push($winners, $playerRow['userid']);
         $winnerAdjustment = $rankingArray['winner'] - $winnerRanking;
         $playerOneRankQuery = "SELECT rankings.ranking
@@ -2648,9 +2648,9 @@ function record_score(&$frm, $source) {
 
         //For loser team
         $losers = array();
-        $playerRow = mysql_fetch_array($loserResult);
+        $playerRow = mysqli_fetch_array($loserResult);
         array_push($losers, $playerRow['userid']);
-        $playerRow = mysql_fetch_array($loserResult);
+        $playerRow = mysqli_fetch_array($loserResult);
         array_push($losers, $playerRow['userid']);
         $loserAdjustment = $loserRanking - $rankingArray['loser'];
         $playerThreeRankQuery = "SELECT rankings.ranking
@@ -2934,7 +2934,7 @@ function update_streakval(& $frm) {
 	$streakresult = db_query($streakquery);
 
 	$numberOfWins = 0;
-	while ($streakval = mysql_fetch_array($streakresult)) {
+	while ($streakval = mysqli_fetch_array($streakresult)) {
 
 		$numberOfWins += $streakval['outcome'];
 	}
@@ -3122,7 +3122,7 @@ function getTeamIDForCurrentUser($sportid, $partner) {
 
 	//Build an single dimensional array for current user teams
 	$currentUserStack = array ();
-	while ($currentuserteamarray = mysql_fetch_array($currentuserteamresult)) {
+	while ($currentuserteamarray = mysqli_fetch_array($currentuserteamresult)) {
 		array_push($currentUserStack, $currentuserteamarray['teamid']);
 	}
 
@@ -3137,7 +3137,7 @@ function getTeamIDForCurrentUser($sportid, $partner) {
 
 	//Build an single dimensional array for current users partners teams
 	$currentUserPartnerStack = array ();
-	while ($currentuserpartnerteamarray = mysql_fetch_array($currentuserpartnerteamresult)) {
+	while ($currentuserpartnerteamarray = mysqli_fetch_array($currentuserpartnerteamresult)) {
 		array_push($currentUserPartnerStack, $currentuserpartnerteamarray['teamid']);
 	}
 
@@ -3175,7 +3175,7 @@ function getFullnameForTeamPlayers($teamid){
 
 	$teamnames = array();
 
-	while( $playerarray = mysql_fetch_array($result) ){
+	while( $playerarray = mysqli_fetch_array($result) ){
 
 	 $player = array('firstname' => $playerarray['firstname'],
 	 				'lastname' => $playerarray['lastname'], 
@@ -3208,7 +3208,7 @@ function getTeamIDForPlayers($sportid, $player1, $player2) {
 
 	//Build an single dimensional array for player ones teams
 	$playerOnesTeamsStack = array ();
-	while ($player1teamarray = mysql_fetch_array($player1teamresult)) {
+	while ($player1teamarray = mysqli_fetch_array($player1teamresult)) {
 		array_push($playerOnesTeamsStack, $player1teamarray['teamid']);
 
 	}
@@ -3224,7 +3224,7 @@ function getTeamIDForPlayers($sportid, $player1, $player2) {
 
 	//Build an single dimensional array for player ones teams
 	$playerTwosTeamsStack = array ();
-	while ($player2teamarray = mysql_fetch_array($player2teamresult)) {
+	while ($player2teamarray = mysqli_fetch_array($player2teamresult)) {
 		array_push($playerTwosTeamsStack, $player2teamarray['teamid']);
 
 	}
@@ -3279,7 +3279,7 @@ function isCurrentUserOnTeam($teamid) {
 	// run the query on the database
 	$result = db_query($query);
 
-	if( mysql_num_rows($result)< 2){
+	if( mysqli_num_rows($result)< 2){
 		return 0;
 	}
 	$playerone = mysql_result($result, 0);
@@ -3392,7 +3392,7 @@ function load_site_parameter($parameterid, $userid) {
 
 	$result = db_query($query);
 
-	if( mysql_num_rows($result) > 0 ){
+	if( mysqli_num_rows($result) > 0 ){
 		return mysql_result($result, 0);
 	}else{
 		return "";
@@ -3416,7 +3416,7 @@ function load_parameter_option_name($parameterid, $optionvalue) {
 
 	$result = db_query($query);
 
-	if( mysql_num_rows($result) > 0 ){
+	if( mysqli_num_rows($result) > 0 ){
 		return mysql_result($result, 0);
 	}else{
 		return "";
@@ -3469,7 +3469,7 @@ function load_registered_sports($userid) {
 
 	$registeredSportsResult = db_query($registeredSportsQuery);
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib: found ". mysql_num_rows($registeredSportsResult). " registered sports for user: ". $userid);
+	if( isDebugEnabled(1) ) logMessage("applicationlib: found ". mysqli_num_rows($registeredSportsResult). " registered sports for user: ". $userid);
 
 	return $registeredSportsResult;
 
@@ -3779,7 +3779,7 @@ function get_record_history($userid1, $userid2, $courttypeid) {
 		                                    ORDER BY tblkpUserReservations.outcome DESC  ";
 
 		$matchResultsResult = db_query($matchResultsQuery);
-		$firstRecordArray = mysql_fetch_array($matchResultsResult);
+		$firstRecordArray = mysqli_fetch_array($matchResultsResult);
 
 		//If outcome is not zero we know that the match was scored
 		if ($firstRecordArray['outcome'] != 0) {
@@ -3821,7 +3821,7 @@ function get_record_history($userid1, $userid2, $courttypeid) {
 function return_array($sqlResult) {
 
 	$stack = array ();
-	while ($record = mysql_fetch_array($sqlResult)) {
+	while ($record = mysqli_fetch_array($sqlResult)) {
 		array_push($stack, $record[0]);
 	}
 
@@ -3872,7 +3872,7 @@ function verifyEmailUniqueOutsideClub($email, $userid, $clubid ) {
 					and clubuser.clubid != $clubid
 					AND clubuser.enddate IS NULL");
 
-	while ($row = mysql_fetch_array($qid)) {
+	while ($row = mysqli_fetch_array($qid)) {
 		if ($row['userid'] != $userid) {
 			return $row['id'];
 		}
@@ -3902,7 +3902,7 @@ function verifyEmailUniqueAtClub($email, $userid, $clubid ) {
 					AND clubuser.clubid = $clubid
 					AND clubuser.enddate IS NULL");
 
-	while ($row = mysql_fetch_array($qid)) {
+	while ($row = mysqli_fetch_array($qid)) {
 		if ($row['userid'] != $userid) {
 			return $row['id'];
 		}
@@ -3929,7 +3929,7 @@ function isEmailUniqueAtClub($email, $clubid){
 					AND clubuser.clubid = $clubid
 					AND clubuser.enddate IS NULL");
 
-	if( mysql_num_rows($qid)>0){
+	if( mysqli_num_rows($qid)>0){
 		return false;
 	}else{
 		return true;
@@ -4034,7 +4034,7 @@ function getBoxIdForUser($userid) {
 	$boxUserQuery = "SELECT boxid from tblkpBoxLeagues where userid = $userid";
 	$boxUserResult = db_query($boxUserQuery);
 
-	if (mysql_num_rows($boxUserResult) > 0) {
+	if (mysqli_num_rows($boxUserResult) > 0) {
 		$boxid = mysql_result($boxUserResult, 0);
 	} else {
 		$boxid = -1;
@@ -4262,7 +4262,7 @@ function isClubGuest($userid) {
 
 	$isClubGuestResult = db_query($isClubGuestQuery);
 
-	$isClubGuestArray = mysql_fetch_array($isClubGuestResult);
+	$isClubGuestArray = mysqli_fetch_array($isClubGuestResult);
 
 	if ($isClubGuestArray['firstname'] == "Club" && $isClubGuestArray['lastname'] == "Guest") {
 
@@ -4298,7 +4298,7 @@ function isProgramAdmin($userid) {
 				  FROM tblClubUser clubuser
 				  WHERE clubuser.userid = $userid";
 	$result = db_query($query);
-	$array = mysql_fetch_array($result);
+	$array = mysqli_fetch_array($result);
 
 	if ($array['roleid'] == 2) {
 		return true;
@@ -4320,7 +4320,7 @@ function isClubMember($userid) {
 				  FROM tblUsers users
 				  WHERE users.userid = $userid";
 	$result = db_query($query);
-	$array = mysql_fetch_array($result);
+	$array = mysqli_fetch_array($result);
 
 	if ($array['firstname'] == "Club" && $array['lastname'] == "Member") {
 		return true;
@@ -4373,7 +4373,7 @@ function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype
 	}
 
 	$result = load_skill_policies(get_siteid());
-	while ($row = mysql_fetch_array($result)) {
+	while ($row = mysqli_fetch_array($result)) {
 
 		$starttime = $row['starttime'];
 		$endtime = $row['endtime'];
@@ -4415,7 +4415,7 @@ function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype
 						$individualQueryResult = db_query($individualQuery);
 
 						//Make sure both users have a rankings
-						if (mysql_num_rows($individualQueryResult) != 2) {
+						if (mysqli_num_rows($individualQueryResult) != 2) {
 							if( isDebugEnabled(1) ) logMessage("applicationlib.validateSkillPolicies: One of these two players doesn't have a ranking ");
 							return FALSE;
 						}
@@ -4466,7 +4466,7 @@ function validateSchedulePolicies($courtid, $time, $opponent) {
 	if( isDebugEnabled(1) ) logMessage("applicationlib.validateSchedulePolicies: Validating Scheduling Policies: courtid = $courtid, time= $time, partner= $opponent ");
 
 	$result = load_reservation_policies(get_siteid());
-	while ($row = mysql_fetch_array($result)) {
+	while ($row = mysqli_fetch_array($result)) {
 
 		$starttime = $row['starttime'];
 		$endtime = $row['endtime'];
@@ -4628,7 +4628,7 @@ function countNumberOfAllResevationsMadeToday($time) {
 	$teams = getTeamsForUser($userid);
 
 
-	while($courtidArray = mysql_fetch_array($courtResult)){
+	while($courtidArray = mysqli_fetch_array($courtResult)){
 
 		$courtid = $courtidArray['courtid'];
 			
@@ -4658,16 +4658,16 @@ function countNumberOfAllResevationsMadeToday($time) {
 		4.) Count them.
 		*/
 
-		if(mysql_num_rows($teams) > 0 ){
+		if(mysqli_num_rows($teams) > 0 ){
 				
 			$teamINClause = "";
 
 			//Reset the teams
 			mysql_data_seek($teams,0);
 
-			for ($i = 0; $i < mysql_num_rows($teams); ++ $i) {
+			for ($i = 0; $i < mysqli_num_rows($teams); ++ $i) {
 					
-				$team = mysql_fetch_array($teams);
+				$team = mysqli_fetch_array($teams);
 					
 				if ($i != 0) {
 					$teamINClause .= ",";
@@ -4731,11 +4731,11 @@ function countNumberOfAllResevationsMadeTodayInWindow($starthour, $endhour, $tim
 	$teamINClause = "";
 	$userid = get_userid();
 	$teams = getTeamsForUser($userid);
-	$rows = mysql_num_rows($teams);
+	$rows = mysqli_num_rows($teams);
 
 	for ($i = 0; $i < $rows; ++ $i) {
 
-		$team = mysql_fetch_array($teams);
+		$team = mysqli_fetch_array($teams);
 
 		if ($i != 0) {
 			$teamINClause .= ",";
@@ -4799,11 +4799,11 @@ function countNumberOfCourtResevationsMadeToday($courtid, $time) {
 	$teamINClause = "";
 	$userid = get_userid();
 	$teams = getTeamsForUser($userid);
-	$rows = mysql_num_rows($teams);
+	$rows = mysqli_num_rows($teams);
 
 	for ($i = 0; $i < $rows; ++ $i) {
 
-		$team = mysql_fetch_array($teams);
+		$team = mysqli_fetch_array($teams);
 
 		if ($i != 0) {
 			$teamINClause .= ",";
@@ -4867,11 +4867,11 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 	$teamINClause = "";
 	$userid = get_userid();
 	$teams = getTeamsForUser($userid);
-	$rows = mysql_num_rows($teams);
+	$rows = mysqli_num_rows($teams);
 
 	for ($i = 0; $i < $rows; ++ $i) {
 
-		$team = mysql_fetch_array($teams);
+		$team = mysqli_fetch_array($teams);
 
 		if ($i != 0) {
 			$teamINClause .= ",";
@@ -5061,7 +5061,7 @@ function load_reservation_policy($policyid) {
 	                  WHERE policy.policyid = $policyid";
 
 	$result = db_query($query);
-	return mysql_fetch_array($result);
+	return mysqli_fetch_array($result);
 
 }
 /*****************************************************************/
@@ -5097,7 +5097,7 @@ function load_court_event($eventid){
 	                   WHERE events.eventid = $eventid";
 
 	$result = db_query($query);
-	return mysql_fetch_array($result);
+	return mysqli_fetch_array($result);
 }
 
 /**
@@ -5116,7 +5116,7 @@ function load_court_events($siteid){
 
 	$result = db_query($query);
 
-	if( isDebugEnabled(1) ) logMessage("applicationlib.load_court_events: loading court events for site $siteid. Found ". mysql_num_rows($result) . " in all");
+	if( isDebugEnabled(1) ) logMessage("applicationlib.load_court_events: loading court events for site $siteid. Found ". mysqli_num_rows($result) . " in all");
 
 	return db_query($query);
 
@@ -5142,7 +5142,7 @@ function load_skill_range_policy($policyid) {
 	                   WHERE policy.policyid = $policyid";
 
 	$result = db_query($query);
-	return mysql_fetch_array($result);
+	return mysqli_fetch_array($result);
 
 }
 
@@ -5181,7 +5181,7 @@ function isInReservation($courtid, $time, $userid){
 
 	$result = db_query($query);
 
-	if(mysql_num_rows($result) > 0 ){
+	if(mysqli_num_rows($result) > 0 ){
 		return TRUE;
 	}else{
 		return FALSE;
@@ -5275,7 +5275,7 @@ function getSitePreferencesForCourt($courtid) {
 
 	$anyboxesresult = db_query($anyboxesquery);
 
-	if(mysql_num_rows($anyboxesresult)>0){
+	if(mysqli_num_rows($anyboxesresult)>0){
 		$array['boxenabled'] = 'true';
 	}else{
 		$array['boxenabled'] = 'false';
@@ -5331,7 +5331,7 @@ function getSitePreferences($siteid) {
 
 	$anyboxesresult = db_query($anyboxesquery);
 
-	if(mysql_num_rows($anyboxesresult)>0){
+	if(mysqli_num_rows($anyboxesresult)>0){
 		$array['boxenabled'] = 'true';
 	}else{
 		$array['boxenabled'] = 'false';
@@ -5388,7 +5388,7 @@ function getSiteAttributes($siteid){
 
 	$$sportResult = db_query($sportQuery);
 
-	if(mysql_num_rows($$sportResult) > 0){
+	if(mysqli_num_rows($$sportResult) > 0){
 		array_push($attributeArray, $court_sport);
 	}
 
@@ -5401,7 +5401,7 @@ function getSiteAttributes($siteid){
 
 	$anyboxesresult = db_query($anyboxesquery);
 
-	if(mysql_num_rows($anyboxesresult)>0){
+	if(mysqli_num_rows($anyboxesresult)>0){
 		array_push($attributeArray, $web_ladder);
 	}
 
@@ -5484,7 +5484,7 @@ function isCAButNotinReservation($courtid, $time){
                           WHERE tblReservations.courtid = '$courtid'
                           AND tblReservations.time = '$time'";
 	$getCourtInfoResults = db_query($getCourtInfoQuery);
-	$getCourtInfoArray = mysql_fetch_array($getCourtInfoResults);
+	$getCourtInfoArray = mysqli_fetch_array($getCourtInfoResults);
 
 	//Check if this is a guest reservation
 	if($getCourtInfoArray['guesttype']==1){
@@ -5500,7 +5500,7 @@ function isCAButNotinReservation($courtid, $time){
                                        AND ((tblReservations.courtid)=$courtid))";
 
 		$userlookupResult = db_query($userlookupQuery);
-		while($userlookupArray = mysql_fetch_array($userlookupResult)){
+		while($userlookupArray = mysqli_fetch_array($userlookupResult)){
 			if($userlookupArray['userid']==get_userid()){
 				$isInReservation = TRUE;
 			}
@@ -5518,7 +5518,7 @@ function isCAButNotinReservation($courtid, $time){
                                   AND ((tblReservations.courtid)=$courtid))";
 
 		$doublesResult = db_query($doublesQuery);
-		while($doublesArray = mysql_fetch_array($doublesResult)){
+		while($doublesArray = mysqli_fetch_array($doublesResult)){
 			if($doublesArray['usertype']==0){
 				if($doublesArray['userid']==get_userid()){
 					$isInReservation = TRUE;
@@ -5565,7 +5565,7 @@ function isUserInPartialReservationSingles($courtid, $time){
                               AND ((tblReservations.courtid)=$courtid))";
 
 	$userlookupResult = db_query($userlookupQuery);
-	while($userlookupArray = mysql_fetch_array($userlookupResult)){
+	while($userlookupArray = mysqli_fetch_array($userlookupResult)){
 		if($userlookupArray['userid']==get_userid()){
 			$isInReservation = TRUE;
 		}
@@ -5615,7 +5615,7 @@ function isUserInPartialReservationDoubles($courtid, $time){
 
 	$userlookupResult =   db_query($userlookupQuery);
 
-	while($reservationUser = mysql_fetch_array($userlookupResult)){
+	while($reservationUser = mysqli_fetch_array($userlookupResult)){
 
 		//First check to see if current user is the one looking for a match
 		//if($reservationUser[usertype]==0 && $reservationUser[userid]==get_userid()){
@@ -5684,11 +5684,11 @@ function getFullNameForUserId($userId){
 	if( !isset($userId)) return;
 
 	$userResult = getFullNameResultForUserId($userId);
-	$userArray = mysql_fetch_array($userResult);
+	$userArray = mysqli_fetch_array($userResult);
 	$fullname = "";
 
 	//For faster results using indexes
-	if( mysql_num_rows($userResult) > 0){
+	if( mysqli_num_rows($userResult) > 0){
 		$fullname = "$userArray[0] $userArray[1]";
 	}
 
@@ -5965,8 +5965,10 @@ function getFooterMessage(){
 
 	$footerMessageQuery = "SELECT text from tblFooterMessage WHERE enddate is NULL";
 	$footMessageResult = db_query($footerMessageQuery);
-	if( mysql_num_rows($footMessageResult) > 0){
-		return mysql_result($footMessageResult,0);
+	if( mysqli_num_rows($footMessageResult) > 0){
+		
+        $footer_obj = mysqli_fetch_object($footMessageResult);
+        return $footer_obj->text;
 	}
 	else{
 		return;

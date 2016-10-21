@@ -48,8 +48,8 @@ $needpartnerquery = "SELECT reservationdetails.userid, reservationdetails.userty
 
 // run the query on the database
 $needpartnerresult = db_query($needpartnerquery);
-$playerOneArray = mysql_fetch_array($needpartnerresult);
-$playerTwoArray = mysql_fetch_array($needpartnerresult);
+$playerOneArray = mysqli_fetch_array($needpartnerresult);
+$playerTwoArray = mysqli_fetch_array($needpartnerresult);
 $playerOneQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                      FROM tblUsers
                      WHERE tblUsers.userid=$playerOneArray[userid]";
