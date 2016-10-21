@@ -303,7 +303,7 @@ else{
 	            }
 
 	           //Print out details on the doubles reservations
-	           mysql_data_seek($dcourtdetailsresult,0);
+	           mysqli_data_seek($dcourtdetailsresult,0);
 
               echo "<tr>\n";
               echo "<td width=\"30\"></td>\n";

@@ -362,7 +362,7 @@ $userid = $_REQUEST["userid"];
         $rownum = mysqli_num_rows($result);
         
        
-        while($row = mysql_fetch_row($result)) {
+        while($row = mysqli_fetch_row($result)) {
 		
        	$rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
        	

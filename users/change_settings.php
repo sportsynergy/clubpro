@@ -81,7 +81,7 @@ if (match_referer() && isset($_POST['submitme']) ) {
         update_settings($frm, $extraParametersResult);
         
         if (mysqli_num_rows($extraParametersResult) > 0) {
-            mysql_data_seek($extraParametersResult, 0);
+            mysqli_data_seek($extraParametersResult, 0);
         }
         $noticemsg = "Your profile was saved.  Good Job!<br/><br/>";
     }

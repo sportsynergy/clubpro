@@ -100,7 +100,7 @@ if (isDebugEnabled(1)) logMessage($query);
 $result = db_query($query);
 
 if (isDebugEnabled(1)) logMessage("Users.UserLookup: Found " . mysqli_num_rows($result) . " users");
-while ($row = mysql_fetch_row($result)) {
+while ($row = mysqli_fetch_row($result)) {
     echo '<item><name>' . $row[1] . ' ' . $row[2] . '</name><value>' . $row[0] . ' </value></item>';
 }
 ?>

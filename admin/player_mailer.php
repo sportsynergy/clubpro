@@ -399,7 +399,10 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 
     // run the query on the database
     $clubadminresult = db_query($clubadminquery);
-    $clubadminval = mysql_result($clubadminresult, 0);
+    $admin_array = mysqli_fetch_array($clubadminresult);
+    $clubadminval = $admin_array[0];
+
+
     $to_emails = array();
 
     // Put all of the email addresses in an array

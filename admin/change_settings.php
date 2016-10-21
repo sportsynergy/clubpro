@@ -73,15 +73,15 @@ if (isset($_POST['submitme'])) {
         // Reset these pointers
         
         if (mysqli_num_rows($extraParametersResult) > 0) {
-            mysql_data_seek($extraParametersResult, 0);
+            mysqli_data_seek($extraParametersResult, 0);
         }
         
         if (mysqli_num_rows($availbleSports) > 0) {
-            mysql_data_seek($availbleSports, 0);
+            mysqli_data_seek($availbleSports, 0);
         }
         
         if (mysqli_num_rows($availableSites) > 0) {
-            mysql_data_seek($availableSites, 0);
+            mysqli_data_seek($availableSites, 0);
         }
 
         //Save email address

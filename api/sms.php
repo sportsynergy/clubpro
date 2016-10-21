@@ -41,7 +41,8 @@ if ($command == $next) {
     if (mysqli_num_rows($result) == 0) {
         $response = "no users found";
     } else {
-        $timezone = mysql_result($result, 0);
+        $timezone_array = mysqli_fetch_array($result);
+        $timezone = $timezone_array[0];
 
         // Get the current date
         $current = mktime() + ($timezone * 3600);

@@ -97,12 +97,13 @@ function send_message($subject, $message, $siteid, $recipient) {
 
     // run the query on the database
     $clubadminresult = db_query($clubadminquery);
-    $clubadminval = mysql_result($clubadminresult, 0);
+    $clubadminval = mysqli_fetch_array($clubadminresult);
+    
     
     $to_emails = array();
     $to_emails[$recipient] = array('name' => 'Mr. Test Email');
 
-    $from_email = $clubadminval;
+    $from_email = $clubadminval[0];
     $content = new Object;
     $content->line1 = $message;
     $content->clubname = get_clubname();

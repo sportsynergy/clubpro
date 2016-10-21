@@ -56,7 +56,10 @@ function countSiteMembers($siteid) {
 			AND users.enddate IS NULL";
 			
     $getAllClubSitesResult = db_query($getMemberCountQuery);
-    return mysql_result($getAllClubSitesResult, 0);
+    $sitearray = mysqli_fetch_array($getAllClubSitesResult);
+    $count = $sitearray[0];
+
+    return $count;
 }
 /**
  *  Loads Clubsites
@@ -72,6 +75,8 @@ function loadClubSites($clubid) {
 function countSiteReservations($siteid) {
     $getSiteReservationsQuery = "SELECT count(*) " . "FROM tblReservations reservations, tblCourts courts " . "WHERE reservations.courtid = courts.courtid " . "AND courts.siteid = $siteid";
     $getSiteReservationsResult = db_query($getSiteReservationsQuery);
-    return mysql_result($getSiteReservationsResult, 0);
+    $count = mysqli_fetch_array($getSiteReservationsResult);
+
+    return $count[0];
 }
 ?>

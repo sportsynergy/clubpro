@@ -57,7 +57,7 @@ function isClubEventParticipant(&$clubEventParticipantsResult) {
     // Reset the results
     
     if (mysqli_num_rows($clubEventParticipantsResult) > 0) {
-        mysql_data_seek($clubEventParticipantsResult, 0);
+        mysqli_data_seek($clubEventParticipantsResult, 0);
     }
     return $isSignedup;
 }

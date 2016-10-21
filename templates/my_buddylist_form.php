@@ -124,7 +124,7 @@ if(isset($action) && $action=="remove"){
                 </tr>
                 <?
 				       $rownum = mysqli_num_rows($result);
-				       while($row = mysql_fetch_row($result)) { 
+				       while($row = mysqli_fetch_row($result)) { 
 				        $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "lightrow" : "darkrow";
 				       	?>
                 <tr class="<?=$rc?>">
@@ -134,7 +134,7 @@ if(isset($action) && $action=="remove"){
                     <?=$row[2]?>
                     </span></td>
                   <?
-					                mysql_data_seek($sportsResult,0);
+					                mysqli_data_seek($sportsResult,0);
 					                while($sportRow = mysqli_fetch_array($sportsResult)){
 					                        $historyArray = get_record_history(get_userid(),$row[3], $sportRow['courttypeid']);
 					                        if($sportRow['reservationtype']<2){

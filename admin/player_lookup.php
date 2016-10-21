@@ -99,7 +99,7 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
         include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
     } else {
         include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");
-        mysql_data_seek($playerResults, 0);
+        mysqli_data_seek($playerResults, 0);
         $num_fields = mysql_num_fields($playerResults);
         $num_rows = mysqli_num_rows($playerResults);
 ?>

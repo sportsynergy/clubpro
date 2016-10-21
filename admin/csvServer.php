@@ -70,7 +70,7 @@ while ($row = mysqli_fetch_array($playerresult)) {
     array_push($csvDataArray, wrapWithDoubleQuotes($row['memberid']));
     
     if (mysqli_num_rows($extraParametersResult) > 0) {
-        mysql_data_seek($extraParametersResult, 0);
+        mysqli_data_seek($extraParametersResult, 0);
     }
     while ($parameterArray = db_fetch_array($extraParametersResult)) {
         $parameterValue = load_site_parameter($parameterArray['parameterid'], $row['userid']);

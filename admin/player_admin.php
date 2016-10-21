@@ -91,7 +91,7 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
         include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
     } else {
         include ($_SESSION["CFG"]["templatedir"] . "/player_admin_form.php");
-        mysql_data_seek($playerresult, 0);
+        mysqli_data_seek($playerresult, 0);
         $num_fields = mysql_num_fields($playerresult);
         $num_rows = mysqli_num_rows($playerresult);
 ?>

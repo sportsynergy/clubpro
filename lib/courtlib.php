@@ -212,7 +212,7 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
               				FROM tblEvents events
               				WHERE events.eventid = $eventid ";
     $eventresult = db_query($eventquery);
-    $eventarray = mysqli_fetch_array($eventresult, 0);
+    $eventarray = mysqli_fetch_array($eventresult);
 
     // if this is unlocked and needs players and is !ispast set the color to seeking match, otherwise event
     // $eventclass = $eventarray['playerlimit'] > 0 && !$ispast && $locked=="n" ? "seekingmatchcl$clubid" : "eventcourt";
@@ -237,7 +237,8 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
         $eventclass = "eventcourt event-$eventid";
     }
 
-    $printtime = $inpast ? "$time" : "";
+
+    $printtime = $ispast ? "$time" : "";
 ?>
 	
 	

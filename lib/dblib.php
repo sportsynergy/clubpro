@@ -262,7 +262,7 @@ function db_field_name($qid, $fieldno) {
  */
 function db_data_seek($qid, $row) {
 	if (db_num_rows($qid)) {
-		return mysql_data_seek($qid, $row);
+		return mysqli_data_seek($qid, $row);
 	}
 }
 ?>

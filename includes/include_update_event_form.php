@@ -347,7 +347,7 @@ function onCancelButtonClicked(){
                 //Get Club Players
                  $eventDrpDown = get_site_events(get_siteid());
                  
-                 while($row = mysql_fetch_row($eventDrpDown)) {
+                 while($row = mysqli_fetch_row($eventDrpDown)) {
 
 					$selected = "";
                       

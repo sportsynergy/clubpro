@@ -498,7 +498,7 @@ function cancel_court(&$frm) {
         if ($reoccuringeventblockid != null) {
             
             if (isDebugEnabled(2)) logMessage("\tThis was a part of reservation block $reoccuringeventblockid");
-            mysql_data_seek($reOccuringEventResult, 0);
+            mysqli_data_seek($reOccuringEventResult, 0);
 
             // Go through this and for any reoccuring entry with the same block id, remove.
             while ($reOccuringEventsArray = mysqli_fetch_array($reOccuringEventResult)) {

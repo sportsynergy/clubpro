@@ -217,7 +217,7 @@ function getEmailAddressesForReservation($eservationId) {
 				     AND reservationentry.userid <> " . get_userid() . "
 					 AND reservations.enddate IS NULL";
     $singlesResult = db_query($singlesQuery);
-    while ($user = mysql_fetch_row($singlesResult)) {
+    while ($user = mysqli_fetch_row($singlesResult)) {
         array_push($emailAddresses, $user[0]);
     }
 
@@ -234,7 +234,7 @@ function getEmailAddressesForReservation($eservationId) {
 					AND users.email != ''
 					AND users.userid <> " . get_userid() . "";
     $doublesResult = db_query($dobulesQuery);
-    while ($user = mysql_fetch_row($doublesResult)) {
+    while ($user = mysqli_fetch_row($doublesResult)) {
         array_push($emailAddresses, $user[0]);
     }
     return $emailAddresses;
@@ -258,7 +258,7 @@ function getBuddyEmailAddresses($userId) {
 
     // run the query on the database
     $result = db_query($query);
-    while ($user = mysql_fetch_row($result)) {
+    while ($user = mysqli_fetch_row($result)) {
         array_push($emailAddresses, $user[0]);
     }
     
@@ -494,7 +494,7 @@ function isCourtEventParticipant(&$courtEventParticipantsResult) {
     // Reset the results
     
     if (mysqli_num_rows($courtEventParticipantsResult) > 0) {
-        mysql_data_seek($courtEventParticipantsResult, 0);
+        mysqli_data_seek($courtEventParticipantsResult, 0);
     }
     return $isSignedup;
 }

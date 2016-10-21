@@ -93,7 +93,7 @@
       <td colspan="2">
         <select name="courttype" id="courttype" onchange="unsetplayers();setMatchScore()">
           <?
-		                 while($row = mysql_fetch_row($singlesCourtTypeDropDown)) {
+		                 while($row = mysqli_fetch_row($singlesCourtTypeDropDown)) {
 		                      echo "<option value=\"$row[0]\">$row[1]</option>\n";
 		                 }
 		                 ?>

@@ -253,7 +253,7 @@ print "var thisyear = new Array(13);
                 $result = get_singlesCourtTypesForSite( get_siteid() );
 
 
-                 while($row = mysql_fetch_row($result)) {
+                 while($row = mysqli_fetch_row($result)) {
                   echo "<option value=\"$row[0]\">$row[1]</option>";
                  }
                  ?>
@@ -354,7 +354,7 @@ print "var thisyear = new Array(13);
        $numrows = mysqli_num_rows($result);
        $rowcount =  $numrows;
        $i=1;
-       while($row = mysql_fetch_row($result)) { 
+       while($row = mysqli_fetch_row($result)) { 
 		
        	 $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
        	 

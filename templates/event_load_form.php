@@ -143,7 +143,7 @@ function onCancelButtonClicked(){
                 $result = db_query($query);
 
 
-                 while($row = mysql_fetch_row($result)) {
+                 while($row = mysqli_fetch_row($result)) {
                   echo "<option value=\"$row[0]\">$row[1]</option>";
                  }
                  ?>

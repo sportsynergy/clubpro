@@ -419,7 +419,7 @@ function printDoublesUpcomingReservation($reservationID){
                  if ((mysql_result($ddetailsresult,0,3))==0 && (mysql_result($ddetailsresult,2,3))==0){
 
                     //reset the results pointer
-                    $int = mysql_data_seek($ddetailsresult,0);
+                    $int = mysqli_data_seek($ddetailsresult,0);
                     while($ddetailsrow = db_fetch_row($ddetailsresult)) {
 
                            echo "<tr>\n";
@@ -477,7 +477,7 @@ function printSinglesPastReservation($reservationID){
 
            //If the score has not been reported
            if ((mysql_result($courtdetailsresult,0,4))==0 && (mysql_result($courtdetailsresult,1,4))==0){
-            $int = mysql_data_seek($courtdetailsresult,0);
+            $int = mysqli_data_seek($courtdetailsresult,0);
 
             while($courtdetailsrow = db_fetch_row($courtdetailsresult)) {
                     echo "<tr>\n";
@@ -514,7 +514,7 @@ function printSinglesPastReservation($reservationID){
             }
             //If the score hasn't been reported
             else {
-            $int = mysql_data_seek($courtdetailsresult,0);
+            $int = mysqli_data_seek($courtdetailsresult,0);
 
                 while($courtdetailsrow = db_fetch_row($courtdetailsresult)) {
                     echo "<tr>\n";
@@ -565,7 +565,7 @@ function printDoublesPastReservation($reservationID){
                  if ((mysql_result($ddetailsresult,0,3))==0 && (mysql_result($ddetailsresult,2,3))==0){
 
                     //reset the results pointer
-                    $int = mysql_data_seek($ddetailsresult,0);
+                    $int = mysqli_data_seek($ddetailsresult,0);
                     while($ddetailsrow = db_fetch_row($ddetailsresult)) {
 
                            echo "<tr>\n";

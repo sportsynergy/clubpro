@@ -288,7 +288,7 @@ function run_court_utilization_report(&$frm) {
 			   }
 
           	//Reset the court results
-          	mysql_data_seek($courtResult,0);
+          	mysqli_data_seek($courtResult,0);
             
             //Roll Back one day
             $time = $time -  86400;
@@ -298,7 +298,7 @@ function run_court_utilization_report(&$frm) {
 	
 	
        //Reset the court results
-        mysql_data_seek($courtResult,0);
+        mysqli_data_seek($courtResult,0);
 
 		
 		//Get the number of booked reservations

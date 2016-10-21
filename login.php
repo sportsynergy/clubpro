@@ -102,7 +102,7 @@ WHERE tblClubs.clubid =%s";
 
 $clubNameSql = sprintf($rSql,get_clubid());
 unset($rSql);
-list($clubName, $sitecode) = mysql_fetch_row(db_query($clubNameSql));
+list($clubName, $sitecode) = mysqli_fetch_row(db_query($clubNameSql));
 
 include ($_SESSION["CFG"]["templatedir"] . "/login_form.php");
 ?>

@@ -95,16 +95,18 @@ $boxuserquery = "SELECT concat(users.firstname,' ',users.lastname) AS `name`
 
 // run the query on the database
 $box_user_result = db_query($boxuserquery);
+$box_user_array = mysqli_fetch_array($box_user_result)
 
 $boxleagueequery = "SELECT boxid FROM tblBoxHistory WHERE reservationid = $reservationid";
 // run the query on the database
 $box_id_result = db_query($boxleagueequery);
-$boxid = mysql_result($box_id_result,0);
+$box_id_array = mysqli_fetch_array($box_id_result);
+$boxid = $box_id_array[0];
 
 
 
 //Set some variables for the form
-$DOC_TITLE = "Box League History for ".mysql_result($box_user_result,0);
+$DOC_TITLE = "Box League History for ".$box_user_array[0];
 
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/web_ladder_update_form.php");

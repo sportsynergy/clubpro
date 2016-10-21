@@ -44,7 +44,9 @@ function get_site_password($siteid){
     
     $sitePasswordQuery = "SELECT sites.password FROM tblClubSites sites WHERE sites.siteid = $siteid";
     $sitePasswordResult = db_query($sitePasswordQuery);
-    return mysql_result($sitePasswordResult, 0);
+    $sitePasswordResultArray = mysqli_fetch_array($sitePasswordResult);
+    
+    return $sitePasswordResultArray[0];
 }
 
 
@@ -420,7 +422,9 @@ function is_inabox($courtid, $userid) {
 function getMatchType($resid) {
     $matchtypequery = "SELECT matchtype FROM `tblReservations` WHERE reservationid=$resid";
     $matchtyperesult = db_query($matchtypequery);
-    $matchtypevalue = mysql_result($matchtyperesult, 0);
+    $matchtypevalueArray = mysqli_fetch_array($matchtyperesult);
+    $matchtypevalue = $matchtypevalueArray[0];
+    
     return $matchtypevalue;
 }
 /**
@@ -787,7 +791,9 @@ function get_tzdelta() {
     //gets the tzdelta
     $tzquery = "SELECT timezone from tblClubs WHERE clubid='" . get_clubid() . "'";
     $tzresult = db_query($tzquery);
-    $tzdelta = mysql_result($tzresult, 0);
+    $tzdeltaArray = mysqli_fetch_array($tzresult);
+    $tzdelta = $tzdeltaArray[0];
+
     return $tzdelta * 3600;
 }
 function require_priv($roleid) {
@@ -837,7 +843,8 @@ function require_priv_box($boxid) {
      /* just make sure current user and specified boxid are in the same club */
     	$query = "SELECT siteid from tblBoxLeagues where boxid = $boxid";
 		$result = db_query($query);
-		$box_site = mysql_result($result,0);
+		$box_siteArray = mysqli_fetch_array($result);
+        $box_site = $box_siteArray[0];
 		
 
     if ($_SESSION["siteprefs"]["siteid"] != $box_site) {
@@ -966,9 +973,12 @@ function makeTeamForCurrentUser($sportname, $partnerid) {
 	                      AND ((tblUserRankings.courttypeid)=$sportname)
 	                      AND ((tblUserRankings.usertype)=0))";
     $usersrankresult = db_query($usersrankquery);
-    $rank1 = mysql_result($usersrankresult, 0);
+    $rank1Array = mysqli_fetch_array($usersrankresult);
+    $rank1 = $rank1Array[0];
+    
     $usersrankresult = db_query($usersrankquery);
-    $rank2 = mysql_result($usersrankresult, 1);
+    $rank2Array = mysqli_fetch_array($usersrankresult);
+    $rank2 = $rank2Array[0];
     $averagerank = ($rank1 + $rank2) / 2;
     $rankquery = "INSERT INTO tblUserRankings (
 	                userid, courttypeid, ranking, usertype
@@ -1035,9 +1045,11 @@ function makeTeamForPlayers($sportname, $player1id, $player2id) {
 	                      AND ((tblUserRankings.courttypeid)=$sportname)
 	                      AND ((tblUserRankings.usertype)=0))";
     $usersrankresult = db_query($usersrankquery);
-    $rank1 = mysql_result($usersrankresult, 0);
+    $rank1Array = mysqli_fetch_array($usersrankresult);
+    $rank1 = $rank1Array[0];
     $usersrankresult = db_query($usersrankquery);
-    $rank2 = mysql_result($usersrankresult, 1);
+    $rank2Array = mysqli_fetch_array($usersrankresult);
+    $rank2 = $rank2Array[0];
     $averagerank = ($rank1 + $rank2) / 2;
     $rankquery = "INSERT INTO tblUserRankings (
 	                userid, courttypeid, ranking, usertype
@@ -1077,8 +1089,9 @@ function email_players($resid, $emailType) {
     //Check to see if the reservation is for a doubles court
     $usertypequery = "SELECT usertype FROM tblReservations WHERE reservationid=$resid";
     $usertyperesult = db_query($usertypequery);
-    $usertypeval = mysql_result($usertyperesult, 0);
-    
+    $usertypevalArray = mysqli_fetch_array($usertyperesult);
+    $usertypeval = $usertypevalArray[0];
+
     if ($usertypeval == 0) {
 
         //email about a singles court
@@ -1155,7 +1168,8 @@ function email_players($resid, $emailType) {
 
             // run the query on the database
             $rankdevresult = db_query($rankdevquery);
-            $rankdevval = mysql_result($rankdevresult, 0);
+            $rankdevvalArray = mysqli_fetch_array($rankdevresult);
+            $rankdevval = $rankdevvalArray[0];
             $highrange = $robj->ranking + $rankdevval;
             $lowrange = $robj->ranking - $rankdevval;
 
@@ -1690,7 +1704,7 @@ function confirm_singles($resid, $isNewReservation) {
     }
 
     //Reset the result pointer to the begining
-    mysql_data_seek($rresult, 0);
+    mysqli_data_seek($rresult, 0);
     $to_emails = array();
     while ($emailidrow = db_fetch_row($rresult)) {
 
@@ -1764,7 +1778,7 @@ function cancel_singles($resid) {
     }
 
     //Reset the result pointer to the begining
-    mysql_data_seek($rresult, 0);
+    mysqli_data_seek($rresult, 0);
     $to_emails = array();
     while ($emailidrow = db_fetch_row($rresult)) {
         
@@ -1910,7 +1924,7 @@ function confirm_doubles($resid, $isNewReservation) {
 
         //Reset Counter
         
-        if (mysqli_num_rows($extraPlayerResult) > 0) mysql_data_seek($extraPlayerResult, 0);
+        if (mysqli_num_rows($extraPlayerResult) > 0) mysqli_data_seek($extraPlayerResult, 0);
         $to_emails = array();
         
         if (isDebugEnabled(1)) logMessage($emailbody);
@@ -1980,7 +1994,7 @@ function confirm_doubles($resid, $isNewReservation) {
     	//Reset the result pointer to the begining
 
     
-    	if (mysqli_num_rows($playerResult) > 0) mysql_data_seek($playerResult, 0);
+    	if (mysqli_num_rows($playerResult) > 0) mysqli_data_seek($playerResult, 0);
     	$to_emails = array();
     	while ($playerObject = mysql_fetch_object($playerResult)) {
         
@@ -2065,7 +2079,7 @@ function cancel_doubles($resid) {
     }
 
     //Reset the result pointer to the begining
-    mysql_data_seek($rresult, 0);
+    mysqli_data_seek($rresult, 0);
     $to_emails = array();
     while ($emailidrow = db_fetch_row($rresult)) {
         $to_emails[$emailidrow[4]] = array(
@@ -2136,7 +2150,7 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
     $emailbody = nl2br($emailbody);
 
     //Reset the result pointer to the begining
-    mysql_data_seek($rresult, 0);
+    mysqli_data_seek($rresult, 0);
     $to_emails = array();
     while ($emailidrow = db_fetch_row($rresult)) {
         $to_emails[$emailidrow[2]] = array(
@@ -2200,7 +2214,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
         $losersex = "she";
     }
 
-    mysql_data_seek($rresult, 0);
+    mysqli_data_seek($rresult, 0);
     $robj = mysql_fetch_object($rresult);
     
     if ($score == 0) {
@@ -2245,7 +2259,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $emailbody = nl2br($emailbody);
 
     //Reset the result pointer to the begining
-    mysql_data_seek($rresult, 0);
+    mysqli_data_seek($rresult, 0);
     $to_emails = array();
     while ($emailidrow = db_fetch_row($rresult)) {
         $to_emails[$emailidrow[4]] = array(
@@ -2384,7 +2398,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
     $emailbody = nl2br($emailbody);
 
     //Reset the result pointer to the begining
-    mysql_data_seek($rresult, 0);
+    mysqli_data_seek($rresult, 0);
     $to_emails = array();
     while ($emailidrow = db_fetch_row($rresult)) {
         $to_emails[$emailidrow[2]] = array(
@@ -2499,7 +2513,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $emailbody = nl2br($emailbody);
 
     //Reset the result pointer to the begining
-    mysql_data_seek($rresult, 0);
+    mysqli_data_seek($rresult, 0);
     $to_emails = array();
     while ($emailidrow = db_fetch_row($rresult)) {
         $to_emails[$emailidrow[4]] = array(
@@ -2611,8 +2625,8 @@ function record_score(&$frm, $source) {
         }
 
         //For winner team
-        mysql_data_seek($winnerResult, 0);
-        mysql_data_seek($loserResult, 0);
+        mysqli_data_seek($winnerResult, 0);
+        mysqli_data_seek($loserResult, 0);
         $winners = array();
         $playerRow = mysqli_fetch_array($winnerResult);
         array_push($winners, $playerRow['userid']);
@@ -2875,7 +2889,7 @@ function update_gamesplayed($playerOneId, $playerTwoId, $boxId) {
 
 	$boxgamesplayedresult = db_query($boxgamesplayedquery);
 
-	while ($boxgamesplayedarray = mysql_fetch_row($boxgamesplayedresult)) {
+	while ($boxgamesplayedarray = mysqli_fetch_row($boxgamesplayedresult)) {
 		$onemoregame = $boxgamesplayedarray[2] + 1;
 		$updategames = db_query("UPDATE tblkpBoxLeagues
 	                               SET games = '$onemoregame'
@@ -4421,7 +4435,7 @@ function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype
 						}
 
 						$ranking1 = mysql_result($individualQueryResult, 0);
-						//mysql_data_seek($individualQueryResult,1);
+						//mysqli_data_seek($individualQueryResult,1);
 						$ranking2 = mysql_result($individualQueryResult, 1);
 
 						//Do the calculation
@@ -4663,7 +4677,7 @@ function countNumberOfAllResevationsMadeToday($time) {
 			$teamINClause = "";
 
 			//Reset the teams
-			mysql_data_seek($teams,0);
+			mysqli_data_seek($teams,0);
 
 			for ($i = 0; $i < mysqli_num_rows($teams); ++ $i) {
 					

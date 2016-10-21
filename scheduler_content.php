@@ -222,10 +222,18 @@ $_SESSION["current_time"] = $curtime;
 $simtzdelta = $clubobj->timezone;
 
 //Allow Person to type in the date to load
-$month = $_REQUEST['month'];
-$date = $_REQUEST['date'];
-$year = $_REQUEST['year'];
-$daysahead = $_REQUEST['daysahead'];
+if (array_key_exists('month', $_REQUEST)) {
+	$month = $_REQUEST['month'];
+}
+if (array_key_exists('date', $_REQUEST)) {
+	$date = $_REQUEST['date'];
+}
+if (array_key_exists('year', $_REQUEST)) {
+	$year = $_REQUEST['year'];
+}
+if (array_key_exists('daysahead', $_REQUEST)) {
+	$daysahead = $_REQUEST['daysahead'];
+}
 
 if (isset($month) && isset($date) && isset($year)) {
     $currYear = $year;
@@ -235,7 +243,7 @@ if (isset($month) && isset($date) && isset($year)) {
     $currDOW = getDOW(gmdate("l", $specDate));
 }
 
-//Set Current data and time
+//Set Current date and time
 // set up some variables to identify the month, date and year to display
 
 elseif (empty($daysahead) || !isset($daysahead)) {
@@ -365,7 +373,7 @@ if ($clubid) {
             <input type="hidden" name="daysahead" value="<?=$daysahead?>">
           </form>
           <?	$counter = 0;
-							 	while($courtGroupRow = mysql_fetch_row($groupingResult)){ 
+							 	while($courtGroupRow = mysqli_fetch_row($groupingResult)){ 
 		
 							 		if($counter > 0){
 							 			print " | ";
@@ -408,7 +416,7 @@ if ($clubid) {
 				
 				
 				//Reset the index (from the querys earlier)
-				mysql_data_seek($currentCourtResult,0);
+				mysqli_data_seek($currentCourtResult,0);
 
 				$courtWidth = getCourtTableWidth($totalCurrentCourts);
 				
@@ -764,7 +772,9 @@ if ($clubid) {
                                                           WHERE reservationid=$residobj->reservationid";
 
                                        $isreportedresult = db_query($isreportedquery);
-                                       $outcome = mysql_result($isreportedresult,0);
+                                       
+                                       $outcome_array = mysqli_fetch_array($isreportedresult);
+                                       $outcome = $outcome_array[0];
                                        $scored = $outcome > 0 ? true : false;
 
                                      }

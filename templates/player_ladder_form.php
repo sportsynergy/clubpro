@@ -22,7 +22,7 @@ while ( $playerarray = db_fetch_array($ladderplayers)){
 }
 
 // Rest the pointer
-mysql_data_seek($ladderplayers,0);
+mysqli_data_seek($ladderplayers,0);
 
 ?>
 
@@ -116,7 +116,7 @@ to add your name now.
 							<?
 
 							//Reset pointer
-							mysql_data_seek($ladderplayers,0);
+							mysqli_data_seek($ladderplayers,0);
 
 							$numrows = mysqli_num_rows($ladderplayers);
 							while ( $playerarray = db_fetch_array($ladderplayers)){
@@ -229,7 +229,7 @@ to add your name now.
 			<div>
 				Spot: <select name="placement">
 				<?
-				mysql_data_seek($ladderplayers,0);
+				mysqli_data_seek($ladderplayers,0);
 				for ( $i = 1; $i<= mysqli_num_rows($ladderplayers)+1; ++$i){
 
 					if($i == count($ladderplayers)+1 ){
@@ -390,7 +390,7 @@ to add your name now.
 			//TODO make this better
 			
 			//Reset pointer
-			 mysql_data_seek($ladderplayers,0);
+			 mysqli_data_seek($ladderplayers,0);
 			
 			//build javascript for event listeners
 			while ( $playerarray = db_fetch_array($ladderplayers)){ 

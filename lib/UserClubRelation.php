@@ -71,7 +71,7 @@ class UserClubRelation {
         if ($this->isUserLoggedin() == false) return false;
         $rSql = "select id from tblClubUser where userid=%s and clubid=%s";
         $sql = sprintf($rSql, $this->isUserLoggedin() , $this->getClubId());
-        list($_id) = mysql_fetch_row(db_query($sql));
+        list($_id) = mysqli_fetch_row(db_query($sql));
         $id = (int)$_id;
         
         if ($id > 0) return true;

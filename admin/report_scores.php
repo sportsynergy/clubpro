@@ -396,7 +396,9 @@ function getUserRankingForUserType($userid, $courtypeid, $usertype) {
 				AND rankings.courttypeid = $courtypeid
 				AND rankings.usertype = $usertype";
     $result = db_query($query);
-    $userranking = mysql_result($result, 0);
+
+    $user_array = mysqli_fetch_array($result);
+    $userranking = $user_array[0];
     
     if (isDebugEnabled(1)) logMessage("report_scores.getUserRankingForUserType: Getting the ranking as $userranking for user $userid as usertype $usertype on courttype $courtypeid");
     return $userranking;

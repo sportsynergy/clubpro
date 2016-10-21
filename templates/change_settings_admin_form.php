@@ -300,7 +300,7 @@ function onSubmitButtonClicked(){
 
 
                if(mysqli_num_rows($registeredSports)>0){
-                    mysql_data_seek($registeredSports,0);
+                    mysqli_data_seek($registeredSports,0);
                }
 
          ?>

@@ -68,7 +68,8 @@ function insert_court($courttypeid, $courtname, $siteid, $opentime, $closetime) 
 		$query = "select clubid from tblClubSites where siteid = $siteid";
 		$result = db_query($query);
 		
-		$clubid = mysql_result($result, 0);
+		$clubid_obj = mysqli_fetch_object($result, 0);
+		$clubid = $clubid_obj->clubid;
 
 		// Add Court
 		//courtid	courttypeid	clubid	courtname	enable	siteid	lastmodified
