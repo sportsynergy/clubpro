@@ -119,7 +119,10 @@ if (isset($courtGroupFromForm)) {
 // Set the Court Group ID
 
 if (mysqli_num_rows($groupingResult) > 0 && !isset($_SESSION["courtGroup"][$siteid])) {
-    $_SESSION["courtGroup"][$siteid] = mysql_result($groupingResult, 0);
+    
+	$siteIdArray = mysqli_fetch_array($groupingResult);
+
+    $_SESSION["courtGroup"][$siteid] = $siteIdArray[0];
     unset($_SESSION["courtWindowStart"]);
 }
 
@@ -402,8 +405,8 @@ if ($clubid) {
 <tr>
   <td><table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
       <tr height="15">
-        <td align="left" class="normal"><? printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
-        <td align="right" class="normal" ><? printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
+        <td align="left" class="normal"><? printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead=0, $siteid); ?> <br></td>
+        <td align="right" class="normal" ><? printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead=0, $siteid); ?> <br></td>
       </tr>
     </table></td>
 </tr>
@@ -528,7 +531,9 @@ if ($clubid) {
 						$hoursResult = db_query($hoursQuery);
 						
 						if( mysqli_num_rows($hoursResult) > 0){
-							$hoursDuration = mysql_result($hoursResult,0);
+							
+							$hoursDurationArray = mysqli_fetch_array($hoursResult);
+							$hoursDuration = $hoursDurationArray[0];
 							$i = $i + $hoursDuration * 60;
 						}
 										

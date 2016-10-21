@@ -12,7 +12,7 @@ $teamINClause = array();
 
 //build in clause
 for ($i = 0; $i < $teamrows; ++$i) {
-	$team = mysql_fetch_assoc($teams);
+	$team = mysqli_fetch_assoc($teams);
 	$teamINClause[] = $team['teamid']; // teamid
 }
 

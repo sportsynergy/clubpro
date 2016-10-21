@@ -239,7 +239,7 @@ function db_free_result($qid) {
  * @param unknown_type $qid
  */
 function db_num_fields($qid) {
-	return mysql_num_fields($qid);
+	return mysqli_num_fields($qid);
 }
 
 /**

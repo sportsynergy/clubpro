@@ -57,7 +57,10 @@ if (match_referer() && isset($_POST)) {
         //Update the last login time thing
         $clubquery = "SELECT timezone from tblClubs WHERE clubid='" . get_clubid() . "'";
         $clubresult = db_query($clubquery);
-        $timezoneval = mysql_result($clubresult, 0);
+        
+        $timezonevalArray = mysqli_fetch_row($clubresult);
+        $timezoneval = $timezonevalArray[0];
+
         $tzdelta = $timezoneval * 3600;
         $curtime = mktime() + $tzdelta;
         $updateLastLoginQuery = "UPDATE tblClubUser SET lastlogin = $curtime WHERE userid = $user[userid] AND clubid = " . get_clubid() . "";

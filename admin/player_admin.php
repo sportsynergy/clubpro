@@ -92,7 +92,7 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
     } else {
         include ($_SESSION["CFG"]["templatedir"] . "/player_admin_form.php");
         mysqli_data_seek($playerresult, 0);
-        $num_fields = mysql_num_fields($playerresult);
+        $num_fields = mysqli_num_fields($playerresult);
         $num_rows = mysqli_num_rows($playerresult);
 ?>
 

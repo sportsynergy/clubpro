@@ -104,7 +104,7 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
     } else {
         include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");
         mysqli_data_seek($playerResults, 0);
-        $num_fields = mysql_num_fields($playerResults);
+        $num_fields = mysqli_num_fields($playerResults);
         $num_rows = mysqli_num_rows($playerResults);
 ?>
 <table cellpadding="20" width="100%" class="bordertable">

@@ -1285,7 +1285,9 @@ function email_players($resid, $emailType) {
 		                        WHERE reservations.reservationid=$resid
 		                        AND reservations.courtid = courts.courtid";
         $ctResult = db_query($ctQuery);
-        $courtType = mysql_result($ctResult, 0);
+        
+        $courtTypeArray = mysqli_fetch_array($ctResult);
+        $courtType = $courtTypeArray[0];
         $player1 = $robj->userid;
         $var = new Object;
 
@@ -1485,7 +1487,8 @@ function email_players($resid, $emailType) {
 
             // run the query on the database
             $rankdevresult = db_query($rankdevquery);
-            $rankdevval = mysql_result($rankdevresult, 0);
+            $rankdevvalArray = mysqli_fetch_array($rankdevresult);
+            $rankdevval = $rankdevvalArray[0];
 
             // Get the Ranking of the current user (this based on the resid)
             $query = "SELECT rankings.ranking
@@ -1496,7 +1499,8 @@ function email_players($resid, $emailType) {
 						AND rankings.usertype = 0
 						AND rankings.userid = " . get_userid();
             $result = db_query($query);
-            $ranking = mysql_result($result, 0);
+            $rankingArray = mysqli_fetch_array($result);
+            $ranking = $rankingArray[0];
             $highrange = $ranking + $rankdevval;
             $lowrange = $ranking - $rankdevval;
 
@@ -2639,7 +2643,8 @@ function record_score(&$frm, $source) {
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
         $playerOneRankResult = db_query($playerOneRankQuery);
-        $playerOneRanking = mysql_result($playerOneRankResult, 0);
+        $playerOneRankingArray = mysqli_fetch_array($playerOneRankResult);
+        $playerOneRanking = $playerOneRankingArray[0];
         $playerOneNewRanking = $playerOneRanking + $winnerAdjustment;
         $playerOneAdjustment = db_query("
 						           UPDATE tblUserRankings
@@ -2652,7 +2657,8 @@ function record_score(&$frm, $source) {
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
         $playerTwoRankResult = db_query($playerTwoRankQuery);
-        $playerTwoRanking = mysql_result($playerTwoRankResult, 0);
+        $playerTwoRanking = mysqli_fetch_array($playerTwoRankResult);
+        $playerTwoRanking = $playerTwoRankingArray[0];
         $playerTwoNewRanking = $playerTwoRanking + $winnerAdjustment;
         $playerOneAdjustment = db_query("
 						           UPDATE tblUserRankings
@@ -2673,7 +2679,8 @@ function record_score(&$frm, $source) {
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
         $playerThreeRankResult = db_query($playerThreeRankQuery);
-        $playerThreeRanking = mysql_result($playerThreeRankResult, 0);
+        $playerThreeRankingArray = mysqli_fetch_array($playerThreeRankResult);
+        $playerThreeRanking = $playerThreeRankingArray[0];
         $playerThreeNewRanking = $playerThreeRanking - $loserAdjustment;
         $playerThreeAdjustment = db_query("
 						           UPDATE tblUserRankings
@@ -2686,7 +2693,8 @@ function record_score(&$frm, $source) {
 							   	AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
         $playerFourRankResult = db_query($playerFourRankQuery);
-        $playerFourRanking = mysql_result($playerFourRankResult, 0);
+        $playerFourRankingArray = mysqli_fetch_array($playerFourRankResult);
+        $playerFourRanking = $playerFourRankingArray[0];
         $playerFourNewRanking = $playerFourRanking - $loserAdjustment;
         $playerOneAdjustment = db_query("
 						           UPDATE tblUserRankings
@@ -3296,8 +3304,10 @@ function isCurrentUserOnTeam($teamid) {
 	if( mysqli_num_rows($result)< 2){
 		return 0;
 	}
-	$playerone = mysql_result($result, 0);
-	$playertwo = mysql_result($result, 1);
+	$playeroneArray = mysqli_fetch_array($result);
+	$playerone = $playeroneArray[0];
+    $playertwoArray = mysqli_fetch_array($result);
+    $playertwo = $playertwoArray[0];
 
 	if (get_userid() == $playerone || get_userid() == $playertwo) {
 		$imOnTheTeam = 1;
@@ -3407,7 +3417,8 @@ function load_site_parameter($parameterid, $userid) {
 	$result = db_query($query);
 
 	if( mysqli_num_rows($result) > 0 ){
-		return mysql_result($result, 0);
+		$resultArray = mysqli_fetch_array($result);
+        return $resultArray[0];
 	}else{
 		return "";
 	}
@@ -3431,7 +3442,8 @@ function load_parameter_option_name($parameterid, $optionvalue) {
 	$result = db_query($query);
 
 	if( mysqli_num_rows($result) > 0 ){
-		return mysql_result($result, 0);
+		$resultArray = mysqli_fetch_array($result);
+        return $resultArray[0];
 	}else{
 		return "";
 	}
@@ -3602,7 +3614,8 @@ function get_courtTypeForCourt($court) {
 	                   WHERE (((tblCourts.courtid)=$court))";
 
 	$courttypeResult = db_query($courttypeQuery);
-	return mysql_result($courttypeResult, 0);
+	$resultArray = mysqli_fetch_array($courttypeResult);
+    return $resultArray[0];
 
 }
 
@@ -3619,7 +3632,8 @@ function get_courtTypeForReservationId($resid) {
 						AND reservation.reservationid=$resid";
 
 	$matchtyperesult = db_query($matchtypequery);
-	$matchtypevalue = mysql_result($matchtyperesult, 0);
+	$matchtypevalueArray = mysqli_fetch_array($matchtyperesult);
+    $matchtypevalue = $matchtypevalueArray[0];
 
 	return $matchtypevalue;
 
@@ -4024,7 +4038,8 @@ function isBoxExpired($time, $boxnum) {
 		//get the box endtimestamp
 		$expiredQuery = "SELECT enddatestamp FROM tblBoxLeagues where boxid = $boxnum";
 		$expiredResult = db_query($expiredQuery);
-		$boxtime = mysql_result($expiredResult, 0);
+		$boxtimeArray = mysqli_fetch_array($expiredResult);
+        $boxtime = $boxtimeArray[0];
 		$boxplus = $boxtime +86400;
 
 		//give them the whole day
@@ -4049,7 +4064,9 @@ function getBoxIdForUser($userid) {
 	$boxUserResult = db_query($boxUserQuery);
 
 	if (mysqli_num_rows($boxUserResult) > 0) {
-		$boxid = mysql_result($boxUserResult, 0);
+		
+        $boxidArray = mysqli_fetch_array($boxUserResult);
+        $boxid = $boxidArray[0];
 	} else {
 		$boxid = -1;
 	}
@@ -4434,10 +4451,11 @@ function validateSkillPolicies($opponentid, $currentuserid, $courtid, $courttype
 							return FALSE;
 						}
 
-						$ranking1 = mysql_result($individualQueryResult, 0);
-						//mysqli_data_seek($individualQueryResult,1);
-						$ranking2 = mysql_result($individualQueryResult, 1);
-
+						$ranking1Array = mysqli_fetch_array($individualQueryResult);
+						$ranking1 = $ranking1Array[0];
+                        //mysqli_data_seek($individualQueryResult,1);
+						$ranking2Array = mysqli_fetch_array($individualQueryResult);
+                        $ranking2 = $ranking2Array[0];
 						//Do the calculation
 						if ((abs($ranking1 - $ranking2) > $row['skillrange'])) {
 							if( isDebugEnabled(1) ) logMessage("applicationlib.validateSkillPolicies: ".abs($ranking1 - $ranking2) ." is greater than the skill range of ".$row['skillrange'].".  Not letting this happen.");
@@ -4661,8 +4679,9 @@ function countNumberOfAllResevationsMadeToday($time) {
 			                        AND reservations.time < $endtime";
 
 		$singlesResult = db_query($singlesQuery);
+        $singlesResultArray = mysqli_fetch_array($singlesResult);
 
-		$totalReservations += mysql_result($singlesResult, 0);
+		$totalReservations += $singlesResultArray[0];
 
 		//Now get the number of doubles reservations
 		/*
@@ -4701,8 +4720,9 @@ function countNumberOfAllResevationsMadeToday($time) {
 				                        AND reservations.enddate IS NULL";
 				
 			$doublesResult = db_query($doublesQuery);
-				
-			$totalReservations += mysql_result($doublesResult, 0);
+			
+            $doublesResultArray = mysqli_fetch_array($doublesResult);	
+			$totalReservations += $doublesResultArray[0];
 				
 		}
 			
@@ -4732,7 +4752,8 @@ function countNumberOfAllResevationsMadeTodayInWindow($starthour, $endhour, $tim
 	                        AND reservations.time < $endtime";
 
 	$singlesResult = db_query($singlesQuery);
-	$totalReservations = mysql_result($singlesResult, 0);
+	$singlesResultArray = mysqli_fetch_array($singlesResult);
+    $totalReservations = $singlesResultArray[0];
 
 	//Now get the number of doubles reservations
 	/*
@@ -4771,7 +4792,8 @@ function countNumberOfAllResevationsMadeTodayInWindow($starthour, $endhour, $tim
 		                        AND details.userid IN ($teamINClause)";
 
 		$doublesResult = db_query($doublesQuery);
-		$totalReservations +=  mysql_result($doublesResult, 0);
+		$doublesResultArray = mysqli_fetch_array($doublesResult);
+        $totalReservations +=  $doublesResultArray[0];
 
 	}
 
@@ -4800,7 +4822,8 @@ function countNumberOfCourtResevationsMadeToday($courtid, $time) {
 	                      AND reservations.time < $endtime";
 
 	$singlesResult = db_query($singlesQuery);
-	$totalReservations = mysql_result($singlesResult,0);
+	$singlesResultArray = mysqli_fetch_array($singlesResult);
+    $totalReservations = $singlesResultArray[0];
 
 	//Now get the number of doubles reservations
 	/*
@@ -4838,7 +4861,8 @@ function countNumberOfCourtResevationsMadeToday($courtid, $time) {
 		                        AND details.userid IN ($teamINClause)";
 
 		$doublesResult = db_query($doublesQuery);
-		$totalReservations += mysql_result($doublesResult, 0);
+		$doublesResultArray = mysqli_fetch_array($doublesResult);
+        $totalReservations += $doublesResultArray[0];
 	}
 
 
@@ -4868,7 +4892,8 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 	                      AND reservations.time < $endtime";
 
 	$singlesResult = db_query($singlesQuery);
-	$totalReservations = mysql_result($singlesResult,0);
+	$singlesResultArray = mysqli_fetch_array($singlesResult);
+    $totalReservations = $singlesResultArray[0];
 
 	//Now get the number of doubles reservations
 	/*
@@ -4906,7 +4931,8 @@ function countNumberOfCourtResevationsMadeTodayInWindow($starthour, $endhour, $t
 		                        AND details.userid IN ($teamINClause)";
 
 		$doublesResult = db_query($doublesQuery);
-		$totalReservations += mysql_result($doublesResult, 0);
+		$doublesResultArray = mysqli_fetch_array($doublesResult);
+        $totalReservations += $doublesResultArray[0];
 
 	}
 
@@ -4953,8 +4979,10 @@ function getOpenTimeToday($time, $courtid) {
 	                   AND hours.dayid=$dow";
 
 	$result = db_query($query);
-	$opentime = mysql_result($result, 0);
-	$openTimeArray = explode(":", $opentime);
+	$resultArray = mysqli_fetch_array($result);
+    $opentime = $resultArray[0];
+	
+    $openTimeArray = explode(":", $opentime);
 	$timestamp = gmmktime($openTimeArray[0], 0, 0, $month, $day, $year);
 
 	return $timestamp;
@@ -4979,7 +5007,8 @@ function getCloseTimeToday($time, $courtid) {
 	                   AND hours.dayid=$dow";
 
 	$result = db_query($query);
-	$closetime = mysql_result($result, 0);
+	$resultArray = mysqli_fetch_array($result);
+    $closetime = $resultArray[0];
 	$closeTimeArray = explode(":", $closetime);
 	$timestamp = gmmktime($closeTimeArray[0], 0, 0, $month, $day, $year);
 
