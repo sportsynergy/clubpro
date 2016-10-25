@@ -35,7 +35,7 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
-require '/vendor/autoload.php';
+require '../vendor/autoload.php';
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 $DOC_TITLE = "Player Ladder";
 require_loginwq();

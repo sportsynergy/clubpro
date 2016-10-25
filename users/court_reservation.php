@@ -62,10 +62,12 @@ an error message will result notifing the user that the reservation is full.
  * Do some administrative things
  *
 /*****************************************************************************/
+
 include ("../application.php");
+require "../vendor/autoload.php";
+
 require ($_SESSION["CFG"]["libdir"] . "/reservationlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/courtlib.php");
-require '../vendor/autoload.php';
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 
 // Log user out if they are in the wrong club
@@ -75,6 +77,10 @@ if($userRelation->isUserLoggedin()){
 		$userRelation->KillUserSession();
 	}
 }
+
+
+$email = new SendGrid\Email("Example User", "test1@example.com");
+
 
 // TODO: Fix this.
 // Can't Include jQuery here quite Yet.  Prototype & jQuery are conflicting - NJW 1-11-2012

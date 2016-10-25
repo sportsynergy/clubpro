@@ -32,7 +32,7 @@
 * Classes list:
 */
 include ("../application.php");
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 $DOC_TITLE = "Player Mailer";
 require_loginwq();

@@ -12,6 +12,7 @@
         <server name="HTTP_HOST" value="localhost" />
         <server name="SERVER_NAME" value="localhost" />
         <server name="REMOTE_ADDR" value="127.0.0.1" />
+         <env name="DOMAIN" value="http://production.com"/>
     </php>
     
 </phpunit>

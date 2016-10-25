@@ -74,19 +74,21 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
         return;
     }
 	
-	// To make backwards compatible with postageapp create
-	$toList = array();
-	$nameList = array();
-	foreach ($to_emails as $k=>$v){
-		$toList[] = $k;
-		if (isDebugEnabled(1)) {
-		    logMessage("applicationlib.sendgrid_clubmail: sending email to: $k with subject $subject and cateogry $category" );
-		}
-		$nameList[] = $v['name'];
-	}
-	
+	$personalization = new SendGrid\Personalization();
 
-	$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
+    foreach ($to_emails as $k=>$v){
+    
+        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
+    
+        $email = new SendGrid\Email($v['name'], $k);
+        $personalization->addTo($email);
+        $personalization->addSubstitution("%firstname%", $v['name']);
+        $personalization->addSubstitution("%signupurl%", $v['url']);
+    }
+
+    $apiKey = getenv('SENDGRID_API_KEY');
+    $sendgrid = new SendGrid($apiKey);
+
 
 	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/blank.email.html");
 	$template = str_replace("%sitecode%", get_sitecode(), $file_contents);
@@ -94,25 +96,25 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 	$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
 	$template = str_replace("%app_root%", $_SESSION["CFG"]["wwwroot"], $template);
 	
-	$mail = new SendGrid\Mail();
-	$mail->
-	  setFrom(get_email())->
-	  setFromName(get_userfullname())->
-	  setSubject($subject)->
-	  setText($content->line1)->
-	  addCategory("Club Email")->
-	  addCategory($content->clubname)->
-	  setTos($toList)->
-	setHtml($template);
+    $from_email = new SendGrid\Email(get_userfullname(), get_email() );
+	
+    $mail = new SendGrid\Mail();
+    $mail->setFrom($from_email);
+    $mail->setSubject($subject);
+    $mail->addCategory("Club Email");
+    $mail->addCategory($content->clubname);
+    $mail->addPersonalization($personalization);
+    $mail->addContent($template);
 
-	$sendgrid->smtp->send($mail);
+
+	$response = $sendgrid->client->mail()->send()->post($mail);
+
+    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() );
 	
 }
 
 /*
-
 	Uses sendgrid to send out system generated emails.  Check out Sendgrid.com
-	
 */
 function sendgrid_email($subject, $to_emails, $content, $category){
 	
@@ -127,8 +129,8 @@ function sendgrid_email($subject, $to_emails, $content, $category){
         return;
     }
     
-
-	$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
+    $apiKey = getenv('SENDGRID_API_KEY');
+	$sendgrid = new SendGrid($apiKey);
 
 	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/standard.email.html");
 	$template = str_replace("%clubname%", $content->clubname, $file_contents);
@@ -137,34 +139,33 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 	$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
 	$template = str_replace("%app_root%", $_SESSION["CFG"]["wwwroot"], $template);
 
-
-    $personalization = new Personalization();
+    $personalization = new SendGrid\Personalization();
 
     foreach ($to_emails as $k=>$v){
     
-    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
+        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
     
-    $email = new Email($v['name'], $k);
-    $personalization->addTo($email);
-    $personalization->addSubstitution("%firstname%", $v['name']);
-    $personalization->addSubstitution("%signupurl%", $v['url']);
+        $email = new SendGrid\Email($v['name'], $k);
+        $personalization->addTo($email);
+        $personalization->addSubstitution("%firstname%", $v['name']);
+        $personalization->addSubstitution("%signupurl%", $v['url']);
     }
 
-    $from_email = new Email("Sportsynergy", $_SESSION["CFG"]["mailer.email"]);
-    $mail->setFrom($email);
-    $html_content = new Content("text/html", $template);
+    $from_email = new SendGrid\Email("Sportsynergy", $_SESSION["CFG"]["mailer.email"]);
+
+    $html_content = new SendGrid\Content("text/html", $template);
 
     $mail = new SendGrid\Mail();
-	$mail->
-	  setFrom($from_email)->
-	  setSubject($subject)->
-	  setText($content->line1)->
-	  addCategory($category)->
-	  addCategory($content->clubname)->
-	  addPersonalization($personalization)->
-      addContent($html_content);
+    $mail->setFrom($from_email);
+	$mail->setSubject($subject);
+    $mail->addCategory($category);
+    $mail->addCategory($content->clubname);
+    $mail->addPersonalization($personalization);
+    $mail->addContent($html_content);
 
-	$sendgrid->smtp->send($mail);
+    $response = $sendgrid->client->mail()->send()->post($mail);
+
+    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() );
 	
 }
 
@@ -1662,6 +1663,7 @@ function confirm_singles($resid, $isNewReservation) {
 					   AND reservations.matchtype = matchtype.id
 					   AND users.userid = clubuser.userid
 			           AND clubuser.clubid=" . get_clubid();
+    logMessage($rquery);
     $rresult = db_query($rquery);
     $robj = mysqli_fetch_object($rresult);
 

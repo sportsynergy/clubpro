@@ -11,6 +11,10 @@ About Clubpro
 Clubpro is a online court reservation platform.  
 
 
+Testing
+---------
+`phpunit test/phpunit/SampleTest`
+
 Getting this running
 --------
 1. Create a mysql database and load data/base.sql

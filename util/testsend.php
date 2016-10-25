@@ -1,57 +1,38 @@
 <?
 
-include("../application.php");
-require 'vendor/autoload.php';
 
-date_default_timezone_set('GMT');
-
-
-$to_emails = array();
-$to_emails2 = array();
-$to_email = "Adam Preston <adam704a@hotmail.com>";
-$to_emails[$to_email] = array('name' => "adam");
-$to_emails2[] = $to_email;
-
-$to_email = "Bill Smith <adamatlast@gmail.com>";
-$to_emails[$to_email] = array('name' => "Bill");
-$to_emails2[] = $to_email;
+#include("../application.php");
+require '../vendor/autoload.php';
 
 
-#$toList = array('adam704a@hotmail.com', 'adamatlast@gmail.com');
+sendHelloEmail();
 
-var_dump($to_emails);
 
-$toList = array();
-$names = array();
-foreach ($to_emails as $k=>$v){
-	$toList[] = $k;
-	$names[] = $v['name'];
+function helloEmail()
+{
+    $from = new SendGrid\Email(null, "test@example.com");
+    $subject = "Hello World from the SendGrid PHP Library";
+    $to = new SendGrid\Email(null, "test@example.com");
+    $content = new SendGrid\Content("text/plain", "some text here");
+    $mail = new SendGrid\Mail($from, $subject, $to, $content);
+    $to = new SendGrid\Email(null, "test2@example.com");
+    $mail->personalization[0]->addTo($to);
+    //echo json_encode($mail, JSON_PRETTY_PRINT), "\n";
+    return $mail;
 }
 
-var_dump($names);
+function sendHelloEmail()
+{
+    $apiKey = getenv('SENDGRID_API_KEY');
+    
 
-die;
-
-$sendgrid = new SendGrid($_SESSION["CFG"]["sendgriduser"], $_SESSION["CFG"]["sendgridpass"]);
-
-$template = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/standard.email.html");
-
-$bodytag = str_replace("%clubname%", "The Commodore", $template);
-
-$mail = new SendGrid\Mail();
-$mail->
-  setFrom('adam.m.preston@gmail.com')->
-  setFromName('Sportsynergy')->
-  setSubject('foobar subject')->
-  setText('foobar text')->
-  addCategory("Test")->
-  setTos($toList)->
-setHtml($bodytag)->
-#addSubstitution("%name%", array("John"));
-addSubstitution("%firstname%", array("Bill", "Tom"))->
-addSubstitution("%content%", array("This is a test","Again"));
-
-$sendgrid->smtp->send($mail);
+    $sg = new \SendGrid($apiKey);
+    $request_body = helloEmail();
+    $response = $sg->client->mail()->send()->post($request_body);
+    echo $response->statusCode();
+    echo $response->body();
+    echo $response->headers();
+}
 
 
 

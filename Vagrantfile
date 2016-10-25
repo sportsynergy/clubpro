@@ -31,9 +31,9 @@ Vagrant.configure("2") do |config|
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
   # such as FTP and Heroku are also available. See the documentation at
   # https://docs.vagrantup.com/v2/push/atlas.html for more information.
-  config.push.define "atlas" do |push|
-     push.app = "sportsynergy/clubpro"
-  end
+  #config.push.define "atlas" do |push|
+  #   push.app = "sportsynergy/clubpro"
+  #end
 
   config.vm.provider "virtualbox" do |v|
     v.name = "clubpro"
@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
      apt-get update
-     apt-get install -y apache2
-     apt-get install -y php libapache2-mod-php php-mcrypt php-mysql
+     apt-get install -y apache2 zip
+     apt-get install -y php libapache2-mod-php php-mcrypt php-mysql php-curl
   SHELL
 end

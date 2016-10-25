@@ -36,7 +36,7 @@
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/courtlib.php");
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 $DOC_TITLE = "Record Scores";
 $ct = $_REQUEST["ct"];

@@ -1,4 +1,9 @@
 <?php
+
+// If you are using Composer
+require './vendor/autoload.php';
+
+
 class SampleTest extends PHPUnit_Framework_TestCase
 {
     public function testPushAndPop()
@@ -13,5 +18,11 @@ class SampleTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo', array_pop($stack));
         $this->assertEquals(0, count($stack));
     }
+
+    
+
+
 }
+
+
 ?>

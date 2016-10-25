@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1e2ff5dd81a2be60dfcb4276d4a6b6e1",
-    "content-hash": "dd73ca29a1fadb999edb4b479e93d5ee",
+    "hash": "91a06b641392150d7e98d2f0eef3813f",
+    "content-hash": "406a451409b5b213f2e0e2eedb3621c3",
     "packages": [
         {
             "name": "eluceo/ical",
@@ -62,16 +62,16 @@
         },
         {
             "name": "sendgrid/php-http-client",
-            "version": "3.4.0",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sendgrid/php-http-client.git",
-                "reference": "9ea03457478549eacd191d6476ae78a6b868af57"
+                "reference": "aa09fb89e2be2624de9db4dde914d27cbdece95c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sendgrid/php-http-client/zipball/9ea03457478549eacd191d6476ae78a6b868af57",
-                "reference": "9ea03457478549eacd191d6476ae78a6b868af57",
+                "url": "https://api.github.com/repos/sendgrid/php-http-client/zipball/aa09fb89e2be2624de9db4dde914d27cbdece95c",
+                "reference": "aa09fb89e2be2624de9db4dde914d27cbdece95c",
                 "shasum": ""
             },
             "require": {
@@ -110,7 +110,7 @@
                 "rest",
                 "sendgrid"
             ],
-            "time": "2016-09-27 16:15:10"
+            "time": "2016-10-18 23:15:04"
         },
         {
             "name": "sendgrid/sendgrid",
