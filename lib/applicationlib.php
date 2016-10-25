@@ -96,6 +96,8 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 	$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
 	$template = str_replace("%app_root%", $_SESSION["CFG"]["wwwroot"], $template);
 	
+    $html_content = new SendGrid\Content("text/html", $template);
+
     $from_email = new SendGrid\Email(get_userfullname(), get_email() );
 	
     $mail = new SendGrid\Mail();
@@ -104,13 +106,16 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
     $mail->addCategory("Club Email");
     $mail->addCategory($content->clubname);
     $mail->addPersonalization($personalization);
-    $mail->addContent($template);
+    $mail->addContent($html_content);
 
 
-	$response = $sendgrid->client->mail()->send()->post($mail);
-
-    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() );
+    try {
+        $response = $sendgrid->client->mail()->send()->post($mail);
+    } catch (Exception $e) {
+        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: Caught exception: " );
+    }
 	
+    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() );
 }
 
 /*
@@ -143,13 +148,14 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 
     foreach ($to_emails as $k=>$v){
     
-        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
+        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category and ".$v['name'] );
     
         $email = new SendGrid\Email($v['name'], $k);
         $personalization->addTo($email);
         $personalization->addSubstitution("%firstname%", $v['name']);
         $personalization->addSubstitution("%signupurl%", $v['url']);
     }
+
 
     $from_email = new SendGrid\Email("Sportsynergy", $_SESSION["CFG"]["mailer.email"]);
 
@@ -163,9 +169,13 @@ function sendgrid_email($subject, $to_emails, $content, $category){
     $mail->addPersonalization($personalization);
     $mail->addContent($html_content);
 
-    $response = $sendgrid->client->mail()->send()->post($mail);
+    try {
+        $response = $sendgrid->client->mail()->send()->post($mail);
+    } catch (Exception $e) {
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
 
-    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() );
+    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() ." number of emails sent: ". count($personalization->getTos()) );
 	
 }
 
@@ -1221,7 +1231,7 @@ function email_players($resid, $emailType) {
             $signupurl = "<a href=\"$rawurl\">here</a>.";
 
 			if( !empty($emailidrow[0]) && !empty($emailidrow[1]) && !empty($emailidrow[2])){
-				$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+				$to_email = "$emailidrow[2]";
 	            $to_emails[$to_email] = array(
 	                'name' => $emailidrow[0],
                     'url' => $signupurl
@@ -1532,7 +1542,7 @@ function email_players($resid, $emailType) {
 										 AND clubuser.enddate IS NULL";
         }
 
-        if (isDebugEnabled(1)) logMessage( $emailidquery );
+        if (isDebugEnabled(1)) logMessage("applicationlib.email_players: query". $emailidquery );
 
 
         // run the query on the database
@@ -1553,7 +1563,7 @@ function email_players($resid, $emailType) {
             }
 
 			if( !empty($emailidrow[0]) && !empty($emailidrow[1]) && !empty($emailidrow[2])){
-				$to_email = "$emailidrow[0] $emailidrow[1] <$emailidrow[2]>";
+				$to_email = "$emailidrow[2]";
             	$to_emails[$to_email] = array(
                 	'name' => $emailidrow[0],
                     'url' => $signupurl
@@ -1663,7 +1673,7 @@ function confirm_singles($resid, $isNewReservation) {
 					   AND reservations.matchtype = matchtype.id
 					   AND users.userid = clubuser.userid
 			           AND clubuser.clubid=" . get_clubid();
-    logMessage($rquery);
+
     $rresult = db_query($rquery);
     $robj = mysqli_fetch_object($rresult);
 
@@ -3983,7 +3993,7 @@ function isEmailUniqueAtClub($email, $clubid){
 
 function is_email_valid($emailaddress) {
 
-	if (eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $emailaddress)) {
+    if (filter_var(trim($emailaddress), FILTER_VALIDATE_EMAIL)) {
 		return TRUE;
 	}
 

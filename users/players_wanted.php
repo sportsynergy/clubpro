@@ -272,7 +272,7 @@ else{
 
 
                  // run the query on the database
-                 $dcourtdetailsresult = mysql_query($dcourtdetailsquery);
+                 $dcourtdetailsresult = mysqli_query($dcourtdetailsquery);
 				$playerOneArray = mysqli_fetch_array($dcourtdetailsresult);
 				$playerTwoArray = mysqli_fetch_array($dcourtdetailsresult);
 

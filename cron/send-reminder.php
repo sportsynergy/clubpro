@@ -5,7 +5,7 @@ This script runs every minute to send out the reservation reminders
 */
 
 include ("../application.php");
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 date_default_timezone_set('GMT');
 
@@ -325,7 +325,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 	$content->clubname = $clubname;
 	
 	$to_emails = array();
-	$to_email = $player_one['firstname']." ".$player_one['lastname']." <".$player_one['email'].">";
+	$to_email = $player_one['email'];
     $to_emails[$to_email] = array(
             'name' => $player_one['firstname']
      );
@@ -340,7 +340,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 	$content->line1 = $emailbody;
 	
 	$to_emails = array();
-	$to_email = $player_two['firstname']." ".$player_two['lastname']." <".$player_two['email'].">";
+	$to_email = $player_two['email'];
     $to_emails[$to_email] = array(
             'name' => $player_two['firstname']
      );
@@ -357,7 +357,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 	$content->line1 = $emailbody;
 	
 	$to_emails = array();
-	$to_email = $player_three['firstname']." ".$player_three['lastname']." <".$player_three['email'].">";
+	$to_email = $player_three['email'];
     $to_emails[$to_email] = array(
         'name' => $player_three['firstname']
      );
@@ -371,7 +371,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 	$content->line1 = $emailbody;
 		
 	$to_emails = array();
-	$to_email = $player_four['firstname']." ".$player_four['lastname']." <".$player_four['email'].">";
+	$to_email = $player_four['email'];
     $to_emails[$to_email] = array(
           'name' => $player_four['firstname']
       );

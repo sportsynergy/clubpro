@@ -174,7 +174,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
             if ($frm["courttype$courtTypeArray[courttypeid]"]) {
                 
                 if (in_array($courtTypeArray['courttypeid'], $mycourtTypes)) {
-                    mysql_query("UPDATE `tblUserRankings` SET ranking = '" . $frm["courttype$courtTypeArray[courttypeid]"] . "' WHERE courttypeid='$courtTypeArray[courttypeid]' AND userid ='$userid' AND usertype ='0'");
+                    mysqli_query("UPDATE `tblUserRankings` SET ranking = '" . $frm["courttype$courtTypeArray[courttypeid]"] . "' WHERE courttypeid='$courtTypeArray[courttypeid]' AND userid ='$userid' AND usertype ='0'");
                 } else {
                     $query = "INSERT INTO `tblUserRankings`
                                         (`userid` , `courttypeid` , `ranking` , `hot` , `usertype`  )
@@ -185,7 +185,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
 
             //if courttype post var is not set and it was set before we will delete it.
             else {
-                mysql_query("DELETE from `tblUserRankings`WHERE userid=$userid AND courttypeid='$courtTypeArray[courttypeid]' AND usertype=0");
+                mysqli_query("DELETE from `tblUserRankings`WHERE userid=$userid AND courttypeid='$courtTypeArray[courttypeid]' AND usertype=0");
             }
         }
 

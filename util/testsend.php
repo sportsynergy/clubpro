@@ -10,11 +10,23 @@ sendHelloEmail();
 
 function helloEmail()
 {
-    $from = new SendGrid\Email(null, "test@example.com");
+    $from = new SendGrid\Email(null, "support@sportsynergy.net");
     $subject = "Hello World from the SendGrid PHP Library";
-    $to = new SendGrid\Email(null, "test@example.com");
+    
+    
+    $personalization = new SendGrid\Personalization();
+    $to = new SendGrid\Email("Bob Jones", "adam704a@hotmail.com");
+    $personalization->addTo($to);
+    
     $content = new SendGrid\Content("text/plain", "some text here");
-    $mail = new SendGrid\Mail($from, $subject, $to, $content);
+    $mail = new SendGrid\Mail();
+
+    
+    $mail->setFrom($from);
+    $mail->setSubject($subject);
+    $mail->addPersonalization($personalization);
+    $mail->addContent($content);
+
     $to = new SendGrid\Email(null, "test2@example.com");
     $mail->personalization[0]->addTo($to);
     //echo json_encode($mail, JSON_PRETTY_PRINT), "\n";
