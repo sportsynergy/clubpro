@@ -74,21 +74,22 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
         return;
     }
 	
-	$personalization = new SendGrid\Personalization();
+    $apiKey = getenv('SENDGRID_API_KEY');
+    $sendgrid = new SendGrid($apiKey);
+
+	$mail = new SendGrid\Mail();
 
     foreach ($to_emails as $k=>$v){
     
-        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category" );
+        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and category $category" );
     
+        $personalization = new SendGrid\Personalization();
         $email = new SendGrid\Email($v['name'], $k);
         $personalization->addTo($email);
         $personalization->addSubstitution("%firstname%", $v['name']);
         $personalization->addSubstitution("%signupurl%", $v['url']);
+        $mail->addPersonalization($personalization);
     }
-
-    $apiKey = getenv('SENDGRID_API_KEY');
-    $sendgrid = new SendGrid($apiKey);
-
 
 	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/blank.email.html");
 	$template = str_replace("%sitecode%", get_sitecode(), $file_contents);
@@ -100,12 +101,11 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 
     $from_email = new SendGrid\Email(get_userfullname(), get_email() );
 	
-    $mail = new SendGrid\Mail();
+   
     $mail->setFrom($from_email);
     $mail->setSubject($subject);
     $mail->addCategory("Club Email");
     $mail->addCategory($content->clubname);
-    $mail->addPersonalization($personalization);
     $mail->addContent($html_content);
 
 
@@ -115,7 +115,7 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
         if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: Caught exception: " );
     }
 	
-    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() );
+    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() ." number of emails sent: ". count($personalization->getTos()) );
 }
 
 /*
@@ -144,16 +144,18 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 	$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
 	$template = str_replace("%app_root%", $_SESSION["CFG"]["wwwroot"], $template);
 
-    $personalization = new SendGrid\Personalization();
+    $mail = new SendGrid\Mail();
 
     foreach ($to_emails as $k=>$v){
     
-        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and cateogry $category and ".$v['name'] );
+        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and category $category and ".$v['name'] );
     
+        $personalization = new SendGrid\Personalization();
         $email = new SendGrid\Email($v['name'], $k);
         $personalization->addTo($email);
         $personalization->addSubstitution("%firstname%", $v['name']);
         $personalization->addSubstitution("%signupurl%", $v['url']);
+        $mail->addPersonalization($personalization);
     }
 
 
@@ -161,12 +163,11 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 
     $html_content = new SendGrid\Content("text/html", $template);
 
-    $mail = new SendGrid\Mail();
+    
     $mail->setFrom($from_email);
 	$mail->setSubject($subject);
     $mail->addCategory($category);
     $mail->addCategory($content->clubname);
-    $mail->addPersonalization($personalization);
     $mail->addContent($html_content);
 
     try {
@@ -1213,6 +1214,9 @@ function email_players($resid, $emailType) {
         // run the query on the database
         $emailidresult = db_query($emailidquery);
 
+
+        if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers query: $emailidquery");
+        
         $to_emails = array();
         while ($emailidrow = db_fetch_row($emailidresult)) {
             
@@ -1463,8 +1467,7 @@ function email_players($resid, $emailType) {
         }
 
         /*
-         * Email Advertisments are either set to the whole club or the list of buddies
-         * of the person making the reservation.
+         * Email Advertisments are either set to the whole club or the list of buddies of the person making the reservation.
         */
         
         if ($emailType == "3") {
