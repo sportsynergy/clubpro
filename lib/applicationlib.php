@@ -952,6 +952,8 @@ creates a team, assigns a reanking and returns the new teamid for the current us
 */
 function makeTeamForCurrentUser($sportname, $partnerid) {
 
+    global $dbh;
+    
     /* Set the team identifier     */
     $setteamquery = "INSERT INTO tblTeams (
 	                courttypeid
@@ -962,7 +964,7 @@ function makeTeamForCurrentUser($sportname, $partnerid) {
     $setteamresult = db_query($setteamquery);
 
     /* Get the team id     */
-    $lastinsert = mysql_insert_id();
+    $lastinsert = mysqli_insert_id($dbh);
     $addselfquery = "INSERT INTO tblkpTeams (
 	                teamid, userid
 	                ) VALUES ( $lastinsert
@@ -1024,6 +1026,8 @@ creates a team, assigns a reanking and returns the new teamid for two different 
 */
 function makeTeamForPlayers($sportname, $player1id, $player2id) {
 
+    global $dbh;
+
     /* Set the team identifier     */
     $setteamquery = "INSERT INTO tblTeams (
 	                courttypeid
@@ -1034,7 +1038,7 @@ function makeTeamForPlayers($sportname, $player1id, $player2id) {
     $setteamresult = db_query($setteamquery);
 
     /* Get the team id     */
-    $lastinsert = mysql_insert_id();
+    $lastinsert = mysqli_insert_id($dbh);
     $addselfquery = "INSERT INTO tblkpTeams (
 	                teamid, userid
 	                ) VALUES ( $lastinsert

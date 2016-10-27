@@ -39,7 +39,6 @@
 * - db_insert_id()
 * - db_free_result()
 * - db_num_fields()
-* - db_field_name()
 * - db_data_seek()
 * Classes list:
 */
@@ -212,7 +211,7 @@ function db_num_rows($qid) {
  * query
  */
 function db_affected_rows() {
-	return mysql_affected_rows();
+	return mysqli_affected_rows();
 }
 
 /**
@@ -220,7 +219,9 @@ function db_affected_rows() {
  * function to give you the ID of the new autonumber value
  */
 function db_insert_id() {
-	return mysql_insert_id();
+	global $dbh;
+	
+	return mysqli_insert_id($dbh);
 }
 
 /**
@@ -229,7 +230,7 @@ function db_insert_id() {
  * @param unknown_type $qid
  */
 function db_free_result($qid) {
-	mysql_free_result($qid);
+	mysqli_free_result($qid);
 }
 
 /**
@@ -242,16 +243,6 @@ function db_num_fields($qid) {
 	return mysqli_num_fields($qid);
 }
 
-/**
- * return the name of the field number $fieldno returned from the SELECT query
- * with the identifier $qid 
- * 
- * @param unknown_type $qid
- * @param unknown_type $fieldno
- */
-function db_field_name($qid, $fieldno) {
-	return mysql_field_name($qid, $fieldno);
-}
 
 /**
  * move the database cursor to row $row on the SELECT query with the identifier

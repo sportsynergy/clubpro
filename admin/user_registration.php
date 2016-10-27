@@ -103,6 +103,8 @@ function validate_form(&$frm, &$errors) {
 }
 function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersResult) {
 
+    global $dbh;
+    
     /* add the new user into the database */
     
     if (isDebugEnabled(1)) logMessage("user_registration.insert_user ");
@@ -143,11 +145,11 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
     // run the query on the database.  Get the user that was just added.  Make sure to get the right one.  Usersnames only have
     // to be unique within a club, but they can be there can be duplicates from club to club.  To mitigate the risk of adding
 
-    // a club authoriation for the wrong id, match on the password,
+    // a club authorization for the wrong id, match on the password,
 
     $result = db_query($query);
 
-    $userid = mysql_insert_id();
+    $userid = mysqli_insert_id($dbh);
 
     //Insert the Club User (for the new club)
     $clubUserQuery = "INSERT INTO tblClubUser (
