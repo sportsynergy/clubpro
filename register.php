@@ -151,7 +151,7 @@ function doesClubCodeAlreadyExist($clubcode) {
     $query = "SELECT 1 from tblClubSites where sitecode = '$clubcode'";
     $result = db_query($query);
     
-    if (mysql_numrows($result) == 0) {
+    if (mysqli_num_rows($result) == 0) {
         return false;
     } else {
         return true;

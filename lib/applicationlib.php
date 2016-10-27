@@ -327,7 +327,7 @@ function amiValidForSite($siteid) {
 	                              WHERE (((tblkupSiteAuth.userid)=" . get_userid() . ") AND ((tblkupSiteAuth.siteid)=$siteid))";
     $amiauthforsiteResult = db_query($amiauthforsiteQuery);
     
-    if (mysql_numrows($amiauthforsiteResult) == 0) {
+    if (mysqli_num_rows($amiauthforsiteResult) == 0) {
         
         if (isDebugEnabled(1)) logMessage("applicationlib.amiValidForSite: " . get_userid() . " is NOT valid for $siteid");
         return FALSE;
@@ -351,7 +351,7 @@ function isValidForCourtType($courttypeid, $userid) {
 	                                  AND tblUserRankings.usertype=0";
     $amiauthforCourtTypeResult = db_query($amiauthforCourtTypeQuery);
     
-    if (mysql_numrows($amiauthforCourtTypeResult) == 0) {
+    if (mysqli_num_rows($amiauthforCourtTypeResult) == 0) {
         
         if (isDebugEnabled(1)) logMessage("applicationlib.amiValidForCourtType: $userid is NOT valid for $courttypeid");
         return FALSE;
