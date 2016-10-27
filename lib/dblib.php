@@ -120,7 +120,7 @@ function db_connect($dbhost, $dbname, $dbuser, $dbpass) {
  * because PHP will handle it
  */
 function db_disconnect() {
-	mysql_close();
+	mysqli_close();
 }
 
 /**
@@ -220,7 +220,7 @@ function db_affected_rows() {
  */
 function db_insert_id() {
 	global $dbh;
-	
+
 	return mysqli_insert_id($dbh);
 }
 
