@@ -143,13 +143,13 @@ function validate_messages_form(&$frm, &$errors) {
         $errors->Messagetextarea = true;
         $errors->ClubNewsMessage = true;
         $msg.= "You didn't specifiy a message.";
-    } elseif (eregi("'", $frm["Messagetextarea"])) {
+    } elseif (preg_match("'", $frm["Messagetextarea"])) {
         $errors->Messagetextarea = true;
         $msg.= "Please don't use apostrophes, I beg of you.";
-    } elseif (eregi("\n", $frm["Messagetextarea"])) {
+    } elseif (preg_match("\n", $frm["Messagetextarea"])) {
         $errors->Messagetextarea = true;
         $msg.= "This time don't put a return in the message";
-    } elseif (eregi("'", $frm["ClubNewsMessage"])) {
+    } elseif (preg_match("'", $frm["ClubNewsMessage"])) {
         $errors->ClubNewsMessage = true;
         $msg.= "Please don't use apostrophes, I beg of you.";
     }
