@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
      apt-get update
-     apt-get install -y apache2 zip
+     apt-get install -y apache2 zip libdbi-perl libdbd-mysql-perl
      apt-get install -y php libapache2-mod-php php-mcrypt php-mysql php-curl
   SHELL
 end
