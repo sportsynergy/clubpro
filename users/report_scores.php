@@ -32,7 +32,7 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
-require '/vendor/autoload.php';
+require "../vendor/autoload.php";
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 
 // Log user out if they are in the wrong club
