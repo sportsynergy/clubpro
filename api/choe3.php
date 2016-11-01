@@ -1,22 +1,33 @@
 <?php
  
+/**
+* This is a custom wrapper for the JONAS club to use Single Sign on. To use this include a file in the sites configuration including the siteid and clubid (i.e. /clubs/sitecode/filename.php)
+*/
 
-include '../application.php';
-
-// Handle users coming from a Jonas club site
-//$u = $this->params['url'];
-// time=2323&vendor=323232&userid=2323&target-page=2323&value=2323
-
-$time = $_REQUEST["time"];
-$vendor = $_REQUEST["vendor"];
 $userid = $_REQUEST["userid"];
-$page = $_REQUEST["page"];
-$value = $_REQUEST["value"];
 
-if (!isset($time) || !isset($vendor) || !isset($userid) ||  !isset($page) || !isset($value) ){
+if ( !isset($userid)  ){
 	die("invalid request");
 } 
 
- 
-header( 'Location: http://www.sportsynergy.net/'.$_SESSION["CFG"]["wwwroot"]."clubs/cs-squash/index.php?username=."$userid".&password=bff23476a33b6bfe3b0353826940edd3" ) ; 
+$query = "SELECT password, sitecode FROM tblClubSites WHERE siteid = $siteid";
+$result = db_query($query);
+$siteArray = mysqli_fetch_array($result);
+
 ?>
+
+<html>
+
+<form name="mainForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=$siteArray['sitecode'] ?>/" method="post">
+  <input type="hidden" name="username" value="<?=$userid ?>">
+  <input type="hidden" name="password" value="<?=$siteArray['password'] ?>">
+</form>
+
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
+<script>
+
+submitForm('mainForm');
+</script>
+
+
+</html>
