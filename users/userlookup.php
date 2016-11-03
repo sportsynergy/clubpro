@@ -96,7 +96,7 @@ if (empty($courttype)) {
 	                ORDER BY users.lastname";
 }
 
-if (isDebugEnabled(1)) logMessage($query);
+
 $result = db_query($query);
 
 if (isDebugEnabled(1)) logMessage("Users.UserLookup: Found " . mysqli_num_rows($result) . " users");
