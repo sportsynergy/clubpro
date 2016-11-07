@@ -160,11 +160,9 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
     $veryLastCourt = mysqli_result($totalCourtResult, $totalCourts - 1);
     $firstCourtDisplayed = mysqli_result($totalCourtResult, 0);
     $lastCourtDisplayed = mysqli_result($currentCourtResult, $totalCurrentCourts - 1);
-
-    // The courts will be in numerical order but not necessarily sequential.  If the
-    // last court is within the courts that are displayed, then there is no need to
-
-    // display the right navigation link.
+ 
+    
+    // The courts will be in numerical order but not necessarily sequential.  If the last court is within the courts that are displayed, then there is no need to display the right navigation link.
 
     
     if ($veryLastCourt >= $firstCourtDisplayed && $veryLastCourt <= $lastCourtDisplayed) {
@@ -184,7 +182,7 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
 
     if ($numberInNextWindow < 6) {
         
-        $startCourtIdArray = mysqli_result($currentCourtResult, $numberInNextWindow);
+        $startCourtId = mysqli_result($currentCourtResult, $numberInNextWindow);
     }
 
     //Otherwise set this to the first
