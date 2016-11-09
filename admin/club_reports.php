@@ -91,7 +91,8 @@ function run_member_activity_report(&$frm) {
                               has been booked for.";
 
     /*Get the time value for 30 days ago.  At this point the reports aren't run with parameters.*/
-    $monthagotime = mktime() + get_tzdelta() - 2592000;
+    $currenttime = mktime() + get_tzdelta();
+    $monthagotime = $currenttime - 2592000;
 
     //Initialize Data Holders
     $dataArray = array();
@@ -113,10 +114,12 @@ function run_member_activity_report(&$frm) {
                                                      FROM tblReservations
                                                      INNER JOIN tblkpUserReservations
                                                      ON tblReservations.reservationid = tblkpUserReservations.reservationid
-                                                     WHERE (((tblkpUserReservations.userid)=$row[userid])
+                                                     WHERE ((tblkpUserReservations.userid)=$row[userid])
                                                      AND ((tblkpUserReservations.usertype)=0)
-                                                     AND ((tblReservations.time)>$monthagotime))
+                                                     AND ((tblReservations.time)>$monthagotime)
+                                                     AND ((tblReservations.time)<$currenttime)
 													 AND tblReservations.enddate IS NULL";
+                       
         $howmanyreservationsresult = db_query($howmanyreservationsquery);
         $reservationCount = mysqli_num_rows($howmanyreservationsresult);
         $dataArray[$i] = array(
