@@ -163,8 +163,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
         $mycourtTypes = explode(",", $frm['mycourttypes']);
         $mySites = explode(",", $frm['mysites']);
 
-        //if the courttype post var is set we need to either update or insert depending
-        //on if it was set before.
+        //if the courttype post var is set we need to either update or insert depending on if it was set before.
 
         //Now set the sites
 
@@ -174,7 +173,11 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
             if ($frm["courttype$courtTypeArray[courttypeid]"]) {
                 
                 if (in_array($courtTypeArray['courttypeid'], $mycourtTypes)) {
-                    mysqli_query("UPDATE `tblUserRankings` SET ranking = '" . $frm["courttype$courtTypeArray[courttypeid]"] . "' WHERE courttypeid='$courtTypeArray[courttypeid]' AND userid ='$userid' AND usertype ='0'");
+                    $query = "UPDATE `tblUserRankings` SET ranking = '" . $frm["courttype$courtTypeArray[courttypeid]"] . "' WHERE courttypeid='$courtTypeArray[courttypeid]' AND userid ='$userid' AND usertype ='0'";
+                    
+                db_query($query);
+
+                
                 } else {
                     $query = "INSERT INTO `tblUserRankings`
                                         (`userid` , `courttypeid` , `ranking` , `hot` , `usertype`  )
@@ -185,7 +188,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
 
             //if courttype post var is not set and it was set before we will delete it.
             else {
-                mysqli_query("DELETE from `tblUserRankings`WHERE userid=$userid AND courttypeid='$courtTypeArray[courttypeid]' AND usertype=0");
+                db_query("DELETE from `tblUserRankings`WHERE userid=$userid AND courttypeid='$courtTypeArray[courttypeid]' AND usertype=0");
             }
         }
 
