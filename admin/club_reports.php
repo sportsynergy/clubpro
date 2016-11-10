@@ -265,8 +265,10 @@ function run_court_utilization_report(&$frm) {
          $clubobj = db_fetch_object($clubresult);
 
          $tzdelta = $clubobj->timezone*3600;
-         $time =  $gmtime+$tzdelta;
-         $monthagotime =   $time - 2592000;
+
+
+         $currenttime = mktime() + get_tzdelta();
+         $monthagotime = $currenttime - 2592000;
          
          //Initialize Data Holders
          $dataArray = array ();
@@ -312,8 +314,9 @@ function run_court_utilization_report(&$frm) {
                  //Now For each member run a sub query to see how many reservations
                  $howmanyreservationsquery = "SELECT tblReservations.reservationid, tblReservations.time
                                               FROM tblReservations
-                                              WHERE (((tblReservations.time)>$monthagotime)
-                                              AND ((tblReservations.courtid)=$row[courtid]))";
+                                              WHERE ((tblReservations.time)>$monthagotime)
+                                              AND ((tblReservations.time)<$currenttime)
+                                              AND ((tblReservations.courtid)=$row[courtid])";
 
                  $howmanyreservationsresult = db_query($howmanyreservationsquery);
                  $reservationCount = mysqli_num_rows($howmanyreservationsresult);
