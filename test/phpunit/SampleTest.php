@@ -1,7 +1,6 @@
 <?php
 
 // If you are using Composer
-require './vendor/autoload.php';
 
 
 class SampleTest extends PHPUnit_Framework_TestCase
