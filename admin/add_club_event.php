@@ -149,7 +149,7 @@ function saveClubEvent(&$frm) {
     } else {
         logMessage("add_club_event.saveClubEvent: adding new club event ");
         $query = "INSERT INTO tblClubEvents (
-                name, clubid, eventdate, description, creator, lastmodifier
+                name, clubid, eventdate, description, creator, lastmodifier, eventenddate
                 ) VALUES (
                           '$subject'
 					  	  ," . get_clubid() . "
@@ -157,6 +157,7 @@ function saveClubEvent(&$frm) {
                           ,'$description'
                           ," . get_userid() . "
                           ," . get_userid() . "
+                          ,null
                           )";
     }
     $result = db_query($query);
