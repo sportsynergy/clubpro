@@ -60,7 +60,6 @@ function onSubmitButtonClicked(){
         <td class="label">Sport Type:</td>
         <td>
          <select name="courttypeid">
-         <option value="">Select Option</option>
 
           <?  while ( $sportarray = db_fetch_array($availbleSports)){ ?>
              	<option value="<? pv($sportarray['courttypeid'] ) ?>"><? pv($sportarray['courttypename'] ) ?></option>

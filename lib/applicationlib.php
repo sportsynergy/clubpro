@@ -2683,7 +2683,6 @@ function record_score(&$frm, $source) {
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
         $playerTwoRankResult = db_query($playerTwoRankQuery);
-        $playerTwoRanking = mysqli_fetch_array($playerTwoRankResult);
         $playerTwoRanking = $playerTwoRankingArray[0];
         $playerTwoNewRanking = $playerTwoRanking + $winnerAdjustment;
         $playerOneAdjustment = db_query("
