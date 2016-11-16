@@ -42,6 +42,11 @@ $searchname = $_REQUEST["searchname"];
 
 $DOC_TITLE = "Player Administration";
 
+if ( !isset($userid) ){
+    $wwwroot = $_SESSION["CFG"]["wwwroot"];
+    header("Location: $wwwroot/clubs/" . get_sitecode() . "/index.php?daysahead=$time");
+}
+
 // Load up data for view
 $registeredSports = load_registered_sports($userid);
 $authSites = load_auth_sites($userid);

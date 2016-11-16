@@ -2683,6 +2683,7 @@ function record_score(&$frm, $source) {
 							   AND rankings.courttypeid = '$ctidarray[0]'
 							   AND rankings.usertype = 0";
         $playerTwoRankResult = db_query($playerTwoRankQuery);
+        $playerTwoRankingArray = mysqli_fetch_array($playerTwoRankResult);
         $playerTwoRanking = $playerTwoRankingArray[0];
         $playerTwoNewRanking = $playerTwoRanking + $winnerAdjustment;
         $playerOneAdjustment = db_query("
@@ -3512,6 +3513,8 @@ function load_user_profile($userid) {
 
 function load_registered_sports($userid) {
 
+
+    
 	$registeredSportsQuery = "SELECT rankings.courttypeid, rankings.ranking,courttype.courttypename,courttype.reservationtype
 	                         FROM tblUserRankings rankings, tblCourtType courttype
 							 WHERE rankings.courttypeid = courttype.courttypeid
