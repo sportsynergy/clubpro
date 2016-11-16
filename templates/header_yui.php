@@ -68,6 +68,7 @@
 
 <?php if (defined("_JQUERY_") && _JQUERY_ == true){ ?>
 <!-- jQuery -->
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
 <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/jquery-1.6.1.min.js" type="text/javascript"></script>
 	<?php if (defined("_PRETTYPHOTO_") && _PRETTYPHOTO_ == true){ ?>
 <!-- PrettyPhoto -->

@@ -36,6 +36,8 @@ require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 $DOC_TITLE = "Player Rankings";
 require_loginwq();
+define("_JQUERY_", true);
+define("_PRETTYPHOTO_", true);
 
 // Log user out if they are in the wrong club
 $userRelation = new UserClubRelation();
