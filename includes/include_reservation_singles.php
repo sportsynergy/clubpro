@@ -141,8 +141,12 @@ pat_autocomplete(array(
 				<?}
 						
 				if($timetonext >= 3600 || $nexttime == null){ ?>
-					<option value="1">60 Minutes</option>
-				<? } ?>	
+					<option selected="selected" value="1">60 Minutes</option>
+				<?}
+
+				if($timetonext >= 5400 || $nexttime == null ){ ?>
+					<option value="1.5">90 Minutes</option>
+				<? } ?>
 					
 			</select>
 			</td>
