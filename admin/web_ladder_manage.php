@@ -103,6 +103,10 @@ function insert_boxuser(&$frm) {
     // First thing we need to do is find out how many players are
     // in the league.  This will determine what place the user will start with.
 
+    if ( empty($frm['boxuser']) ){
+        return;
+    } 
+
     $boxcountquery = "SELECT boxid
                         FROM tblkpBoxLeagues where boxid=$frm[boxid]";
 
