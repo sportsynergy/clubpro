@@ -95,7 +95,7 @@ $boxuserquery = "SELECT concat(users.firstname,' ',users.lastname) AS `name`
 
 // run the query on the database
 $box_user_result = db_query($boxuserquery);
-$box_user_array = mysqli_fetch_array($box_user_result)
+$box_user_array = mysqli_fetch_array($box_user_result);
 
 $boxleagueequery = "SELECT boxid FROM tblBoxHistory WHERE reservationid = $reservationid";
 // run the query on the database
