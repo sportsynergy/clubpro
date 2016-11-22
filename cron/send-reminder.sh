@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /opt/app/clubpro-main/cron
+cd /opt/clubpro/cron
 php send-reminder.php

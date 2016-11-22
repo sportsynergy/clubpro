@@ -422,7 +422,7 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
     $content->clubname = $clubname;
 	
 	$to_emails = array();
-	$to_email = $player_one['firstname']." ".$player_one['lastname']." <".$player_one['email'].">";
+	$to_email = $player_one['email'];
     $to_emails[$to_email] = array(
         'name' => $player_one['firstname']
     );

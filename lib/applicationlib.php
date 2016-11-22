@@ -87,7 +87,9 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
         $email = new SendGrid\Email($v['name'], $k);
         $personalization->addTo($email);
         $personalization->addSubstitution("%firstname%", $v['name']);
-        $personalization->addSubstitution("%signupurl%", $v['url']);
+        if ( array_key_exists('url', $v) ){
+            $personalization->addSubstitution("%signupurl%", $v['url']);
+        }
         $mail->addPersonalization($personalization);
     }
 
@@ -154,7 +156,9 @@ function sendgrid_email($subject, $to_emails, $content, $category){
         $email = new SendGrid\Email($v['name'], $k);
         $personalization->addTo($email);
         $personalization->addSubstitution("%firstname%", $v['name']);
-        $personalization->addSubstitution("%signupurl%", $v['url']);
+        if ( array_key_exists('url', $v) ){
+            $personalization->addSubstitution("%signupurl%", $v['url']);
+        }
         $mail->addPersonalization($personalization);
     }
 
