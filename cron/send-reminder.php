@@ -437,7 +437,7 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
 	$content->line1 = $emailbody;
 	
 	$to_emails = array();
-	$to_email = $player_two['firstname']." ".$player_two['lastname']." <".$player_two['email'].">";
+	$to_email = $player_two['email'];
     $to_emails[$to_email] = array(
         'name' => $player_two['firstname']
     );
@@ -476,7 +476,7 @@ private function sendEventReminder($reservationid, $eventname, $courtname, $time
 	 		&& !empty($emailidarray['lastname']) 
 	 		&& !empty($emailidarray['email'])){
 
-				$to_email = $emailidarray['firstname']." ".$emailidarray['lastname']." <".$emailidarray['email'].">";
+				$to_email = $emailidarray['email'];
 	            $to_emails[$to_email] = array(
 	                'name' => $emailidarray['firstname']
 	            );
