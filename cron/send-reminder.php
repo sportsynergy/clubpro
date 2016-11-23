@@ -42,8 +42,8 @@ class ReminderService{
 
 			$curtime = mktime() + $tzdelta;
 		
-			$current_hour = "8";
-			$current_minute = "00";
+			$current_hour = gmdate("G", $curtime);
+			$current_minute = gmdate("i", $curtime);
 
 			if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule: current_hour: $current_hour current_minute: $current_minute reminder: ".$sites_array['reminders'] );
 			
