@@ -25,7 +25,7 @@ class ReminderService{
 	*/
 	public function checkTimedSchedule(){
 		
-		if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule: checking all reservations in the next 24 hour window");
+		
 		
 		$query = "SELECT sites.siteid, sites.sitename, sites.clubid, clubs.clubname, clubs.timezone, sites.reminders
 						FROM tblClubSites sites
@@ -35,20 +35,17 @@ class ReminderService{
 	  	$result = db_query($query);
 		while($sites_array = mysqli_fetch_array($result) ){
 				
-			$siteprefs = getSitePreferences($sites_array['siteid']);
-			$_SESSION["siteprefs"] = $siteprefs;
-						
 			$tzdelta = $sites_array['timezone'] * 3600;
-
 			$curtime = mktime() + $tzdelta;
-		
 			$current_hour = gmdate("G", $curtime);
 			$current_minute = gmdate("i", $curtime);
 
-			if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule: current_hour: $current_hour current_minute: $current_minute reminder: ".$sites_array['reminders'] );
-			
+			$siteprefs = getSitePreferences($sites_array['siteid']);
+			$_SESSION["siteprefs"] = $siteprefs;
+						
 			if( $current_hour == $sites_array['reminders'] && $current_minute == "00"){
 
+				if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule: ".$sites_array['sitename'] ." has a reminder set for ". $sites_array['reminders']. " Processing...");
 
 				//Get all of the reservations for the next 24 hours
 				$in24hours = $curtime + (60*60*24);
