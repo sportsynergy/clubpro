@@ -1939,7 +1939,7 @@ function confirm_doubles($resid, $isNewReservation) {
         $content = new Object;
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
-        $to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+        $to_email = "$extraPlayerobj->email";
         $to_emails = array(
             $to_email => array(
                 'name' => $extraPlayerobj->firstname
@@ -1968,14 +1968,14 @@ function confirm_doubles($resid, $isNewReservation) {
         $to_emails = array();
         
         if (isDebugEnabled(1)) logMessage($emailbody);
-        $to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+        $to_email = "$extraPlayerobj->email";
         $to_emails[$to_email] = array(
             'name' => $extraPlayerobj->firstname
         );
 
         //Get next player
         $extraPlayerobj = mysqli_fetch_object($extraPlayerResult);
-        $to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+        $to_email = "$extraPlayerobj->email";
         $to_emails[$to_email] = array(
             'name' => $extraPlayerobj->firstname
         );
@@ -1999,7 +1999,7 @@ function confirm_doubles($resid, $isNewReservation) {
         
         if (isDebugEnabled(1)) logMessage($emailbody);
         $to_emails = array();
-        $to_email = "$extraPlayerobj->firstname $extraPlayerobj->lastname <$extraPlayerobj->email>";
+        $to_email = "$extraPlayerobj->email";
         $to_emails = array(
             $to_email => array(
                 'name' => $extraPlayerobj->firstname
@@ -2039,7 +2039,7 @@ function confirm_doubles($resid, $isNewReservation) {
     	while ($playerObject = mysqli_fetch_object($playerResult)) {
         
         	if (isDebugEnabled(1)) logMessage($emailbody);
-        	$to_email = "$playerObject->firstname $playerObject->lastname <$playerObject->email>";
+        	$to_email = "$playerObject->email";
         	$to_emails[$to_email] = array(
             	'name' => $playerObject->firstname
         		);
