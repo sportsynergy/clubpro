@@ -74,7 +74,7 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
         return;
     }
 	
-    $apiKey = getenv('SENDGRID_API_KEY');
+    $apiKey = $_SESSION["CFG"]["sendgrid_api"];
     $sendgrid = new SendGrid($apiKey);
 
 	$mail = new SendGrid\Mail();
