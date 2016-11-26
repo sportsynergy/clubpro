@@ -187,6 +187,9 @@ function sendgrid_email($subject, $to_emails, $content, $category){
     }
 
     if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() ." number of emails sent: ". count($personalization->getTos()) );
+    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: number of emails sent: ". count($personalization->getTos()) );
+    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: response body: ". $response->body() );
+    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: response header: ". $response->headers() );
 	
 }
 
