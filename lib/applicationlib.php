@@ -139,7 +139,7 @@ function sendgrid_email($subject, $to_emails, $content, $category){
         return;
     }
     
-    $apiKey = getenv('SENDGRID_API_KEY');
+    $apiKey = $_SESSION["CFG"]["sendgrid_api"];
 	$sendgrid = new SendGrid($apiKey);
 
 	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/standard.email.html");
