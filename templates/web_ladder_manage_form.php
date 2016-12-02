@@ -20,6 +20,8 @@ YAHOO.example.init = function () {
         var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
         oSubmitButton1.on("click", onSubmitButtonClicked);
 
+        document.getElementById('name1').setAttribute("autocomplete", "off");
+
     });
 
 } ();

@@ -244,8 +244,8 @@ print "var thisyear = new Array(13);
         <tr>
 
         <td class="label">Court Type:</td>
-            <td><select name="courttypeid">
-                 <option value="">-------------------------------------</option>
+            <td>
+            <select name="courttypeid">
                 <?  //Get all registered Court Types
                 $query = "SELECT courttypeid,courttypename FROM tblCourtType";
 
