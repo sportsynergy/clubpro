@@ -74,7 +74,7 @@ function get_playerswanted() {
     $simtzdelta = $clubobj->timezone;
 
     //First we need to get all resvations that have a userid with 0 in the future
-    $singlespwquery = "SELECT DISTINCTROW tblReservations.reservationid
+    $singlespwquery = "SELECT DISTINCTROW tblReservations.reservationid,tblReservations.time
                    FROM (tblCourts INNER JOIN tblReservations
                    ON tblCourts.courtid = tblReservations.courtid)
                    INNER JOIN tblkpUserReservations
@@ -86,6 +86,7 @@ function get_playerswanted() {
                    AND (tblReservations.matchtype != 4)
 				   AND tblReservations.enddate IS NULL
                    ORDER BY tblReservations.time";
+
     $doublesspwquery = "SELECT DISTINCTROW tblReservations.reservationid, tblReservations.time
                     FROM (tblCourts INNER JOIN tblReservations
                     ON tblCourts.courtid = tblReservations.courtid)
