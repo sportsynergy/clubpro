@@ -6236,9 +6236,10 @@ function convertToDateSlashes($dateString){
 
 	if ($pos !== false) {
 		$dates = explode("-",$dateString);
-		$month = $dates[2];
-		$day = $dates[1];
+		$month = $dates[1];
+		$day = $dates[2];
 		$year = $dates[0];
+        logMessage("applicationlib.convertToDateSlashes: $month/$day/$year");
 		return "$month/$day/$year";
 	}
 
