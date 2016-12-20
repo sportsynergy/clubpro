@@ -43,10 +43,7 @@ sice the email was sent out.  This email is sent when players are looking for a 
 is an example of this kind of link
 http://localhost/clubpro/users/court_reservation.php?time=1285426800&courtid=5&user=2
 
-Now, the first time this link is clicked on the system will ask if they user wants to sign up for the
-court.  The problem happens when that first user adds hisself to the reservation and a second players comes in
-later and clicks on the same link. So as to prevent the second persom from being able to signup for this court,
-a little check needs to be made that makes sure that:
+Now, the first time this link is clicked on the system will ask if they user wants to sign up for the court.  The problem happens when that first user adds hisself to the reservation and a second players comes in later and clicks on the same link. So as to prevent the second persom from being able to signup for this court, a little check needs to be made that makes sure that:
 
 1.) if this page is being loaded from the link in a players wanted email
 2.) The reservation has alredy has the maximum number or people in it
@@ -82,14 +79,6 @@ if($userRelation->isUserLoggedin()){
 $email = new SendGrid\Email("Example User", "test1@example.com");
 
 
-// TODO: Fix this.
-// Can't Include jQuery here quite Yet.  Prototype & jQuery are conflicting - NJW 1-11-2012
-// Include jQuery
-// define("_JQUERY_",true);
-// Include PrettyPhoto
-// define("_PRETTYPHOTO_",true);
-
-
 $DOC_TITLE = "Court Reservation";
 
 //Set the http variables
@@ -99,10 +88,9 @@ $userid = $_REQUEST["userid"];
 $courttype = $_REQUEST["courttype"];
 $courtid = $_REQUEST["courtid"];
 
-// In case the user is loading this page from a link on an email,
-// we have to load in the site preferences (normally this is done in
-
-// the scheduler content.
+/* In case the user is loading this page from a link on an email,
+we have to load in the site preferences (normally this is done in
+the scheduler content. */
 
 
 if (isDebugEnabled(1)) {
@@ -129,8 +117,6 @@ if (match_referer() && isset($_POST['courttype'])) {
     
     if (empty($errormsg)) {
         
-        
-
         //Actually Make the Reservation
         
         if ($frm['action'] == "create") {

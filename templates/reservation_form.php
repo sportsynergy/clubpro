@@ -36,7 +36,10 @@
     <? if($reservationType==2 || $reservationType==1) { ?>
     <li <?=$reservationType=="2"?"class=\"selected\"":""?>><a href="#doubles"><em>Doubles</em></a></li>
     <? } ?>
-    <? if(get_roleid()==2) { ?>
+    <? if($reservationType==3 ) { ?>
+    <li><a href="#"><em>Resource</em></a></li>
+    <? } ?>
+    <? if(get_roleid()==2 && ($reservationType==2 || $reservationType==1) ) { ?>
     <li><a href="#events"><em>Court Events</em></a></li>
     <? } ?>
   </ul>
@@ -51,10 +54,13 @@
       <? include($_SESSION["CFG"]["includedir"]."/include_reservation_doubles.php");?>
     </div>
     <? } ?>
-    <? if(get_roleid()==2) { ?>
+    <? if(get_roleid()==2 && ($reservationType==2 || $reservationType==1)) { ?>
     <div id="events">
       <? include($_SESSION["CFG"]["includedir"]."/include_reservation_event.php");?>
     </div>
+    <? } ?>
+    <? if($reservationType==3 ) { ?>
+    <!-- INclude form for reserving resource -->
     <? } ?>
   </div>
 </div>
