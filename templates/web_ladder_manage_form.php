@@ -265,14 +265,22 @@ $userid = $_REQUEST["userid"];
           <select name="enddateyear" onChange="getDaysForMonth();">
                <?
 
+
                $currYear = gmdate("Y", $curtime);
+
 
                for($i=0; $i<2; ++$i){
                    $year = $currYear + $i;
-               ?>
-                   <option value="<?=$year ?>"><?=$year ?></option>
-              <? }
 
+                   if($year == $datesArray[0]){
+                    $selected = "selected";
+                  } else{
+                    $selected = "";
+                  }
+               ?>
+                   <option value="<?=$year ?>" <?=$selected?> ><?=$year ?></option>
+              <? }
+                unset($selected);
                ?>
 
           </select>
