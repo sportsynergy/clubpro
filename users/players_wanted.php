@@ -273,9 +273,11 @@ else{
 
 
                  // run the query on the database
-                 $dcourtdetailsresult = mysqli_query($dcourtdetailsquery);
-				$playerOneArray = mysqli_fetch_array($dcourtdetailsresult);
-				$playerTwoArray = mysqli_fetch_array($dcourtdetailsresult);
+                 $dcourtdetailsresult = db_query($dcourtdetailsquery);
+				         $playerOneArray = mysqli_fetch_array($dcourtdetailsresult);
+				         $playerTwoArray = mysqli_fetch_array($dcourtdetailsresult);
+
+
 
 				//Get Users for reservation needing one player
 	           if($playerOneArray['usertype']=="0" && $playerOneArray['userid']!="0" && $playerTwoArray['usertype']=="1"){
@@ -302,6 +304,7 @@ else{
 					$userTwoId = $playerTwoArray['userid'];
  					$needTwoPlayer = TRUE;              	
 	            }
+
 
 	           //Print out details on the doubles reservations
 	           mysqli_data_seek($dcourtdetailsresult,0);
@@ -347,7 +350,7 @@ else{
               }
               //Display reservation where a team is needed
               else{
-                  
+
                   //Get the team player names
               $teamnamesquery = "SELECT tblUsers.firstname, tblUsers.lastname
                                  FROM tblUsers INNER JOIN tblkpTeams ON tblUsers.userid = tblkpTeams.userid
