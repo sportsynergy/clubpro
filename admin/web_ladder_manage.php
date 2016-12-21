@@ -59,7 +59,9 @@ $boxnamequery = "SELECT boxleague.boxname, boxleague.courttypeid, boxleague.endd
                            WHERE boxid=$boxid";
 
 
-
+if(!isset($boxid) ){
+    header("Location: $wwwroot/admin/web_ladder_registration.php");
+}
 
 // run the query on the database
 $result = db_query($boxnamequery);
