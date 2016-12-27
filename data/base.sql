@@ -453,13 +453,14 @@ CREATE TABLE IF NOT EXISTS `tblCourtType` (
 --
 
 INSERT INTO `tblCourtType` (`courttypeid`, `sportid`, `courttypename`, `reservationtype`, `enable`, `lastmodified`) VALUES
-(2, 4, 'International Squash', 0, 1, '0000-00-00 00:00:00'),
-(3, 4, 'Hardball Squash', 2, 1, '0000-00-00 00:00:00'),
-(4, 4, 'North American Squash', 0, 1, '0000-00-00 00:00:00'),
-(5, 4, 'North American Singles-Multi', 0, 1, '0000-00-00 00:00:00'),
-(6, 6, 'Racquetball \\ Squash', 1, 1, '2007-07-19 13:51:54'),
-(7, 5, 'Tennis', 1, 1, '0000-00-00 00:00:00'),
-(8, 7, 'Massage Therapy', 0, 1, '2007-09-27 09:36:14');
+(2, 4, 'International Squash'),
+(3, 4, 'Hardball Squash', 2, 1),
+(4, 4, 'North American Squash', 0, 1),
+(5, 4, 'North American Singles-Multi', 0, 1),
+(6, 6, 'Racquetball \\ Squash', 1, 1),
+(7, 5, 'Tennis', 1, 1),
+(8, 7, 'Massage Therapy', 0, 1),
+(11, 11, 'Stationary Bike', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -822,10 +823,11 @@ CREATE TABLE IF NOT EXISTS `tblReservationType` (
 --
 
 INSERT INTO `tblReservationType` (`reservationtypeid`, `reservationtypename`, `lastmodified`) VALUES
-(0, 'Singles', '0000-00-00 00:00:00'),
-(1, 'Multiple Type', '0000-00-00 00:00:00'),
-(2, 'Doubles', '0000-00-00 00:00:00'),
-(3, 'Appointment', '2007-09-27 09:33:31');
+(0, 'Singles'),
+(1, 'Multiple Type'),
+(2, 'Doubles'),
+(3, 'Resource');
+
 
 -- --------------------------------------------------------
 
@@ -963,11 +965,12 @@ CREATE TABLE IF NOT EXISTS `tblSportType` (
 --
 
 INSERT INTO `tblSportType` (`sportid`, `sportname`, `lastmodified`) VALUES
-(4, 'Squash', '0000-00-00 00:00:00'),
-(3, 'Badmitton', '0000-00-00 00:00:00'),
-(5, 'Tennis', '0000-00-00 00:00:00'),
-(6, 'Racquetball', '0000-00-00 00:00:00'),
-(7, 'Massage', '2007-09-27 09:33:17');
+(4, 'Squash'),
+(3, 'Badmitton'),
+(5, 'Tennis'),
+(6, 'Racquetball'),
+(7, 'Massage');
+(7, 'Equipment');
 
 -- --------------------------------------------------------
 
