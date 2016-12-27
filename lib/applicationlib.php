@@ -3362,9 +3362,11 @@ function isCurrentUserOnTeam($teamid) {
 function load_avail_sports() {
 
 	$sportquery = "SELECT DISTINCT courts.courttypeid, courttype.courttypename, courttype.reservationtype
-	               FROM tblCourts courts, tblCourtType courttype
-				   WHERE courts.courttypeid = courttype.courttypeid
-	               AND courts.siteid=" . get_siteid();
+                   FROM tblCourts courts, tblCourtType courttype
+                   INNER JOIN tblSportType ON courttype.sportid = tblSportType.sportid
+                   WHERE courts.courttypeid = courttype.courttypeid
+                  AND tblSportType.sportname <> 'Equipment'
+                   AND courts.siteid=".get_siteid();
 
 	$sportresult = db_query($sportquery);
 

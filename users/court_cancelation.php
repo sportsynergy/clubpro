@@ -53,7 +53,7 @@ $courtid = $_REQUEST["courtid"];
 $time = $_REQUEST["time"];
 $userid = $_REQUEST["userid"];
 $cmd = $_REQUEST["cmd"];
-$DOC_TITLE = "Update Court Reservation";
+$DOC_TITLE = "Update Reservation";
 require_loginwq();
 
 // Set some variables
@@ -221,17 +221,21 @@ function validate_form(&$frm, &$errors) {
 function canIcancel($courtid, $time) {
 
     /* Check to see if the person is either one of the two players or the
-     Club administrator */
+     Club administrator or if for a resource, the creator */
     $canIcanel = FALSE;
 
-    //check to see if the person can an event.
-    $eventQuery = "SELECT reservations.eventid, courts.clubid, sites.allowselfcancel
-                       FROM tblReservations reservations, tblCourts courts, tblClubSites sites
-                       WHERE reservations.courtid = courts.courtid
-                       AND reservations.time = $time
-                       AND reservations.courtid = $courtid
-                       AND sites.siteid = " . get_siteid() . "
-					   AND enddate IS NULL";
+    //get the reservation
+    $eventQuery = "SELECT reservations.eventid, courts.clubid, sites.allowselfcancel ,  courttype.reservationtype,reservations.creator
+            FROM tblReservations reservations
+            INNER JOIN tblCourts courts ON reservations.courtid = courts.courtid
+            INNER JOIN tblCourtType courttype ON courts.courttypeid = courttype.courttypeid
+            INNER JOIN tblClubSites sites ON courts.siteid = sites.siteid
+            WHERE reservations.courtid = courts.courtid
+            AND reservations.time = $time
+            AND reservations.courtid = $courtid
+            AND enddate IS NULL";
+
+
     $eventQueryResult = db_query($eventQuery);
     $eventTypeRow = mysqli_fetch_array($eventQueryResult);
 
@@ -246,13 +250,22 @@ function canIcancel($courtid, $time) {
     if ($eventTypeRow['eventid'] > 0) {
 
         //if the user is an admin of the current club, let them through
-        
         if (get_roleid() > 1 && get_clubid() == $eventTypeRow['clubid']) {
             
-            if (isDebugEnabled(1)) logMessage("court_cancelation.canIcancel: " . get_userid() . " is an admin, they can canel an event");
+            if (isDebugEnabled(1)) logMessage("court_cancelation.canIcancel: " . get_userid() . " is an admin, they can cancel an event");
             $canIcanel = TRUE;
         }
-    } else {
+    }
+    elseif( $eventTypeRow['reservationtype'] == 3  ){
+
+        //if creator is the user then
+        if( get_userid() == $eventTypeRow['creator'] ){
+            $canIcanel = TRUE;
+        } 
+
+    } 
+    // Go through the players of a singles or doubles reservation.
+    else {
 
         //Find out if this is a guest reservation.
         $guesttypequery = "SELECT reservation.creator
@@ -277,7 +290,6 @@ function canIcancel($courtid, $time) {
 
             //Find out if this is a doubles reservation
             
-        } else {
             $usertypequery = "SELECT tblkpUserReservations.usertype, tblCourts.clubid
                                                     FROM (tblkpUserReservations
                                                     INNER JOIN tblReservations ON tblkpUserReservations.reservationid = tblReservations.reservationid)

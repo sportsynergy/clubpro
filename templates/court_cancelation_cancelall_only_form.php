@@ -61,7 +61,7 @@ function onCancelButtonClicked(){
  </tr>
 	<tr>
            <td>
-           		<div class="normal">Are you sure you want to cancel this court?</div>
+           		<div class="normal">Are you sure you want to cancel this reservation?</div>
         	</td>
     </tr>
     <tr>
