@@ -312,19 +312,45 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
   <? 
 }
 
-/**
- * 
- * @param unknown_type $playerOne
- * @param unknown_type $playerTwo
- * @param unknown_type $playerThree
- * @param unknown_type $playerFour
- * @param unknown_type $lock
- * @param unknown_type $matchType
- * @param unknown_type $time
- * @param unknown_type $courtid
- * 
- * 
- */
+
+function printResourceReservation($courtid, $time, $creatorid, $reservationid, $inpast){
+    
+    logMessage("here is a resource reservation $ispast");
+
+    $clubid = get_clubid();
+    $fullNameResult = getFullNameResultForUserId($creatorid);
+    $userArray = mysqli_fetch_array($fullNameResult); 
+
+    if($inpast){
+        $trclass = "postopencourt"; 
+    } else {
+        $trclass =  "reservecourtcl$clubid";
+    }
+    
+    ?>
+         <tr class="<?=$trclass?>">
+                <td align="center" title="<?=$printtime?>">
+                    <span class="normalsm1">
+                         
+                           <? if(!$inpast) { ?>
+                                <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
+                            <? } ?>
+                            
+                          <?=gmdate("g:i",$time)?><br>
+                          <?=printPlayer($userArray[0],  $userArray[1], $playerOne, $creator)?>
+                            
+                          <? if(!$inpast ) { ?>
+                                </a>
+                            <? } ?>                                      
+                        
+                    </span>
+                </td>
+         </tr>
+   <?
+
+}
+
+
 function printDoublesReservationSinglePlayer($userid, $lock, $matchType, $time, $courtid, $creator, $inpast){
 	
 	

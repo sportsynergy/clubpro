@@ -455,8 +455,7 @@ function validate_form(&$frm, &$errors) {
     /******************************************
      * Validate Doubles Reservation
      ******************************************/
-    else 
-    if ($frm['courttype'] == "doubles") {
+    else if ($frm['courttype'] == "doubles") {
         
         if (isDebugEnabled(1)) {
             logMessage("court_reservation.validate_form(): Validating Doubles Reservation");
@@ -636,7 +635,11 @@ function validate_form(&$frm, &$errors) {
         } else {
             $msg = validateSchedulePolicies($courtid, $time);
         }
-    } else {
+    } 
+    else if( $frm['courttype'] == "resource" ){
+        // nothing to validate with resource reservations
+    }
+    else {
         die("no valid forms error 202");
     }
     return $msg;

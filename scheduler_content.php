@@ -576,11 +576,13 @@ if ($clubid) {
 								 if (in_array ($i, $stack)){
 										
                                       //Get Reservation ID
-                                      $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, lastmodifier, creator, locked, duration
-                                                             FROM tblReservations
-                                                             WHERE courtid=$courtobj->courtid
-                                                             AND time=$i
-															 AND enddate IS NULL";
+									 $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, lastmodifier, creator, locked, duration, courttype.reservationtype
+											FROM tblReservations reservations
+											INNER JOIN tblCourts courts ON reservations.courtid = courts.courtid
+											INNER JOIN tblCourtType courttype ON courts.courttypeid = courttype.courttypeid
+											WHERE reservations.courtid=$courtobj->courtid
+											AND reservations.time=$i
+											AND reservations.enddate IS NULL";
 
                                        $residresult = db_query($residquery);
                                        $residobj = db_fetch_object($residresult);
@@ -621,7 +623,14 @@ if ($clubid) {
 											$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                       
 
-                                      } else{ 
+                                      } 
+
+                                      else if($residobj->reservationtype == 3){
+                                      
+                                      		printResourceReservation($courtobj->courtid, $i, $residobj->creator,  $residobj->reservationid, false );
+                                      		$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
+                                      }
+                                      else{ 
 
                                       	$useridresult = getSinglesReservationUser($residobj->reservationid);
                          			   
@@ -757,11 +766,13 @@ if ($clubid) {
 							if (in_array ($i, $stack)){
 
                                   //Get Reservation ID
-                                  $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, creator, locked, duration
-                                                 FROM tblReservations
-                                                 WHERE courtid=$courtobj->courtid
-                                                 AND time=$i
-												 AND enddate IS NULL";
+                                  $residquery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, lastmodifier, creator, locked, duration, courttype.reservationtype
+											FROM tblReservations reservations
+											INNER JOIN tblCourts courts ON reservations.courtid = courts.courtid
+											INNER JOIN tblCourtType courttype ON courts.courttypeid = courttype.courttypeid
+											WHERE reservations.courtid=$courtobj->courtid
+											AND reservations.time=$i
+											AND reservations.enddate IS NULL";
 
                                   $residresult = db_query($residquery);
                                   $residobj = db_fetch_object($residresult);
@@ -769,9 +780,7 @@ if ($clubid) {
                                    //Get the userids
                                    if($residobj->guesttype == 0){
                                   
-                                        //find out if the scores have been reported.  If they have, we
-                                       // are going to use a different color as the tr background and
-                                       // we will also not make it a link any more
+                                        //find out if the scores have been reported.  If they have, we are going to use a different color as the tr background and we will also not make it a link any more
                                        $isreportedquery ="SELECT sum(outcome)
                                                           FROM tblkpUserReservations
                                                           WHERE reservationid=$residobj->reservationid";
@@ -831,7 +840,15 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
                                        		printEvent($courtobj->courtid, $i, $residobj->eventid, $residobj->reservationid, true, $residobj->locked);
 											$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
                                        	
-                                       }elseif($residobj->guesttype==1){
+                                       }
+
+                                       else if($residobj->reservationtype == 3){
+                                      
+                                      		printResourceReservation($courtobj->courtid, $i, $residobj->creator,  $residobj->reservationid, TRUE );
+                                      		$i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $residobj->duration, $i);
+                                      }
+
+                                       elseif($residobj->guesttype==1){
                                                     
                                               $guestquery = "SELECT name
 	                                                 				FROM tblkpGuestReservations 

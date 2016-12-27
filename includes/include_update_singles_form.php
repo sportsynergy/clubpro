@@ -77,6 +77,8 @@ if (!empty($player2Id)) {
     $player2FullName = "$playerRow[fullname]";
 	$player2FullName =  htmlspecialchars($player2FullName);
 }
+
+
 $emailArray = getEmailAddressesForReservation($reservationid);
 $emailString = implode(",", $emailArray);
 
