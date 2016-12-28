@@ -8,8 +8,8 @@
                      FROM tblReservations reservations
                      INNER JOIN tblCourts courts ON reservations.courtid = courts.courtid
                      INNER JOIN tblCourtType courttype ON courts.courttypeid = courttype.courttypeid
-                     WHERE reservations.courtid=602
-                     AND reservations.time=1482845400
+                     WHERE reservations.courtid=$courtid
+                     AND reservations.time=$time
                      AND reservations.enddate IS NULL";
 
        $courtTypeResult = db_query($courtTypeQuery);
