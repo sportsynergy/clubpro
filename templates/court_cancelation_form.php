@@ -4,7 +4,7 @@
 			$time = $_POST['time'];
 		}
 
-       $courtTypeQuery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, lastmodifier, creator, locked, duration, courttype.reservationtype
+       $courtTypeQuery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, lastmodifier, creator, locked, duration, courttype.reservationtype, time
                      FROM tblReservations reservations
                      INNER JOIN tblCourts courts ON reservations.courtid = courts.courtid
                      INNER JOIN tblCourtType courttype ON courts.courttypeid = courttype.courttypeid
