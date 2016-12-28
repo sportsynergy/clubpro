@@ -178,6 +178,8 @@ $userTypeQuery = "SELECT usertype, matchtype, guesttype, lastmodified, reservati
 					WHERE reservations.time = $time 
 					AND reservations.courtid = $courtid
 					AND reservations.enddate is NULL";
+
+
 $userTypeResult = db_query($userTypeQuery);
 
 if (mysqli_num_rows($userTypeResult) > 0) {
@@ -206,9 +208,15 @@ if (mysqli_num_rows($userTypeResult) > 0) {
  ******************************************************************************/
 
 if (get_roleid() == 1) {
-    $courttypeid = getCourtTypeIdForCourtId($courtid);
     
-    if (!amiValidForSite(get_siteid()) || !isValidForCourtType($courttypeid, get_userid())) {
+    $courttypeid = getCourtTypeIdForCourtId($courtid);
+    $reservationtypeid = getReservationTypeIdForCourtId($courtid);
+    
+    if ( $reservationtypeid != 3 && 
+        (
+        !amiValidForSite(get_siteid()) || !isValidForCourtType($courttypeid, get_userid())
+        )
+    ) {
         $errormsg = "Sorry, you are not authorized to reserve this court.";
         include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
         include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");

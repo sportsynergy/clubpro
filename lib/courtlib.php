@@ -70,6 +70,24 @@ function getCourtTypeIdForCourtId($courtId) {
     $courttypearray = mysqli_fetch_array($courttyperesult);
     return $courttypearray[0];
 }
+
+
+function getReservationTypeIdForCourtId($courtId) {
+
+    if (isDebugEnabled(1)) logMessage("courtlib.getReservationTypeIdForCourtId: Getting reservationtypeid for court $courtId");
+
+    //Get the tblcourttype id for this court
+    $courttypequery = "SELECT courttype.reservationtype
+                            FROM tblCourts courts
+                            INNER JOIN tblCourtType courttype ON courts.courttypeid = courttype.courttypeid
+                                WHERE courts.courttypeid = courttype.courttypeid
+                                AND courts.courtid ='$courtId'";
+    $courttyperesult = db_query($courttypequery);
+    $courttypearray = mysqli_fetch_array($courttyperesult);
+    return $courttypearray[0];
+
+
+}
 /**
  * Simple getter that gets court type name
  */
