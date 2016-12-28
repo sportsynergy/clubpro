@@ -289,7 +289,8 @@ function canIcancel($courtid, $time) {
             }
 
             //Find out if this is a doubles reservation
-            
+            } else {
+
             $usertypequery = "SELECT tblkpUserReservations.usertype, tblCourts.clubid
                                                     FROM (tblkpUserReservations
                                                     INNER JOIN tblReservations ON tblkpUserReservations.reservationid = tblReservations.reservationid)
@@ -383,7 +384,6 @@ function canIcancel($courtid, $time) {
         }
     }
 
-    //endif
     return $canIcanel;
 }
 
