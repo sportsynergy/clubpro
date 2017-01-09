@@ -40,7 +40,7 @@
     <? if($reservationType==3 ) { ?>
     <li class="selected"><a href="#"><em>Resource</em></a></li>
     <? } ?>
-    <? if(get_roleid()==2 && ($reservationType==1 || $reservationType==2 || $reservationType==3) ) { ?>
+    <? if(get_roleid()==2 && ($reservationType==0 || $reservationType==1 || $reservationType==2 || $reservationType==3) ) { ?>
     <li><a href="#events"><em>Events</em></a></li>
     <? } ?>
   </ul>
@@ -64,7 +64,7 @@
     <? } ?>
     
 
-    <? if(get_roleid()==2 && ($reservationType==1 || $reservationType==2 || $reservationType==3)) { ?>
+    <? if(get_roleid()==2 && ($reservationType==0 || $reservationType==1 || $reservationType==2 || $reservationType==3)) { ?>
     <div id="events">
       <? include($_SESSION["CFG"]["includedir"]."/include_reservation_event.php");?>
     </div>
