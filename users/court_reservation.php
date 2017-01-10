@@ -962,7 +962,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 	}
 	
 	
-    if (isDebugEnabled(1)) logMessage("court_reservation.makeReoccuringReservation: Repeat interval is " . $frm['repeat'] . " and frequency inverval is " . $frm['frequency']);
+    if (isDebugEnabled(1)) logMessage("court_reservation.makeReoccuringReservation: Repeat interval is " . $frm['repeat'] . " and frequency inverval is " . $frm['frequency']. " and playertwoid is ". $frm['playertwoid']);
 
         $resquery = "INSERT INTO tblReservations (
 	                 courtid, eventid, time, lastmodifier, creator, createdate, locked, matchtype, duration
@@ -987,29 +987,38 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 	    $residvarresult = db_fetch_object($residresult);
 		$reservationid = $residvarresult->reservationid;
 
-		if( isset($frm['playeroneid'])  ){
+		if( empty($frm['playeroneid'])  ){
+            $playeroneid = 0;
+        } else {
+             $playeroneid = $frm['playeroneid'];
+        }
 			 
 			$query = "INSERT INTO tblkpUserReservations (
 			                                reservationid, userid, usertype
 			                                ) VALUES (
 			                                          '$reservationid'
-			                                          ,'$frm[playeroneid]'
+			                                          ,'$playeroneid'
 			                                          ,0)";
 
 		        // run the query on the database
 		        $result = db_query($query);
-		}
-			if( isset($frm['playertwoid']) ){
-				$query = "INSERT INTO tblkpUserReservations (
+		
+		if( empty($frm['playertwoid']) ){
+            $playertwoid = 0;
+        } else {
+            $playertwoid = $frm['playertwoid'];
+        }
+		
+        $query = "INSERT INTO tblkpUserReservations (
 					                          reservationid, userid, usertype
 					                           ) VALUES (
 					                                     '$reservationid'
-					                                      ,'$frm[playertwoid]'
+					                                      ,'$playertwoid'
 					                                      ,0)";
 
-				 // run the query on the database
-				 $result = db_query($query);
-		}
+    	 // run the query on the database
+    	 $result = db_query($query);
+		
 
 
 		confirm_singles($reservationid, true);
