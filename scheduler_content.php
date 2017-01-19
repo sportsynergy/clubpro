@@ -488,18 +488,19 @@ if ($clubid) {
 	                 )  
                    {
                    	 
-                   	 //	If a request parameter called daysahead is found, use this instead of the current time
-					// When a page is being loaded for a time in the futre, this paramter is used.  If 
-					// this isn't the case however, use the current time, unless daysahead is used to load
-					// todays page, as daysahead is appeaded to when redirecting after any reservation is made.
+                   	 /*	If a request parameter called daysahead is found, use this instead of the current time. When a page is being loaded for a time in the futre, this paramter is used.  If  this isn't the case however, use the current time, unless daysahead is used to load todays page, as daysahead is appeaded to when redirecting after any reservation is made.
+                   	 */
                    	 
                    	if( isset($specDate)){
+                   	 	logMessage("spec date: ".$specDate);
                    	 	$eventStartTime = $specDate;
                    	 }
-                   	 else if( isset($daysahead)  ){
+                   	 else if( !empty($daysahead)  ){
+                   	 	logMessage("daysahead: ".$specDate);
                    	 	$eventStartTime = $daysahead;
                    	 }
                    	 else{
+                   	 	logMessage("none: ".$specDate);
                    	 	$eventStartTime = $curtime;
                    	 }
                    	 ?>
