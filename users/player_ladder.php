@@ -35,10 +35,11 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
-require ($_SESSION["CFG"]["libdir"] . "/sendgrid-php/SendGrid_loader.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
+require "../vendor/autoload.php";
 $DOC_TITLE = "Player Ladder";
 require_loginwq();
+
 
 // Log user out if they are in the wrong club
 $userRelation = new UserClubRelation();
