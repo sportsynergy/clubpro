@@ -241,11 +241,7 @@ include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 
 if ($newReservation) {
              
-
-     $curtime = mktime() + get_tzdelta();
-     $currDOW = getDOW(gmdate("l", $curtime));
-
-
+     $currDOW = getDOW(gmdate("l", $time));
      $hoursquery = "SELECT duration from tblCourtHours WHERE courtid='$courtid' AND dayid ='$currDOW' ";
      $hoursresult = db_query($hoursquery);
      $reservation_duration = mysqli_result($hoursresult,0);
