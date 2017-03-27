@@ -259,7 +259,7 @@ function canIcancel($courtid, $time) {
     elseif( $eventTypeRow['reservationtype'] == 3  ){
 
         //if creator is the user then
-        if( get_userid() == $eventTypeRow['creator'] ){
+        if( get_userid() == $eventTypeRow['creator'] || get_roleid() > 1){
             $canIcanel = TRUE;
         } 
 
