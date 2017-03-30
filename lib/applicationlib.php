@@ -4037,7 +4037,9 @@ function get_admin_player_search($searchname) {
 	                        WHERE users.userid = clubuser.userid
 							AND clubuser.clubid =" . get_clubid() . "
 	                        AND (users.firstname Like '$searchname%'
-	                        	OR users.lastname Like '$searchname%')
+	                        	OR users.lastname Like '$searchname%'
+                                OR clubuser.memberid Like '$searchname%'
+                                )
 	                        AND clubuser.enddate is NULL
 							ORDER BY users.lastname";
 

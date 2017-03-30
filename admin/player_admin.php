@@ -99,7 +99,11 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
 <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/csvServer.php" method="post">
   <input type="hidden" name="searchname" value="<?=$searchname?>">
 </form>
-<div style="text-align: right; width:100%; padding-bottom: 2px"> <a href="javascript:submitForm('exportDataForm')">Export this list</a> </div>
+
+<div style="text-align: left; padding-bottom: 2px;display:inline-block;float: left;"> <?=$num_rows?> results</div>
+
+<div style="text-align: right;  padding-bottom: 2px;display:inline-block;float: right;"> <a href="javascript:submitForm('exportDataForm')">Export this list</a> </div>
+
 <table cellpadding="20" width="100%" class="bordertable">
   <tr class="loginth">
     <th height="25"><span class="whitenorm">First Name</span></th>
