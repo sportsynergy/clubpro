@@ -288,7 +288,7 @@ if ($usertype == 1 && isDoublesReservationNeedPlayers($time, $courtid)) {
         include ($_SESSION["CFG"]["includedir"] . "/include_doublesplayer_wanted_form.php");
     } else {
         $supportemail = $_SESSION["CFG"]["support"];
-        print 'This reservation is messed up. Please contact <a href="mailto:$supportemail">$supportemail</a> to sort this out.';
+        print 'This reservation is messed up. Please contact <a href="mailto:'.$supportemail.'">'.$supportemail.'</a> to sort this out.';
     }
 } else {
     print "Sorry, that match is already fully subscribed. Better luck next time!";
