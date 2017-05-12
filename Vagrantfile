@@ -39,12 +39,12 @@ Vagrant.configure("2") do |config|
     v.name = "clubpro"
   end
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
+  # Enable provisioning with a shell script. Additional provisioners such as Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the documentation for more information about their specific syntax and use. When your done with this copy in the deploy/clubpro.conf to /etc/apache2/sites_available.
   config.vm.provision "shell", inline: <<-SHELL
+     export DEBIAN_FRONTEND=noninteractive
      apt-get update
-     apt-get install -y apache2 zip libdbi-perl libdbd-mysql-perl
+     apt-get install -y -q mysql-server
+     apt-get install -y apache2 zip libdbi-perl libdbd-mysql-perl  mysql-client-core-5.7
      apt-get install -y php libapache2-mod-php php-mcrypt php-mysql php-curl
   SHELL
 end
