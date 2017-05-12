@@ -101,5 +101,5 @@ $dbuser = "clubpro";
 $dbpass = "clubpro99";
 
 /* connect to the database */
-db_connect($dbhost, $dbname, $dbuser, $dbpass);
+$dbh = db_connect($dbhost, $dbname, $dbuser, $dbpass);
 ?>
