@@ -43,6 +43,7 @@ $csvHeaderArray = array();
 // Start with the headers
 array_push($csvHeaderArray, "First Name");
 array_push($csvHeaderArray, "Last Name");
+array_push($csvHeaderArray, "Username");
 array_push($csvHeaderArray, "Year Joined");
 array_push($csvHeaderArray, "Home Phone");
 array_push($csvHeaderArray, "Work Phone");
@@ -62,6 +63,7 @@ while ($row = mysqli_fetch_array($playerresult)) {
     $csvDataArray = array();
     array_push($csvDataArray, wrapWithDoubleQuotes($row['firstname']));
     array_push($csvDataArray, wrapWithDoubleQuotes($row['lastname']));
+    array_push($csvDataArray, wrapWithDoubleQuotes($row['username']));
     array_push($csvDataArray, wrapWithDoubleQuotes($row['msince']));
     array_push($csvDataArray, wrapWithDoubleQuotes($row['homephone']));
     array_push($csvDataArray, wrapWithDoubleQuotes($row['workphone']));
