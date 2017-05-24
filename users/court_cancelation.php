@@ -54,6 +54,9 @@ $time = $_REQUEST["time"];
 $userid = $_REQUEST["userid"];
 $cmd = $_REQUEST["cmd"];
 $DOC_TITLE = "Update Reservation";
+
+$siteprefs = getSitePreferencesForCourt($courtid);
+$_SESSION["siteprefs"] = $siteprefs;
 require_loginwq();
 
 // Set some variables

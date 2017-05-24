@@ -76,8 +76,6 @@ if($userRelation->isUserLoggedin()){
 }
 
 
-$email = new SendGrid\Email("Example User", "test1@example.com");
-
 
 $DOC_TITLE = "Court Reservation";
 
