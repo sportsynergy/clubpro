@@ -55,8 +55,13 @@ $userid = $_REQUEST["userid"];
 $cmd = $_REQUEST["cmd"];
 $DOC_TITLE = "Update Reservation";
 
-$siteprefs = getSitePreferencesForCourt($courtid);
-$_SESSION["siteprefs"] = $siteprefs;
+if( null == get_clubid() ){
+    $siteprefs = getSitePreferencesForCourt($courtid);
+    $_SESSION["siteprefs"] = $siteprefs;
+    if (isDebugEnabled(1)) logMessage("court_cancelation: siteprefs ". get_clubid() );
+
+}
+
 require_loginwq();
 
 // Set some variables
