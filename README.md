@@ -20,5 +20,6 @@ Getting this running
 1. Create a mysql database and load data/base.sql
 2. Rename the application.php.default to application.php
 3. Update the database setting in step 2 with step 1
+4. Install composer for dependency management and run `composer install`
 
 
