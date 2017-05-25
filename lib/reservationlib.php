@@ -650,24 +650,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
         if (isDebugEnabled(1)) logMessage($emailbody);
         sendgrid_email($subject, $to_email,  $content, "Confirm Court Event");
     }
-    $to_emails = array();
-    $rresult = getCourtEventParticipants($reservationid);
-    while ($player = mysqli_fetch_array($rresult)) {
-        
-        if (!empty($player['email']) && $player['userid'] != $userid) {
-            
-            if (isDebugEnabled(1)) logMessage("reservationlib.confirmCourtEvent: sending notice to fellow court event participant:" . $player['email']);
-            $to_emails[$player['email'] = array(
-                'name' => $player['firstname']
-            ) ];
-        }
-    }
-
-    //Configure email content
-    $content = new Object;
-    $content->line1 = $emailbody;
-    $content->clubname = get_clubname();
-    sendgrid_email($subject, $to_emails, $content, "Confirm Court Event");
+    
 }
 /**
  * Determines if the reservation is locked or not
