@@ -5825,7 +5825,7 @@ function getFullNamesForTeamId($teamId){
 	$teamResult = db_query($teamsQuery);
 	$playerOneArray = mysqli_fetch_array($teamResult);
     $playerOne = $playerOneArray[0];
-	$playerTwoArray = mysqli_fetch_array($teamResult, 1);
+	$playerTwoArray = mysqli_fetch_array($teamResult);
     $playerTwo = $playerTwoArray[0];
 
 	return getFullNameForUserId($playerOne)." and ".getFullNameForUserId($playerTwo);
