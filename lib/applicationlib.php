@@ -561,6 +561,11 @@ function getBoxIdTheseTwoGuysAreInTogether($playerOneId, $playerTwoId) {
  * @param $playertwo
  */
 function are_boxplayers($playerone, $playertwo) {
+    
+    if( empty($playerone) || empty($playertwo) ){
+        return false;
+    }
+
     $playeronequery = "SELECT boxleagues.boxid, boxleaguedetails.userid
 	                   FROM tblBoxLeagues boxleagues, tblkpBoxLeagues boxleaguedetails
 	                   WHERE boxleagues.boxid = boxleaguedetails.boxid
