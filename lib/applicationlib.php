@@ -524,6 +524,11 @@ function isUnscoredBoxLeagueReservation($reservationid) {
  * @param unknown_type $playerTwoId
  */
 function getBoxIdTheseTwoGuysAreInTogether($playerOneId, $playerTwoId) {
+    
+    if( empty($playerOneId) || empty($playerTwoId) ){
+        return false;
+    }
+
     $playeronequery = "SELECT boxleagues.boxid, boxleaguedetails.userid
 	                   FROM tblBoxLeagues boxleagues, tblkpBoxLeagues boxleaguedetails
 	                   WHERE boxleagues.boxid = boxleaguedetails.boxid
