@@ -1,9 +1,9 @@
 <?php
 
 // If you are using Composer
+use PHPUnit\Framework\TestCase;
 
-
-class SampleTest extends PHPUnit_Framework_TestCase
+class SampleTest extends TestCase
 {
     public function testPushAndPop()
     {
