@@ -673,6 +673,13 @@ function require_loginwq() {
 /**
  * this function simply returns the clubid.
  */
+
+function get_tzdelta() {
+    return $_SESSION["siteprefs"]["timezone"] * 3600;
+}
+/**
+ * this function simply returns the clubid.
+ */
 function get_clubid() {
     return $_SESSION["siteprefs"]["clubid"];
 }
@@ -828,16 +835,7 @@ function get_userfirstname() {
 function get_clubname() {
     return $_SESSION["siteprefs"]["clubname"];
 }
-function get_tzdelta() {
 
-    //gets the tzdelta
-    $tzquery = "SELECT timezone from tblClubs WHERE clubid='" . get_clubid() . "'";
-    $tzresult = db_query($tzquery);
-    $tzdeltaArray = mysqli_fetch_array($tzresult);
-    $tzdelta = $tzdeltaArray[0];
-
-    return $tzdelta * 3600;
-}
 function require_priv($roleid) {
 
     /* this function checks to see if the user has the privilege $roleid.  if not,
@@ -5358,6 +5356,7 @@ function getSitePreferencesForCourt($courtid) {
 					sites.reminders,
 					sites.displaycourttype,
 					clubs.clubname,
+                    clubs.timezone,
                     sites.showplayernames,
                     sites.requirelogin
 	        FROM tblClubSites sites, tblCourts courts, tblClubs clubs
@@ -5414,6 +5413,7 @@ function getSitePreferences($siteid) {
 					sites.reminders,
 					sites.displaycourttype,
 					clubs.clubname,
+                    clubs.timezone,
                     sites.showplayernames,
                     sites.requirelogin
 	        FROM tblClubSites sites, tblClubs clubs

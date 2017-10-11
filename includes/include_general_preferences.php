@@ -39,9 +39,9 @@
             <td class="label">Display Recent Activity:</td>
             <td><select name="displayrecentactivity">
                 <option value="y"
-							<? if($generalPreferences["displayrecentactivity"] =='y'){ echo "selected";} ?>>Yes</option>
+              <? if($generalPreferences["displayrecentactivity"] =='y'){ echo "selected";} ?>>Yes</option>
                 <option value="n"
-							<? if($generalPreferences["displayrecentactivity"] =='n'){ echo "selected";} ?>>No</option>
+              <? if($generalPreferences["displayrecentactivity"] =='n'){ echo "selected";} ?>>No</option>
               </select></td>
           </tr>
           <tr>
@@ -52,16 +52,16 @@
             <td class="label">Allow Players To Cancel Their Own Reservations:</td>
             <td><select name="allowselfcancel">
                 <option value="y"
-							<? if($generalPreferences["allowselfcancel"] =='y'){ echo "selected";} ?>>Yes</option>
-                <option value="n"
-							<? if($generalPreferences["allowselfcancel"] =='n'){ echo "selected";} ?>>No</option>
+              <? if($generalPreferences["allowselfcancel"] =='y'){ echo "selected";} ?>>Yes</option>
+                <option value="2"
+              <? if($generalPreferences["allowselfcancel"] =='2'){ echo "selected";} ?>> Before 2 hours</option>
+               <option value="n"
+              <? if($generalPreferences["allowselfcancel"] =='n'){ echo "selected";} ?>>No</option>
               </select></td>
           </tr>
           <tr>
             <td colspan="2"><span class="normal"> Pretty much just as what is
-              says. When Allow Player Cancelation is set to 'Yes', players will be
-              allowed to cancel their own reservations. When set to no, all
-              cancelations will need to be made by an Administrator. </span>
+              says. When Allow Player Cancelation is set to 'Yes', players will be allowed to cancel their own reservations. When set to no, all cancelations will need to be made by an Administrator. When set to 'Before 2 hours', players can cancel uptil 2 hours before the reservation. </span>
               <div class="spacer"/></td>
           </tr>
           <tr>
@@ -69,11 +69,11 @@
             <td><select name="daysahead">
                 <? for($i=1; $i<30; ++$i){ ?>
                 <?
-						//Default to the current daysahead setting.
-						if($generalPreferences["daysahead"] == $i){
-							$selected = "selected";
-						}
-						?>
+            //Default to the current daysahead setting.
+            if($generalPreferences["daysahead"] == $i){
+              $selected = "selected";
+            }
+            ?>
                 <option value="<?=$i?>" <?=$selected?>>
                 <?=$i?>
                 </option>
@@ -91,9 +91,9 @@
             <td class="label">Allow Players To Score Their Own Reservations:</td>
             <td><select name="allowselfscore">
                 <option value="y"
-							<? if($generalPreferences["allowselfscore"] =='y'){ echo "selected";} ?>>Yes</option>
+              <? if($generalPreferences["allowselfscore"] =='y'){ echo "selected";} ?>>Yes</option>
                 <option value="n"
-							<? if($generalPreferences["allowselfscore"] =='n'){ echo "selected";} ?>>No</option>
+              <? if($generalPreferences["allowselfscore"] =='n'){ echo "selected";} ?>>No</option>
               </select></td>
           </tr>
           <tr>
@@ -122,11 +122,11 @@
             <td><select name="challengerange">
                 <? for($i=1; $i<13; ++$i){ ?>
                 <?
-						//Default to the current daysahead setting.
-						if($generalPreferences["challengerange"] == $i){
-							$selected = "selected";
-						}
-						?>
+            //Default to the current daysahead setting.
+            if($generalPreferences["challengerange"] == $i){
+              $selected = "selected";
+            }
+            ?>
                 <option value="<?=$i?>" <?=$selected?>>
                 <?=$i?>
                 </option>
@@ -139,20 +139,20 @@
               <div class="spacer"/></td>
           </tr>
           <? } ?>
-		 <tr>
+     <tr>
             <td class="label">Email Reminders:</td>
             <td>
-        				<select name="reminders">
-          					<option value="">none</option>
-          					<option value="24" <?=$generalPreferences["reminders"]=='24' ? "selected":""?> >24 Hours Ahead</option>
+                <select name="reminders">
+                    <option value="">none</option>
+                    <option value="24" <?=$generalPreferences["reminders"]=='24' ? "selected":""?> >24 Hours Ahead</option>
                     <option value="5" <?=$generalPreferences["reminders"]=='5' ? "selected":""?> >5:00 am</option>
-          					<option value="6" <?=$generalPreferences["reminders"]=='6' ? "selected":""?> >6:00 am</option>
-          					<option value="7" <?=$generalPreferences["reminders"]=='7' ? "selected":""?> >7:00 am</option>
-          					<option value="8" <?=$generalPreferences["reminders"]=='8' ? "selected":""?> >8:00 am</option>
-          					<option value="9" <?=$generalPreferences["reminders"]=='9' ? "selected":""?> >9:00 am</option>
-          					<option value="10" <?=$generalPreferences["reminders"]=='10' ? "selected":""?> >10:00 am</option>
+                    <option value="6" <?=$generalPreferences["reminders"]=='6' ? "selected":""?> >6:00 am</option>
+                    <option value="7" <?=$generalPreferences["reminders"]=='7' ? "selected":""?> >7:00 am</option>
+                    <option value="8" <?=$generalPreferences["reminders"]=='8' ? "selected":""?> >8:00 am</option>
+                    <option value="9" <?=$generalPreferences["reminders"]=='9' ? "selected":""?> >9:00 am</option>
+                    <option value="10" <?=$generalPreferences["reminders"]=='10' ? "selected":""?> >10:00 am</option>
                   </select>
-			     </td>
+           </td>
           </tr>
           <tr>
             <td colspan="2" class="spacer"><span class="normal"> This option is for when the email reminders for any upcoming matches will be sent out to the players. Set it to none to disable this option. </span>

@@ -575,13 +575,14 @@ function update_general_clubprefs(&$frm) {
     
     if (isDebugEnabled(1)) logMessage("general_preferneces.update_clubprefs: Updating club preferences.");
 
+    $challengerange = isset($frm[challengerange]) ? '$frm[challengerange]' : 'NULL';
+
     /* Update the club preferences */
-    $query = "Update tblClubSites SET rankingadjustment = '$frm[inactivity]'
-                ,allowselfcancel = '$frm[allowselfcancel]'
+    $query = "Update tblClubSites SET allowselfcancel = '$frm[allowselfcancel]'
 				,daysahead = '$frm[daysahead]'
 				,allowselfscore = '$frm[allowselfscore]'
 				,displayrecentactivity = '$frm[displayrecentactivity]'
-				,challengerange = '$frm[challengerange]'
+				,challengerange = $challengerange
 				,facebookurl = '$frm[facebookurl]'
 				,reminders = '$frm[reminders]'
                 ,showplayernames = '$frm[showplayernames]'

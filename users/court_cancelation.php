@@ -55,6 +55,7 @@ $userid = $_REQUEST["userid"];
 $cmd = $_REQUEST["cmd"];
 $DOC_TITLE = "Update Reservation";
 
+
 if( null == get_clubid() ){
     $siteprefs = getSitePreferencesForCourt($courtid);
     $_SESSION["siteprefs"] = $siteprefs;
@@ -231,6 +232,7 @@ function canIcancel($courtid, $time) {
     /* Check to see if the person is either one of the two players or the
      Club administrator or if for a resource, the creator */
     $canIcanel = FALSE;
+    $curtime = mktime() + get_tzdelta() ;
 
     //get the reservation
     $eventQuery = "SELECT reservations.eventid, courts.clubid, sites.allowselfcancel ,  courttype.reservationtype,reservations.creator
@@ -249,9 +251,18 @@ function canIcancel($courtid, $time) {
 
     //Right off the bat check to see if site policy allows this
     
+
     if (get_roleid() == 1 && $eventTypeRow['allowselfcancel'] == 'n') {
         
         if (isDebugEnabled(1)) logMessage("court_cancelation.canIcancel: site doesn't allow self cancel");
+        return FALSE;
+    }
+
+    if (get_roleid() == 1 && $eventTypeRow['allowselfcancel'] == '2' && 
+        $time - $curtime < 7200) {
+        
+        if (isDebugEnabled(1)) logMessage("court_cancelation.canIcancel: too close to the reservation. time is $time curtime is $curtime ");
+        
         return FALSE;
     }
     
