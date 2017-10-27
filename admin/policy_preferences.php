@@ -575,7 +575,7 @@ function update_general_clubprefs(&$frm) {
     
     if (isDebugEnabled(1)) logMessage("general_preferneces.update_clubprefs: Updating club preferences.");
 
-    $challengerange = isset($frm[challengerange]) ? '$frm[challengerange]' : 'NULL';
+    $challengerange = isset($frm[challengerange]) ? $frm[challengerange] : 'NULL';
 
     /* Update the club preferences */
     $query = "Update tblClubSites SET allowselfcancel = '$frm[allowselfcancel]'
