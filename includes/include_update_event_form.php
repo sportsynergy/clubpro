@@ -169,6 +169,8 @@ YAHOO.example.init = function () {
 
     YAHOO.util.Event.onContentReady("formtable", function () {
 
+    	document.getElementById('name1').setAttribute("autocomplete", "off");
+
     	<? 
     	//only display this for administrators
     	if(get_roleid()==2 || get_roleid()==4){ ?>
@@ -196,7 +198,7 @@ function onCancelButtonClicked(){
 </script>
 
 
-<form name="manageform" method="post" action="<?=$MEWQ?>">
+<form name="manageform" method="post" action="<?=$MEWQ?>" autocomplete="off">
 <input type="hidden" name="action"/>
 <input type="hidden" name="courtid" value="<?=$courtTypeArray['courtid']?>"/>
 <input type="hidden" name="time" value="<?=$courtTypeArray['time']?>"/>
@@ -415,6 +417,7 @@ function onCancelButtonClicked(){
 <div class="bd">
 
 <form method="POST" action="<?=$ME?>">
+	<input id="fake_user_name" name="fake_user[name]" style="position:absolute; top:-100px; display:none;" type="text" value="Safari Autofill Me">
 	<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
              <input id="id1" name="userid" type="hidden" />
    				<input type="hidden" name="cmd" value="managecourtevent">
