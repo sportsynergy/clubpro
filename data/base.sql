@@ -461,7 +461,8 @@ INSERT INTO `tblCourtType` (`courttypeid`, `sportid`, `courttypename`, `reservat
 (6, 6, 'Racquetball \\ Squash', 1, 1),
 (7, 5, 'Tennis', 1, 1),
 (8, 7, 'Massage Therapy', 0, 1),
-(11, 11, 'Stationary Bike', 3, 1);
+(11, 11, 'Stationary Bike', 3, 1),
+(14, 11, 'Golf Putting/Chipping', 3, 1);
 
 -- --------------------------------------------------------
 
