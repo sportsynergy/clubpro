@@ -1024,7 +1024,7 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
       </tr>
     </table>
     <div>
-    	<span class="italitcsm">* indicates creator of reservation</span>
+    	<span class="italitcsm">* created reservation</span>
     </div>
 
     <?php
