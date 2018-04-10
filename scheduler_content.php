@@ -1023,6 +1023,10 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
         <td class="reservecourtcl<?=$clubid?>">Plain Old Reservation</td>
       </tr>
     </table>
+    <div>
+    	<span class="italitcsm">* indicates creator of reservation</span>
+    </div>
+
     <?php
 }
 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
