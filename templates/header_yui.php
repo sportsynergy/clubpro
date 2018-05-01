@@ -12,7 +12,7 @@
 
 
 <!-- Misc -->
-<link rel="icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/icon.ico"
+<link rel="icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/favicon.ico"
 	type="image/x-icon" />
 	
 
