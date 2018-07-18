@@ -649,12 +649,14 @@ INSERT INTO `tblMessageType` (`messagetypeid`, `name`) VALUES
 CREATE TABLE IF NOT EXISTS `tblMessages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `siteid` int(8) NOT NULL DEFAULT '0',
+  'heading' varchar(55) default '' not null,
   `message` text NOT NULL,
   `messagetypeid` smallint(6) NOT NULL,
   `enable` tinyint(4) NOT NULL DEFAULT '0',
   `lastmodified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;
+
 
 
 -- --------------------------------------------------------
