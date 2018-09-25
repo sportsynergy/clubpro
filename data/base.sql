@@ -744,7 +744,8 @@ CREATE TABLE IF NOT EXISTS `tblParameterType` (
 
 INSERT INTO `tblParameterType` (`parametertypeid`, `parametertypename`) VALUES
 (1, 'text'),
-(2, 'select');
+(2, 'select'),
+(3, 'date');
 
 -- --------------------------------------------------------
 
