@@ -500,7 +500,6 @@ if ($clubid) {
                    	 	$eventStartTime = $daysahead;
                    	 }
                    	 else{
-                   	 	logMessage("none: ".$specDate);
                    	 	$eventStartTime = $curtime;
                    	 }
                    	 ?>
