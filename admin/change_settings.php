@@ -228,7 +228,6 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
     }
 
     //Set the enable variable
-    
     if (isset($frm['enable'])) {
         $enable = 'y';
     } else {
@@ -280,16 +279,26 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
     }
 
     // Update the Custom Parameters
+    
+
     while ($parameterArray = mysqli_fetch_array($extraParametersResult)) {
+        
         $parameterId = $parameterArray['parameterid'];
+        
+        if (isDebugEnabled(1)) logMessage("Updating the custom parameters $parameterId"  );
         
         if ($frm["parameter-$parameterId"]) {
             
             if (isDebugEnabled(1)) logMessage("(admin)change_settings.update_settings: adding custom parameter:  " . $frm["parameter-$parameterId"]);
+            
             $parameterValue = $frm["parameter-$parameterId"];
+            
             $query = "INSERT INTO tblParameterValue (userid,parameterid,parametervalue) 
                 			VALUES ('$userid', '$parameterId','$parameterValue') 
                 			ON DUPLICATE KEY UPDATE parametervalue = '$parameterValue'";
+            
+            if (isDebugEnabled(1)) logMessage($query);
+            
             db_query($query);
         }
     }
