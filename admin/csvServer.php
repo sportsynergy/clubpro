@@ -50,6 +50,7 @@ array_push($csvHeaderArray, "Work Phone");
 array_push($csvHeaderArray, "Cell Phone");
 array_push($csvHeaderArray, "Email");
 array_push($csvHeaderArray, "Member Id");
+array_push($csvHeaderArray, "Enabled");
 while ($parameterArray = db_fetch_array($extraParametersResult)) {
     array_push($csvHeaderArray, $parameterArray['parameterlabel']);
 }
@@ -70,6 +71,7 @@ while ($row = mysqli_fetch_array($playerresult)) {
     array_push($csvDataArray, wrapWithDoubleQuotes($row['cellphone']));
     array_push($csvDataArray, wrapWithDoubleQuotes($row['email']));
     array_push($csvDataArray, wrapWithDoubleQuotes($row['memberid']));
+    array_push($csvDataArray, wrapWithDoubleQuotes($row['enable']));
     
     if (mysqli_num_rows($extraParametersResult) > 0) {
         mysqli_data_seek($extraParametersResult, 0);
