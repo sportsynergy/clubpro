@@ -34,15 +34,21 @@ class AccountExpirationService {
 
 		$query = "SELECT userid FROM tblParameterValue WHERE parameterid = $parameter AND parametervalue = '$today'";
 	
-		print $query;
-
 	  	$result = db_query($query);
 
-	  	while( $res_array = mysqli_fetch_array($result ) ){
+	  	if (mysqli_num_rows($result) > 0){
 
-	  		print("disabling a iuser");
-	  		$this->disableUser($res_array['userid']);
+	  		while( $res_array = mysqli_fetch_array($result ) ){
+
+	  			$this->disableUser($res_array['userid']);
+	  		}
+	  	} else {
+
+	  		if (isDebugEnabled(1)) logMessage("AccountExpirationService.getExpiredUsers: No users to disable for $today for parameter $parameter");
 	  	}
+
+
+	  	
 
 	  	
 	}
@@ -55,9 +61,10 @@ class AccountExpirationService {
 	*/
 	private function disableUser($userid){
 
-		if (isDebugEnabled(1)) logMessage("AccountExpirationService:disableUser");
+		if (isDebugEnabled(1)) logMessage("AccountExpirationService.disableUser: Disabling: $userid");
 
-		print "disabling user: $userid";
+		$query = "UPDATE tblClubUser SET enable = 'n' where userid = $userid";
+		$result = db_query($query);
 	}
 
 

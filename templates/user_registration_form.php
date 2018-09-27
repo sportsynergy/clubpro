@@ -121,7 +121,7 @@
               <td>
                <span style="padding-left: 10px"> <img src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png"  id="show" title="Click here to change the date"> </span >
                
-               <input type="text" name="adamparam" size="35" value="" maxlength="40" disabled="disabled">
+               <input type="text" id="date-param" name="<?="parameter-".$parameterArray['parameterid']?>" size="30" value=""  readonly>
               </td>
             <? } ?>
             
@@ -294,7 +294,7 @@ YAHOO.util.Event.onDOMReady(function(){
                     if (calendar.getSelectedDates().length > 0) {
 
                         var selDate = calendar.getSelectedDates()[0];
-console.log("its working");
+
                         // Pretty Date Output, using Calendar's Locale values: Friday, 8 February 2008
                         var wStr = calendar.cfg.getProperty("WEEKDAYS_LONG")[selDate.getDay()];
                         var dStr = selDate.getDate();
@@ -302,7 +302,7 @@ console.log("its working");
                         var mStr = calendar.cfg.getProperty("MONTHS_LONG")[selDate.getMonth()];
                         var yStr = selDate.getFullYear();
 
-                        document.entryform.adamparam.value = monStr + "/" + dStr + "/" + yStr;;
+                        document.getElementById("date-param").value = pad(monStr,2) + "/" + pad(dStr,2) + "/" + yStr;
                         
                         
                        
@@ -331,6 +331,11 @@ console.log("its working");
         });
     });
 
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');

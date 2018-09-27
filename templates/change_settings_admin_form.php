@@ -101,7 +101,7 @@ YAHOO.util.Event.onDOMReady(function(){
                         var mStr = calendar.cfg.getProperty("MONTHS_LONG")[selDate.getMonth()];
                         var yStr = selDate.getFullYear();
 
-                        document.getElementById("date-param").value = monStr + "/" + dStr + "/" + yStr;
+                        document.getElementById("date-param").value = pad(monStr,2) + "/" + pad(dStr,2) + "/" + yStr;
                         
                        
                     } else {
@@ -128,6 +128,12 @@ YAHOO.util.Event.onDOMReady(function(){
             dialog.show();
         });
     });
+
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');
@@ -310,7 +316,7 @@ function onSubmitButtonClicked(){
                   <td>
                    <span style="padding-left: 10px"> <img src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png"  id="show" title="Click here to change the date"> </span >
                    
-                   <input type="text" id="date-param" name="<?="parameter-".$parameterArray['parameterid']?>" size="35" value="" maxlength="40" >
+                   <input type="text" id="date-param" name="<?="parameter-".$parameterArray['parameterid']?>" size="30" value="<? pv($parameterValue) ?>"  readonly>
                   </td>
             <? } ?>
 
@@ -377,8 +383,6 @@ function onSubmitButtonClicked(){
                         else{
                             $selected = "";
                         }
-
-
 
                         print "<input type=\"checkbox\" name=\"clubsite$row[siteid]\" value=\"$row[siteid]\" $selected> $row[sitename] <br>\n";
 
