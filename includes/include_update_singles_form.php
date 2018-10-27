@@ -55,7 +55,6 @@ if (!empty($player2Id)) {
 $emailArray = getEmailAddressesForReservation($reservationid);
 $emailString = implode(",", $emailArray);
 
-$matchtypesQuery = "SELECT ";
 
 ?>
 <script language="Javascript">
@@ -282,5 +281,5 @@ function enable()
   <input type="hidden" name="time" value="<?=$time?>">
   <input type="hidden" name="guylookingformatch" value="<?=$userid?>">
   <input type="hidden" name="lastupdated" value="<?=$lastupdated?>">
-  <input type="hidden" name="matchtype" value="<?=$matchtype?>">
+  
 </form>
