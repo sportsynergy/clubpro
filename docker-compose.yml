@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web:
+    container_name: clubpro-web
+    image: php:7.0.32-apache
+    ports:
+     - "8081:80"
+    volumes:
+    - .:/var/www/html
+  
