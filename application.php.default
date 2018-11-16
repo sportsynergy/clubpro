@@ -72,11 +72,11 @@ if (!isset($_SESSION["CFG"])) {
 
     $_SESSION["CFG"]["wwwroot"] = "";
     $_SESSION["CFG"]["imagedir"] = "/images";
-    $_SESSION["CFG"]["dirroot"] = "/opt/clubpro";
-    $_SESSION["CFG"]["templatedir"] = "/opt/clubpro/templates";
-    $_SESSION["CFG"]["libdir"] = "/opt/clubpro/lib";
-    $_SESSION["CFG"]["wordlist"] = "/opt/clubpro/lib/wordlist.txt";
-    $_SESSION["CFG"]["includedir"] = "/opt/clubpro/includes";
+    $_SESSION["CFG"]["dirroot"] = "/var/www/html";
+    $_SESSION["CFG"]["templatedir"] = "/var/www/html/templates";
+    $_SESSION["CFG"]["libdir"] = "/var/www/html/lib";
+    $_SESSION["CFG"]["wordlist"] = "/var/www/html/lib/wordlist.txt";
+    $_SESSION["CFG"]["includedir"] = "/var/www/html/includes";
     $_SESSION["CFG"]["dns"] = "www.sportsynergy.net";
     $_SESSION["CFG"]["support"] = "support@sportsynergy.net";
     $_SESSION["CFG"]["mailer.email"] = "player.mailer@sportsynergy.net";
@@ -90,15 +90,15 @@ require ($_SESSION["CFG"]["libdir"] . "/dblib.php");
 require ($_SESSION["CFG"]["libdir"] . "/applicationlib.php");
 require ($_SESSION["CFG"]["includedir"] . "/include_phpAjaxTags.php");
 
-$trackingid="UA-25789082-2";
+$trackingid="TRACKING_ID_GOES_HERE";
 
 /* setup some global variables */
 $ME = qualified_me();
 $MEWQ = qualified_mewithq();
 $dbhost = "localhost";
-$dbname = "clubpro";
-$dbuser = "clubpro";
-$dbpass = "clubpro99";
+$dbname = "clubpro_main";
+$dbuser = "root";
+$dbpass = "clubs4life";
 
 /* connect to the database */
 $dbh = db_connect($dbhost, $dbname, $dbuser, $dbpass);
