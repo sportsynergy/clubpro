@@ -617,7 +617,7 @@ function cancel_court(&$frm) {
 
         elseif ($frm["cancelall"] == 4) {
             
-            if (isDebugEnabled(1)) logMessage("court_cancelation.cancel_court: Just rearranging the reservation cancelall =  " . $frm["cancelall"] . " player1 = " . $frm['player1'] . " player2 = " . $frm['player2'] . " and matchtype = ".$frm["matchtype"]);
+            if (isDebugEnabled(1)) logMessage("court_cancelation.cancel_court: Just rearranging the reservation cancelall =  " . $frm["cancelall"] . " player1 = " . $frm['player1'] . " player2 = " . $frm['player2'] . " and matchtype = ".$residarray['matchtype']);
             $locked = "n";
             
             if (isset($frm["lock"])) {
@@ -630,7 +630,7 @@ function cancel_court(&$frm) {
             $qid1 = db_query("UPDATE tblReservations
 									  SET lastmodifier = " . get_userid() . "
 									  ,locked = '$locked'
-                                      ,matchtype = " . $frm["matchtype"] ."
+                                      ,matchtype = " . $residarray['matchtype'] ."
                                       WHERE reservationid = $residarray[0]");
             $qid2 = db_query("DELETE FROM tblkpUserReservations
                                       WHERE reservationid = $residarray[0]");
