@@ -246,7 +246,8 @@ function load_general_preferences($siteid) {
         						clubsite.facebookurl,
 								clubsite.reminders,
                                 clubsite.showplayernames,
-                                clubsite.requirelogin
+                                clubsite.requirelogin,
+                                clubsite.ccadmins
                          FROM tblClubSites clubsite
                          WHERE clubsite.siteid = $siteid");
     return db_fetch_array($qid);
@@ -575,7 +576,7 @@ function update_general_clubprefs(&$frm) {
     
     if (isDebugEnabled(1)) logMessage("general_preferneces.update_clubprefs: Updating club preferences.");
 
-    $challengerange = isset($frm[challengerange]) ? $frm[challengerange] : 'NULL';
+    $challengerange = isset($frm[challengerange]) ? $frm[challengerange] : '0';
 
     /* Update the club preferences */
     $query = "Update tblClubSites SET allowselfcancel = '$frm[allowselfcancel]'
@@ -587,6 +588,7 @@ function update_general_clubprefs(&$frm) {
 				,reminders = '$frm[reminders]'
                 ,showplayernames = '$frm[showplayernames]'
                 ,requirelogin = '$frm[requirelogin]'
+                ,ccadmins = '$frm[ccadmins]'
                 WHERE siteid = '" . get_siteid() . "'";
 
     // run the query on the database

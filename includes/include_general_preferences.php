@@ -192,6 +192,24 @@
                     <option value="n"
                   <? if($generalPreferences["requirelogin"] =='n'){ echo "selected";} ?>>No</option>
               </select>
+              <div class="spacer"/>
+           </td>
+
+          </tr>
+          
+          <tr>
+            <td class="label">Email Admins on New Reservations:</td>
+            <td>
+                <select name="ccadmins">
+                  <option value="y"
+                  <?
+
+                  if (isDebugEnabled(1)) logMessage(   $generalPreferences["ccadmins"] );
+    
+                  if($generalPreferences["ccadmins"] =='y'){ echo "selected";} ?>>Yes</option>
+                    <option value="n"
+                  <? if($generalPreferences["ccadmins"] =='n'){ echo "selected";} ?>>No</option>
+              </select>
            </td>
           </tr>
           <tr>

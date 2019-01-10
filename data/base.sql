@@ -266,7 +266,8 @@ CREATE TABLE IF NOT EXISTS `tblClubSites` (
   `reminders` ENUM(  'none',  '24',  '5',  '6',  '7',  '8',  '9',  '10' ) NOT NULL DEFAULT  'none',
   `displaycourttype` ENUM(  'y',  'n' ) NOT NULL DEFAULT  'y',
   `showplayernames` ENUM('y','n') NOT NULL DEFAULT 'y' COMMENT 'Display the player names on the main reservation page',
-  `requirelogin` ENUM('y','n') NOT NULL DEFAULT 'n' COMMENT 'require login before accessing main booking page'
+  `requirelogin` ENUM('y','n') NOT NULL DEFAULT 'n' COMMENT 'require login before accessing main booking page',
+   `ccadmins` ENUM('y', 'n') NOT NULL DEFAULT 'n' 
   PRIMARY KEY (`siteid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;
 
