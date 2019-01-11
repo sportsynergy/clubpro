@@ -197,22 +197,7 @@
 
           </tr>
           
-          <tr>
-            <td class="label">Email Admins on New Reservations:</td>
-            <td>
-                <select name="ccadmins">
-                  <option value="y"
-                  <?
-
-                  if (isDebugEnabled(1)) logMessage(   $generalPreferences["ccadmins"] );
-    
-                  if($generalPreferences["ccadmins"] =='y'){ echo "selected";} ?>>Yes</option>
-                    <option value="n"
-                  <? if($generalPreferences["ccadmins"] =='n'){ echo "selected";} ?>>No</option>
-              </select>
-           </td>
-          </tr>
-          <tr>
+          
             <td colspan="2" class="spacer"><span class="normal"> Require all users to login before accessing the booking page.</span>
               <div class="spacer"/></td>
           </tr>

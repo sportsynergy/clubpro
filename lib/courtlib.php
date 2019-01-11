@@ -736,10 +736,7 @@ function printGuestReservation($guest1, $guest2, $time, $courtid, $matchtype, $i
  */
 function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype, $inpast, $locked, $scored, $creator, $reservationid){
 	
-    
 
-	if( isDebugEnabled(1) ) logMessage("courtlib.printSinglesReservation for court $courtid and scored $scored and matchtype $matchtype an inpast $inpast $reservationid");
-	
 	$clubid = get_clubid();
 	
 	// Set the css

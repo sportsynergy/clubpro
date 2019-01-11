@@ -237,6 +237,8 @@ function send_email($subject, $to_emails, $from_email, $content, $template) {
     //return $response;
     
 }
+
+
 /**
  *
  * @param $dateString
@@ -1683,6 +1685,9 @@ function email_boxmembers($resid, $boxid) {
     //Send the email
     sendgrid_email($subject, $to_emails, $content, "Box Members Wanted");
 }
+
+
+
 /**
  *
  * Enter description here ...
@@ -1776,6 +1781,122 @@ function confirm_singles($resid, $isNewReservation) {
     //Send the email
     sendgrid_email($subject, $to_emails, $content, "Confirm Singles");
 }
+
+/**
+ *
+ * Enter description here ...
+ * @param unknown_type $resid
+ * @param unknown_type $isNewReservation
+ */
+function audit_singles($resid, $isNewReservation) {
+    
+     
+    $rquery = "SELECT courts.courtname, reservations.time, users.firstname, users.lastname, users.email, courts.courtid, reservations.matchtype, matchtype.name, reservations.usertype, users.userid
+                       FROM tblCourts courts, tblReservations reservations, tblUsers users, tblkpUserReservations reservationdetails, tblMatchType matchtype, tblClubUser clubuser
+                       WHERE courts.courtid = reservations.courtid
+                       AND users.userid = reservationdetails.userid
+                       AND reservations.reservationid = reservationdetails.reservationid
+                       AND reservations.reservationid=$resid
+                       AND reservations.matchtype = matchtype.id
+                       AND users.userid = clubuser.userid
+                       AND clubuser.clubid=" . get_clubid();
+
+    $rresult = db_query($rquery);
+    $robj = mysqli_fetch_object($rresult);
+
+    $matchtype = $robj->matchtype;
+    if (isDebugEnabled(1)) logMessage("applicationlib.audit_singles: sending out emails for a singles reservation matchtype: $matchtype");
+   
+
+    $players_in_reservation[] = $robj->userid;
+
+    /* email the user with the new account information    */
+    $var = new Object;
+    $var->courtname = $robj->courtname;
+    $var->time = gmdate("l F j g:i a", $robj->time);
+    $var->timestamp = $robj->time;
+    $var->dns = $_SESSION["CFG"]["dns"];
+    $var->wwwroot = $_SESSION["CFG"]["wwwroot"];
+    $var->support = $_SESSION["CFG"]["support"];
+    $var->courtid = $robj->courtid;
+    $var->matchtype = $robj->name;
+
+    //Get the first player
+    $var->firstname1 = $robj->firstname;
+    $var->lastname1 = $robj->lastname;
+    $var->fullname1 = $robj->firstname . " " . $robj->lastname;
+
+    //Get the second player
+    $robj = mysqli_fetch_object($rresult);
+
+    $players_in_reservation[] = $robj->userid;
+    $var->firstname2 = $robj->firstname;
+    $var->lastname2 = $robj->lastname;
+    $var->fullname2 = $robj->firstname . " " . $robj->lastname;
+    
+    if (db_num_rows($rresult) == 1) {
+        
+        if($matchtype == 4){
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles_lesson_looking.php", $var);
+        } elseif($matchtype == 5){
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_solo.php", $var);
+        } else {
+            $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles_looking.php", $var);
+        }
+        
+    } elseif ($matchtype == 4) {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_lesson.php", $var);
+    } else {
+        $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_singles.php", $var);
+    }
+
+    // Set the Subject
+    if ($isNewReservation) {
+        $subject = "New Player Reservation Notice - ".get_clubname() ;
+    } else {
+        $subject = "Updated Player Reservation Notice - ".get_clubname();
+    }
+
+    //Reset the result pointer to the begining
+    mysqli_data_seek($rresult, 0);
+    $to_emails = array();
+
+    $auditQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email
+       FROM tblUsers users, tblClubUser clubuser, tblClubs club
+       WHERE users.userid = clubuser.userid
+       AND clubuser.clubid='" . get_clubid() . "'
+       AND club.clubid = clubuser.clubid
+       AND clubuser.enable='y' 
+       AND clubuser.ccnew='y'
+       AND clubuser.enddate IS NULL";
+
+    if (isDebugEnabled(1)) logMessage("$auditQuery");
+    $auditResult = db_query($auditQuery);
+
+    while ($auditor = db_fetch_array($auditResult)) {
+
+        // if any of the people in the reservation have this setting, don't send
+        if (in_array($auditor['userid'], $players_in_reservation)) {
+           if (isDebugEnabled(1)) logMessage("applicationlib.audit_singles: not sending audit to ". $auditor['userid']. " because this person is in reservation. redundant.");
+           continue;
+        }
+
+        $to_emails[$auditor['email']] = array(
+            'name' => $auditor['firstname']
+        );
+        
+    }
+
+    $content = new Object;
+    $content->line1 = $emailbody;
+    $content->clubname = get_clubname();
+    $template = get_sitecode();
+
+    //Send the email
+    sendgrid_email($subject, $to_emails, $content, "Confirm Singles");
+}
+
+
 /**
  *
  * Enter description here ...

@@ -1632,11 +1632,16 @@ function makeSinglesReservation($frm, $guesttype, $reservationid) {
             $result = db_query($query);
         }
         
+        /**
+            send users with 'ccnew' a copy of the email notice, request from marinas
+        **/
+        audit_singles($reservationid, true);
+
 		confirm_singles($reservationid, true);
 
     } elseif ($guesttype == 1) {
 
-        // playeronename wont' be set with regular players, its disabled.
+        // playeronename won't be set with regular players, its disabled.
         
         if (get_roleid() == 1) {
             $playerOneName = get_userfullname();
