@@ -14,6 +14,8 @@
 <!-- Misc -->
 <link rel="icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/favicon.ico"
 	type="image/x-icon" />
+<link rel="apple-touch-icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/twitter1.png"
+	type="image/x-icon" />
 	
 
 <!-- Dependency source files -->
