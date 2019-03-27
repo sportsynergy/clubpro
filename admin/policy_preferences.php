@@ -133,6 +133,8 @@ function validate_form(&$frm, &$errors) {
 function validate_messages_form(&$frm, &$errors) {
 
     /* Just make sure that if they turn this little bugger on that they type in a message */
+
+
     $errors = new Object;
     $msg = "";
     
@@ -143,13 +145,10 @@ function validate_messages_form(&$frm, &$errors) {
         $errors->Messagetextarea = true;
         $errors->ClubNewsMessage = true;
         $msg.= "You didn't specifiy a message.";
-    } elseif (preg_match("'", $frm["Messagetextarea"])) {
-        $errors->Messagetextarea = true;
-        $msg.= "Please don't use apostrophes, I beg of you.";
     } elseif (preg_match("\n", $frm["Messagetextarea"])) {
         $errors->Messagetextarea = true;
         $msg.= "This time don't put a return in the message";
-    } elseif (preg_match("'", $frm["ClubNewsMessage"])) {
+    } elseif (strpos($frm["ClubNewsMessage"], "'") !== false)  {
         $errors->ClubNewsMessage = true;
         $msg.= "Please don't use apostrophes, I beg of you.";
     }
@@ -500,7 +499,9 @@ function update_message_clubprefs(&$frm) {
 
     if (!empty($frm['Messagetextarea'])) {
         
-		if (isDebugEnabled(2)) logMessage("policy_preferences.update_message_clubprefs: Updating message text to ". $frm['Messagetextarea']);
+        $message = addslashes($frm["Messagetextarea"]);
+
+		if (isDebugEnabled(2)) logMessage("policy_preferences.update_message_clubprefs: Updating message text to $message");
 
         if ($frm["messagedisplay"] == "on") {
             $displaymessage = 1;
@@ -508,43 +509,47 @@ function update_message_clubprefs(&$frm) {
             $displaymessage = 0;
         }
 
+        
         //Check to see if club has a message
         $qid = db_query("SELECT id, message, enable FROM tblMessages WHERE siteid = " . get_siteid() . " AND messagetypeid = 1 order by id");
         $numrows = mysqli_num_rows($qid);
 	    $messagearray = db_fetch_array($qid);
         
         if ($numrows == 0) {
-            $query = "INSERT INTO tblMessages (
+            $query = 'INSERT INTO tblMessages (
                    siteid, message, messagetypeid, enable
                    ) VALUES (
-                   '" . get_siteid() . "'
-                   ,'$frm[Messagetextarea]'
+                   "' . get_siteid() . '"
+                   ,"'.$message.'"
                    ,1
-                   ,'$displaymessage')";
+                   ,"'.$displaymessage.'")';
 
 				  // run the query on the database
 			      db_query($query);
+                   if (isDebugEnabled(2)) logMessage("equals 0");
 			
         } elseif ($numrows == 1) {
-            $query = "Update tblMessages SET
-                message = '$frm[Messagetextarea]'
-                ,enable = '$displaymessage'
-                WHERE siteid = '" . get_siteid() . "'
-                AND messagetypeid = 1";
+            $query = 'Update tblMessages SET
+                message = "'.$message.'"
+                ,enable = "'.$displaymessage.'"
+                WHERE siteid = "'. get_siteid() .'"
+                AND messagetypeid = 1';
 
  				db_query($query);
+                if (isDebugEnabled(2)) logMessage("equals 1");
         }
 		// only update the first one
 		else {
 			
-			 $query = "Update tblMessages SET
-	                message = '$frm[Messagetextarea]'
-	                ,enable = '$displaymessage'
-	                WHERE siteid = '" . get_siteid() . "'
+			 $query = 'Update tblMessages SET
+	                message = "'.$message.'"
+	                ,enable = "'.$displaymessage.'"
+	                WHERE siteid = "' . get_siteid() . '"
 	                AND messagetypeid = 1
-					AND id = ".$messagearray['id'];
+					AND id = '.$messagearray['id'];
 
 	 				db_query($query);
+                     if (isDebugEnabled(2)) logMessage($query);
 			
 		}
 

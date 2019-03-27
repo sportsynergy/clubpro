@@ -63,7 +63,7 @@ if (isset($clubid)) {
 			//Specify the marquee's content (don't delete <nobr> tag)
 			//Keep all content on ONE line, and backslash any single quotations (ie: that\'s great):
 			
-			var marqueecontent='<nobr><font face="Arial"><strong><big><?echo "$messagearray[message]"?></big></strong></font></nobr>';
+			var marqueecontent='<nobr><font face="Arial"><strong><big><?= addslashes("$messagearray[message]")?></big></strong></font></nobr>';
 			
 			
 			////NO NEED TO EDIT BELOW THIS LINE////////////
