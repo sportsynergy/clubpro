@@ -333,8 +333,6 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
 
 function printResourceReservation($courtid, $time, $creatorid, $reservationid, $inpast){
     
-    logMessage("here is a resource reservation $ispast");
-
     $clubid = get_clubid();
     $fullNameResult = getFullNameResultForUserId($creatorid);
     $userArray = mysqli_fetch_array($fullNameResult); 

@@ -622,9 +622,7 @@ function is_logged_in() {
  * the login screen before allowing the user to continue
  */
 function require_login() {
-    
-    if (isDebugEnabled(1)) logMessage("applicationlib.require_login: Requiring login");
-                  
+               
 
     if (!is_logged_in()) {
         $_SESSION["wantsurl"] = qualified_me();
@@ -1870,7 +1868,6 @@ function audit_singles($resid, $isNewReservation) {
        AND clubuser.ccnew='y'
        AND clubuser.enddate IS NULL";
 
-    if (isDebugEnabled(1)) logMessage("$auditQuery");
     $auditResult = db_query($auditQuery);
 
     while ($auditor = db_fetch_array($auditResult)) {
