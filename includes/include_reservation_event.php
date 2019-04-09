@@ -123,6 +123,10 @@ function onEventCancelButtonClicked(){
 
 				if($timetonext >= 7200 || $nexttime == null){ ?>
 					<option value="2">2 Hours</option>
+        <? } 
+        
+        if($timetonext >= 9000 || $nexttime == null){ ?>
+					<option value="2.5">2.5 Hours</option>
 				<? } 
 				
 				if($timetonext >= 10800 || $nexttime == null){ ?>
