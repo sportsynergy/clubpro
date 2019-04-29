@@ -604,7 +604,7 @@ function printDoublesReservationFull($teamid1, $teamid2, $lock, $matchType, $tim
 	if($inpast){
 		
 		if($scored){
-			$trclass = "postopencourt";
+			$trclass = "reportedcourtcl$clubid";
 		} else if($matchType==0 || $matchType==1 || $matchType==2 || $matchType==3) {
 			$trclass = "reportscorecl$clubid";
 		} else {
@@ -741,7 +741,7 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
 	if($inpast){
 		
 		if($scored){
-			$trclass = "postopencourt";
+			$trclass = "reportedcourtcl$clubid";
 		} else if($matchtype==0 || $matchtype==1 || $matchtype==2 || $matchtype==3) {
 			$trclass = "reportscorecl$clubid";
 		} else {
