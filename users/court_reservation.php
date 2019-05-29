@@ -104,9 +104,10 @@ require_loginwq();
  *
  ******************************************************************************/
 
+
 if (match_referer() && isset($_POST['courttype'])) {
 
-    
+
     // Set some variables
     $frm = $_POST;
     $wwwroot = $_SESSION["CFG"]["wwwroot"];
@@ -166,6 +167,12 @@ if (match_referer() && isset($_POST['courttype'])) {
         // This did not pass the form validation, set these variables for the same form
         $userid = $frm['userid'];
     }
+} else {
+
+    if (isDebugEnabled(1)) {
+        logMessage("court_reservation: not processing - courttype is not set: " . $_POST['courttype']);
+    }
+
 }
 
 /******************************************************************************
