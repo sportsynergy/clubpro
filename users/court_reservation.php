@@ -106,6 +106,7 @@ require_loginwq();
 
 if (match_referer() && isset($_POST['courttype'])) {
 
+    
     // Set some variables
     $frm = $_POST;
     $wwwroot = $_SESSION["CFG"]["wwwroot"];
@@ -197,6 +198,7 @@ if (mysqli_num_rows($userTypeResult) > 0) {
     
     if (isDebugEnabled(1)) {
         logMessage("court_reservation: this is a new reservation ");
+        logMessage("court_reservation: this was empty: $userTypeQuery ");
     }
     $newReservation = TRUE;
 }
