@@ -91,12 +91,14 @@ we have to load in the site preferences (normally this is done in
 the scheduler content. */
 
 
-if (isDebugEnabled(1)) {
-    logMessage("court_reservation: setting site preference for court $courtid");
-}
+
 $siteprefs = getSitePreferencesForCourt($courtid);
 $_SESSION["siteprefs"] = $siteprefs;
 require_loginwq();
+
+if (isDebugEnabled(1)) {
+    logMessage("court_reservation: user(".get_userid().") setting site preference for court $courtid");
+}
 
 /*****************************************************************************
  *
@@ -106,7 +108,6 @@ require_loginwq();
 
 
 if (match_referer() && isset($_POST['courttype'])) {
-
 
     // Set some variables
     $frm = $_POST;
@@ -170,7 +171,7 @@ if (match_referer() && isset($_POST['courttype'])) {
 } else {
 
     if (isDebugEnabled(1)) {
-        logMessage("court_reservation: not processing - courttype is not set: " . $_POST['courttype']);
+        logMessage("court_reservation: not processing for user(".get_userid().") - courttype is not set: " . $_POST['courttype']);
     }
 
 }
@@ -205,7 +206,6 @@ if (mysqli_num_rows($userTypeResult) > 0) {
     
     if (isDebugEnabled(1)) {
         logMessage("court_reservation: this is a new reservation ");
-        logMessage("court_reservation: this was empty: $userTypeQuery ");
     }
     $newReservation = TRUE;
 }
