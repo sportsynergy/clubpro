@@ -109,6 +109,34 @@ if (isDebugEnabled(1)) {
  *
  ******************************************************************************/
 
+ # 
+
+
+$matchreferrer = "";
+if ( match_referer() ){
+    $matchreferrer = "true";
+} else{
+    $matchreferrer = "false";
+}
+
+if (isDebugEnabled(1)) {
+    logMessage("court_reservation: match_referer = $matchreferrer" );
+}
+
+$courttypeisset = "";
+if ( isset( $courttype )  ){
+    $courttypeisset = "true";
+} else{
+    $courttypeisset = "false";
+}
+
+if (isDebugEnabled(1)) {
+    logMessage("court_reservation: isset( courttype ) = $courttypeisset");
+    logMessage("court_reservation: qualified_me() = ". qualified_me() ); 
+    logMessage("court_reservation: get_referer() = ". get_referer() );
+}
+
+
 if ( match_referer() && isset( $courttype ) ) {
 
     // Set some variables
