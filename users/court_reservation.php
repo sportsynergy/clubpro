@@ -76,7 +76,6 @@ if($userRelation->isUserLoggedin()){
 }
 
 
-
 $DOC_TITLE = "Court Reservation";
 
 //Set the http variables
@@ -86,11 +85,15 @@ $userid = $_REQUEST["userid"];
 $courttype = $_REQUEST["courttype"];
 $courtid = $_REQUEST["courtid"];
 
+if (isDebugEnabled(1)) {
+    logMessage("court_reservation: loading page with the these variables: 
+    courtid: $courtid, time: $time, userid: $userid, courttype: $courttype, courtid: $courtid");
+}
+
+
 /* In case the user is loading this page from a link on an email,
 we have to load in the site preferences (normally this is done in
 the scheduler content. */
-
-
 
 $siteprefs = getSitePreferencesForCourt($courtid);
 $_SESSION["siteprefs"] = $siteprefs;
@@ -106,8 +109,7 @@ if (isDebugEnabled(1)) {
  *
  ******************************************************************************/
 
-
-if (match_referer() && isset($_POST['courttype'])) {
+if ( match_referer() && isset( $courttype ) ) {
 
     // Set some variables
     $frm = $_POST;
@@ -119,7 +121,6 @@ if (match_referer() && isset($_POST['courttype'])) {
     if (empty($errormsg)) {
         
         //Actually Make the Reservation
-        
         if ($frm['action'] == "create") {
             $resid = insert_reservation($frm);
         } else {
