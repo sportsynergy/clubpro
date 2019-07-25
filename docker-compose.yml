@@ -4,7 +4,7 @@ services:
     container_name: clubpro-web
     build: .
     ports:
-     - "8081:80"
+     - "8082:80"
     volumes:
     - .:/var/www/html
     links:
