@@ -88,7 +88,7 @@ function addToClubEvent($userid, $clubeventid) {
                           ,'','',''
                           )";
 
-                          logMessage($query);
+                          
         $result = db_query($query);
 
     } else {
@@ -108,6 +108,43 @@ function removeFromClubEvent($userid, $clubeventid) {
 				AND clubeventid = '$clubeventid'";
     $result = db_query($query);
 }
+
+/**
+ *
+ * @param unknown_type $userid
+ * @param unknown_type $clubeventid
+ * @return void
+ */
+function addToClubEventAsTeam($playerOneId, $playerTwoid, $clubeventid, $division) {
+   
+    logMessage("clubadminlib.addToClubEventAsTeam: playerOneId $playerOneId playerTwoId $playerTwoid ClubEventId: $clubeventid and division $division");
+    
+    $check = "SELECT count(*) FROM tblClubEventParticipants participants 
+					WHERE (participants.userid = $playerOneId 
+                    OR participants.partnerid)
+					AND participants.clubeventid = $clubeventid
+					AND participants.enddate IS NULL";
+    $checkResult = db_query($check);
+    
+
+    $numArray = mysqli_fetch_array($checkResult);
+    $num = $numArray[0];
+
+    if ($num == 0) {
+
+        $query = "INSERT INTO tblClubEventParticipants (
+                userid, clubeventid, guests, extra,comments, partnerid, division
+                ) VALUES ('$playerOneId','$clubeventid','','','',$playerTwoid,'$division')";
+
+                          
+        $result = db_query($query);
+
+    } else {
+        logMessage("clubadminlib.addToClubEvent: User $userid is already in  $clubeventid not doing anything.");
+    }
+}
+
+
 /**
  *
  * @param $eventid
@@ -115,7 +152,7 @@ function removeFromClubEvent($userid, $clubeventid) {
  */
 function loadClubEvent($eventid) {
     logMessage("clubadminlib.loadClubEvent: Eventid $eventid");
-    $query = "SELECT events.id, events.name, events.eventdate, events.description
+    $query = "SELECT events.id, events.name, events.eventdate, events.description, events.registerdivision , events.registerteam
 			   FROM tblClubEvents events 
 				WHERE events.id = '$eventid' 
 				AND enddate is NULL";

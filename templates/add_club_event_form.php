@@ -1,8 +1,13 @@
 
+<?
+	$divisionchecked = $frm["registerdivision"]=='y' ? 'checked' : '';
+	$teamchecked = $frm["registerteam"]=='y' ? 'checked' : '';
+
+	//don't allow updates for registration variables
+	$disabled = $frm["id"] ? 'disabled' : '';
+?>
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
-
-
 
 <table cellspacing="0" cellpadding="20" width="600" class="generictable" id="formtable">
  <tr class="borderow">
@@ -28,6 +33,18 @@
 					<input type="text" name="eventdate" id="eventdate" value="<?=convertToDateSlashes($frm["eventdate"])?>">
 					<img id="calico" src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png" alt="Open the Calendar control"><?err($errors->eventdate)?>
 					<div id="mycal" style="position:absolute;z-index:10;"></div>
+				</td>
+			</tr>
+			<tr>
+				<td class="label"><span title="People registering for this event will have to register with a partner.">Register as Team:</span></td>
+				<td>
+					<input type="checkbox" name="registerteam" <?=$teamchecked?> <?=$disabled?>> 
+				</td>
+			</tr>
+			<tr>
+				<td class="label"><span title="People registering for this event will have the option to register for a division">Register Division</span></td>
+				<td>
+					<input type="checkbox" name="registerdivision" <?=$divisionchecked?> <?=$disabled?> > 
 				</td>
 			</tr>
 			<tr>

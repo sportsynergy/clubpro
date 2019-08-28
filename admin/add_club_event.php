@@ -112,6 +112,7 @@ function validate_form(&$frm, &$errors) {
  * @param  $frm
  */
 function saveClubEvent(&$frm) {
+    
     logMessage("add_club_event.saveClubEvent");
 
     // Parse
@@ -121,7 +122,8 @@ function saveClubEvent(&$frm) {
     $year = $datearray[2];
     $mysqldateformat = $year . "-" . $month . "-" . $day;
     $eventid = $frm['id'];
-    
+    $registerteam = $frm['registerteam'] ? 'y' : 'n';
+    $registerdivision = $frm['registerdivision'] ? 'y' : 'n';   
 
     // Strip Slashes
     
@@ -144,12 +146,13 @@ function saveClubEvent(&$frm) {
 						name = '$subject'
 		                ,eventdate = '$mysqldateformat'
 		                ,description = '$description'
-		                ,lastmodifier = " . get_userid() . "
+                        ,lastmodifier = " . get_userid() . "
 		        WHERE id = '$eventid'";
     } else {
         logMessage("add_club_event.saveClubEvent: adding new club event ");
+        
         $query = "INSERT INTO tblClubEvents (
-                name, clubid, eventdate, description, creator, lastmodifier, eventenddate
+                name, clubid, eventdate, description, creator, lastmodifier, eventenddate, registerdivision, registerteam 
                 ) VALUES (
                           '$subject'
 					  	  ," . get_clubid() . "
@@ -158,6 +161,8 @@ function saveClubEvent(&$frm) {
                           ," . get_userid() . "
                           ," . get_userid() . "
                           ,null
+                          ,'$registerdivision'
+                          ,'$registerteam'
                           )";
     }
     $result = db_query($query);

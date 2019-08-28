@@ -1,12 +1,207 @@
 <?
 
-
 $clubEvent = mysqli_fetch_array($clubEventResult);
 
 ?>
 
+
+<form name="removemefromeventform" method="post" action="<?=$ME?>">
+   <input type="hidden" name="userid" value="<?=get_userid()?>">
+   <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+   <input type="hidden" name="cmd" value="removefromevent">
+</form>
+
+<form name="addtoeventform" method="post" action="<?=$ME?>">
+   <input type="hidden" name="userid" value="<?=get_userid()?>">
+   <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+   <input type="hidden" name="cmd" value="addtoevent">
+</form>
+
+
+<div>
+
+<span class="club_event_title"><?=$clubEvent['name']?></span><br/>
+<span class="italicnorm"><?=formatDateString($clubEvent['eventdate'])?></span>
+
+
+<div style="padding-top: 15px; padding-bottom: 40px">
+<span class="club_event_text">
+<?=$clubEvent['description']?>
+</span>
+</div>
+
+
+</div>
+
+
+
+<? if( is_logged_in() ){
+
+
+// if registerteam is enable pick the partner
+
+if ($clubEvent['registerteam']=='y' ){   
+	// Allow for teams
+	?>
+
+	<form method="POST" action="<?=$ME?>" name="registerteam" id="registerteam" autocomplete="off">
+	<table width="400" class="generictable">
+	<tr class="borderow" >
+		<td class=clubid<?=get_clubid()?>th colspan="2">
+		<span class="whiteh1">
+          <div align="center">
+            Sign Up
+          </div>
+		  </span>
+		</td>
+      </tr>
+		<tr>
+			<td class="label">Partner</td>
+			<td>
+				<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
+				<input id="id1" name="userid" type="hidden" />
+					<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+					<input type="hidden" name="cmd" value="addtoeventasteam">
+					<script>
+					<?
+					$wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+					pat_autocomplete( array(
+							'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+							'source'=>'name1',
+							'target'=>'id1',
+							'className'=>'autocomplete',
+							'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+							'progressStyle'=>'throbbing',
+							'minimumCharacters'=>3,
+							));
+					?>
+
+					</script>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="button" name="submit" value="Sign up" id="submitbutton"></td>
+		</tr>
+	</table>
+		
+
+	</form>
+	
+<?
+}else {
+	// Doesn't allow for teams
+	if( get_roleid()==2 || get_roleid()==4){ ?>
+		<span class="normalsm" id="show"><a style="text-decoration: underline; cursor: pointer">Add Player</a></span>
+   <? } else { 
+   
+		if( $alreadySignedUp ){ ?>
+		   <span class="normalsm"><a href="javascript:submitForm('removemefromeventform');">Take me out</a></span>
+	   <? }else{ ?>
+		   <span class="normalsm"><a href="javascript:submitForm('addtoeventform');">Put me down</a></span>
+	   <? } ?>
+   
+   <? } }?>
+
+
+
+	
+<? } ?>
+
+<div id="dialog1" class="yui-pe-content">
+<div class="bd">
+<form method="POST" action="<?=$ME?>">
+	<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
+             <input id="id1" name="userid" type="hidden" />
+                <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+   				<input type="hidden" name="cmd" value="addtoevent">
+    			<script>
+                <?
+                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+                 pat_autocomplete( array(
+						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+						'source'=>'name1',
+						'target'=>'id1',
+						'className'=>'autocomplete',
+						'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+						'progressStyle'=>'throbbing',
+						'minimumCharacters'=>3,
+						));
+           
+                 ?>
+
+                </script>
+</form>
+</div>
+</div>
+
+
+<div style="padding-top: 55px">
+<span class="biglabel">Who is coming </span>  
+<div id="peoplelistpanel" style="padding-left: 1em; padding-top: 10px;">
+
+
+<? 
+
+if( mysqli_num_rows($clubEventParticipants)==0){ ?>
+	
+	No one has signed up yet. 
+	
+	<? if( is_logged_in() ){ ?>
+	 	Why don't you be the first one?
+	<? } ?>
+	
+	
+<? }else{
+	
+	$count = 1;
+	
+	while($participant = mysqli_fetch_array($clubEventParticipants)){?>
+		
+		<? if ($clubEvent['registerteam']=='y' ){  ?>
+
+		<span class="normal" style="white-space:nowrap;"><?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?><?if($count<mysqli_num_rows($clubEventParticipants)){print ",";}?></span>
+	
+		<? } else ?>
+		<span class="normal" style="white-space:nowrap;"><?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?><?if($count<mysqli_num_rows($clubEventParticipants)){print ",";}?></span>
+	
+	   <? }?>
+		<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
+	  		<span class="normal">
+	  			<a href="javascript:removeFromEvent(<?=$participant['userid']?>);">
+	 				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
+				</a></span>
+		<? }
+		
+		$count = $count +1;
+		
+		?>
+	
+	<? } }?>
+
+
+</div>
+
+</div>
+
+
 <script>
+
 YAHOO.namespace("clubevent.container");
+
+YAHOO.example.init = function () {
+
+YAHOO.util.Event.onContentReady("registerteam", function () {
+
+	document.getElementById('name1').setAttribute("autocomplete", "off");
+
+	var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
+	oSubmitButton1.on("click", onSubmitButtonClicked);
+
+});
+
+} ();
+
 
 YAHOO.util.Event.onDOMReady(function () {
 	
@@ -80,128 +275,8 @@ document.onkeypress = function (aEvent)
   	
 };
 
+function onSubmitButtonClicked(){
+	submitForm('registerteam');
+}
+
 </script>
-
-<form name="removemefromeventform" method="post" action="<?=$ME?>">
-   <input type="hidden" name="userid" value="<?=get_userid()?>">
-   <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
-   <input type="hidden" name="cmd" value="removefromevent">
-</form>
-
-<form name="addtoeventform" method="post" action="<?=$ME?>">
-   <input type="hidden" name="userid" value="<?=get_userid()?>">
-   <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
-   <input type="hidden" name="cmd" value="addtoevent">
-</form>
-
-
-<div>
-
-<span class="club_event_title"><?=$clubEvent['name']?></span><br/>
-<span class="italitcsm"><?=formatDateString($clubEvent['eventdate'])?></span>
-
-
-<div style="padding: 10px">
-<span class="club_event_text">
-	<?=$clubEvent['description']?>
-</span>
-</div>
-
-
-</div>
-
-
-<div style="padding-top: 55px">
-<span class="biglabel">Who is coming </span> 
-<? if( is_logged_in() ){
-
-	 if( get_roleid()==2 || get_roleid()==4){ ?>
-		 <span class="normalsm" id="show"><a style="text-decoration: underline; cursor: pointer">Add Player</a></span>
-	<? } else { 
-	
-	 	if( $alreadySignedUp ){ ?>
-			<span class="normalsm"><a href="javascript:submitForm('removemefromeventform');">Take me out</a></span>
-		<? }else{ ?>
-			<span class="normalsm"><a href="javascript:submitForm('addtoeventform');">Put me down</a></span>
-		<? } ?>
-	
-	<? } ?>
-	
-<? } ?>
-
-<div id="dialog1" class="yui-pe-content">
-
-
-<div class="bd">
-
-<form method="POST" action="<?=$ME?>">
-	<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
-             <input id="id1" name="userid" type="hidden" />
-                <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
-   				<input type="hidden" name="cmd" value="addtoevent">
-    			<script>
-                <?
-                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
-                 pat_autocomplete( array(
-						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-						'source'=>'name1',
-						'target'=>'id1',
-						'className'=>'autocomplete',
-						'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
-						'progressStyle'=>'throbbing',
-						'minimumCharacters'=>3,
-						));
-           
-                 ?>
-
-                </script>
-
-	
-</form>
-</div>
-</div>
-
-<div id="peoplelistpanel" style="padding-left: 1em; padding-top: 10px;">
-
-
-<? 
-
-if( mysqli_num_rows($clubEventParticipants)==0){ ?>
-	
-	No one has signed up yet. 
-	
-	<? if( is_logged_in() ){ ?>
-	 	Why don't you be the first one?
-	<? } ?>
-	
-	
-<? }else{
-	
-	$count = 1;
-	
-	while($participant = mysqli_fetch_array($clubEventParticipants)){?>
-		<span class="normalsm" style="white-space:nowrap;"><?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?><?if($count<mysqli_num_rows($clubEventParticipants)){print ",";}?></span>
-	
-		<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
-	  		<span class="normalsm">
-	  			<a href="javascript:removeFromEvent(<?=$participant['userid']?>);">
-	 				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
-				</a></span>
-		<? }
-		
-		$count = $count +1;
-		
-		?>
-	
-	<? } }?>
-
-
-</div>
-
-</div>
-
-
-
-
-
-

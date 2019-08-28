@@ -74,6 +74,16 @@ if (match_referer() && isset($_POST['cmd'])) {
         $clubeventid = $frm['clubeventid'];
         removeFromClubEvent($userid, $clubeventid);
     }
+    
+    // Add a player and a guest
+    if ($frm['cmd'] == 'addtoeventasteam') {
+        $partnerid = $frm['userid'];
+        $clubeventid = $frm['clubeventid'];
+        $division = $frm['division'];
+
+        addToClubEventAsTeam(get_userid(), $partnerid, $clubeventid, $division);
+    }
+
 }
 $clubEventResult = loadClubEvent($_SESSION["clubeventid"]);
 $clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);

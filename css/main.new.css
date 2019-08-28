@@ -11,7 +11,7 @@ box-shadow: 0 0 30px 5px #999;
 }
 
 .club_event_title{
-	font-size: 32pt;
+	font-size: 24pt;
 	font-weight: bold; 
 }
 
@@ -109,6 +109,12 @@ th{
 
 .italitcsm { 
 	font-size: 8pt;
+	font-style: italic;  
+	font-weight: normal;
+}
+
+.italicnorm { 
+	font-size: 12pt;
 	font-style: italic;  
 	font-weight: normal;
 }
