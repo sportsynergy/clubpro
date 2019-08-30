@@ -54,7 +54,6 @@ if (isset($eventid)) {
     $_SESSION["clubeventid"] = $eventid;
 }
 
-if (isDebugEnabled(1)) logMessage("calling club event");
 
 if (match_referer() && isset($_POST['cmd'])) {
     $frm = $_POST;
@@ -62,6 +61,7 @@ if (match_referer() && isset($_POST['cmd'])) {
     // Add user to Club Event
     
     if ($frm['cmd'] == 'addtoevent') {
+        logMessage("club_event.validate_form: adding user to club event");
         $userid = $frm['userid'];
         $clubeventid = $frm['clubeventid'];
         addToClubEvent($userid, $clubeventid);
@@ -70,6 +70,7 @@ if (match_referer() && isset($_POST['cmd'])) {
     // Remove user from Club Event
     
     if ($frm['cmd'] == 'removefromevent') {
+        logMessage("club_event.validate_form: removing user/team to club event");
         $userid = $frm['userid'];
         $clubeventid = $frm['clubeventid'];
         removeFromClubEvent($userid, $clubeventid);
@@ -77,17 +78,24 @@ if (match_referer() && isset($_POST['cmd'])) {
     
     // Add a player and a guest
     if ($frm['cmd'] == 'addtoeventasteam') {
+        logMessage("club_event.validate_form: adding team to club event");
         $partnerid = $frm['userid'];
         $clubeventid = $frm['clubeventid'];
         $division = $frm['division'];
 
-        addToClubEventAsTeam(get_userid(), $partnerid, $clubeventid, $division);
-    }
+        $errormsg = validate_form($frm, $errors);
 
+        if (empty($errormsg)) {
+            addToClubEventAsTeam(get_userid(), $partnerid, $clubeventid, $division);
+        } 
+
+    }
 }
+
 $clubEventResult = loadClubEvent($_SESSION["clubeventid"]);
 $clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);
-$alreadySignedUp = isClubEventParticipant($clubEventParticipants);
+$alreadySignedUp = isClubEventParticipant(get_userid(), $clubEventParticipants);
+
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/club_event_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
@@ -95,4 +103,25 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 /******************************************************************************
  * FUNCTIONS
  *****************************************************************************/
+
+function validate_form(&$frm, &$errors) {
+    $errors = new Object;
+
+    logMessage("club_event.validate_form: checking if parter for ". $frm['userid']." is alredy signed up");
+
+    $clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);
+    $partnerSignedUp = isClubEventParticipant(trim($frm['userid']), $clubEventParticipants);
+    
+    if ( empty($frm["userid"]) ){
+        return "Please select a user from the dropdown menu.";
+    } 
+
+    if ( $partnerSignedUp ){
+        return "I am sorry but your partner is already signed up for this event.";
+    } 
+
+    
+
+}
 ?>
+

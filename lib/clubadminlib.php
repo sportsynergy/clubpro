@@ -43,22 +43,32 @@
  *
  * @param $clubEventParticipants
  */
-function isClubEventParticipant(&$clubEventParticipantsResult) {
+function isClubEventParticipant($userid, &$clubEventParticipantsResult) {
+    
     $isSignedup = false;
-    logMessage("clubadminlib.isClubEventParticipant: Checking to see if " . get_userid() . " is signed up");
+    logMessage("clubadminlib.isClubEventParticipant: Checking to see if ". $userid ." is signed up");
+    
     $numrows = mysqli_num_rows($clubEventParticipantsResult);
     while ($participant = mysqli_fetch_array($clubEventParticipantsResult)) {
         
-        if ($participant['userid'] == get_userid()) {
+        logMessage("clubadminlib.isClubEventParticipant: checking if".$participant['userid']."==$userid.");
+       // logMessage("clubadminlib.isClubEventParticipant: checking if ".$participant['partnerid']." == ".$userid);
+
+
+        if ($participant['userid'] == $userid ) {
             $isSignedup = true;
+            logMessage("clubadminlib.isClubEventParticipant: just set isSignedup: $isSignedup");
+        } else {
+            logMessage("clubadminlib.isClubEventParticipant: NOT A ClubEventParticipant");
         }
     }
 
     // Reset the results
-    
     if (mysqli_num_rows($clubEventParticipantsResult) > 0) {
         mysqli_data_seek($clubEventParticipantsResult, 0);
     }
+    $test = false;
+    logMessage("clubadminlib.isClubEventParticipant: returning: $isSignedup");
     return $isSignedup;
 }
 /**
@@ -121,7 +131,7 @@ function addToClubEventAsTeam($playerOneId, $playerTwoid, $clubeventid, $divisio
     
     $check = "SELECT count(*) FROM tblClubEventParticipants participants 
 					WHERE (participants.userid = $playerOneId 
-                    OR participants.partnerid)
+                    OR participants.partnerid = $playerOneId )
 					AND participants.clubeventid = $clubeventid
 					AND participants.enddate IS NULL";
     $checkResult = db_query($check);

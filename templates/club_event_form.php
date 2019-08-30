@@ -42,6 +42,7 @@ $clubEvent = mysqli_fetch_array($clubEventResult);
 
 if ($clubEvent['registerteam']=='y' ){   
 	// Allow for teams
+
 	?>
 
 	<form method="POST" action="<?=$ME?>" name="registerteam" id="registerteam" autocomplete="off">
@@ -79,31 +80,31 @@ if ($clubEvent['registerteam']=='y' ){
 					</script>
 			</td>
 		</tr>
+		<? if ($clubEvent['registerdivision']=='y' ){ ?>
+		<tr>
+			<td class="label">Division</td>
+			<td>
+				<select name="division">
+					<option value="">--</option>
+					<option value="A">A</option>
+					<option value="B">B</option>
+					<option value="C">C</option>
+					<option value="D">D</option>
+				</select>
+			</td>
+		</tr>
+		<? } ?>
 		<tr>
 			<td></td>
-			<td><input type="button" name="submit" value="Sign up" id="submitbutton"></td>
+			<td><input type="button" name="submit" value="Sign up" id="submitbutton" <?=$alreadySignedUp?"disabled":""?>></td>
 		</tr>
 	</table>
 		
-
 	</form>
+
 	
 <?
-}else {
-	// Doesn't allow for teams
-	if( get_roleid()==2 || get_roleid()==4){ ?>
-		<span class="normalsm" id="show"><a style="text-decoration: underline; cursor: pointer">Add Player</a></span>
-   <? } else { 
-   
-		if( $alreadySignedUp ){ ?>
-		   <span class="normalsm"><a href="javascript:submitForm('removemefromeventform');">Take me out</a></span>
-	   <? }else{ ?>
-		   <span class="normalsm"><a href="javascript:submitForm('addtoeventform');">Put me down</a></span>
-	   <? } ?>
-   
-   <? } }?>
-
-
+}?>
 
 	
 <? } ?>
@@ -138,19 +139,41 @@ if ($clubEvent['registerteam']=='y' ){
 
 <div style="padding-top: 55px">
 <span class="biglabel">Who is coming </span>  
+
+<?  
+if (get_roleid()==1){
+
+	
+	if( $alreadySignedUp   ){ ?>
+		<span class="normal"><a href="javascript:submitForm('removemefromeventform');">Take me out</a></span>
+	<? } else if ($clubEvent['registerteam']!='y') { // team registration have a seperate signup form ?>
+		<span class="normal"><a href="javascript:submitForm('addtoeventform');">Put me down</a></span>
+	<? } ?>
+	
+	<? } elseif( get_roleid()==2 || get_roleid()==4)  { 
+
+	// only provide this option for club events with single user reservations.
+	if( $clubEvent['registerteam']!='y'){ ?>
+		<span class="normal" id="show"><a style="text-decoration: underline; cursor: pointer">Add Player</a></span>
+	<? } 
+
+
+	} ?>
+
+
 <div id="peoplelistpanel" style="padding-left: 1em; padding-top: 10px;">
 
 
 <? 
 
 if( mysqli_num_rows($clubEventParticipants)==0){ ?>
-	
+	<span class="normal">
 	No one has signed up yet. 
 	
 	<? if( is_logged_in() ){ ?>
 	 	Why don't you be the first one?
 	<? } ?>
-	
+	</span >
 	
 <? }else{
 	
@@ -160,22 +183,33 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 		
 		<? if ($clubEvent['registerteam']=='y' ){  ?>
 
-		<span class="normal" style="white-space:nowrap;"><?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?><?if($count<mysqli_num_rows($clubEventParticipants)){print ",";}?></span>
+		<div class="normal" style="white-space:nowrap;">
+			<?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?> - 
+			<?=chop($participant['partner firstname'])?> <?=rtrim($participant['partner lastname'])?>
+			<? if(!empty($participant['division'])){ ?>
+				<span> (<?=$participant['division']?>)</span>
+			<? } ?>
+			
+			<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
+			<a href="javascript:removeFromEvent(<?=$participant['userid']?>);">
+	 			<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
+			</a>
+			<? } ?>
+		</div>
 	
-		<? } else ?>
-		<span class="normal" style="white-space:nowrap;"><?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?><?if($count<mysqli_num_rows($clubEventParticipants)){print ",";}?></span>
+		<? } else{ ?>
+			<div class="normal" style="white-space:nowrap;">
+				<?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?>
+				<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
+				<a href="javascript:removeFromEvent(<?=$participant['userid']?>);">
+	 				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
+				</a>
+				<? } ?>
+			</div>
 	
 	   <? }?>
-		<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
-	  		<span class="normal">
-	  			<a href="javascript:removeFromEvent(<?=$participant['userid']?>);">
-	 				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
-				</a></span>
-		<? }
 		
-		$count = $count +1;
-		
-		?>
+	  		
 	
 	<? } }?>
 
