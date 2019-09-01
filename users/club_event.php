@@ -54,7 +54,6 @@ if (isset($eventid)) {
     $_SESSION["clubeventid"] = $eventid;
 }
 
-
 if (match_referer() && isset($_POST['cmd'])) {
     $frm = $_POST;
 
@@ -79,14 +78,15 @@ if (match_referer() && isset($_POST['cmd'])) {
     // Add a player and a guest
     if ($frm['cmd'] == 'addtoeventasteam') {
         logMessage("club_event.validate_form: adding team to club event");
-        $partnerid = $frm['userid'];
+        $userid = $frm['userid'];
+        $partnerid = $frm['partnerid'];
         $clubeventid = $frm['clubeventid'];
         $division = $frm['division'];
 
         $errormsg = validate_form($frm, $errors);
 
         if (empty($errormsg)) {
-            addToClubEventAsTeam(get_userid(), $partnerid, $clubeventid, $division);
+            addToClubEventAsTeam($userid, $partnerid, $clubeventid, $division);
         } 
 
     }
@@ -110,12 +110,24 @@ function validate_form(&$frm, &$errors) {
     logMessage("club_event.validate_form: checking if parter for ". $frm['userid']." is alredy signed up");
 
     $clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);
-    $partnerSignedUp = isClubEventParticipant(trim($frm['userid']), $clubEventParticipants);
+    
     
     if ( empty($frm["userid"]) ){
         return "Please select a user from the dropdown menu.";
     } 
 
+    if ( empty($frm["partnerid"]) ){
+        return "Please select a user from the dropdown menu.";
+    } 
+
+    $userSignedUp = isClubEventParticipant(trim($frm['userid']), $clubEventParticipants);
+
+    if ( $userSignedUp ){
+        return "I am sorry but you're already signed up for this event.";
+    } 
+
+    $partnerSignedUp = isClubEventParticipant(trim($frm['partnerid']), $clubEventParticipants);
+    
     if ( $partnerSignedUp ){
         return "I am sorry but your partner is already signed up for this event.";
     } 

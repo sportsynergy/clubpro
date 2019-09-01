@@ -56,13 +56,12 @@ if ($clubEvent['registerteam']=='y' ){
 		  </span>
 		</td>
       </tr>
-		<tr>
-			<td class="label">Partner</td>
+	<? if ( get_roleid()==2 || get_roleid()==4){ ?>
+	  <tr>
+			<td class="label">User</td>
 			<td>
 				<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
 				<input id="id1" name="userid" type="hidden" />
-					<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
-					<input type="hidden" name="cmd" value="addtoeventasteam">
 					<script>
 					<?
 					$wwwroot =$_SESSION["CFG"]["wwwroot"] ;
@@ -72,6 +71,31 @@ if ($clubEvent['registerteam']=='y' ){
 							'target'=>'id1',
 							'className'=>'autocomplete',
 							'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+							'progressStyle'=>'throbbing',
+							'minimumCharacters'=>3,
+							));
+					?>
+
+					</script>
+			</td>
+		</tr>
+		<? } else { ?>
+			<input  name="userid" type="hidden" value="<?=get_userid()?>"/>
+		<? } ?>
+		<tr>
+			<td class="label">Partner</td>
+			<td>
+				<input id="name2" name="playeronename" type="text" size="30" class="form-autocomplete" />
+				<input id="id2" name="partnerid" type="hidden" />
+					<script>
+					<?
+					$wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+					pat_autocomplete( array(
+							'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+							'source'=>'name2',
+							'target'=>'id2',
+							'className'=>'autocomplete',
+							'parameters'=> "action=autocomplete&name={name2}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
 							'progressStyle'=>'throbbing',
 							'minimumCharacters'=>3,
 							));
@@ -95,8 +119,11 @@ if ($clubEvent['registerteam']=='y' ){
 		</tr>
 		<? } ?>
 		<tr>
-			<td></td>
-			<td><input type="button" name="submit" value="Sign up" id="submitbutton" <?=$alreadySignedUp?"disabled":""?>></td>
+			<td>
+			<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+			<input type="hidden" name="cmd" value="addtoeventasteam">
+			</td>
+			<td><input type="button" name="submit" value="Sign up" id="submitbutton" </td>
 		</tr>
 	</table>
 		
