@@ -6283,18 +6283,18 @@ function getMatchesByType($siteid, $matchtype, $limit){
  *
  * @param unknown_type $clubeventid
  */
-function getClubEventParticipants($clubeventid){
-
+function getClubEventParticipants($clubeventid, $division){
+	
 	$query = "SELECT users.userid, users.firstname, users.lastname, partner.userid as 'partnerid', partner.firstname as 'partner firstname', partner.lastname as 'partner lastname', participant.division
-					FROM tblClubEventParticipants participant
-					INNER JOIN tblUsers users
-						ON participant.userid = users.userid
-					LEFT JOIN tblUsers partner
-						ON participant.partnerid = partner.userid
-							AND participant.partnerid IS NOT NULL
-					WHERE participant.clubeventid = $clubeventid
-					AND participant.enddate is NULL
-					ORDER BY users.lastname;";
+				FROM tblClubEventParticipants participant
+				INNER JOIN tblUsers users
+					ON participant.userid = users.userid
+				LEFT JOIN tblUsers partner
+					ON participant.partnerid = partner.userid
+						AND participant.partnerid IS NOT NULL
+				WHERE participant.clubeventid = $clubeventid
+				AND participant.enddate is NULL
+				ORDER BY users.lastname;";
 
 	return db_query($query);
 }

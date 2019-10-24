@@ -94,7 +94,7 @@ if (match_referer() && isset($_POST['cmd'])) {
 
 $clubEventResult = loadClubEvent($_SESSION["clubeventid"]);
 $clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);
-$alreadySignedUp = isClubEventParticipant(get_userid(), $clubEventParticipants);
+$alreadySignedUp = isClubEventParticipant(get_userid(), $clubEventParticipants, $division);
 
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/club_event_form.php");
@@ -120,13 +120,13 @@ function validate_form(&$frm, &$errors) {
         return "Please select a user from the dropdown menu.";
     } 
 
-    $userSignedUp = isClubEventParticipant(trim($frm['userid']), $clubEventParticipants);
+    $userSignedUp = isClubEventParticipant(trim($frm['userid']), $clubEventParticipants, $frm["division"]);
 
     if ( $userSignedUp ){
         return "I am sorry but you're already signed up for this event.";
     } 
 
-    $partnerSignedUp = isClubEventParticipant(trim($frm['partnerid']), $clubEventParticipants);
+    $partnerSignedUp = isClubEventParticipant(trim($frm['partnerid']), $clubEventParticipants, $frm["division"]);
     
     if ( $partnerSignedUp ){
         return "I am sorry but your partner is already signed up for this event.";

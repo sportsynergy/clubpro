@@ -38,13 +38,13 @@
 			<tr>
 				<td class="label"><span title="People registering for this event will have to register with a partner.">Register as Team:</span></td>
 				<td>
-					<input type="checkbox" name="registerteam" <?=$teamchecked?> <?=$disabled?>> 
+					<input type="checkbox" id="registerteam" name="registerteam" <?=$teamchecked?> <?=$disabled?>  onclick="handleClick(this);" > 
 				</td>
 			</tr>
 			<tr>
 				<td class="label"><span title="People registering for this event will have the option to register for a division">Register Division</span></td>
 				<td>
-					<input type="checkbox" name="registerdivision" <?=$divisionchecked?> <?=$disabled?> > 
+					<input type="checkbox" id="registerdivision" name="registerdivision" <?=$divisionchecked?> <?=$disabled?> > 
 				</td>
 			</tr>
 			<tr>
@@ -135,10 +135,27 @@ YAHOO.example.init = function () {
 
         var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
         oCancelButton.on("click", onCancelButtonClicked);
-    });
+	});
+	
+	//diable add division if team is not checked
+	document.getElementById("registerdivision").disabled = true;
+
+	
 
 } ();
 
+
+
+function handleClick(cb) {
+	
+	if (cb.checked){
+		document.entryform.registerdivision.disabled = "";
+	} else {
+		document.entryform.registerdivision.disabled = "true";
+	}
+	
+	
+}
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');

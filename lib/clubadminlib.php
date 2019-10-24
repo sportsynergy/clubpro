@@ -43,7 +43,7 @@
  *
  * @param $clubEventParticipants
  */
-function isClubEventParticipant($userid, &$clubEventParticipantsResult) {
+function isClubEventParticipant($userid, &$clubEventParticipantsResult, $division) {
     
     $isSignedup = false;
     logMessage("clubadminlib.isClubEventParticipant: Checking to see if ". $userid ." is signed up");
@@ -51,16 +51,34 @@ function isClubEventParticipant($userid, &$clubEventParticipantsResult) {
     $numrows = mysqli_num_rows($clubEventParticipantsResult);
     while ($participant = mysqli_fetch_array($clubEventParticipantsResult)) {
         
-        logMessage("clubadminlib.isClubEventParticipant: checking if".$participant['userid']."==$userid.");
-       // logMessage("clubadminlib.isClubEventParticipant: checking if ".$participant['partnerid']." == ".$userid);
+         // logMessage("clubadminlib.isClubEventParticipant: checking if ".$participant['partnerid']." == ".$userid);
 
-
+       if( empty($division) ){
+        
+        logMessage("clubadminlib.isClubEventParticipant: checking if ".$participant['userid']."==$userid without a division specified.");
+      
+        // if no division is specified check that the user hasn't already registered at all
         if ($participant['userid'] == $userid ) {
             $isSignedup = true;
             logMessage("clubadminlib.isClubEventParticipant: just set isSignedup: $isSignedup");
         } else {
             logMessage("clubadminlib.isClubEventParticipant: NOT A ClubEventParticipant");
         }
+
+       } else { //if a division is specified only check to make sure that the user isn't already in the division
+
+        logMessage("clubadminlib.isClubEventParticipant: checking if ".$participant['userid']."==$userid within division $division.");
+      
+
+        if ($participant['userid'] == $userid && $participant['division']==$division ) {
+            $isSignedup = true;
+            logMessage("clubadminlib.isClubEventParticipant: just set isSignedup, but jus tin division: $isSignedup");
+        } else {
+            logMessage("clubadminlib.isClubEventParticipant: NOT A ClubEventParticipant in that division");
+        }
+
+       }
+        
     }
 
     // Reset the results
@@ -128,14 +146,24 @@ function removeFromClubEvent($userid, $clubeventid) {
 function addToClubEventAsTeam($playerOneId, $playerTwoid, $clubeventid, $division) {
    
     logMessage("clubadminlib.addToClubEventAsTeam: playerOneId $playerOneId playerTwoId $playerTwoid ClubEventId: $clubeventid and division $division");
-    
-    $check = "SELECT count(*) FROM tblClubEventParticipants participants 
+     
+    if ( empty($division)){
+        $check = "SELECT count(*) FROM tblClubEventParticipants participants 
 					WHERE (participants.userid = $playerOneId 
                     OR participants.partnerid = $playerOneId )
 					AND participants.clubeventid = $clubeventid
 					AND participants.enddate IS NULL";
-    $checkResult = db_query($check);
+       
+    } else {
+        $check = "SELECT count(*) FROM tblClubEventParticipants participants 
+					WHERE (participants.userid = $playerOneId 
+                    OR participants.partnerid = $playerOneId )
+					AND participants.clubeventid = $clubeventid
+                    AND participants.division = '$division'
+					AND participants.enddate IS NULL";
+    }
     
+    $checkResult = db_query($check);
 
     $numArray = mysqli_fetch_array($checkResult);
     $num = $numArray[0];
@@ -150,7 +178,7 @@ function addToClubEventAsTeam($playerOneId, $playerTwoid, $clubeventid, $divisio
         $result = db_query($query);
 
     } else {
-        logMessage("clubadminlib.addToClubEvent: User $userid is already in  $clubeventid not doing anything.");
+        logMessage("clubadminlib.addToClubEventAsTeam: User $userid is already in  $clubeventid not doing anything.");
     }
 }
 
