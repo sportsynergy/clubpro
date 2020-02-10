@@ -62,8 +62,9 @@ if (match_referer() && isset($_POST['cmd'])) {
     if ($frm['cmd'] == 'addtoevent') {
         logMessage("club_event.validate_form: adding user to club event");
         $userid = $frm['userid'];
+        $division = $frm['division'];
         $clubeventid = $frm['clubeventid'];
-        addToClubEvent($userid, $clubeventid);
+        addToClubEvent($userid, $clubeventid, $division);
     }
 
     // Remove user from Club Event

@@ -139,26 +139,38 @@ if ($clubEvent['registerteam']=='y' ){
 <div id="dialog1" class="yui-pe-content">
 <div class="bd">
 <form method="POST" action="<?=$ME?>">
-	<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
-             <input id="id1" name="userid" type="hidden" />
-                <input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
-   				<input type="hidden" name="cmd" value="addtoevent">
-    			<script>
-                <?
-                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
-                 pat_autocomplete( array(
-						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-						'source'=>'name1',
-						'target'=>'id1',
-						'className'=>'autocomplete',
-						'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
-						'progressStyle'=>'throbbing',
-						'minimumCharacters'=>3,
-						));
-           
-                 ?>
+	<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" autocomplete="off"/>
+    <input id="id1" name="userid" type="hidden" />
+	<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+	<input type="hidden" name="cmd" value="addtoevent">
+		<script>
+		<?
+		$wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+			pat_autocomplete( array(
+				'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+				'source'=>'name1',
+				'target'=>'id1',
+				'className'=>'autocomplete',
+				'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+				'progressStyle'=>'throbbing',
+				'minimumCharacters'=>3,
+				));
+	
+			?>
 
-                </script>
+		</script>
+		<? if ($clubEvent['registerdivision']=='y' ){ ?>
+
+			<span class="smallbold">Division<span>
+			<select name="division">
+				<option value="">--</option>
+				<option value="A">A</option>
+				<option value="B">B</option>
+				<option value="C">C</option>
+				<option value="D">D</option>
+			</select>
+
+	<? } ?>
 </form>
 </div>
 </div>
@@ -227,6 +239,10 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 		<? } else{ ?>
 			<div class="normal" style="white-space:nowrap;">
 				<?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?>
+				<? if(!empty($participant['division'])){ ?>
+					<span> (<?=$participant['division']?>)</span>
+				<? } ?>
+				
 				<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
 				<a href="javascript:removeFromEvent(<?=$participant['userid']?>);">
 	 				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
@@ -247,6 +263,7 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 
 
 <script>
+
 
 YAHOO.namespace("clubevent.container");
 
@@ -283,7 +300,9 @@ YAHOO.util.Event.onDOMReady(function () {
 	};
 
     // Remove progressively enhanced content class, just before creating the module
-    YAHOO.util.Dom.removeClass("dialog1", "yui-pe-content");
+	YAHOO.util.Dom.removeClass("dialog1", "yui-pe-content");
+	
+	
 
 	// Instantiate the Dialog
 	YAHOO.clubevent.container.dialog1 = new YAHOO.widget.Dialog("dialog1", 
@@ -315,6 +334,9 @@ YAHOO.util.Event.onDOMReady(function () {
 	
 	// Render the Dialog
 	YAHOO.clubevent.container.dialog1.render();
+
+
+	document.getElementById('name1').setAttribute("autocomplete", "off");
 
 	YAHOO.util.Event.addListener("show", "click", YAHOO.clubevent.container.dialog1.show, YAHOO.clubevent.container.dialog1, true);
 	YAHOO.util.Event.addListener("hide", "click", YAHOO.clubevent.container.dialog1.hide, YAHOO.clubevent.container.dialog1, true);

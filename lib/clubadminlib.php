@@ -94,8 +94,9 @@ function isClubEventParticipant($userid, &$clubEventParticipantsResult, $divisio
  * @param unknown_type $userid
  * @param unknown_type $clubeventid
  */
-function addToClubEvent($userid, $clubeventid) {
-    logMessage("clubadminlib.addToClubEvent: User $userid ClubEventId: $clubeventid");
+function addToClubEvent($userid, $clubeventid, $division) {
+    logMessage("clubadminlib.addToClubEvent: User $userid ClubEventId: $clubeventid, Division: $division");
+    
     $check = "SELECT count(*) FROM tblClubEventParticipants participants 
 					WHERE participants.userid = $userid 
 					AND participants.clubeventid = $clubeventid
@@ -109,14 +110,15 @@ function addToClubEvent($userid, $clubeventid) {
     if ($num == 0) {
 
         $query = "INSERT INTO tblClubEventParticipants (
-                userid, clubeventid, guests, extra,comments
+                userid, clubeventid, division, guests, extra, comments
                 ) VALUES (
                           '$userid'
 					  	  ,'$clubeventid'
+                          , '$division'
                           ,'','',''
                           )";
 
-                          
+        logMessage($query);                  
         $result = db_query($query);
 
     } else {

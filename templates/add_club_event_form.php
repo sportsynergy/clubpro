@@ -138,24 +138,14 @@ YAHOO.example.init = function () {
 	});
 	
 	//diable add division if team is not checked
-	document.getElementById("registerdivision").disabled = true;
-
+	//document.getElementById("registerdivision").disabled = true;
 	
 
 } ();
 
 
 
-function handleClick(cb) {
-	
-	if (cb.checked){
-		document.entryform.registerdivision.disabled = "";
-	} else {
-		document.entryform.registerdivision.disabled = "true";
-	}
-	
-	
-}
+
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');
