@@ -186,7 +186,28 @@ if (get_roleid()==1){
 	if( $alreadySignedUp   ){ ?>
 		<span class="normal"><a href="javascript:submitForm('removemefromeventform');">Take me out</a></span>
 	<? } else if ($clubEvent['registerteam']!='y') { // team registration have a seperate signup form ?>
-		<span class="normal"><a href="javascript:submitForm('addtoeventform');">Put me down</a></span>
+		
+		
+		<? if ($clubEvent['registerdivision']=='y' ){ ?>
+			<span class="normal">I'll play in the </span> the  
+				<form name="addtoeventformwithdivision" method="post" action="<?=$ME?>" style="display: inline;">
+				<select name="division" >
+					<option value="">--</option>
+					<option value="A">A</option>
+					<option value="B">B</option>
+					<option value="C">C</option>
+					<option value="D">D</option>
+				</select>
+				<input type="hidden" name="userid" value="<?=get_userid()?>">
+				<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+				<input type="hidden" name="cmd" value="addtoevent">
+				division. 
+		</form>
+		<a href="javascript:submitForm('addtoeventformwithdivision');">Put me down</a>
+		<? } else { ?>
+			<span class="normal"><a href="javascript:submitForm('addtoeventform');">Put me down</a></span>
+		<? }  ?>
+
 	<? } ?>
 	
 	<? } elseif( get_roleid()==2 || get_roleid()==4)  { 
@@ -263,6 +284,14 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 
 
 <script>
+
+function submitAddToEventForm()
+{ 
+	var form = eval("document." + theForm);
+	
+	form.submit();
+
+}
 
 
 YAHOO.namespace("clubevent.container");
