@@ -6294,7 +6294,7 @@ function getClubEventParticipants($clubeventid, $division){
 						AND participant.partnerid IS NOT NULL
 				WHERE participant.clubeventid = $clubeventid
 				AND participant.enddate is NULL
-				ORDER BY case when participant.division is null then 1 else 0 end, participant.division, users.lastname;";
+				ORDER BY case when participant.division = '' or participant.division is null then 1 else 0 end, participant.division, users.lastname;";
 
 	return db_query($query);
 }
