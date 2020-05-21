@@ -1,8 +1,13 @@
 <?
 
-		if( !isset($time)){
-			$time = $_POST['time'];
-		}
+       if( empty($time)){
+              $time = $_GET['time'];
+       }
+
+       if( empty($courtid)){
+              $courtid = $_GET['courtid'];
+       }
+
 
        $courtTypeQuery = "SELECT reservationid, eventid, usertype, guesttype, matchtype, lastmodifier, creator, locked, duration, courttype.reservationtype, time
                      FROM tblReservations reservations
