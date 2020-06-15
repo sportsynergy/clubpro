@@ -65,7 +65,7 @@
               <div class="spacer"/></td>
           </tr>
           <tr>
-            <td class="label">How Far In Advanced Players Can Make A Reservation:</td>
+            <td class="label">How Far In Advanced Players Can Make a Reservation:</td>
             <td><select name="daysahead">
                 <? for($i=1; $i<30; ++$i){ ?>
                 <?
@@ -143,7 +143,7 @@
             <td class="label">Email Reminders:</td>
             <td>
                 <select name="reminders">
-                    <option value="">none</option>
+                    <option value="none">none</option>
                     <option value="24" <?=$generalPreferences["reminders"]=='24' ? "selected":""?> >24 Hours Ahead</option>
                     <option value="5" <?=$generalPreferences["reminders"]=='5' ? "selected":""?> >5:00 am</option>
                     <option value="6" <?=$generalPreferences["reminders"]=='6' ? "selected":""?> >6:00 am</option>
@@ -185,25 +185,39 @@
                 <select name="showplayernames">
                   <option value="y"
                   <? 
-
-                  if (isDebugEnabled(1)) logMessage(   $generalPreferences["requirelogin"] );
-    
                   if($generalPreferences["requirelogin"] =='y'){ echo "selected";} ?>>Yes</option>
                     <option value="n"
                   <? if($generalPreferences["requirelogin"] =='n'){ echo "selected";} ?>>No</option>
               </select>
               <div class="spacer"/>
            </td>
-
           </tr>
-          
-          
+          <tr>
             <td colspan="2" class="spacer"><span class="normal"> Require all users to login before accessing the booking page.</span>
               <div class="spacer"/></td>
           </tr>
 
           <tr>
-            <td colspan="2"><input type="button" name="submit" value="Update  General Preferences" id="general-submitbutton"></td>
+            <td class="label"> Allow Players to look for singles matches</td>
+            <td>
+                <select name="allowmatchlooking">
+                  <option value="y"
+                  <? 
+
+                  if($generalPreferences["allowplayerslooking "] =='y'){ echo "selected";} ?>>Yes</option>
+                    <option value="n"
+                  <? if($generalPreferences["allowplayerslooking "] =='n'){ echo "selected";} ?>>No</option>
+              </select>
+              <div class="spacer"/>
+           </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="spacer"><span class="normal"> Allows players to not specify an opppoent and have the system find a suitable match.</span>
+              <div class="spacer"/></td>
+          </tr>
+
+          <tr>
+            <td colspan="2" style="padding-top: 25px;"><input type="button" name="submit" value="Update  General Preferences" id="general-submitbutton"></td>
           </tr>
         </table></td>
     </tr>

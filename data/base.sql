@@ -255,6 +255,7 @@ CREATE TABLE IF NOT EXISTS `tblClubSites` (
   `enable` enum('y','n') NOT NULL DEFAULT 'y',
   `lastmodified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `allowallsiteadvertising` enum('y','n') NOT NULL DEFAULT 'n',
+  `allowplayerslooking` enum('y','n') NOT NULL DEFAULT 'y',
   `enableguestreservation` enum('y','n') NOT NULL DEFAULT 'n',
   `displaysitenavigation` enum('y','n') NOT NULL DEFAULT 'y',
   `displayrecentactivity` enum('y','n') NOT NULL DEFAULT 'y',

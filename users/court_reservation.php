@@ -395,8 +395,14 @@ function validate_form(&$frm, &$errors) {
      ******************************************/
     elseif ($frm['courttype'] == "singles") {
         
+    
         if (isDebugEnabled(1)) logMessage("court_reservation.validate_form(): Validating a Singles Reservation " . $frm["playertwoid"] . ".");
         
+        // if club is set up to restrict looking for matches
+        if ( get_roleid() == 1 && !isAllowPlayerslooking() && empty($frm['playertwoid']) ){
+            $msg = "Sorry, your club does not allow players to look for matches. Please specify an opponent or set the match type to Solo.";
+        }
+
         if ($frm['action'] == "addpartner" && $frm["lastupdated"] != $reservationTimeStamp) {
             $msg = "Sorry, somebody out there just reserved this court. Please refresh the page and try again.";
         } elseif ($frm['action'] == "create" && get_roleid() == 1 && !empty($frm["playeroneid"]) && !empty($frm["playertwoid"]) && !validateSkillPolicies($frm["playeroneid"], $frm["playertwoid"], $frm['courtid'], $frm['courttype'], $frm['time'])) {

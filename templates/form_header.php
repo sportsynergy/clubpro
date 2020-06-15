@@ -12,6 +12,6 @@ if (!empty($errormsg)) {
 }
 
 ?>
-<div class="<?php echo $class; ?>" style="height:30px" id="message_div">
+<div class="<?php echo $class; ?>" style="height:45px" id="message_div">
 	<?php echo $msg; ?>
 </div>

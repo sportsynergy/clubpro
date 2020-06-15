@@ -773,7 +773,9 @@ function isNearRankingAdvertising() {
 function isDisplaySiteNavigation() {
     return $_SESSION["siteprefs"]["displaysitenavigation"] == 'y' ? true : false;
 }
-
+function isAllowPlayerslooking() {
+    return $_SESSION["siteprefs"]["allowplayerslooking "] == 'y' ? true : false;
+}
 function get_reminders() {
     return $_SESSION["siteprefs"]["reminders"];
 }
@@ -5464,6 +5466,7 @@ function getSitePreferencesForCourt($courtid) {
 					sites.enable,
 					sites.isliteversion,
 					sites.allowallsiteadvertising,
+					sites.allowplayerslooking,
 					sites.allownearrankingadvertising,
 					sites.enableguestreservation,
 					sites.displaysitenavigation,
@@ -5521,6 +5524,7 @@ function getSitePreferences($siteid) {
 					sites.enable,
 					sites.isliteversion,
 					sites.allowallsiteadvertising,
+					sites.allowplayerslooking,
 					sites.allownearrankingadvertising,
 					sites.enableguestreservation,
 					sites.displaysitenavigation,

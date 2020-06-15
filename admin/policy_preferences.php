@@ -592,6 +592,7 @@ function update_general_clubprefs(&$frm) {
 				,reminders = '$frm[reminders]'
                 ,showplayernames = '$frm[showplayernames]'
                 ,requirelogin = '$frm[requirelogin]'
+                ,allowplayerslooking = '$frm[allowmatchlooking]'
                 WHERE siteid = '" . get_siteid() . "'";
 
     // run the query on the database
