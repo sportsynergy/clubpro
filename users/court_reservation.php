@@ -1488,8 +1488,12 @@ function makeSoloReservation($frm, $reservationid) {
         // run the query on the database
         $result = db_query($query);
 
+        audit_singles($reservationid, true);
+        
         //ONly send out emails to registered users
         confirm_singles($reservationid, true);
+
+
     }
 }
 /**
