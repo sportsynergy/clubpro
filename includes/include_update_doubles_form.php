@@ -334,7 +334,7 @@ function onCancelReservationButtonClicked(){
                 
                 <? if(!$isPageBeingLoadedForPastReservation){?>
                 <tr>
-                	<td class="italitcsm" colspan="2">To Remove someone from the reservation, just delete their name.<br><br></td>
+                	<td class="italitcsm" colspan="2">To remove someone from the reservation, just delete their name.<br><br></td>
                 </tr>
                 <? }?>
                 <? 
@@ -365,8 +365,9 @@ function onCancelReservationButtonClicked(){
 	      
 	        
 	 		<input type="button" value="Update Reservation" id="submitbutton">
-			<input type="button" value="Cancel Reservation" <?=$disabled?> id="cancelReservationbutton">
-			<a href="javascript:onCancelButtonClicked()">go back</a>
+		
+			<a href="javascript:onCancelReservationButtonClicked()">Cancel Reservation</a> | 
+			<a href="javascript:onCancelButtonClicked()">Go back</a>
        </td>
       </tr> 
 	</table>
