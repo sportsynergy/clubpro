@@ -18,7 +18,7 @@
   <div style="text-align: center;"> <span class="lighttext">Got a question? Let us 
   <a href="mailto:support@sportsynergy.net">know</a>.</span> </div>
   <div style="text-align: center;"> <span class="lighttext">&copy;2020
-  <a href="https://sportsynergy.net" target="_blank">Sportsynergy</a> </span> </div>
+  <a href="https://www.sportsynergy.net" target="_blank">Sportsynergy</a> </span> </div>
 </div>
 </div>
 <?php 
