@@ -490,6 +490,9 @@ function cancel_court(&$frm) {
                 array_push($workingEventsArray, $i);
             }
 
+            if (isDebugEnabled(2)) logMessage("\tprocessing ".$reOccuringEventsArray['id']);
+
+
             //If its found in the array, delete all of them
             
             if (in_array($frm['time'], $workingEventsArray)) {
