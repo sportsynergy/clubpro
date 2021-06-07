@@ -109,11 +109,12 @@ if ($clubEvent['registerteam']=='y' ){
 			<td class="label">Division</td>
 			<td>
 				<select name="division">
-					<option value="">--</option>
+					<option value="--">--</option>
 					<option value="A">A</option>
 					<option value="B">B</option>
 					<option value="C">C</option>
 					<option value="D">D</option>
+					<option value="60">60+</option>
 				</select>
 			</td>
 		</tr>
@@ -163,11 +164,12 @@ if ($clubEvent['registerteam']=='y' ){
 
 			<span class="smallbold">Division<span>
 			<select name="division">
-				<option value="">--</option>
+				<option value="--">--</option>
 				<option value="A">A</option>
 				<option value="B">B</option>
 				<option value="C">C</option>
 				<option value="D">D</option>
+				<option value="60">60+</option>
 			</select>
 
 	<? } ?>
@@ -197,6 +199,7 @@ if (get_roleid()==1){
 					<option value="B">B</option>
 					<option value="C">C</option>
 					<option value="D">D</option>
+					<option value="60">60+</option>
 				</select>
 				<input type="hidden" name="userid" value="<?=get_userid()?>">
 				<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">

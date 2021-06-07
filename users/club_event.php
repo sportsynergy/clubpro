@@ -127,11 +127,18 @@ function validate_form(&$frm, &$errors) {
         return "I am sorry but you're already signed up for this event.";
     } 
 
+    if ( $frm["division"]=="--"  ){
+        return "Please select a division";
+    } 
+
     $partnerSignedUp = isClubEventParticipant(trim($frm['partnerid']), $clubEventParticipants, $frm["division"]);
     
     if ( $partnerSignedUp ){
         return "I am sorry but your partner is already signed up for this event.";
     } 
+
+
+
 
     
 
