@@ -82,6 +82,9 @@ if (!isset($_SESSION["CFG"])) {
     $_SESSION["CFG"]["mailer.email"] = "player.mailer@sportsynergy.net";
     $_SESSION["CFG"]["logFile"] = "/var/log/sportsynergy/application.log";
 	$_SESSION["CFG"]["sendgrid_api"] = "PUT_KEY_HERE";
+    $_SESSION["CFG"]["AWS_ACCESS_KEY_ID"] = "PUT_KEY_HERE";
+    $_SESSION["CFG"]["AWS_SECRET_ACCESS_KEY"] = "PUT_KEY_HERE";
+
 }
 
 /* load up standard libraries */

@@ -2,6 +2,7 @@
     "require": {
         "eluceo/ical": "^0.10.1",
         "sendgrid/php-http-client": "3.5",
-        "sendgrid/sendgrid": "~5.1"
+        "sendgrid/sendgrid": "~5.1",
+        "aws/aws-sdk-php": "^3.209"
     }
 }

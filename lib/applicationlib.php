@@ -57,11 +57,48 @@ function get_site_password($siteid){
 }
 
 
-
 /*
-    Use send grid to send out emails from the admin
+    Use ses to send out emails from the admin
 */
 function sendgrid_clubmail($subject, $to_emails, $content, $category ){
+
+	if (isDebugEnabled(1)) {
+    	logMessage("applicationlib.send_clubmail: sending email with subject $subject with a size " . count($to_emails) );
+    }
+
+	if( count($to_emails) == 0){
+        if (isDebugEnabled(1)) {
+            logMessage("applicationlib.sendgrid_clubmail: there is a problem with sending mail for $subject, exiting..." );
+        }
+        return;
+    }
+
+}
+
+/*
+	Uses ses to send out system generated emails.  
+*/
+function sendgrid_email($subject, $to_emails, $content, $category){
+
+
+	if (isDebugEnabled(1)) {
+    	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) );
+    }
+	
+    if( count($to_emails) == 0){
+        if (isDebugEnabled(1)) {
+            logMessage("applicationlib.sendgrid_email: there is a problem with sending mail for $subject, exiting..." );
+        }
+        return;
+    }
+}
+
+
+
+/*
+    Use send grid to send out emails from the admin, the old way
+*/
+function sendgrid_clubmail_old($subject, $to_emails, $content, $category ){
 	
 	if (isDebugEnabled(1)) {
     	logMessage("applicationlib.sendgrid_clubmail: sending email with subject $subject with a size " . count($to_emails) );
@@ -124,9 +161,9 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 }
 
 /*
-	Uses sendgrid to send out system generated emails.  Check out Sendgrid.com
+	Uses sendgrid to send out system generated emails (the old way).  Check out Sendgrid.com
 */
-function sendgrid_email($subject, $to_emails, $content, $category){
+function sendgrid_email_old($subject, $to_emails, $content, $category){
 	
 	if (isDebugEnabled(1)) {
     	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) );
@@ -193,50 +230,7 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 	
 }
 
-/**
- * Calls the PostageApp
- *
- * @param $subject
- * @param $to_email
- * @param $to_name
- * @param $content an array of line1, line2, line3
- */
-function send_email($subject, $to_emails, $from_email, $content, $template) {
-    
-    if (isDebugEnabled(1)) {
-    	logMessage("applicationlib.send_email: sending email with subject $subject with a size " . count($to_emails) . " from $from_email");
-    }
 
-
-    $variables = array(
-        'line1' => $content->line1,
-        'clubname' => $content->clubname
-    );
-
-    // Setup some headers
-    $header = array(
-        'From' => $from_email,
-        'Reply-to' => $from_email
-    );
-
-
-    // Send it all
-    $ret = PostageApp::mail($to_emails, $subject, $template, $header, $variables);
-
-	// Checkout the response
-	 if ($ret->response->status == 'ok') {
-	  if (isDebugEnabled(1)) logMessage("applicationlib.send_email: SUCCESS An email was sent and the following response was received ".$ret->response->message);   
-	
-	 } else {
-	      if (isDebugEnabled(1)) logMessage("applicationlib.send_email: ERROR sending your email: ".$ret->response->status );   
-	
-	 }
-
-
-
-    //return $response;
-    
-}
 
 
 /**
