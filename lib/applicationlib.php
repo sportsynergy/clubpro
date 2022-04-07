@@ -78,7 +78,7 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 /*
 	Uses ses to send out system generated emails.  
 */
-function sendgrid_email($subject, $to_emails, $content, $category){
+function sendgrid_email_ses($subject, $to_emails, $content, $category){
 
 
 	if (isDebugEnabled(1)) {
@@ -98,7 +98,7 @@ function sendgrid_email($subject, $to_emails, $content, $category){
 /*
     Use send grid to send out emails from the admin, the old way
 */
-function sendgrid_clubmail_old($subject, $to_emails, $content, $category ){
+function sendgrid_clubmail_ses($subject, $to_emails, $content, $category ){
 	
 	if (isDebugEnabled(1)) {
     	logMessage("applicationlib.sendgrid_clubmail: sending email with subject $subject with a size " . count($to_emails) );
@@ -163,7 +163,7 @@ function sendgrid_clubmail_old($subject, $to_emails, $content, $category ){
 /*
 	Uses sendgrid to send out system generated emails (the old way).  Check out Sendgrid.com
 */
-function sendgrid_email_old($subject, $to_emails, $content, $category){
+function sendgrid_email($subject, $to_emails, $content, $category){
 	
 	if (isDebugEnabled(1)) {
     	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) );
