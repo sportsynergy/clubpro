@@ -328,7 +328,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
             'name' => $player_one['firstname']
      );
 
-	sendgrid_email($subject, $to_emails, $content, "Doubles Reminders");
+	 send_email($subject, $to_emails, $content, "Doubles Reminders");
 		
 	//send email to player 2
 	$var->partner = $player_one['firstname']." ".$player_one['lastname'];
@@ -343,7 +343,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
             'name' => $player_two['firstname']
      );
 		
-	sendgrid_email($subject, $to_emails, $content, "Doubles Reminders");
+	 send_email($subject, $to_emails, $content, "Doubles Reminders");
 		
 	//send email to player 3
 	$var->partner = $player_four['firstname']." ".$player_four['lastname'];
@@ -360,7 +360,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
         'name' => $player_three['firstname']
      );
 
-	sendgrid_email($subject, $to_emails, $content, "Doubles Reminders");
+	 send_email($subject, $to_emails, $content, "Doubles Reminders");
 		
 	//send email to player 4
 	$var->partner = $player_three['firstname']." ".$player_three['lastname'];
@@ -374,7 +374,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
           'name' => $player_four['firstname']
       );
 
-	sendgrid_email($subject, $to_emails, $content, "Doubles Reminders");
+	  send_email($subject, $to_emails, $content, "Doubles Reminders");
 }
 
 
@@ -426,7 +426,7 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
     );
 
 	//Send email to player one
-	sendgrid_email($subject, $to_emails, $content, "Singles Reminders");
+	send_email($subject, $to_emails, $content, "Singles Reminders");
 	
 	//Send email to player two
 	$var->otherguy = $player_one['firstname']." ". $player_one['lastname'];	
@@ -440,7 +440,7 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
         'name' => $player_two['firstname']
     );
 		
-	sendgrid_email($subject, $to_emails, $content, "Singles Reminders");
+	send_email($subject, $to_emails, $content, "Singles Reminders");
 }
 
 /*
@@ -497,7 +497,7 @@ private function sendEventReminder($reservationid, $eventname, $courtname, $time
 	$subject = "$clubname - There are still spots available for the $eventname";
 
 	//Send the email
-    sendgrid_email($subject, $to_emails, $content, "Event Reminders");
+    send_email($subject, $to_emails, $content, "Event Reminders");
 
 
 }

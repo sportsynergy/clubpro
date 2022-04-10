@@ -188,7 +188,7 @@ function email_players_about_lesson($resid) {
     $content = new Object;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
-    sendgrid_email($subject, $to_email, $content, "Lesson Wanted");
+    send_email($subject, $to_email, $content, "Lesson Wanted");
     
 }
 

@@ -279,7 +279,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
 
 
     //Send the email
-    sendgrid_email($subject, $challenger_email, $content, "Ladder Match");
+    send_email($subject, $challenger_email, $content, "Ladder Match");
 
     // Provide Content for Challengee
     $challengee_email = array(
@@ -296,6 +296,6 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
     $subject = get_clubname() . " - You've been challenged in a ladder match";
 
     //Send the email
-    sendgrid_email($subject, $challengee_email, $content, "Ladder Match");
+    send_email($subject, $challengee_email, $content, "Ladder Match");
 }
 ?>

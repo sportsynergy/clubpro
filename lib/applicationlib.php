@@ -26,6 +26,10 @@
  */
 
 
+use Aws\Ses\SesClient; 
+use Aws\Exception\AwsException;
+
+
 /*
 Gets the possible outcomes for a match
 */
@@ -57,41 +61,85 @@ function get_site_password($siteid){
 }
 
 
+/**
+ * A rapper
+ */
+function send_clubemail($subject, $to_emails, $content, $category ){
+
+	sendses_clubmail($subject, $to_emails, $content, $category );
+	//sendgrid_clubmail($subject, $to_emails, $content, $category )
+}
+
 /*
     Use ses to send out emails from the admin
 */
-function sendgrid_clubmail_ses($subject, $to_emails, $content, $category ){
+function sendses_clubmail($subject, $to_emails, $content, $category ){
 
 	if (isDebugEnabled(1)) {
-    	logMessage("applicationlib.send_clubmail: sending email with subject $subject with a size " . count($to_emails) );
+    	logMessage("applicationlib.sendgrid_clubmail_ses: sending email with subject $subject with a size " . count($to_emails) );
     }
 
 	if( count($to_emails) == 0){
         if (isDebugEnabled(1)) {
-            logMessage("applicationlib.sendgrid_clubmail: there is a problem with sending mail for $subject, exiting..." );
+            logMessage("applicationlib.sendgrid_clubmail_ses: there is a problem with sending mail for $subject, exiting..." );
         }
         return;
     }
 
+	$SesClient = new Aws\Ses\SesClient([
+		'profile' => 'default',
+		'version' => 'latest',
+		'region' => 'us-east-1'
+	]);
+
+	$char_set = 'UTF-8';
+	$sender_email = 'Player Mailer <player.mailer@sportsynergy.net>';
+
+	foreach ($to_emails as $k=>$v){
+
+		if (isDebugEnabled(1)) logMessage("applicationlib.ses_email: sending email to: $k with subject $subject and category $category" );
+    
+		$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/blank.email.html");
+		$template = str_replace("%sitecode%", get_sitecode(), $file_contents);
+		$template = str_replace("%content%", $content->line1, $template);
+		$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
+		$template = str_replace("%app_root%", $_SESSION["CFG"]["wwwroot"], $template);
+		
+		try {
+			$result = $SesClient->sendEmail([
+				'Destination' => [
+					'ToAddresses' => [$k],
+				],
+				'ReplyToAddresses' => [$sender_email],
+				'Source' => $sender_email,
+				'Message' => [
+		
+					'Body' => [
+						'Html' => [
+							'Charset' => $char_set,
+							'Data' => $template,
+						],
+						
+					],
+					'Subject' => [
+						'Charset' => $char_set,
+						'Data' => $subject,
+					],
+				],
+
+			]);
+			
+			} catch (AwsException $e) {
+				// output error message if fails
+				echo $e->getMessage();
+				echo "\n";
+			}
+
+	}
+
 }
 
-/*
-	Uses ses to send out system generated emails.  
-*/
-function sendgrid_email_ses($subject, $to_emails, $content, $category){
 
-
-	if (isDebugEnabled(1)) {
-    	logMessage("applicationlib.sendgrid_email: sending email with subject $subject with a size " . count($to_emails) );
-    }
-	
-    if( count($to_emails) == 0){
-        if (isDebugEnabled(1)) {
-            logMessage("applicationlib.sendgrid_email: there is a problem with sending mail for $subject, exiting..." );
-        }
-        return;
-    }
-}
 
 
 
@@ -143,13 +191,11 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
 
     $from_email = new SendGrid\Email(get_userfullname(), get_email() );
 	
-   
     $mail->setFrom($from_email);
     $mail->setSubject($subject);
     $mail->addCategory("Club Email");
     $mail->addCategory($content->clubname);
     $mail->addContent($html_content);
-
 
     try {
         $response = $sendgrid->client->mail()->send()->post($mail);
@@ -158,6 +204,95 @@ function sendgrid_clubmail($subject, $to_emails, $content, $category ){
     }
 	
     if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() ." number of emails sent: ". count($personalization->getTos()) );
+}
+
+
+/**
+ * Wrapper. Use places
+ */
+function send_email($subject, $to_emails, $content, $category){
+
+	sendses_email($subject, $to_emails, $content, $category);
+	//sendgrid_email($subject, $to_emails, $content, $category);
+}
+
+/*
+	Uses ses to send out system generated emails.  
+*/
+function sendses_email($subject, $to_emails, $content, $category){
+
+	if (isDebugEnabled(1)) {
+    	logMessage("applicationlib.sendses_email: sending email with subject $subject with a size " . count($to_emails) );
+    }
+	
+    if( count($to_emails) == 0){
+        if (isDebugEnabled(1)) {
+            logMessage("applicationlib.sendses_email: there is a problem with sending mail for $subject, exiting..." );
+        }
+        return;
+    }
+
+	$SesClient = new Aws\Ses\SesClient([
+		'profile' => 'default',
+		'version' => 'latest',
+		'region' => 'us-east-1'
+	]);
+
+	$char_set = 'UTF-8';
+	$sender_email = 'Player Mailer <player.mailer@sportsynergy.net>';
+
+	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/standard.email.html");
+	$template = str_replace("%clubname%", $content->clubname, $file_contents);
+	$template = str_replace("%sitecode%", get_sitecode(), $template);
+	$template = str_replace("%content%", $content->line1, $template);
+	$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
+	$template = str_replace("%app_root%", $_SESSION["CFG"]["clubconfig"], $template);
+
+	foreach ($to_emails as $k=>$v){
+    
+        if (isDebugEnabled(1)) logMessage("applicationlib.sendses_email: sending email to: $k with subject $subject and category $category and ".$v['name'] );
+
+		// Last few substitutions
+		$emailcontent = str_replace("%firstname%", $v['name'], $template);
+		$signupurl = "";
+		
+		if ( array_key_exists('url', $v) ){
+			$signupurl = $v['url'];
+        }
+
+		$emailcontent = str_replace("%signupurl%", $signupurl, $emailcontent);
+		
+		try {
+			$result = $SesClient->sendEmail([
+				'Destination' => [
+					'ToAddresses' => [$k],
+				],
+				'ReplyToAddresses' => [$sender_email],
+				'Source' => $sender_email,
+				'Message' => [
+		
+					'Body' => [
+						'Html' => [
+							'Charset' => $char_set,
+							'Data' => $emailcontent,
+						],
+						
+					],
+					'Subject' => [
+						'Charset' => $char_set,
+						'Data' => $subject,
+					],
+				],
+
+			]);
+			
+			} catch (AwsException $e) {
+				// output error message if fails
+				echo $e->getMessage();
+				echo "\n";
+			}
+
+	}
 }
 
 /*
@@ -178,6 +313,7 @@ function sendgrid_email($subject, $to_emails, $content, $category){
     
     $apiKey = $_SESSION["CFG"]["sendgrid_api"];
 	$sendgrid = new SendGrid($apiKey);
+	
 
 	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/standard.email.html");
 	$template = str_replace("%clubname%", $content->clubname, $file_contents);
@@ -1274,7 +1410,7 @@ function email_players($resid, $emailType) {
         $subject =  "Player's Market Place - ". get_clubname();
 
         //Send the email
-        sendgrid_email($subject, $to_emails, $content, "Players Wanted");
+        send_email($subject, $to_emails, $content, "Players Wanted");
     }
 
     //email about a doubles court
@@ -1603,7 +1739,7 @@ function email_players($resid, $emailType) {
         $subject =  "Player's Market Place - ". get_clubname();
 
         //Send the email
-        sendgrid_email($subject, $to_emails, $content, "Players Wanted");
+        send_email($subject, $to_emails, $content, "Players Wanted");
     }
 }
 /**
@@ -1677,7 +1813,7 @@ function email_boxmembers($resid, $boxid) {
 
 
     //Send the email
-    sendgrid_email($subject, $to_emails, $content, "Box Members Wanted");
+    send_email($subject, $to_emails, $content, "Box Members Wanted");
 }
 
 
@@ -1773,7 +1909,7 @@ function confirm_singles($resid, $isNewReservation) {
     $template = get_sitecode();
 
     //Send the email
-    sendgrid_email($subject, $to_emails, $content, "Confirm Singles");
+    send_email($subject, $to_emails, $content, "Confirm Singles");
 }
 
 /**
@@ -1886,7 +2022,7 @@ function audit_singles($resid, $isNewReservation) {
     $template = get_sitecode();
 
     //Send the email
-    sendgrid_email($subject, $to_emails, $content, "Confirm Singles");
+    send_email($subject, $to_emails, $content, "Confirm Singles");
 }
 
 
@@ -1961,7 +2097,7 @@ function cancel_singles($resid) {
     $subject = "Court Cancellation Notice";
 
     //Send the email
-    sendgrid_email($subject, $to_emails, $content, "Cancel Singles");
+    send_email($subject, $to_emails, $content, "Cancel Singles");
 }
 /**
  * This function only sends out emails to those players who are currently in the
@@ -2072,7 +2208,7 @@ function confirm_doubles($resid, $isNewReservation) {
         );
 
         //Send the email
-        sendgrid_email($subject, $to_emails,  $content, "Confirm Doubles");
+        send_email($subject, $to_emails,  $content, "Confirm Doubles");
     }
 
     //Prepare and send emails to single players where there is more than one person looking for a partner
@@ -2111,7 +2247,7 @@ function confirm_doubles($resid, $isNewReservation) {
         $content->clubname = get_clubname();
 
         //Send the email
-        sendgrid_email($subject, $to_emails, $content, "Confirm Doubles");
+        send_email($subject, $to_emails, $content, "Confirm Doubles");
     }
 
     //Prepare and send emails to single player where there is only one person needing a partner
@@ -2137,7 +2273,7 @@ function confirm_doubles($resid, $isNewReservation) {
         $content->clubname = get_clubname();
 
         //Send the email
-        sendgrid_email($subject, $to_emails, $content, "Confirm Doubles");
+        send_email($subject, $to_emails, $content, "Confirm Doubles");
     }
 
     //Now Send emails out to players that acutally are in a team
@@ -2174,7 +2310,7 @@ function confirm_doubles($resid, $isNewReservation) {
     	$content->clubname = get_clubname();
 
     	//Send the email
-    	sendgrid_email($subject, $to_emails, $content, "Confirm Doubles");
+    	send_email($subject, $to_emails, $content, "Confirm Doubles");
 
 	}
 }
@@ -2259,7 +2395,7 @@ function cancel_doubles($resid) {
 
 
     //Send the email
-    sendgrid_email($subject, $to_emails, $content, "Cancel Doubles");
+    send_email($subject, $to_emails, $content, "Cancel Doubles");
 }
 /**
  * Sends out emails to the players involved.
@@ -2330,7 +2466,7 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
 
 
     //Send the email
-    sendgrid_email($subject, $to_emails, $content, "Report Singles Score");
+    send_email($subject, $to_emails, $content, "Report Singles Score");
     $description = "$var->winnerfull $var->howbad $var->loserfull in a $matchtype match 3-$score ";
     logSiteActivity(get_siteid() , $description);
 }
@@ -2438,7 +2574,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $subject =  "Score Report - ".get_clubname();
 
     //Send the email
-    sendgrid_email($subject, $to_emails, $content, "Report Singles Score");
+    send_email($subject, $to_emails, $content, "Report Singles Score");
     $description = "$var->winnerfull defeated $var->loserfull in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
     logSiteActivity(get_siteid() , $description);
 }
@@ -2495,7 +2631,7 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
     );
 
     //Send the email
-    sendgrid_email($subject, $winner_email, $content, "Report Singles Box");
+    send_email($subject, $winner_email, $content, "Report Singles Box");
 
     //Send the email
     $loser_email = array(
@@ -2503,7 +2639,7 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
             'name' => $lobj->firstname
         )
     );
-    sendgrid_email($subject, $loser_email, $content, "Report Singles Box");
+    send_email($subject, $loser_email, $content, "Report Singles Box");
 }
 /**
  * Sends out emails to the players involved.
@@ -2580,7 +2716,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
 
 
     //Send the email
-    sendgrid_email($subject, $to_emails, $content, "Report Doubles Box");
+    send_email($subject, $to_emails, $content, "Report Doubles Box");
     $description = "$var->winner $var->howbad $var->loser in a $matchtype match 3-$score ";
     logSiteActivity(get_siteid() , $description);
 }
@@ -2695,7 +2831,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 
 
 		//Send the email
-	    sendgrid_email($subject, $to_emails, $content, "Report Doubles Box");
+	    send_email($subject, $to_emails, $content, "Report Doubles Box");
 	    $description = "$var->fullname1 and $var->fullname2 $var->howbad $var->fullname3 and $var->fullname4 in a $var->matchtype match 3-$score on $var->courtname $var->date at $var->hour";
 	
 	    logSiteActivity(get_siteid() , $description);

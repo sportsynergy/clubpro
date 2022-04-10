@@ -191,7 +191,7 @@ function emailDoublesLadderMatch($winnerid, $loserid, $score, $details, $challen
     }
 
     //Send the email to the loser
-    sendgrid_email($subject, $to_emails, $content, "Ladder Match");
+    send_email($subject, $to_emails, $content, "Ladder Match");
 }
 /**
  * Emails the users the results.  If the challengee wins that means that the ladder stays the same.
@@ -259,7 +259,7 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid, 
             'name' => $winner->firstname
         )
     );
-    sendgrid_email($subject, $to_email, $content, "Ladder Match");
+    send_email($subject, $to_email, $content, "Ladder Match");
 
     //Send the email to the loser
     $to_email = array(
@@ -267,7 +267,7 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid, 
             'name' => $loser->firstname
         )
     );
-    sendgrid_email($subject, $to_email, $content, "Ladder Match");
+    send_email($subject, $to_email, $content, "Ladder Match");
 }
 /**
  * Unlocks the players

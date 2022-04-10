@@ -464,6 +464,6 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     );
 
     //Send the email
-    sendgrid_email($subject, $to_email, $content, "Registration");
+    send_email($subject, $to_email, $content, "Registration");
 }
 ?>

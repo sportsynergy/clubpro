@@ -422,7 +422,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
     $template = get_sitecode() . "-blank";
 
     //Send the email
-    sendgrid_clubmail($subject, $to_emails, $content, "Club Email");
+    send_clubemail($subject, $to_emails, $content, "Club Email");
     return $emailidresult;
 }
 ?>

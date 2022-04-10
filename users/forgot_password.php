@@ -140,7 +140,7 @@ function reset_user_password($userid) {
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
-    sendgrid_email($subject, $to_email, $content, "Forgot Password");
+    send_email($subject, $to_email, $content, "Forgot Password");
 }
 
 /* returns a randomly generated password of length $maxlen.  inspired by

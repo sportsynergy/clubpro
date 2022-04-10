@@ -70,7 +70,8 @@ if (isset($_SESSION["CFG"]["wwwroot"])) {
 
 if (!isset($_SESSION["CFG"])) {
 
-    $_SESSION["CFG"]["wwwroot"] = "";
+    $_SESSION["CFG"]["wwwroot"] = "/clubpro";
+    $_SESSION["CFG"]["clubconfig"] = "/clubpro";
     $_SESSION["CFG"]["imagedir"] = "/images";
     $_SESSION["CFG"]["dirroot"] = "/var/www/html";
     $_SESSION["CFG"]["templatedir"] = "/var/www/html/templates";
