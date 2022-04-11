@@ -597,8 +597,7 @@ function printDoublesReservationPlayersWanted($userid1, $userid2, $lock, $matchT
  */
 function printDoublesReservationFull($teamid1, $teamid2, $lock, $matchType, $time, $courtid, $creator, $inpast, $scored, $reservationid){
 	
-	if( isDebugEnabled(1) ) logMessage("courtlib.printDoublesReservationFull: teamid1 $teamid1 timeid2 $teamid2 courtid $courtid");
-	
+
 	$clubid = get_clubid();
 
 	if($inpast){
@@ -801,8 +800,6 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
  * Prints out a singles reservation if there wasn't more that one person signed up
  */
 function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $inpast, $locked, $creator, $ranking){
-	
-	if( isDebugEnabled(1) ) logMessage("courtlib.printPartialSinglesReservation for court $courtid and user $userid");
 	
 	$clubid = get_clubid();
 

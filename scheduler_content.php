@@ -61,7 +61,11 @@ $wwwroot = $_SESSION["CFG"]["wwwroot"];
 $username = $_REQUEST['username'];
 $password = $_REQUEST['password'];
 $courtGroupFromForm = $_REQUEST['courtGroupFromForm'];
-$courtWindowStart = $_REQUEST['courtWindowStart'];
+
+
+if ( isset($_SESSION["courtWindowStart"]) ){
+	$courtWindowStart = $_REQUEST['courtWindowStart'];
+}
 
 //Set the footer message
 
