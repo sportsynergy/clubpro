@@ -40,8 +40,6 @@ require_priv("2");
 // Include jQuery
 define("_JQUERY_", true);
 
-// Include PrettyPhoto
-define("_PRETTYPHOTO_", true);
 $DOC_TITLE = "Skill Range Policy Setup";
 $buttonLabel = "Add Skill Range Policy";
 

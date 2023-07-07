@@ -72,12 +72,8 @@
 <?php if (defined("_JQUERY_") && _JQUERY_ == true){ ?>
 <!-- jQuery -->
 <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
-<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/jquery-1.6.1.min.js" type="text/javascript"></script>
-	<?php if (defined("_PRETTYPHOTO_") && _PRETTYPHOTO_ == true){ ?>
-<!-- PrettyPhoto -->
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
-<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/jquery.prettyPhoto.js" type="text/javascript"></script>
-    <?php } ?>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
 <?php } ?>
 
 <!-- Standard reset, fonts and grids -->

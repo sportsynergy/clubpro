@@ -21,16 +21,6 @@
   <a href="https://www.sportsynergy.net" target="_blank">Sportsynergy</a> </span> </div>
 </div>
 </div>
-<?php 
-// PrettyPhoto Inclusion
-if(	(defined("_JQUERY_") && _JQUERY_ == true) 
-	&& (defined("_PRETTYPHOTO_") && _PRETTYPHOTO_ == true)){
-	echo '<script type="text/javascript" charset="utf-8">
-  $(document).ready(function(){
-    $("a[rel^=\'prettyPhoto\']").prettyPhoto({social_tools: \'\'});
-  });
-</script>';
-}
-?>
+
 </body>
 </html>

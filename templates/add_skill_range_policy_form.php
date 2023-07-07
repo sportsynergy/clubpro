@@ -37,8 +37,12 @@ function onSubmitButtonClicked(){
 </script>
 
 <form name="skill_entryform" method="post" action="<?=$ME?>" autocomplete="off">
-  <div style="padding-bottom: 20px"> <a href="../help/skill_range_policies_explained.html?iframe=true&width=600&height=450" rel="prettyPhoto[iframes]">Help with Skill Range Policies</a> </div>
-  <table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
+  
+<div style="padding-bottom: 20px"> 
+  <a href="javascript:newWindow('../help/skill_range_policies_explained.html')">Help with Skill Range Policies</a>  
+ </div>
+  
+<table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
     <tr>
       <td class=clubid<?=get_clubid()?>th><span class="whiteh1">
         <div align="center">

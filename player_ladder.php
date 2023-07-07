@@ -48,11 +48,6 @@ if($userRelation->isUserLoggedin()){
 	}
 }
 
-// Include jQuery
-//define("_JQUERY_", true);
-// Include PrettyPhoto
-define("_PRETTYPHOTO_", true);
-
 
 if (!empty($_POST['courttypeid'])) {
     $_SESSION["ladder_courttype"] = $_POST['courttypeid'];

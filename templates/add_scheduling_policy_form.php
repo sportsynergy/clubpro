@@ -39,7 +39,11 @@ function onSubmitButtonClicked(){
 <div align="center">
   <div style="text-align:left">
     <form name="addschedulepolicyform" method="post" action="<?=$ME?>" autocomplete="off">
-      <div style="padding-bottom: 20px"> <a href="../help/scheduling_policies_explained.html?iframe=true&width=600&height=450" rel="prettyPhoto[iframes]">Help with Scheduling Policies</a> </div>
+      <div style="padding-bottom: 20px"> 
+      <a href="javascript:newWindow('../help/scheduling_policies_explained.html')">Help with Scheduling Policies</a>
+      </div>
+      
+      
       <table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
         <tr class="borderow">
           <td class=clubid<?=get_clubid()?>th><span class="whiteh1">

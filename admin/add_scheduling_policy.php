@@ -41,8 +41,7 @@ require_priv("2");
 // Include jQuery
 define("_JQUERY_", true);
 
-// Include PrettyPhoto
-define("_PRETTYPHOTO_", true);
+
 $DOC_TITLE = "Scheduling Policy Setup";
 $buttonLabel = "Add Scheduling Policy";
 $policyid = $_REQUEST["policyid"];

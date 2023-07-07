@@ -37,7 +37,6 @@ require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
 $DOC_TITLE = "Player Rankings";
 require_loginwq();
 define("_JQUERY_", true);
-define("_PRETTYPHOTO_", true);
 
 // Log user out if they are in the wrong club
 $userRelation = new UserClubRelation();
@@ -215,7 +214,10 @@ function print_players(&$frm) {
 	        <tr>
 	
 	          <td align="right">
-	              <font class="normal"><a href="../help/squash-rankings.html?iframe=true&width=600&height=450" rel="prettyPhoto[iframe]">Rankings Explained</a>
+	              <font class="normal">
+                    
+                  <a href="javascript:newWindow('../help/squash-rankings.html')">Rankings Explained</a>
+     
 	              | <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Search Again </a> </font>
 	          </td>
 	        </tr>
