@@ -32,6 +32,7 @@
 
 
 $DOC_TITLE = "System Administration Console";
+include("./application.php");
 $_SESSION["wantsurl"] = qualified_mewithq();
 $_SESSION["siteprefs"]["clubid"] = 0;
 $_SESSION["siteprefs"]["siteid"] = 0;
