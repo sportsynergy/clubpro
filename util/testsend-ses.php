@@ -1,10 +1,16 @@
 <? 
+
+
+
 require '../vendor/autoload.php';
 
 use Aws\Ses\SesClient; 
 use Aws\Exception\AwsException;
 
 include ("../application.php");
+
+$email = $_GET["email"];
+
 
 
 //Create a SESClient 
@@ -24,7 +30,7 @@ $html_body = '<h1>AWS Amazon Simple Email Service Test Email</h1>' .
 $subject = 'Amazon SES test (AWS SDK for PHP)';
 $plaintext_body = 'This email was send with Amazon SES using the AWS SDK for PHP.';
 $sender_email = 'Player Mailer <player.mailer@sportsynergy.net>';
-$recipient_emails = ['adam704a@hotmail.com'];
+$recipient_emails = [$email];
 $char_set = 'UTF-8';
 //$configuration_set = 'ConfigSet';
 
