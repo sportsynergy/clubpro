@@ -231,12 +231,6 @@ function onSubmitButtonClicked(){
                 <?err($errors->cellphone)?>
             </td>
         </tr>
-         <tr>
-            <td class=label>Pager:</td>
-            <td><input type="text" name="pager" size="35" value="<? pv($frm["pager"]) ?>">
-                <?err($errors->pager)?>
-            </td>
-        </tr>
  		<tr>
             <td class=label>Date Joined:</td>
             <td><input type="text" name="msince" size="35" value="<? pv($frm["msince"]) ?>">

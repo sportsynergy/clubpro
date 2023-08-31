@@ -46,12 +46,6 @@
             <td class="normal"><?  pv($frm["cellphone"]); ?></td>
           </tr>
           <? } ?>
-          <? if(!empty($frm["pager"])){?>
-          <tr>
-            <td class=label>Pager:</td>
-            <td class="normal"><? pv($frm["pager"]);?></td>
-          </tr>
-          <? } ?>
           <? if(!empty($frm["msince"])){?>
           <tr>
             <td class="label">Member Since:</td>

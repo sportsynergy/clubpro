@@ -73,11 +73,6 @@ function onSubmitButtonClicked(){
             <?err($errors->cellphone)?></td>
         </tr>
         <tr>
-          <td class="label medwidth">Pager:</td>
-          <td><input type="text" name="pager" size="35" value="<? pv($frm["pager"]) ?>">
-            <?err($errors->pager)?></td>
-        </tr>
-        <tr>
           <td class="label medwidth">Address:</td>
           <td colspan="2"><textarea name="useraddress" cols="50" rows="5"><? pv($frm["useraddress"]) ?>
 </textarea>

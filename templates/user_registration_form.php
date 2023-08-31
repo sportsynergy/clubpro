@@ -52,11 +52,6 @@
               <td><input type="text" name="cellphone" size="35" value="<?=$frm["cellphone"] ?>">
                 <?err($errors->cellphone)?></td>
             </tr>
-            <tr>
-              <td class="label">Pager:</td>
-              <td><input type="text" name="pager" size=35 value="<?=$frm["pager"]?>">
-                <?err($errors->pager)?></td>
-            </tr>
             <tr valign=top>
               <td class="label">Address:</td>
               <td><textarea name="useraddress" cols=35 rows=5><?=$frm["useraddress"] ?>
