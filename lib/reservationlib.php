@@ -580,7 +580,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
 				AND events.eventid = reservations.eventid";
     $timeResult = db_query($timeQuery);
     $timeObject = mysqli_fetch_object($timeResult);
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->courtname = $timeObject->courtname;
     $var->time = gmdate("l F j g:i a", $timeObject->time);
     $var->eventname = $timeObject->eventname;
@@ -609,7 +609,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
             'name' => $var->firstname
         )
     );
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     send_email($subject, $to_email,  $content, $template);
@@ -637,7 +637,7 @@ function confirmCourtEvent($userid, $reservationid, $action, $adminaction) {
             'name' => $var->adminfirstname
         )
     );
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
 

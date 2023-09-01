@@ -82,7 +82,7 @@ function validate_form($frm) {
     // Make sure that the box user isn't already in a box
     
     if (isDebugEnabled(1)) logMessage("web_ladder_manage.validate_form");
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
     
     if (!empty($frm['boxuser'])) {

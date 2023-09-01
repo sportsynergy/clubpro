@@ -1284,7 +1284,7 @@ function email_players($resid, $emailType) {
 						 AND rankings.usertype=0";
         $rresult = db_query($rquery);
         $robj = mysqli_fetch_object($rresult);
-        $var = new Object;
+        $var = new clubpro_obj;
         
         if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers: courtid " . $robj->courtid);
 
@@ -1403,7 +1403,7 @@ function email_players($resid, $emailType) {
 			 
         }
 
-        $content = new Object;
+        $content = new clubpro_obj;
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
         $template = get_sitecode();
@@ -1468,7 +1468,7 @@ function email_players($resid, $emailType) {
         $courtTypeArray = mysqli_fetch_array($ctResult);
         $courtType = $courtTypeArray[0];
         $player1 = $robj->userid;
-        $var = new Object;
+        $var = new clubpro_obj;
 
         /* email the user with the new account information    */
         $var->firstname1 = $robj->firstname;
@@ -1732,7 +1732,7 @@ function email_players($resid, $emailType) {
         }
 
 
-        $content = new Object;
+        $content = new clubpro_obj;
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
         $template = get_sitecode();
@@ -1766,7 +1766,7 @@ function email_boxmembers($resid, $boxid) {
     $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->matchtype = "league";
     $var->firstname = $robj->firstname;
     $var->lastname = $robj->lastname;
@@ -1805,7 +1805,7 @@ function email_boxmembers($resid, $boxid) {
             );
         }
     }
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -1845,7 +1845,7 @@ function confirm_singles($resid, $isNewReservation) {
    
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->courtname = $robj->courtname;
     $var->time = gmdate("l F j g:i a", $robj->time);
     $var->timestamp = $robj->time;
@@ -1903,7 +1903,7 @@ function confirm_singles($resid, $isNewReservation) {
         }
     }
 
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -1941,7 +1941,7 @@ function audit_singles($resid, $isNewReservation) {
     $players_in_reservation[] = $robj->userid;
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->courtname = $robj->courtname;
     $var->time = gmdate("l F j g:i a", $robj->time);
     $var->timestamp = $robj->time;
@@ -2016,7 +2016,7 @@ function audit_singles($resid, $isNewReservation) {
         
     }
 
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -2046,7 +2046,7 @@ function cancel_singles($resid) {
     $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->courtname = $robj->courtname;
     $var->time = gmdate("l F j g:i a", $robj->time);
     $var->timestamp = $robj->time;
@@ -2090,7 +2090,7 @@ function cancel_singles($resid) {
         }
     }
 
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -2110,7 +2110,7 @@ function confirm_doubles($resid, $isNewReservation) {
     
     if (isDebugEnabled(1)) logMessage("applicationlib.confirm_doubles: confirming reservation $resid isNewReservation $isNewReservation");
 
-    $var = new Object;
+    $var = new clubpro_obj;
     $template = get_sitecode();
     $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
 
@@ -2197,7 +2197,7 @@ function confirm_doubles($resid, $isNewReservation) {
         if (isDebugEnabled(1)) logMessage($emailbody);
 
         // Provide Content
-        $content = new Object;
+        $content = new clubpro_obj;
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
         $to_email = "$extraPlayerobj->email";
@@ -2242,7 +2242,7 @@ function confirm_doubles($resid, $isNewReservation) {
         );
 
         // Provide Content
-        $content = new Object;
+        $content = new clubpro_obj;
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
 
@@ -2268,7 +2268,7 @@ function confirm_doubles($resid, $isNewReservation) {
         );
 
         // Provide Content
-        $content = new Object;
+        $content = new clubpro_obj;
         $content->line1 = $emailbody;
         $content->clubname = get_clubname();
 
@@ -2305,7 +2305,7 @@ function confirm_doubles($resid, $isNewReservation) {
             	'name' => $playerObject->firstname
         		);
     	}
-    	$content = new Object;
+    	$content = new clubpro_obj;
     	$content->line1 = $emailbody;
     	$content->clubname = get_clubname();
 
@@ -2337,7 +2337,7 @@ function cancel_doubles($resid) {
     $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->courtname = $robj->courtname;
     $var->time = gmdate("l F j g:i a", $robj->time);
     $var->timestamp = $robj->time;
@@ -2387,7 +2387,7 @@ function cancel_doubles($resid) {
             'name' => $emailidrow[2]
         );
     }
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -2420,7 +2420,7 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
     $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     
     if ($score == 0) {
         $rand_key = array_rand($bad,1);
@@ -2458,7 +2458,7 @@ function report_scores_singles_simple($wUserid, $lUserid, $wor, $wnr, $lor, $lnr
             'name' => $emailidrow[0]
         );
     }
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -2500,7 +2500,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
     $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     
     if ($robj->gender == 1) {
         $winnersex = "him";
@@ -2567,7 +2567,7 @@ function report_scores_singles($resid, $wor, $wnr, $lor, $lnr, $score) {
             'name' => $emailidrow[2]
         );
     }
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -2601,7 +2601,7 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
     $lobj = mysqli_fetch_object($lresult);
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->support = $_SESSION["CFG"]["support"];
     $var->winnersold = $wor;
     $var->winnersnew = round($wnr, 4);
@@ -2618,7 +2618,7 @@ function report_scores_singlesbox($wid, $lid, $wor, $wnr, $lor, $lnr) {
     $var->loserlname = $lobj->lastname;
     $var->loserfull = $lobj->firstname . " " . $lobj->lastname;
     $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/report_scores_singlesbox.php", $var);
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -2667,7 +2667,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
     $robj = mysqli_fetch_object($rresult);
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     
     if ($score == 0) {
         $rand_key = array_rand($bad,1);
@@ -2708,7 +2708,7 @@ function report_scores_doubles_simple($wTeamid, $lTeamid, $wor, $wnr, $lor, $lnr
     }
 
     // Provide Content
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -2757,7 +2757,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
 	}
 
     /* email the user with the new account information    */
-    $var = new Object;
+    $var = new clubpro_obj;
     
     #bad/not_bad/close
     if ($score == 0) {
@@ -2823,7 +2823,7 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     }
 
     // Provide Content
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();

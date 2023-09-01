@@ -251,7 +251,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
     $challengee = db_fetch_object($qid);
 
     /* email the user with the new account information */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->challenger_firstname = $challenger->firstname;
     $var->challenger_fullname = $challenger->firstname . " " . $challenger->lastname;
     $var->challengee_firstname = $challengee->firstname;
@@ -267,7 +267,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
             'name' => $challenger->firstname
         )
     );
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $challenger_emailbody;
     $content->clubname = get_clubname();
 
@@ -280,7 +280,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
             'name' => $challengee->firstname
         )
     );
-    $content = new Object;
+    $content = new clubpro_obj;
     $message = nl2br($message);
     $content->line1 = $message;
     $content->clubname = get_clubname();

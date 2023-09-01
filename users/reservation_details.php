@@ -130,7 +130,7 @@ function email_players_about_lesson($resid) {
 					 AND rankings.usertype=0";
     $rresult = db_query($rquery);
     $robj = mysqli_fetch_object($rresult);
-    $var = new Object;
+    $var = new clubpro_obj;
 
     /* email the user with the new account information    */
     $var->firstname = $robj->firstname;
@@ -185,7 +185,7 @@ function email_players_about_lesson($resid) {
 
     }
         
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     send_email($subject, $to_email, $content, "Lesson Wanted");

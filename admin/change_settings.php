@@ -109,7 +109,7 @@ function validate_form(&$frm, &$errors) {
 
     /* validate the forgot password form, and return the error messages in a string.
      * if the string is empty, then there are no errors */
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
 
     // Make sure that the login id is set

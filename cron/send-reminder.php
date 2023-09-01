@@ -303,7 +303,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 	$player_four = mysqli_fetch_array($doubles_result);
 		
 	// partner, matchtype, otherguy1, otherguy2, courtname, time
-	$var = new Object;
+	$var = new clubpro_obj;
 	$var->matchtype = $matchtype;
 	$var->courtname = $courtname;
 	$var->time = gmdate("l F j g:i a", $time); 
@@ -318,7 +318,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 	
 	$subject = "$clubname - Match Reminder";
 		
-	$content = new Object;
+	$content = new clubpro_obj;
 	$content->line1 = $emailbody;
 	$content->clubname = $clubname;
 	
@@ -404,7 +404,7 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
 	$player_two = mysqli_fetch_array($singles_result);
 	
 	// matchtype, courtname, time, otherguy
-	$var = new Object;
+	$var = new clubpro_obj;
 	$var->matchtype = $matchtype;
 	$var->courtname = $courtname;
 	$var->time = gmdate("l F j g:i a", $time);
@@ -415,7 +415,7 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
 
 	$subject = "$clubname - Match Reminder";
 	
-	$content = new Object;
+	$content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = $clubname;
 	
@@ -483,7 +483,7 @@ private function sendEventReminder($reservationid, $eventname, $courtname, $time
 			}
 
 	 }
-	$var = new Object;
+	$var = new clubpro_obj;
 	$var->eventname = $eventname;
 	$var->courtname = $courtname;
 	$var->time = gmdate("l F j g:i a", $time);
@@ -491,7 +491,7 @@ private function sendEventReminder($reservationid, $eventname, $courtname, $time
 	$emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/event_reminder.php", $var);
 	$emailbody = nl2br($emailbody);	
 
-	$content = new Object;
+	$content = new clubpro_obj;
 	$content->line1 = $emailbody;
 	$content->clubname = $clubname;
 	$subject = "$clubname - There are still spots available for the $eventname";

@@ -56,7 +56,7 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 function validate_form($message) {
 
     /* Just make sure that if they turn this little bugger on that they type in a message */
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
 }
 function update_clubprefs($message) {

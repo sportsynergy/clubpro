@@ -96,11 +96,11 @@ for($i=0; $i < count($challengeMatchArray); ++$i){
 	
 	$scored = $challengeMatch['score'];
 	
-	$challenger = new Object;
+	$challenger = new clubpro_obj;
 	$challenger->fullname =  $challengeMatch['challenger_team'];
 	$challenger->id = $challengeMatch['challenger_team_id'];
 	
-	$challengee = new Object;
+	$challengee = new clubpro_obj;
 	$challengee->fullname =  $challengeMatch['challengee_team'];
 	$challengee->id = $challengeMatch['challengee_team_id'];
 

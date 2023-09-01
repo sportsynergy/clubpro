@@ -89,11 +89,11 @@ while($challengeMatch = mysqli_fetch_array($challengeMatchResult)){
 		
 		$scored = $challengeMatch['score'];
 		
-		$challenger = new Object;
+		$challenger = new clubpro_obj;
 		$challenger->fullname =  $challengeMatch['challenger_first']." ". $challengeMatch['challenger_last'];
 		$challenger->id = $challengeMatch['challenger_id'];
 		
-		$challengee = new Object;
+		$challengee = new clubpro_obj;
 		$challengee->fullname =  $challengeMatch['challengee_first']." ". $challengeMatch['challengee_last'];
 		$challengee->id = $challengeMatch['challengee_id'];
 		

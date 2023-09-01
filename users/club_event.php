@@ -106,7 +106,7 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
  *****************************************************************************/
 
 function validate_form(&$frm, &$errors) {
-    $errors = new Object;
+    $errors = new clubpro_obj;
 
     logMessage("club_event.validate_form: checking if parter for ". $frm['userid']." is alredy signed up");
 

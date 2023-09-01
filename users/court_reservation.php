@@ -362,7 +362,7 @@ function validate_form(&$frm, &$errors) {
     /* validate the signup form, and return the error messages in a string.  if
      * the string is empty, then there are no errors */
     $msg = "";
-    $errors = new Object;
+    $errors = new clubpro_obj;
     
     if (isDebugEnabled(1)) logMessage("court_reservation_validate_form() ");
 

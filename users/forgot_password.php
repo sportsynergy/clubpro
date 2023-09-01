@@ -74,7 +74,7 @@ function validate_form(&$frm, &$errors) {
 
     /* validate the forgot password form, and return the error messages in a string.
      * if the string is empty, then there are no errors */
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
     
     if (empty($frm["email"])) {
@@ -122,7 +122,7 @@ function reset_user_password($userid) {
     $qid = db_query("UPDATE tblUsers SET password = '" . md5($newpassword) . "' WHERE userid = '$user->userid'");
 
     /* email the user with the new account information */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->username = $user->username;
     $var->support = $_SESSION["CFG"]["support"];
     $var->newpassword = $newpassword;
@@ -136,7 +136,7 @@ function reset_user_password($userid) {
     );
     $to_name = $user->firstname . " " . $user->lastname;
     $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();

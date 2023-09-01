@@ -311,7 +311,7 @@ function confirmChallengerTeam($my_partner, $challengees) {
     $from_email = "Sportsynergy <player.mailer@sportsynergy.net>";
     $template = get_sitecode();
     $subject = get_clubname() . " - Ladder Match Confirmation";
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->yourpartner = $my_partner['firstname'] . " " . $my_partner['lastname'];
     $var->challengee1_fullname = $challengees[0]['firstname'] . " " . $challengees[0]['lastname'];
     $var->challengee2_fullname = $challengees[1]['firstname'] . " " . $challengees[1]['lastname'];
@@ -322,7 +322,7 @@ function confirmChallengerTeam($my_partner, $challengees) {
             'name' => get_userfirstname()
         )
     );
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $challenger_emailbody;
     $content->clubname = get_clubname();
 
@@ -337,7 +337,7 @@ function confirmChallengerTeam($my_partner, $challengees) {
             'name' => $my_partner_first_name
         )
     );
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $challenger_emailbody;
     $content->clubname = get_clubname();
 
@@ -363,7 +363,7 @@ function confirmChallengeeTeam($challengees, $message) {
             'name' => $challengees[$i]['firstname']
         );
     }
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = nl2br($message);
     $content->clubname = get_clubname();
     $from_email = get_userfullname() . " <" . get_email() . ">";

@@ -291,7 +291,7 @@ function moveDoublesLadderGroup($highestRankedLoserPosition, $lowestRankedWinner
 function adjustClubLadder($winneruserid, $loseruserid, $courttypeid, $clubid) {
     
     if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  winnerid = $winneruserid\n loserid = $loseruserid\n courttypeid = $courttypeid\n clubid = $clubid");
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->winnerid = $winneruserid;
     $var->loserid = $loseruserid;
     $winnerquery = "SELECT ladder.ladderposition, ladder.going, ladder.id 

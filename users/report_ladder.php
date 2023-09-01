@@ -141,7 +141,7 @@ function emailDoublesLadderMatch($winnerid, $loserid, $score, $details, $challen
     $loser = getFullnameForTeamPlayers($loserid);
 
     /* email the user with the new account information */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->w_fullname = $winner[0]['fullname'] . " and " . $winner[1]['fullname'];
     $var->l_fullname = $loser[0]['fullname'] . " and " . $loser[1]['fullname'];
     $var->support = $_SESSION["CFG"]["support"];
@@ -168,7 +168,7 @@ function emailDoublesLadderMatch($winnerid, $loserid, $score, $details, $challen
     $emailbody = nl2br($emailbody);
 
     // Provide Content
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();
@@ -221,7 +221,7 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid, 
     $loser = db_fetch_object($qid);
 
     /* email the user with the new account information */
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->w_firstname = $winner->firstname;
     $var->w_fullname = $winner->firstname . " " . $winner->lastname;
     $var->l_firstname = $loser->firstname;
@@ -246,7 +246,7 @@ function emailLadderMatch($winnerid, $loserid, $score, $details, $challengeeid, 
     $emailbody = nl2br($emailbody);
 
     // Provide Content
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
     $template = get_sitecode();

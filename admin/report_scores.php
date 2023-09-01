@@ -95,7 +95,7 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
  * FUNCTIONS
  *****************************************************************************/
 function validate_form(&$frm, &$errors) {
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
 
     //Validate Singles

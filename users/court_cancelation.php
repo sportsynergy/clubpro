@@ -143,7 +143,7 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
  * FUNCTIONS
  *****************************************************************************/
 function validate_form(&$frm, &$errors) {
-    $errors = new Object;
+    $errors = new myObject;
 
     //Ids
     $playerOneId = $frm["player1"];

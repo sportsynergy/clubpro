@@ -65,7 +65,7 @@ function validate_form(&$frm, &$errors) {
 
     /* validate the signup form, and return the error messages in a string.  if
      * the string is empty, then there are no errors */
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
     
     if (empty($frm["subject"])) {
@@ -416,7 +416,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
  	
     }
     $from_email = $clubadminval;
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $message;
     $content->clubname = get_clubname();
     $template = get_sitecode() . "-blank";

@@ -69,7 +69,7 @@ function validate_form($searchname) {
      * the string is empty, then there are no errors */
     
     if (isDebugEnabled(1)) logMessage("player_admin.validate_form: Validating Player admin form: searchname $searchname " . strpos($searchname, "'"));
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
     
     if (strpos($searchname, "'") !== false) {

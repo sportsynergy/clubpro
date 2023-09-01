@@ -119,7 +119,7 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 function validate_form(&$frm, &$errors) {
 
     /* Just make sure that if they turn this little bugger on that they type in a message */
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
 
     //Really nothing to validiate here
@@ -135,7 +135,7 @@ function validate_messages_form(&$frm, &$errors) {
     /* Just make sure that if they turn this little bugger on that they type in a message */
 
 
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
     
     if ($frm["messagedisplay"] == "on" && empty($frm["Messagetextarea"])) {
@@ -160,7 +160,7 @@ function validate_messages_form(&$frm, &$errors) {
  * @param $errors
  */
 function validate_skillrange_form(&$frm, &$errors) {
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
     
     if (isset($frm["starttime"])) {
@@ -369,7 +369,7 @@ function removeSkillRangePolicy($pid) {
  * @param $errors
  */
 function validate_scheduling_policy_form(&$frm, &$errors) {
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
     
     if (isset($frm["starttime"])) {

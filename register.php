@@ -69,7 +69,7 @@ function validate_form(&$frm, &$errors) {
      * if the string is empty, then there are no errors **/
 
     //make sure that the club code is the proper length and type
-    $errors = new Object;
+    $errors = new clubpro_obj;
     $msg = "";
     
     if (isDebugEnabled(1)) logMessage("Validating registration: clubname: " . $frm['clubname'] . " clubcode " . $frm['clubcode']);
@@ -410,7 +410,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     }
 
     // Create index and web_ladder initialization files
-    $var = new Object;
+    $var = new clubpro_obj;
     $var->siteid = $siteid;
     $var->clubid = $clubid;
     $var->clubcode = $clubCode;
@@ -451,7 +451,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     if (isDebugEnabled(1)) logMessage("register.registerClub: $emailbody");
 
     // Provide Content
-    $content = new Object;
+    $content = new clubpro_obj;
     $content->line1 = $emailbody;
     $content->clubname = get_clubname();
 
