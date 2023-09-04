@@ -6417,7 +6417,7 @@ function getMatchesByType($siteid, $matchtype, $limit){
  *
  * @param unknown_type $clubeventid
  */
-function getClubEventParticipants($clubeventid, $division){
+function getClubEventParticipants($clubeventid){
 	
 	$query = "SELECT users.userid, users.firstname, users.lastname, partner.userid as 'partnerid', partner.firstname as 'partner firstname', partner.lastname as 'partner lastname', participant.division
 				FROM tblClubEventParticipants participant
