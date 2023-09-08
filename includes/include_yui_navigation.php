@@ -70,9 +70,7 @@
           </div>
         </div>
       </li>
-   <?	if(isLadderRankingScheme() ){ ?>
-          <li class="yuimenubaritem first-of-type"><a class="yuimenuitemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Rankings</a></li>
-     <?php }?>
+
 
       <?php if( get_roleid() == 2 ) { ?>
       <li class="yuimenubaritem"><a class="yuimenubaritemlabel" href="#">Tools</a>
