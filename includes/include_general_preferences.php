@@ -131,7 +131,14 @@
                 <?=$i?>
                 </option>
                 <? unset($selected)?>
-                <? } ?>
+                <? } 
+               
+               if($generalPreferences["challengerange"] == 500){
+                  $selected = "selected";
+                }
+                
+                ?>
+                <option value="500"  <?=$selected?> >No Limit</option>
               </select></td>
           </tr>
           <tr>
