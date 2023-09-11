@@ -109,8 +109,7 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
     <th height="25"><span class="whitenorm">First Name</span></th>
     <th height="25"><span class="whitenorm">Last Name</span></th>
     <th height="25"><span class="whitenorm">Email</span></th>
-    <th height="25"><span class="whitenorm">Work Phone</span></th>
-    <th height="25"><span class="whitenorm">Home Phone</span></th>
+    <th height="25"><span class="whitenorm">Mobile Phone</span></th>
     <th colspan="2"></th>
   </tr>
   <?php
@@ -130,10 +129,7 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
           <?=$row[email]?>
           </a></div></td>
       <td><div align="center">
-          <?=$row[workphone]?>
-        </div></td>
-      <td><div align="center">
-          <?=$row[homephone]?>
+          <?=$row[cellphone]?>
         </div></td>
       <td colspan="2"><div align="center"> <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/change_settings.php')">Edit</a> | <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_delete.php')">Delete</a> </div></td>
       <input type="hidden" name="userid" value="<?=$row['userid']?>">

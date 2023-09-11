@@ -112,8 +112,6 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
     <th height="25"><span class="whitenorm">First Name</span></th>
     <th height="25"><span class="whitenorm">Last Name</span></th>
     <th height="25"><span class="whitenorm">Email</span></th>
-    <th height="25"><span class="whitenorm">Work Phone</span></th>
-    <th height="25"><span class="whitenorm">Home Phone</span></th>
     <th height="25"><span class="whitenorm">Mobile Phone</span></th>
     <th></th>
   </tr>
@@ -133,12 +131,6 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
       <td><div align="center"><a href="mailto:<?=$playerarray[3]?>">
           <?=$playerarray[3]?>
           </a></div></td>
-      <td><div align="center">
-          <?=$playerarray[4]?>
-        </div></td>
-      <td><div align="center">
-          <?=$playerarray[5]?>
-        </div></td>
       <td><div align="center">
           <?=$playerarray[6]?>
         </div></td>

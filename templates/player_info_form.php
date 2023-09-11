@@ -26,20 +26,7 @@
               <?=$frm["email"] ?>
               </a></td>
           </tr>
-          <tr>
-            <td class=label>Home Phone:</td>
-            <td class="normal"><? if($frm["homephone"]==0)
-				echo "Not Specified";
-				else
-				pv($frm["homephone"]);
-				?></td>
-          </tr>
-          <? if(!empty($frm["workphone"])){?>
-          <tr>
-            <td class=label>Work Phone:</td>
-            <td class="normal"><? pv($frm["workphone"]);?></td>
-          </tr>
-          <? } ?>
+         
           <? if(!empty($frm["cellphone"])){?>
           <tr>
             <td class=label>Mobile Phone:</td>
@@ -52,11 +39,7 @@
             <td class="normal"><?=$frm["msince"] ?></td>
           </tr>
           <? } ?>
-          <tr>
-            <td class="label" valign="top">Address:</td>
-            <td class="normal" colspan="2"><textarea name="useraddress" cols="60" rows="5" disabled="disabled"><? pv($frm["useraddress"]) ?>
-</textarea></td>
-          </tr>
+          
           <tr>
             <?
 		   // Get the Custom Parameters
