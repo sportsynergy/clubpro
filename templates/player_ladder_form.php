@@ -78,6 +78,11 @@ to add your name now.
 			Ladders explained</a> <?  if(get_roleid()==2 || get_roleid()==4){ ?>
 		| <span class="normal" id="show"><a
 			style="text-decoration: underline; cursor: pointer"> Add Player</a> </span>
+		| <span class="normal" id="show">
+			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/record_ladder_score.php">Report Score</a>
+		</span>
+
+
 			<? } ?>
 
 	</span>
