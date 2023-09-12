@@ -850,6 +850,14 @@ function isLadderRankingScheme() {
     /* this function simply returns the whether or not the site has solo reservations enabled. */
     return $_SESSION["siteprefs"]["rankingscheme"] == 'ladder' ? true : false;
 }
+
+function isJumpLadderRankingScheme() {
+
+    /* this function simply returns the whether or not the site has solo reservations enabled. */
+    return $_SESSION["siteprefs"]["rankingscheme"] == 'jumpladder' ? true : false;
+}
+
+
 function getChallengeRange() {
 
     /* this function simply returns the challenge range*/
@@ -5562,7 +5570,7 @@ function getClubSiteLadders($siteid){
 
 	$array = array();
 
-	$query = "SELECT ladders.name, ladders.courttypeid
+	$query = "SELECT ladders.name, ladders.courttypeid, ladders.id
 				FROM tblClubSiteLadders ladders
 				WHERE ladders.siteid = $siteid
 				AND ladders.enddate IS NULL";

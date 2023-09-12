@@ -25,29 +25,17 @@
  * $Id:$
  */
 /**
-* Class and Function List:
-* Function list:
-* Classes list:
-*/
-include ("./application.php");
-$role = get_roleid();
-
-/* unset the SESSION["user"] variable to log out the user */
-unset($_SESSION["user"]);
-unset($_SESSION["view"]);
-unset($_SESSION["courtWindowStart"]);
-unset($_SESSION["ladder_id"]);
-unset($_SESSION["ladders"]);
-unset($_SESSION["courtGroup"]);
-$wwwroot = $_SESSION["CFG"]["wwwroot"];
-
-if ($role == 3) {
-
-    unset($_SESSION["siteprefs"]);
-    header("Location: $wwwroot/system/");
-} else {
-    $sitecode = get_sitecode();
-    unset($_SESSION["siteprefs"]);
-    header("Location: $wwwroot/clubs/$sitecode/");
-}
+ * Class and Function List:
+ * Function list:
+ * Classes list:
+ */
 ?>
+
+<div>
+  <h2 >Recent Challenge Matches</h2>
+  <hr class="hrline"/>
+  
+  No challenge matches found.
+  <div style="margin-top: 20px"> <span class="smallbold">note:</span> <span class="normalsm">mouse over winner's name to see the score</span> </div>
+ 
+</div>

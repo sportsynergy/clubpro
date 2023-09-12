@@ -424,10 +424,10 @@ function moveEveryOneInClubLadderUp($courttypeid, $clubid, $ladderposition) {
  * Starting with the position, moves everyone in the ladder up.  This is used
  * when someone is added to the ladder
  */
-function moveEveryOneInClubLadderDown($courttypeid, $clubid, $ladderposition) {
+function moveEveryOneInClubLadderDown($ladderid, $clubid, $ladderposition) {
     $query = "SELECT ladder.* 
 				FROM tblClubLadder ladder
-				WHERE ladder.courttypeid = $courttypeid
+				WHERE ladder.id = $ladderid
 				AND ladder.clubid = $clubid
 				AND ladder.ladderposition >= $ladderposition
 				AND ladder.enddate IS NULL";
@@ -444,7 +444,7 @@ function moveEveryOneInClubLadderDown($courttypeid, $clubid, $ladderposition) {
         ++$count;
     }
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: moveEveryOneInClubLadderDown.  Starting with position $ladderposition moved $count people up in courttype id $courttypeid ladder for club $clubid");
+    if (isDebugEnabled(2)) logMessage("ladderlib: moveEveryOneInClubLadderDown.  Starting with position $ladderposition moved $count people up in ladder id $ladderid ladder for club $clubid");
 }
 /**
  * Used by club administrators when moving people up one in the club ladder. Quietly exits if there is a problem.
@@ -453,14 +453,14 @@ function moveEveryOneInClubLadderDown($courttypeid, $clubid, $ladderposition) {
  * @param $clubid
  * @param $userid
  */
-function moveUpOneInClubLadder($courttypeid, $clubid, $userid) {
+function moveUpOneInClubLadder($ladderid, $clubid, $userid) {
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: moveUpOneInClubLadder: moving user $userid up one in the ladder for club $clubid and courttypeid $courttypeid");
+    if (isDebugEnabled(2)) logMessage("ladderlib: moveUpOneInClubLadder: moving user $userid up one in the ladder for club $clubid and ladderid $ladderid");
 
     //Look up the user (if this person has a ladder position of 1, exit
     $query = "SELECT ladder.* 
 				FROM tblClubLadder ladder
-				WHERE ladder.courttypeid = $courttypeid
+				WHERE ladder.id = $ladderid
 				AND ladder.clubid = $clubid
 				AND ladder.userid = $userid
 				AND ladder.enddate IS NULL";
@@ -502,7 +502,7 @@ function moveUpOneInClubLadder($courttypeid, $clubid, $userid) {
 
     //Add a new record for guy going down a spot
     $query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going, locked) VALUES (
-                          $movingDownArray[userid],$courttypeid,$movingUpArray[ladderposition],$clubid,'$movingDownArray[going]', '$movingDownArray[locked]')";
+                          $movingDownArray[userid],$ladderid,$movingUpArray[ladderposition],$clubid,'$movingDownArray[going]', '$movingDownArray[locked]')";
     db_query($query);
 
     //end date the old one
@@ -697,6 +697,23 @@ function isLadderChallengable($myposition, $playerposition){
 
 }
 
+
+/**
+ * Gets the recent challenges matches
+ * 
+ * @param $siteid
+ */
+function getLadderDetails($ladderid){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderDetails: Ladder $ladderid");
+	
+	$query = "SELECT * from tblClubSiteLadders WHERE id = $ladderid";
+	
+	$result = db_query($query);
+	return db_fetch_object($result);
+	
+
+}
 /**
  * Gets the recent challenges matches
  * 

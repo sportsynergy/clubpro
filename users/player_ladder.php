@@ -54,10 +54,10 @@ if($userRelation->isUserLoggedin()){
 
 
 
-if (!empty($_POST['courttypeid'])) {
-    $_SESSION["ladder_courttype"] = $_POST['courttypeid'];
+if (!empty($_POST['ladderid'])) {
+    $_SESSION["ladder_id"] = $_POST['ladderid'];
 }
-$courttypeid = $_SESSION["ladder_courttype"];
+$ladderid = $_SESSION["ladder_id"];
 
 /* form has been submitted */
 
@@ -157,8 +157,10 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
 
 // Initialize view with data
 $availbleSports = load_avail_sports();
-$ladderplayers = getLadder($courttypeid);
-$playingInLadder = isPlayingInLadder(get_userid() , $courttypeid);
+$ladderplayers = getLadder($ladderid);
+$ladderdetails = getLadderDetails($ladderid);
+
+$playingInLadder = isPlayingInLadder(get_userid() , $ladderid);
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/player_ladder_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
@@ -190,9 +192,9 @@ function createChallengematch($challengerid, $challengeeid, $courttypeid) {
  *
  * @param unknown_type $courttypeid
  */
-function getLadder($courttypeid) {
+function getLadder($ladderid) {
     
-    if (isDebugEnabled(1)) logMessage("player_ladder.getLadder: getting the players in the ladder for courttype $courttypeid");
+    if (isDebugEnabled(1)) logMessage("player_ladder.getLadder: getting the players in the ladder for ladderid $ladderid");
     $rankquery = "SELECT 
 						users.userid,
 						ladder.ladderposition,
@@ -208,17 +210,22 @@ function getLadder($courttypeid) {
                     WHERE 
 						users.userid = ladder.userid
                     AND ladder.clubid=" . get_clubid() . "
-                    AND ladder.courttypeid=$courttypeid
+                    AND ladder.ladderid=$ladderid
 					AND ladder.enddate IS NULL
                     ORDER BY ladder.ladderposition";
+    
     return db_query($rankquery);
 }
 /**
  * True is user is, false if player isn't
  * @param $userid
  */
-function isPlayingInLadder($userid, $courttypeid) {
-    $query = "SELECT 1 FROM tblClubLadder WHERE userid = $userid AND courttypeid = $courttypeid AND clubid = " . get_clubid() . " AND enddate IS NULL";
+function isPlayingInLadder($userid, $ladderid) {
+    $query = "SELECT 1 FROM tblClubLadder 
+                WHERE userid = $userid 
+                AND ladderid = $ladderid 
+                AND clubid = " . get_clubid() . " AND enddate IS NULL";
+    
     $result = db_query($query);
     $rows = mysqli_num_rows($result);
     

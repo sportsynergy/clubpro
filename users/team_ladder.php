@@ -51,10 +51,10 @@ if($userRelation->isUserLoggedin()){
 $DOC_TITLE = "Team Ladder";
 require_loginwq();
 
-if (!empty($_POST['courttypeid'])) {
-    $_SESSION["ladder_courttype"] = $_POST['courttypeid'];
+if (!empty($_POST['ladderid'])) {
+    $_SESSION["ladder_id"] = $_POST['ladderid'];
 }
-$courttypeid = $_SESSION["ladder_courttype"];
+$ladderid = $_SESSION["ladder_id"];
 $errormsg = "";
 
 /* form has been submitted */
@@ -69,9 +69,9 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $userid = rtrim($frm['userid']);
         $userid2 = rtrim($frm['userid2']);
         
-        if (isDebugEnabled(2)) logMessage("team_ladder: addtoladder with users $userid and $userid2 with courttypeid: $courttypeid");
-        $playerOnePlaying = isPlayingInLadder($userid2, $courttypeid);
-        $playerTwoPlaying = isPlayingInLadder($userid2, $courttypeid);
+        if (isDebugEnabled(2)) logMessage("team_ladder: addtoladder with users $userid and $userid2 with courttypeid: $ladderid");
+        $playerOnePlaying = isPlayingInLadder($userid2, $ladderid);
+        $playerTwoPlaying = isPlayingInLadder($userid2, $ladderid);
         $teamid = getTeamIDForPlayers($courttypeid, $userid, $userid2);
         
         if (isDebugEnabled(1)) logMessage("team_ladder: adding team: $teamid");
@@ -189,7 +189,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
 
 if (isDebugEnabled(1)) logMessage("team_ladder: initializing the view");
 $availbleSports = load_avail_sports();
-$ladderplayers = getLadderTeam($courttypeid, get_clubid());
+$ladderplayers = getLadderTeam($ladderid);
 $playingInLadder = isPlayingInLadder(get_userid() , $courttypeid);
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/team_ladder_form.php");
@@ -222,7 +222,7 @@ function createChallengematch($challengerid, $challengeeid, $courttypeid) {
  *
  * @param $courttypeid
  */
-function getLadderTeam($courttypeid, $clubid) {
+function getLadderTeam($ladderid) {
     
     if (isDebugEnabled(1)) logMessage(sprintf("team_ladder.getLadderTeam: " . "getting the players in the ladder for " . "courttype %s in club %s", $courttypeid, $clubid));
     $query = "SELECT ladder.userid,
@@ -230,7 +230,7 @@ function getLadderTeam($courttypeid, $clubid) {
 					 ladder.going,
 					 ladder.locked
 				FROM tblClubLadder ladder
-				WHERE ladder.courttypeid=$courttypeid
+				WHERE ladder.ladderid=$ladderid
 				AND ladder.enddate IS NULL
 				AND ladder.clubid = $clubid
 				ORDER BY ladder.ladderposition";

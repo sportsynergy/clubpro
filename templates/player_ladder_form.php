@@ -94,7 +94,7 @@ to add your name now.
 					<td class="clubid<?=get_clubid()?>th">
 						<span class="whiteh1">
 							<div align="center">
-							<? pv($DOC_TITLE) ?>
+							<? pv($ladderdetails->name ) ?>
 							</div>
 					</span>
 					</td>
@@ -174,7 +174,14 @@ to add your name now.
 		</td>
 		<td valign="top">
 			<div style="padding-left: 1em;">
-			<? include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php"); ?>
+			
+			<? 
+			if ( isLadderRankingScheme() ){
+				include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php");
+			} else{
+				include($_SESSION["CFG"]["includedir"]."/include_jumpladder_activity.php");
+			}
+				 ?>
 			</div>
 
 		</td>

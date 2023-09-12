@@ -53,7 +53,7 @@ $_SESSION["siteprefs"] = $siteprefs;
 
 //Only load the site ladders if the ranking scheme is configured as such
 
-if (isLadderRankingScheme()) {
+if (isLadderRankingScheme() || isJumpLadderRankingScheme()) {
     $ladders = getClubSiteLadders($siteid);
     $_SESSION["ladders"] = $ladders;
 }

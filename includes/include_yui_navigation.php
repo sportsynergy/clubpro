@@ -35,13 +35,13 @@
     <ul class="first-of-type">
       <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">Directory</a></li>
       <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/">Bookings</a></li>
-      <? if(isLadderRankingScheme() ) {?>
+      <? if(isLadderRankingScheme() || isJumpLadderRankingScheme() ) {?>
       <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#">Ladder</a>
         <div id="ladder" class="yuimenu">
           <div class="bd">
             <ul class="first-of-type">
               <? for ($i=0; $i < count($_SESSION["ladders"]); ++$i) {?>
-              <li class="yuimenuitem"><a class="yuimenuitemlabel" href="javascript:submitLadderForm('<?=$_SESSION["ladders"][$i]['courttypeid']?>')">
+              <li class="yuimenuitem"><a class="yuimenuitemlabel" href="javascript:submitLadderForm('<?=$_SESSION["ladders"][$i]['courttypeid']?>','<?=$_SESSION["ladders"][$i]['id']?>')">
                 <?=$_SESSION["ladders"][$i]['name']?>
                 </a></li>
               <? } ?>
@@ -96,10 +96,11 @@
 </div>
 <form name="ladder_form" method="POST" >
   <input type="hidden" name="courttypeid">
+  <input type="hidden" name="ladderid">
 </form>
 <script type="text/javascript" >
 
-function submitLadderForm(courttypeid){
+function submitLadderForm(courttypeid, ladderid){
 
 	if(courttypeid == 3){
 		document.ladder_form.action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/team_ladder.php"
@@ -108,7 +109,8 @@ function submitLadderForm(courttypeid){
 	}
 	
 	 document.ladder_form.courttypeid.value = courttypeid;
-     document.ladder_form.submit();
+   document.ladder_form.ladderid.value = ladderid;
+   document.ladder_form.submit();
 }
 
 </script> 
