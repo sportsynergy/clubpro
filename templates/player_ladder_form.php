@@ -228,9 +228,9 @@ to add your name now.
 		<form method="POST" action="<?=$ME?>" autocomplete="off">
 
 			<div>
-				<input id="name1" name="playeronename" type="text" size="30"
-					class="form-autocomplete" /> <input id="id1" name="userid"
-					type="hidden" />
+				<input id="name1" name="playeronenamedd" type="text" size="30"
+					class="form-autocomplete" autocomplete="off"/> 
+					<input id="id1" name="userid" type="hidden" />
 			</div>
 			<div>
 				Spot: <select name="placement">
