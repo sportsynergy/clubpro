@@ -70,27 +70,32 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
     
     if ($frm['cmd'] == 'addtoladder') {
         
-        if (isDebugEnabled(2)) logMessage("player_ladder: addtoladder");
+        
 
         //Check to see if player is already in ladder
         $check = "SELECT count(*) from tblClubLadder 
         				WHERE userid = $userid 
         				AND clubid = $clubid 
-        				AND courttypeid = $courttypeid 
+        				AND ladderid = $ladderid 
+                        AND ladderid = $ladderid
         				AND enddate IS NULL";
         $checkResult = db_query($check);
+
+        if (isDebugEnabled(2)) logMessage("player_ladder: addtoladder $check");
+
         $exists = mysqli_result($checkResult, 0);
         
         if ($exists == 0) {
             $position = $frm['placement'];
-            moveEveryOneInClubLadderDown($courttypeid, $clubid, $position);
+            moveEveryOneInClubLadderDown($ladderid, $clubid, $position);
             
             if (isDebugEnabled(2)) logMessage("player_rankings: adding user $userid to club ladder for club $clubid for courttypeid $courttypeid in position $position");
             $query = "INSERT INTO tblClubLadder (
-		                userid, courttypeid, ladderposition, clubid
+		                userid, courttypeid, ladderid, ladderposition, clubid
 		                ) VALUES (
 		                          $userid
-		                          ,$courttypeid
+		                          ,0
+                                  ,$ladderid
 		                          ,$position
 		                          ,$clubid)";
             db_query($query);
@@ -101,24 +106,27 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
     } else 
     if ($frm['cmd'] == 'moveupinladder') {
         
-        if (isDebugEnabled(1)) logMessage("player_ladder: moving user $userid up in ladder $courttypeid ");
-        moveUpOneInClubLadder($courttypeid, $clubid, $userid);
-    } else 
-    if ($frm['cmd'] == 'removefromladder') {
+        if (isDebugEnabled(1)) logMessage("player_ladder: moving user $userid up in ladder $ladderid ");
+        moveUpOneInClubLadder($ladderid, $clubid, $userid);
+    } 
+
+    else if ($frm['cmd'] == 'removefromladder') {
 
         //get current position
-        $query = "SELECT ladderposition from tblClubLadder where clubid = $clubid and courttypeid = $courttypeid AND userid = $userid AND enddate IS NULL";
+        $query = "SELECT ladderposition from tblClubLadder where clubid = $clubid and ladderid = $ladderid AND userid = $userid AND enddate IS NULL";
         $result = db_query($query);
         $position = mysqli_result($result, 0);
         
-        if (isDebugEnabled(1)) logMessage("player_ladder: removing user $userid to club ladder for club $clubid for courttypeid $courttypeid");
-        $query = "UPDATE tblClubLadder SET enddate = NOW() WHERE userid = $userid AND  courttypeid = $courttypeid AND clubid = $clubid";
+        if (isDebugEnabled(1)) logMessage("player_ladder: removing user $userid to club ladder for club $clubid for ladderid $ladderid");
+        $query = "UPDATE tblClubLadder SET enddate = NOW() WHERE userid = $userid AND  ladderid = $ladderid AND clubid = $clubid";
         db_query($query);
 
         //Move everybody else up
-        moveEveryOneInClubLadderUp($courttypeid, $clubid, $position + 1);
-    } else 
-    if ($frm['cmd'] == 'challengeplayer') {
+        moveEveryOneInClubLadderUp($ladderid, $clubid, $position + 1);
+    } 
+
+    // Challenge Player
+    else if ($frm['cmd'] == 'challengeplayer') {
         $challengeeid = $frm['challengeeid'];
         $challengerid = get_userid();
         $message = $frm['textarea'];
@@ -129,7 +137,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         createChallengematch($challengerid, $challengeeid, $courttypeid);
 
         //lock the two players
-        lockLadderPlayers($challengerid, $challengeeid, $courttypeid);
+        lockLadderPlayers($challengerid, $challengeeid, $ladderid);
 
         //send the email
         sendEmailsForLadderMatch($challengerid, $challengeeid, $message);

@@ -223,10 +223,9 @@ to add your name now.
 
 <div id="dialog1" class="yui-pe-content">
 
-
 	<div class="bd">
 
-		<form method="POST" action="<?=$ME?>">
+		<form method="POST" action="<?=$ME?>" autocomplete="off">
 
 			<div>
 				<input id="name1" name="playeronename" type="text" size="30"
@@ -317,7 +316,7 @@ to add your name now.
 				var data = this.getData();
 		
 				if (data.userid == "" ) {
-					alert("Dude, seriously please pick a name from the list.");
+					alert("Please pick a name from the list.");
 					return false;
 				} else {
 					return true;

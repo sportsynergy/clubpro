@@ -427,7 +427,7 @@ function moveEveryOneInClubLadderUp($courttypeid, $clubid, $ladderposition) {
 function moveEveryOneInClubLadderDown($ladderid, $clubid, $ladderposition) {
     $query = "SELECT ladder.* 
 				FROM tblClubLadder ladder
-				WHERE ladder.id = $ladderid
+				WHERE ladder.ladderid = $ladderid
 				AND ladder.clubid = $clubid
 				AND ladder.ladderposition >= $ladderposition
 				AND ladder.enddate IS NULL";
@@ -946,12 +946,12 @@ function unlockLadderPlayers($challengerid, $challengeeid, $courttypeid){
  * @param $challengerid
  * @param $challengeeid
  */
-function lockLadderPlayers($challengerid, $challengeeid, $courttypeid){
+function lockLadderPlayers($challengerid, $challengeeid, $ladderid){
 	
-	if( isDebugEnabled(1) ) logMessage("ladderlib.lockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on courttypeid $courttypeid");
+	if( isDebugEnabled(1) ) logMessage("ladderlib.lockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on ladderid $ladderid");
 	
 	$query = "UPDATE tblClubLadder ladder SET ladder.locked = 'y' WHERE ladder.userid = $challengerid OR ladder.userid = $challengeeid
-				AND ladder.enddate IS NULL and ladder.courttypeid = $courttypeid and ladder.clubid = ".get_clubid();
+				AND ladder.enddate IS NULL and ladder.ladderid = $ladderid and ladder.clubid = ".get_clubid();
 	
 	db_query($query);
 }
