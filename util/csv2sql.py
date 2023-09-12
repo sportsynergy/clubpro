@@ -14,11 +14,11 @@ import csv
 #   Last    First   Home    Work    Cell    E-mail RANK  Gender
 
 # Set these variables for the club
-index = 11364
-clubid = 64
-siteid = 107
+index = 16276
+clubid = 68
+siteid = 111
 courttype = 2
-password = '57e6a100b25ef0eb8159b064ed5ba7a5' 
+password = '2c77ea8f42f69a7c3dbada4417cf3cf5' 
 
 
 #### You probably don't need to do anything below this line ##
@@ -29,15 +29,15 @@ with open(filename, 'r') as f:
     for row in reader:
 
         ranking = '3'
-        lastname = row[2].replace("'", "\\'")
-        firstname = row[1].replace("'", "\\'")
+        lastname = row[7].replace("'", "\\'")
+        firstname = row[6].replace("'", "\\'")
         homephone = ''
         workphone = ''
-        cellphone = ''
-        email = row[3]
-        gender = 0 if row[4] =='F' else '1'
-        username = firstname.lower()+'.'+lastname.lower()
-        memberid = ''
+        cellphone = row[3]
+        email = row[2]
+        gender = 0 if row[4] =='Female' else '1'
+        username = row[5].zfill(6) # pad with zeros
+        memberid = row[5].zfill(6)
 
 
     	#users
