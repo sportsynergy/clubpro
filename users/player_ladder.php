@@ -70,8 +70,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
     
     if ($frm['cmd'] == 'addtoladder') {
         
-        
-
+    
         //Check to see if player is already in ladder
         $check = "SELECT count(*) from tblClubLadder 
         				WHERE userid = $userid 
@@ -141,8 +140,8 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
 
         //send the email
         sendEmailsForLadderMatch($challengerid, $challengeeid, $message);
-    } else 
-    if ($frm['cmd'] == 'removechallenge') {
+    
+    } else if ($frm['cmd'] == 'removechallenge') {
         $challengematchid = $frm['challengematchid'];
         $challengerid = $frm['challengerid'];
         $challengeeid = $frm['challengeeid'];
@@ -159,7 +158,10 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         //send emails
         //TODO create emails for removing challenge ladder
 
-        
+    } else if ($frm['cmd'] == 'reportladderscore') {
+
+        if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score ");
+
     }
 }
 

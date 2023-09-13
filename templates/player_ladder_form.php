@@ -78,8 +78,8 @@ to add your name now.
 			Ladders explained</a> <?  if(get_roleid()==2 || get_roleid()==4){ ?>
 		| <span class="normal" id="show"><a
 			style="text-decoration: underline; cursor: pointer"> Add Player</a> </span>
-		| <span class="normal" id="show">
-			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/record_ladder_score.php">Report Score</a>
+		| <span class="normal" id="showreportscores"><a
+			style="text-decoration: underline; cursor: pointer"> Report Score</a>
 		</span>
 
 
@@ -195,11 +195,106 @@ to add your name now.
 
 			<? } ?>
 
+<div id="reportscoredialog" class="yui-pe-content">
+
+<div class="bd">
+		<form method="POST" action="<?=$ME?>" autocomplete="off">
+			
+			<div>
+				<input id="rsname1" name="rsplayeronename" type="text" size="30"
+					class="form-autocomplete" autocomplete="off"/> 
+					<input id="rsid1" name="rsuserid" type="hidden" />
+
+				<script>
+                <?
+                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+                 pat_autocomplete( array(
+						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+						'source'=>'rsname1',
+						'target'=>'rsid1',
+						'className'=>'autocomplete',
+						'parameters'=> "action=autocomplete&name={rsname1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+						'progressStyle'=>'throbbing',
+						'minimumCharacters'=>3,
+						));
+           
+                 ?>
+
+                </script>
+			</div>
+
+			<div style="margin:10px"> 
+				<span>Defeated</span>
+			</div>
+
+			<div>
+				<input id="rsname2" name="rsplayertwoname" type="text" size="30"
+					class="form-autocomplete" autocomplete="off"/> 
+					<input id="rsid2" name="rsuserid2" type="hidden" />
+
+					<script>
+                <?
+                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+                 pat_autocomplete( array(
+						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+						'source'=>'rsname2',
+						'target'=>'rsid2',
+						'className'=>'autocomplete',
+						'parameters'=> "action=autocomplete&name={rsname2}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+						'progressStyle'=>'throbbing',
+						'minimumCharacters'=>3,
+						));
+                 ?>
+
+                </script>
+			</div>
+
+			<div style="margin:10px"> 
+				<span>At</span>
+			</div>
+
+			<div>
+				<select name="hourplayed">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8" selected>8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="12">12</option>
+				</select>
+
+				<select name="minuteofday">
+					<option value="00">00</option>
+					<option value="15">15</option>
+					<option value="30">30</option>
+					<option value="45">45</option>
+				</select>
+
+				<select name="timeofday">
+					<option value="AM">AM</option>
+					<option value="PM" selected>PM</option>
+				</select>
+			</div>
+		
+			
+				<input type="hidden" name="cmd" value="reportladderscore">
+		</form>
+
+</div>
+	
+</div>
+
 
 <div id="challengedialog" class="yui-pe-content">
 
 	<div class="bd">
-		<form method="POST" action="<?=$ME?>">
+		<form method="POST" action="<?=$ME?>" autocomplete="off">
 			<label for="from_name">From:</label><input type="textbox"
 				name="firstname" value="<?=get_userfullname()?>" disabled="disabled" />
 			<label for="to_name">To:</label><input type="textbox" name="lastname"
@@ -233,7 +328,7 @@ to add your name now.
 		<form method="POST" action="<?=$ME?>" autocomplete="off">
 
 			<div>
-				<input id="name1" name="playeronenamedd" type="text" size="30"
+				<input id="name1" name="playeronename" type="text" size="30"
 					class="form-autocomplete" autocomplete="off"/> 
 					<input id="id1" name="userid" type="hidden" />
 			</div>
@@ -283,7 +378,74 @@ to add your name now.
 		var allownewlines = false;
 		
 		YAHOO.namespace("clubladder.container");
+
+
+		/*
+		* Report score dialoge
+		*/
+
+		YAHOO.util.Event.onDOMReady(function () {
+			
+			// Define various event handlers for Dialog
+			var handleSubmit = function() {
+				this.submit();
+			};
+			var handleCancel = function() {
+				this.cancel();
+			};
+			var handleSuccess = function(o) {
+				window.location.href=window.location.href;
+			};
 		
+			var handleFailure = function(o) {
+				alert("Submission failed: " + o.status);
+			};
+		
+		    // Remove progressively enhanced content class, just before creating the module
+		    YAHOO.util.Dom.removeClass("reportscoredialog", "yui-pe-content");
+		
+			// Instantiate the Dialog
+			YAHOO.clubladder.container.reportscoredialog = new YAHOO.widget.Dialog("reportscoredialog", 
+									{ width : "30em",
+									  fixedcenter : true,
+									  modal: true,
+									  visible : false, 
+									  constraintoviewport : true,
+									  buttons : [ { text:"Record Score", handler:handleSubmit, isDefault:true } ]
+									});
+		
+			YAHOO.clubladder.container.reportscoredialog.setHeader('Record Score');
+		
+			// Validate the entries in the form to require that both first and last name are entered
+			YAHOO.clubladder.container.reportscoredialog.validate = function() {
+				var data = this.getData();
+		
+				if (data.userid == "" ) {
+					alert("Please pick a name from the list.");
+					return false;
+				} else {
+					return true;
+				}
+			};
+		
+			// Wire up the success and failure handlers
+			YAHOO.clubladder.container.reportscoredialog.callback = { success: handleSuccess,
+								     failure: handleFailure };
+			
+			// Render the Dialog
+			YAHOO.clubladder.container.reportscoredialog.render();
+		
+			YAHOO.util.Event.addListener("showreportscores", "click", YAHOO.clubladder.container.reportscoredialog.show, YAHOO.clubladder.container.reportscoredialog, true);
+			YAHOO.util.Event.addListener("showreportscores", "click", disablenewlines, false, true);
+			
+			
+		});
+		
+
+		/*
+		* Add player dialoge
+		*/
+
 		YAHOO.util.Event.onDOMReady(function () {
 			
 			// Define various event handlers for Dialog
@@ -357,6 +519,10 @@ to add your name now.
 	    YAHOO.clubladder.container.wait.setBody("<img src=\"http://l.yimg.com/a/i/us/per/gr/gp/rel_interstitial_loading.gif\"/>");
 	    YAHOO.clubladder.container.wait.render(document.body);
 	    
+		/*
+		* Challenge dialoge
+		*/
+
 		YAHOO.util.Event.onDOMReady(function () {
 			
 			// Define various event handlers for Dialog
