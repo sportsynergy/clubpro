@@ -76,7 +76,7 @@ if (empty($courttype)) {
 						(users.firstname LIKE '%$name%'
 						 OR users.lastname LIKE '%$name%')
 	                ORDER BY users.lastname
-					LIMIT 15";
+					LIMIT 20";
 } else {
     $query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
 	                FROM tblUsers users, tblUserRankings rankings, tblkupSiteAuth siteauth, tblClubUser clubuser
@@ -95,7 +95,7 @@ if (empty($courttype)) {
 						(users.firstname LIKE '%$name%'
 						 OR users.lastname LIKE '%$name%')
 	                ORDER BY users.lastname
-					LIMIT 15";
+					LIMIT 20";
 }
 
 
