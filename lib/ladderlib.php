@@ -503,7 +503,7 @@ function moveUpOneInClubLadder($ladderid, $clubid, $userid) {
     if (isDebugEnabled(2)) logMessage("ladderlib: moveUpOneInClubLadder:  moved ladderid " . $movingUpArray['id'] . " to ladder position: " . $movingDownArray['ladderposition']);
 
     //Add a new record for guy going down a spot
-    $query = "INSERT INTO tblClubLadder (userid, courttypeid, ladderposition, clubid, going, locked) VALUES (
+    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, clubid, going, locked) VALUES (
                           $movingDownArray[userid],$ladderid,$movingUpArray[ladderposition],$clubid,'$movingDownArray[going]', '$movingDownArray[locked]')";
     db_query($query);
 
