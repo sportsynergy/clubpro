@@ -74,7 +74,11 @@ if (empty($courttype)) {
 					AND clubuser.enddate IS NULL
 					AND 
 						(users.firstname LIKE '%$name%'
-						 OR users.lastname LIKE '%$name%')
+						 OR users.lastname LIKE '%$name%'
+						 OR (
+                            users.firstname = SPLIT_STR('$name', ' ', 1)
+                            AND users.lastname = SPLIT_STR('$name', ' ', 2)
+                             ))
 	                ORDER BY users.lastname
 					LIMIT 17";
 } else {
@@ -93,7 +97,11 @@ if (empty($courttype)) {
 					AND clubuser.enddate IS NULL
 					AND 
 						(users.firstname LIKE '%$name%'
-						 OR users.lastname LIKE '%$name%')
+						 OR users.lastname LIKE '%$name%'
+						 OR (
+                            users.firstname = SPLIT_STR('$name', ' ', 1)
+                            AND users.lastname = SPLIT_STR('$name', ' ', 2)
+                             ))
 	                ORDER BY users.lastname
 					LIMIT 17";
 }
