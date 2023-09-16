@@ -167,13 +167,21 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
 
         if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday");
 
-        if (isDebugEnabled(1)) logMessage($_SESSION["current_time"]);
-        
-
+    
         $score = $frm['score'];
         $winnerid = $frm['rsuserid'];
         $loserid = $frm['rsuserid2'];
-        $matchtime = "2023-09-16 00:00:00";
+
+        // Set the match time
+        if ( $timeofday == "PM"){
+            $hourplayed = $hourplayed + 12;
+        }
+        $curtime = $_SESSION["current_time"];
+        $currYear = gmdate("Y", $curtime);
+        $currMonth = gmdate("n", $curtime);
+        $currDay = gmdate("j", $curtime);
+        $hourplayed = str_pad($hourplayed, 2, "0", STR_PAD_LEFT);
+        $matchtime = "$currYear-$currMonth-$currDay $hourplayed:$minuteofday:00";
        
 
         $query = "INSERT INTO tblLadderMatch (
