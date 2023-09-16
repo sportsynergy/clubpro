@@ -634,9 +634,6 @@ function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score){
 			<?=$winner->fullname ?>
 		</td>
 		<td>
-			Defeated
-		</td>
-		<td>
 			<?=$loser->fullname ?>
 		</td>
 		<td>

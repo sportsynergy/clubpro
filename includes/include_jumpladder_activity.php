@@ -43,11 +43,10 @@ if(mysqli_num_rows($ladderMatchResult) > 0){
 
   ?>
 
-  <table class="activitytable" width="350">
+  <table class="activitytable" width="400">
     <tr>
       <th>Date</th>
       <th>Winner</th>
-      <th></th>
       <th>Loser</th>
       <th>Score</th>
     </tr>
@@ -81,7 +80,7 @@ while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){
   
 
 <? }  else { ?>
-  <table class="activitytable" width="350">
+  <table class="activitytable" width="400">
 <tr>
   <td style="text-align: left">No challenge matches found.</td>
 </tr>
