@@ -188,7 +188,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
             ladderid, score, winnerid, loserid, match_time
             ) VALUES (
                       $ladderid
-                      ,$score
+                      ,'$score'
                       ,$winnerid
                       ,$loserid
                       ,'$matchtime'

@@ -110,6 +110,8 @@ while($challengeMatch = mysqli_fetch_array($challengeMatchResult)){
   </table>
   <div style="margin-top: 20px"> <span class="smallbold">note:</span> <span class="normalsm">mouse over winner's name to see the score</span> </div>
   <? } else { ?>
+
+    
   No challenge matches found.
   <? } ?>
 </div>

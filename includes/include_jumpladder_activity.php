@@ -47,6 +47,7 @@ if(mysqli_num_rows($ladderMatchResult) > 0){
     <tr>
       <th>Date</th>
       <th>Winner</th>
+      <th></th>
       <th>Loser</th>
       <th>Score</th>
     </tr>
