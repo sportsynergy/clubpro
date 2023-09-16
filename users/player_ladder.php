@@ -160,7 +160,33 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
 
     } else if ($frm['cmd'] == 'reportladderscore') {
 
-        if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score ");
+        $hourplayed = $frm['hourplayed'];
+        $score = $frm['score'];
+        $minuteofday = $frm['minuteofday'];
+        $timeofday = $frm['timeofday'];
+
+        if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday");
+
+
+        $score = $frm['score'];
+        $winnerid = $frm['rsuserid'];
+        $loserid = $frm['rsuserid2'];
+        $matchtime = "2023-09-16 00:00:00";
+       
+
+        $query = "INSERT INTO tblLadderMatch (
+            ladderid, score, winnerid, loserid, match_time
+            ) VALUES (
+                      $ladderid
+                      ,$score
+                      ,$winnerid
+                      ,$loserid
+                      ,'$matchtime'
+                      )";
+
+        if (isDebugEnabled(1)) logMessage($query);
+        
+        db_query($query);
 
     }
 }

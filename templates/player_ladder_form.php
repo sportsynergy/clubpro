@@ -250,6 +250,14 @@ to add your name now.
 			</div>
 
 			<div style="margin:10px"> 
+			<select name="score">
+					<option value="32">3-2</option>
+					<option value="31" selected>3-1</option>
+					<option value="30" selected>3-0</option>
+				</select>
+			</div>
+
+			<div style="margin:10px"> 
 				<span>At</span>
 			</div>
 
@@ -281,8 +289,8 @@ to add your name now.
 					<option value="PM" selected>PM</option>
 				</select>
 			</div>
+
 		
-			
 				<input type="hidden" name="cmd" value="reportladderscore">
 		</form>
 

@@ -685,6 +685,10 @@ function isLadderChallengable($myposition, $playerposition){
 	
 	//if( isDebugEnabled(1) ) logMessage("ladderlib: isLadderChallengable myposition: $myposition playerposition $playerposition");
 	
+	if ( isJumpLadderRankingScheme() ){
+		return false;
+	}
+
 	$range = getChallengeRange();
 	
 	$value = $myposition-$range;
