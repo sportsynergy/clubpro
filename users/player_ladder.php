@@ -167,6 +167,8 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
 
         if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday");
 
+        if (isDebugEnabled(1)) logMessage($_SESSION["current_time"]);
+        
 
         $score = $frm['score'];
         $winnerid = $frm['rsuserid'];

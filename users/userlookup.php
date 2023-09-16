@@ -40,6 +40,9 @@ $courtid = $_GET['courtid'];
 $courttype = $_GET['courttype'];
 $siteid = $_GET['siteid'];
 $userid = $_GET['userid'];
+$ladderid = $_GET['ladderid'];
+
+$limit = 17;
 
 //if court id is set, look up the court id
 
@@ -47,7 +50,13 @@ if (isset($courtid)) {
     $courttype = get_courtTypeForCourt($courtid);
 }
 
-if (isDebugEnabled(1)) logMessage("Users.Userlookup: name: $name clubid: $clubid courtid: $courtid siteid: $siteid userid: $userid");
+if( isset($ladderid) ){
+	if (isDebugEnabled(1)) logMessage("Users.Userlookup: name: $name ladderid: $ladderid userid: $userid");
+
+} else {
+	if (isDebugEnabled(1)) logMessage("Users.Userlookup: name: $name clubid: $clubid courtid: $courtid siteid: $siteid userid: $userid");
+
+}
 
 //Don't exclude administrators
 
@@ -58,8 +67,27 @@ if (isProgramAdmin($userid)) {
 // If a courtype isn't defined, then just leave this out of the query.  This will be cases like on the
 // my buddies page where a courttype really isn't involved.
 
+if ( isset ($ladderid) ){
 
-if (empty($courttype)) {
+	$query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
+	FROM tblUsers users, tblClubUser clubuser
+	join tblClubLadder tCL on clubuser.userid = tCL.userid
+	WHERE clubuser.roleid!= 4
+	AND users.userid = clubuser.userid
+	AND tCL.ladderid=$ladderid
+	AND clubuser.enable='y'
+	AND clubuser.enddate IS NULL
+	AND
+		(users.firstname LIKE '%$name%'
+		 OR users.lastname LIKE '%$name%'
+		 OR (
+			users.firstname = SPLIT_STR('$name', ' ', 1)
+			AND users.lastname = SPLIT_STR('$name', ' ', 2)
+			 ))
+	ORDER BY users.lastname
+	LIMIT $limit";
+}
+else if (empty($courttype)) {
     $query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
 	                FROM tblUsers users, tblUserRankings rankings, tblkupSiteAuth siteauth, tblClubUser clubuser
 					WHERE users.userid = rankings.userid
@@ -80,7 +108,7 @@ if (empty($courttype)) {
                             AND users.lastname = SPLIT_STR('$name', ' ', 2)
                              ))
 	                ORDER BY users.lastname
-					LIMIT 17";
+					LIMIT $limit";
 } else {
     $query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
 	                FROM tblUsers users, tblUserRankings rankings, tblkupSiteAuth siteauth, tblClubUser clubuser
@@ -103,7 +131,7 @@ if (empty($courttype)) {
                             AND users.lastname = SPLIT_STR('$name', ' ', 2)
                              ))
 	                ORDER BY users.lastname
-					LIMIT 17";
+					LIMIT $limit";
 }
 
 

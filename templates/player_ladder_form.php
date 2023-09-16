@@ -213,7 +213,7 @@ to add your name now.
 						'source'=>'rsname1',
 						'target'=>'rsid1',
 						'className'=>'autocomplete',
-						'parameters'=> "action=autocomplete&name={rsname1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+						'parameters'=> "action=autocomplete&name={rsname1}&userid=".get_userid()."&ladderid=$ladderid",
 						'progressStyle'=>'throbbing',
 						'minimumCharacters'=>3,
 						));
@@ -240,7 +240,7 @@ to add your name now.
 						'source'=>'rsname2',
 						'target'=>'rsid2',
 						'className'=>'autocomplete',
-						'parameters'=> "action=autocomplete&name={rsname2}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+						'parameters'=> "action=autocomplete&name={rsname2}&userid=".get_userid()."&ladderid=$ladderid",
 						'progressStyle'=>'throbbing',
 						'minimumCharacters'=>3,
 						));
