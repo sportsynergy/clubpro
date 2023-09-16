@@ -73,7 +73,7 @@ function recordScore(matchid,laddertype){
 // TODO: Fix this
 // hard coding courttype id for now
 
-$challengeMatchResult = getChallengeMatches( get_siteid(), $courttypeid, 15 );
+$challengeMatchResult = getChallengeMatches( get_siteid(), $ladderid, 15 );
 
 if(mysqli_num_rows($challengeMatchResult) > 0){ ?>
   <table class="activitytable" width="450">

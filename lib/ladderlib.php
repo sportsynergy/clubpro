@@ -619,6 +619,35 @@ function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate,
 	
 }
 
+
+function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.printLadderMatchRow: challengerName: $winner->fullname loser $loser->fullname ");
+	
+	?>
+	
+	<tr>
+		<td>
+			<?=formatDateStringSimple( $challengeDate)?>
+		</td>
+		<td>
+			<?=$winner->fullname ?>
+		</td>
+		<td>
+			Defeated
+		</td>
+		<td>
+			<?=$loser->fullname ?>
+		</td>
+		<td>
+			<?=$score ?>
+		</td>
+		
+		
+	</tr>
+	<?
+
+}
 /**
  * 
  * @param $id
@@ -720,6 +749,32 @@ function getLadderDetails($ladderid){
 	
 
 }
+
+function getLadderMatches($ladderid, $limit){
+
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderMatches: Getting ladder matches for ladderid $ladderid with limit $limit");
+	
+	$curresidquery = "SELECT
+						winner.firstname AS winner_first,
+						winner.lastname AS winner_last,
+						concat_ws(' ', winner.firstname, winner.lastname) AS winner_full,
+						winner.userid AS winner_id,
+						loser.firstname AS loser_first,
+						loser.lastname AS loser_last,
+						loser.userid AS loser_id,
+						ladder.id, ladder.score, ladder.match_time
+						FROM tblLadderMatch ladder
+						inner join tblUsers winner on ladder.winnerid = winner.userid
+						inner join tblUsers loser on ladder.loserid = loser.userid
+						inner join tblClubSiteLadders tCSL on ladder.id = tCSL.id
+						WHERE ladder.ladderid =$ladderid
+							AND tCSL.enddate IS NULL
+						ORDER BY ladder.match_time, ladder.reported_time
+						DESC LIMIT $limit";
+	
+	//print $curresidquery;
+	return db_query($curresidquery);
+}
 /**
  * Gets the recent challenges matches
  * 
@@ -727,7 +782,7 @@ function getLadderDetails($ladderid){
  */
 function getChallengeMatches($siteid, $ladderid, $limit){
 	
-	if( isDebugEnabled(1) ) logMessage("ladderlib.getChallengeMatches: Getting challenge matches $siteid and courtypeid $ladderid limit $limit");
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getChallengeMatches: Getting challenge matches $siteid and ladderid $ladderid limit $limit");
 	
 	$curresidquery = "SELECT 	
 							challenge.id, challenge.score, challenge.date, 

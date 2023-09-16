@@ -182,7 +182,8 @@ to add your name now.
 			
 			<? 
 			if ( isLadderRankingScheme() ){
-				include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php");
+			
+				//include($_SESSION["CFG"]["includedir"]."/include_ladder_activity.php");
 			} else{
 				include($_SESSION["CFG"]["includedir"]."/include_jumpladder_activity.php");
 			}
@@ -193,7 +194,7 @@ to add your name now.
 	</tr>
 </table>
 
-			<? } ?>
+<? } ?>
 
 <div id="reportscoredialog" class="yui-pe-content">
 
@@ -251,9 +252,9 @@ to add your name now.
 
 			<div style="margin:10px"> 
 			<select name="score">
-					<option value="32">3-2</option>
-					<option value="31" selected>3-1</option>
-					<option value="30" selected>3-0</option>
+					<option value="3-2">3-2</option>
+					<option value="3-1" selected>3-1</option>
+					<option value="3-0" selected>3-0</option>
 				</select>
 			</div>
 
