@@ -254,6 +254,7 @@ to add your name now.
 			<select name="score">
 					<option value="3-2">3-2</option>
 					<option value="3-1" selected>3-1</option>
+					<option value="2-1" selected>2-1</option>
 					<option value="3-0" selected>3-0</option>
 				</select>
 			</div>
