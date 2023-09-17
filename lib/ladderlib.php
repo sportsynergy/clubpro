@@ -763,9 +763,10 @@ function getLadderMatches($ladderid, $limit){
 						FROM tblLadderMatch ladder
 						inner join tblUsers winner on ladder.winnerid = winner.userid
 						inner join tblUsers loser on ladder.loserid = loser.userid
-						inner join tblClubSiteLadders tCSL on ladder.id = tCSL.id
+						inner join tblClubSiteLadders tCSL on ladder.ladderid = tCSL.id
 						WHERE ladder.ladderid =$ladderid
 							AND tCSL.enddate IS NULL
+							AND ladder.enddate IS NULL
 						ORDER BY ladder.match_time, ladder.reported_time
 						DESC LIMIT $limit";
 	
