@@ -767,8 +767,8 @@ function getLadderMatches($ladderid, $limit){
 						WHERE ladder.ladderid =$ladderid
 							AND tCSL.enddate IS NULL
 							AND ladder.enddate IS NULL
-						ORDER BY ladder.match_time, ladder.reported_time
-						DESC LIMIT $limit";
+						ORDER BY ladder.match_time DESC 
+						LIMIT $limit";
 	
 	//print $curresidquery;
 	return db_query($curresidquery);
