@@ -111,7 +111,7 @@ function onCancelButtonClicked(){
 	<input type="hidden" name="challengerid" value="<?=$ladderMatchArray['challenger_id'] ?>">
 	<input type="hidden" name="challengeeid" value="<?=$ladderMatchArray['challengee_id'] ?>">
 	<input type="hidden" name="courttypeid" value="<?=$ladderMatchArray['courttypeid'] ?>">
-
+    <input type="hidden" name="ladderid" value="<?=$ladderMatchArray['ladderid'] ?>">
 </form>
 
 

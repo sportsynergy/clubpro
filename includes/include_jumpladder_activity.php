@@ -73,7 +73,18 @@ while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){
 }
 ?>
 </table>
-  <div style="margin-top: 20px"> <span class="smallbold">Ladders last updated</span> Never
+  <div style="margin-top: 20px"> <span class="smallbold">Ladders last updated:</span> 
+  <?php
+    
+    if( is_null($ladderdetails->lastUpdated) ){
+      $lastupdated = "Never";
+    } else {
+      //$lastupdated = ladderdetails['lastUpdated'];
+      $lastupdated = $ladderdetails->lastUpdated;
+    }
+    
+  ?>
+  <span class="smallreg"><?=$lastupdated ?></span>
 
 
   </div>

@@ -209,14 +209,15 @@ function adjustDoublesClubLadder($winner1userid, $winner2userid, $loser1userid, 
  * A ladder group is a block of players in a club ladder that move down when a ladder is adjusted.  Generally
  * this is called first then the winners and losers are set specicially (by id).
  */
-function moveLadderGroup($highestrankedloserposition, $lowestrankedwinnerposition, $clubid, $ladderid) {
+function moveLadderGroup($highestrankedloserposition, $lowestrankedwinnerposition, $ladderid) {
     
     if (isDebugEnabled(2)) logMessage("ladderlib: moveLadderGroup. Moving the ladder group from position $lowestrankedwinnerposition to $highestrankedloserposition");
 
     //Everybody in the ladder between the lowest ranking winner (which moved up) and the highest ranking loser ( which moved down)
-    $everybodyQuery = "SELECT ladder.* from tblClubLadder ladder
-							WHERE ladder.clubid = $clubid
-							AND ladder.enddate IS NULL
+    $everybodyQuery = "SELECT ladder.*, user.firstname, user.lastname
+							FROM tblClubLadder ladder
+							INNER JOIN tblUser user on ladder.userid = user.userid
+							WHERE ladder.enddate IS NULL
 							AND ladder.ladderid = $ladderid
 							AND ladder.ladderposition >= $highestrankedloserposition
 							AND ladder.ladderposition <= $lowestrankedwinnerposition
@@ -227,8 +228,9 @@ function moveLadderGroup($highestrankedloserposition, $lowestrankedwinnerpositio
         $position = $array['ladderposition'];
         $userid = $array['userid'];
         $newposition = $position + 1;
+		$fullname = $array['firstname'] + " " + $array['lastname'];
         
-        if (isDebugEnabled(2)) logMessage("ladderlib: moveLadderGroup.  Setting person at position $position to position $newposition for id $id and user $userid");
+        if (isDebugEnabled(2)) logMessage("ladderlib: moveLadderGroup.  Setting person at position $position to position $newposition for id $id and user $fullname ($userid)");
         $updateLoserQuery = "UPDATE tblClubLadder 
 								SET ladderposition = $newposition   
 								WHERE id = $id";
@@ -288,16 +290,16 @@ function moveDoublesLadderGroup($highestRankedLoserPosition, $lowestRankedWinner
  * 		loseroldspot
  *
  */
-function adjustClubLadder($winneruserid, $loseruserid, $ladderid, $clubid) {
+function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  winnerid = $winneruserid\n loserid = $loseruserid\n courttypeid = $courttypeid\n clubid = $clubid");
-    $var = new clubpro_obj;
+    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  winnerid = $winneruserid\n loserid = $loseruserid\n ladderid = $ladderid");
+    
+	$var = new clubpro_obj;
     $var->winnerid = $winneruserid;
     $var->loserid = $loseruserid;
     $winnerquery = "SELECT ladder.ladderposition, ladder.going, ladder.id 
 						FROM tblClubLadder ladder 
 						WHERE ladder.ladderid = $ladderid 
-						AND ladder.clubid =  $clubid 
 						AND ladder.userid = $winneruserid
 						AND ladder.enddate IS NULL";
     $winnerresult = db_query($winnerquery);
@@ -310,7 +312,6 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid, $clubid) {
     $loserquery = "SELECT ladder.ladderposition, ladder.going, ladder.id 
 						FROM tblClubLadder ladder 
 						WHERE ladder.ladderid = $ladderid 
-						AND ladder.clubid =  $clubid 
 						AND ladder.userid = $loseruserid
 						AND ladder.enddate IS NULL";
 
@@ -350,11 +351,11 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid, $clubid) {
         if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  Winner is already ahead of the loser. Just update the going attribute");
 
         //add new record for the guy that lost
-        $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, clubid, going) VALUES (
-                          $loseruserid,$ladderid,$loserposition,$clubid,'$lgoing')";
+        $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going) VALUES (
+                          $loseruserid,$ladderid,$loserposition,'$lgoing')";
         db_query($query);
-        $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, clubid, going) VALUES (
-                          $winneruserid,$ladderid,$winnerposition,$clubid,'$wgoing')";
+        $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going) VALUES (
+                          $winneruserid,$ladderid,$winnerposition,'$wgoing')";
         db_query($query);
 
         //end date old ones
@@ -364,15 +365,15 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid, $clubid) {
     }
     
     if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  The winner was ranked below the loser, adjusting...");
-    moveLadderGroup($loserposition, $winnerposition, $clubid, $ladderid);
+    moveLadderGroup($loserposition, $winnerposition, $ladderid);
     
     if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  Setting winner ($winneruserid) to position $loserposition and going to $wgoing");
 
     //The winner gets the losers (higher) ladder position
     //add new record for the guy that won
 
-    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, clubid, going) VALUES (
-                          $winneruserid,$ladderid,$loserposition,$clubid,'$wgoing')";
+    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going) VALUES (
+                          $winneruserid,$ladderid,$loserposition,'$wgoing')";
     db_query($query);
 
     //end date old one
@@ -387,8 +388,8 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid, $clubid) {
     if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  Setting loser ($loseruserid) down one to $newloserposition and going to $lgoing");
 
     //add new record for the guy that lost
-    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, clubid, going) VALUES (
-                          $loseruserid,$ladderid,$newloserposition,$clubid,'$lgoing')";
+    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going) VALUES (
+                          $loseruserid,$ladderid,$newloserposition,'$lgoing')";
     db_query($query);
 
     // end date the old one
@@ -492,8 +493,8 @@ function moveUpOneInClubLadder($ladderid, $clubid, $userid) {
     if (isDebugEnabled(2)) logMessage("ladderlib: moveUpOneInClubLadder:  userid " . $movingDownArray['userid'] . " is moving down");
 
     //Add a new record for guy going up a spot
-    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, clubid, going, locked) VALUES (
-                          $movingUpArray[userid],$ladderid,$movingDownArray[ladderposition],$clubid,'$movingUpArray[going]','$movingUpArray[locked]')";
+    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going, locked) VALUES (
+                          $movingUpArray[userid],$ladderid,$movingDownArray[ladderposition],'$movingUpArray[going]','$movingUpArray[locked]')";
     db_query($query);
 
     //enddate the old one
@@ -503,8 +504,8 @@ function moveUpOneInClubLadder($ladderid, $clubid, $userid) {
     if (isDebugEnabled(2)) logMessage("ladderlib: moveUpOneInClubLadder:  moved ladderid " . $movingUpArray['id'] . " to ladder position: " . $movingDownArray['ladderposition']);
 
     //Add a new record for guy going down a spot
-    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, clubid, going, locked) VALUES (
-                          $movingDownArray[userid],$ladderid,$movingUpArray[ladderposition],$clubid,'$movingDownArray[going]', '$movingDownArray[locked]')";
+    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going, locked) VALUES (
+                          $movingDownArray[userid],$ladderid,$movingUpArray[ladderposition],'$movingDownArray[going]', '$movingDownArray[locked]')";
     db_query($query);
 
     //end date the old one

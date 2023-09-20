@@ -62,7 +62,7 @@ if (match_referer() && isset($_POST['submitme'])) {
                     //SEt the winner and loser
                     $winneruserid = $frm['player1'];
                     $loseruserid = $frm['player2'];
-                    adjustClubLadder($winneruserid, $loseruserid, $frm['courttype'], get_clubid());
+                    adjustClubLadder($winneruserid, $loseruserid, $frm['ladderid']);
                 }
             } elseif ($frm['usertype'] == "1") {
                 

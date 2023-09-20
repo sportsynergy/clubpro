@@ -84,7 +84,7 @@ if (match_referer() && isset($_POST["submitme"])) {
         scoreChallengeMatch($score, $frm['challengematchid']);
 
         // Update the ladder
-        $details = adjustClubLadder($winneruserid, $loseruserid, $frm['courttypeid'], get_clubid());
+        $details = adjustClubLadder($winneruserid, $loseruserid, $frm['ladderid'], get_clubid());
 
         //Unlock the players
         unlockPlayers($winneruserid, $loseruserid, $frm['courttypeid']);
