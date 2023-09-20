@@ -16,7 +16,7 @@ date_default_timezone_set('GMT');
 
 
 $service = new LadderUpdateService();
-$service->getJumpLadders();
+$service->updateJumpLadders();
 
 class LadderUpdateService{
 
@@ -25,9 +25,9 @@ class LadderUpdateService{
 	* Get all jump ladder
 	*
 	*/
-	public function getJumpLadders(){
+	public function updateJumpLadders(){
 
-        if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders. Starting...");
+        if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. Starting...");
         
         $yesterday = date('Y-m-d', time() - 60 * 60 * 24);
         $yesterday = '2023-09-17';
@@ -65,7 +65,9 @@ class LadderUpdateService{
                                 AND tCSL.enddate IS NULL
                                 AND ladder.enddate IS NULL
                                 AND date(ladder.match_time) = '$yesterday'
-                            ORDER BY ladder.match_time DESC";
+                            ORDER BY ladder.match_time ASC";
+
+                if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders query $query");
 
                 if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders. ".$ladder_array['id']);
 
@@ -78,21 +80,16 @@ class LadderUpdateService{
 
                 }
 
+                // Update last updated
+                if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. updated lastUpdate".$ladder_array['id']);
+
+                $query = "UPDATE tblClubSiteLadders SET lastUpdated = CURRENT_TIMESTAMP WHERE id = ".$ladder_array['id'];
+                $result = db_query($query);
+
+        }
+
+    
     }
-}
-
-
-/*
-
-
-
-
-2.) For each one, go through each ladder
-3.) Get all scores that were reported for the previous day
-4.) update ladder for each one, and log it
-5.) Update ladder last update time
-3
-*/
 
 
 }
