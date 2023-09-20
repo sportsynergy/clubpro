@@ -623,8 +623,6 @@ function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate,
 
 function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score){
 	
-	if( isDebugEnabled(1) ) logMessage("ladderlib.printLadderMatchRow: challengerName: $winner->fullname loser $loser->fullname ");
-	
 	?>
 	
 	<tr>
