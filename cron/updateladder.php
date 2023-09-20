@@ -83,7 +83,7 @@ class LadderUpdateService{
                 if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. updated lastUpdate for ladder #".$ladder_array['id']);
 
                 $query = "UPDATE tblClubSiteLadders SET lastUpdated = CURRENT_TIMESTAMP WHERE id = ".$ladder_array['id'];
-                
+                db_query($query);
 
         }
 
