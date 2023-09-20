@@ -37,7 +37,7 @@
 
   <?php
 
-$ladderMatchResult = getLadderMatches($ladderid, 15 );
+$ladderMatchResult = getLadderMatches($ladderid, 40 );
 
 if(mysqli_num_rows($ladderMatchResult) > 0){ 
 
