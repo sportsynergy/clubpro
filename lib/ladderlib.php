@@ -230,7 +230,7 @@ function moveLadderGroup($highestrankedloserposition, $lowestrankedwinnerpositio
         $newposition = $position + 1;
 		$fullname = $array['firstname'] + " " + $array['lastname'];
         
-        if (isDebugEnabled(2)) logMessage("ladderlib: moveLadderGroup.  Setting person at position $position to position $newposition for id $id and user $fullname$userid");
+        if (isDebugEnabled(2)) logMessage("ladderlib: moveLadderGroup.  Setting person at position $position to position $newposition for id $id and user $fullname ($userid)");
         $updateLoserQuery = "UPDATE tblClubLadder 
 								SET ladderposition = $newposition   
 								WHERE id = $id";
@@ -563,5 +563,455 @@ function printChallengeMatch($user1, $user2, $courtname, $time, $reservationid, 
 <?
 }
 
+/**
+ * Writes out HTML for the challenge match
+ * 
+ * @param unknown_type $id
+ * @param unknown_type $challengerName
+ * @param unknown_type $challengeeName
+ * @param unknown_type $challengeDate
+ * @param unknown_type $scored
+ * @param unknown_type $inreservation
+ */
+function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate, $scored, $inreservation, $singles ){
+	
+	$isscored = empty($scored) ? false : true;
+	$isinreservation = $inreservation ? true : false;
+	$loserscore = 3 - abs($scored);
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.printChallengeMatch: challengerName: $challengerName challengeeName $challengeeName scored: $isscored isinreservation: $isinreservation");
+	
+	?>
+	
+	 <li> 
+			 <span class="bold">
+			<?=formatDateString( $challengeDate)?><br/>
+			</span>
+			<span class="normal">
+			<? 
+			
+			// Print out the players
+			if( $isscored && $scored > 0 ){
+				print "$challengerName challenged and defeated $challengeeName 3-$loserscore.";
+			} 
+			else if($isscored && $scored < 0){
+				print "$challengerName challenged and lost to $challengeeName 3-$loserscore.";
+			}
+			else if( !$isscored  && (get_roleid() == 2 || get_roleid() == 4 || $inreservation)  ){ ?>
+				 <?=$challengerName." challenged ". $challengeeName?>.  Click <a title="Click on me to record the score" href="javascript:submitForm('recordScoreForm<?=$id?>')">here</a> to put the score in.
+				
+			<? } else {
+				print "$challengerName challenged $challengeeName.";
+			}
+			
+			?>
+			</span>
+			
+    
+    <form name="recordScoreForm<?=$id?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder.php" method="post">
+           <input type="hidden" name="laddertype" value="<?=$singles?"player":"team"?>">
+           <input type="hidden" name="source" value="ladder">
+           <input type="hidden" name="challengematchid" value="<?=$id?>">
+     </form>
+     
+     </li>
+
+<?
+	
+}
 
 
+function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.printLadderMatchRow: challengerName: $winner->fullname loser $loser->fullname ");
+	
+	?>
+	
+	<tr>
+		<td>
+			<?=formatDateStringSimple( $challengeDate)?>
+		</td>
+		<td>
+			<?=$winner->fullname ?>
+		</td>
+		<td>
+			<?=$loser->fullname ?>
+		</td>
+		<td>
+			<?=$score ?>
+		</td>
+		
+		
+	</tr>
+	<?
+
+}
+/**
+ * 
+ * @param $id
+ * @param $challengerName
+ * @param $challengeeName
+ * @param $challengeDate
+ * @param $scored
+ * @param $inreservation
+ * @param $singles
+ */
+function printLadderEventRow($id, $challenger, $challengee, $challengeDate, $scored, $inreservation, $singles){
+	
+	$isscored = empty($scored) ? false : true;
+	$isinreservation = $inreservation ? true : false;
+	$loserscore = 3 - abs($scored);
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.printChallengeMatch: challengerName: $challenger->fullname challengeeName $challengee->fullname scored: $isscored isinreservation: $isinreservation id: $id");
+	
+	?>
+	
+	<tr>
+		<td>
+			<?=formatDateStringSimple( $challengeDate)?>
+		</td>
+		<td>
+			<?=$challenger->fullname ?>
+		</td>
+		
+		<td>
+			<?=$challengee->fullname ?>
+		</td>
+		<? if($isscored && $scored > 0 ){ ?>
+		<td align="center">
+			<span title="<?="3-".$loserscore?>"><?=$challenger->fullname ?></span>
+		</td>
+		<? } elseif( $isscored && $scored < 0){?>
+		<td align="center">
+			<span title="<?="3-".$loserscore?>"><?=$challengee->fullname ?></span>
+		</td>
+		
+		<? } elseif(!$isscored  && (get_roleid() == 2 || get_roleid() == 4 || $inreservation) ) {?>
+			  <td align="center">
+			  	<a title="Click on me to record the score" href="javascript:recordScore('<?=$id?>','<?=$singles?"player":"team"?>')">enter score</a> 
+
+			  	<? if(get_roleid() == 2 || get_roleid() == 4){ ?>
+			  		<a title="Click on me to remove this challenge" href="javascript:removeChallengeMatch('<?=$id?>', '<?=$challenger->id?>', '<?=$challengee->id?>')"> 
+			  			<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" title="remove this challenge"/>
+			  		</a> 
+			  	<?}?>
+			  </td>
+		<? } else { ?>
+		<td align="center">
+			--
+		</td>
+		<? } ?>
+	</tr>
+	<?
+}
+
+/**
+ * Determines whether or not the person can challenge or now
+ */
+function isLadderChallengable($myposition, $playerposition){
+	
+	//if( isDebugEnabled(1) ) logMessage("ladderlib: isLadderChallengable myposition: $myposition playerposition $playerposition");
+	
+	if ( isJumpLadderRankingScheme() ){
+		return false;
+	}
+
+	$range = getChallengeRange();
+	
+	$value = $myposition-$range;
+	
+	//if( isDebugEnabled(1) ) logMessage("ladderlib: isLadderChallengable checking range: $range is ". $value);
+	
+	if($playerposition >= $myposition-$range && $playerposition < $myposition){
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
+
+/**
+ * Gets the recent challenges matches
+ * 
+ * @param $siteid
+ */
+function getLadderDetails($ladderid){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderDetails: Ladder $ladderid");
+	
+	$query = "SELECT * from tblClubSiteLadders WHERE id = $ladderid";
+	
+	$result = db_query($query);
+	return db_fetch_object($result);
+	
+
+}
+
+function getLadderMatches($ladderid, $limit){
+
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderMatches: Getting ladder matches for ladderid $ladderid with limit $limit");
+	
+	$curresidquery = "SELECT
+						winner.firstname AS winner_first,
+						winner.lastname AS winner_last,
+						concat_ws(' ', winner.firstname, winner.lastname) AS winner_full,
+						winner.userid AS winner_id,
+						loser.firstname AS loser_first,
+						loser.lastname AS loser_last,
+						loser.userid AS loser_id,
+						ladder.id, ladder.score, ladder.match_time
+						FROM tblLadderMatch ladder
+						inner join tblUsers winner on ladder.winnerid = winner.userid
+						inner join tblUsers loser on ladder.loserid = loser.userid
+						inner join tblClubSiteLadders tCSL on ladder.ladderid = tCSL.id
+						WHERE ladder.ladderid =$ladderid
+							AND tCSL.enddate IS NULL
+							AND ladder.enddate IS NULL
+						ORDER BY ladder.match_time DESC 
+						LIMIT $limit";
+	
+	//print $curresidquery;
+	return db_query($curresidquery);
+}
+/**
+ * Gets the recent challenges matches
+ * 
+ * @param $siteid
+ */
+function getChallengeMatches($siteid, $ladderid, $limit){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getChallengeMatches: Getting challenge matches $siteid and ladderid $ladderid limit $limit");
+	
+	$curresidquery = "SELECT 	
+							challenge.id, challenge.score, challenge.date, 
+							challenger.firstname AS challenger_first, 
+							challenger.lastname AS challenger_last, 
+							concat_ws(' ', challenger.firstname, challenger.lastname) AS challenger_full,
+							challenger.userid AS challenger_id, 
+							challengee.firstname AS challengee_first, 
+							challengee.lastname AS challengee_last, 
+							challengee.userid AS challengee_id, 
+							challengerladder.locked AS challenger_locked, 
+							challengeeladder.locked AS challengee_locked
+						FROM tblChallengeMatch challenge
+							INNER JOIN tblUsers challenger ON challenge.challengerid = challenger.userid
+							INNER JOIN tblClubLadder challengerladder ON challenge.challengerid = challengerladder.userid
+							INNER JOIN tblUsers challengee ON challenge.challengeeid = challengee.userid
+							INNER JOIN tblClubLadder challengeeladder ON challenge.challengeeid = challengeeladder.userid
+						WHERE challenge.enddate IS NULL 
+							AND challenge.ladderid =$ladderid
+							AND challenge.siteid = $siteid
+							AND challengerladder.enddate IS NULL 
+							AND challengeeladder.enddate IS NULL 
+					 ORDER BY challenge.date DESC LIMIT $limit";
+	
+	//print $curresidquery;
+	return db_query($curresidquery);
+}
+
+
+/**
+ * Gets the recent challenges matches for doubles ladders
+ * 
+ * @param $siteid
+ * @param $courttypeid
+ * @param $limit
+ */
+function getDoublesChallengeMatches($siteid, $ladderid, $limit){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getChallengeMatches: Getting challenge matches $siteid and ladderid $ladderid limit $limit");
+	
+	$curresidquery = "SELECT 	
+							challenge.id, challenge.score, challenge.date, challenge.challengerid, challenge.challengeeid,
+							challengerladder.locked AS challenger_locked, 
+							challengeeladder.locked AS challengee_locked
+						FROM tblChallengeMatch challenge
+							INNER JOIN tblClubLadder challengerladder ON challenge.challengerid = challengerladder.userid
+							INNER JOIN tblClubLadder challengeeladder ON challenge.challengeeid = challengeeladder.userid
+						WHERE challenge.enddate IS NULL 
+							AND challenge.ladderid =$ladderid
+							AND challenge.siteid = $siteid
+							AND challengerladder.enddate IS NULL 
+							AND challengeeladder.enddate IS NULL 
+					 ORDER BY challenge.date DESC LIMIT $limit";
+	
+	//print $curresidquery;
+	$result =  db_query($curresidquery);
+	
+	$array = array();
+	
+	while($ladder = mysqli_fetch_array($result)){
+		
+		//get users for team id
+		
+		
+		$challengerarray = getFullnameForTeamPlayers($ladder['challengerid']);
+		$challengeearray = getFullnameForTeamPlayers($ladder['challengeeid']);
+		
+		$challenger1 = $challengerarray[0]['lastname'];
+		$challenger2 = $challengerarray[1]['lastname'];
+		
+		$challengee1 = $challengeearray[0]['lastname'];
+		$challengee2 = $challengeearray[1]['lastname'];
+		
+		$playerids = array($challengerarray[0]['userid'],$challengerarray[1]['userid'],$challengeearray[0]['userid'],$challengeearray[1]['userid']);
+
+		$item = array('id' => $ladder['id'], 
+					'score' => $ladder['score'], 
+					'date' => $ladder['date'], 
+					'challenger_team_id' => $ladder['challengerid'],
+					'challenger_team' => $challenger1."/".$challenger2,
+					'challengee_team_id' => $ladder['challengeeid'],
+					'challengee_team' => $challengee1."/".$challengee2,
+					'ids' => $playerids);
+		$array[] = $item;
+	}
+	
+	return $array;
+}
+
+/**
+ * Get the recent doubles challenge matches
+ * 
+ * @param $siteid
+ * @param $courttypeid
+ * @param $limit
+ */
+function getTeamChallengeMatches($siteid, $ladderid, $limit){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getTeamChallengeMatches: Getting challenge matches $siteid and ladderid $ladderid limit $limit");
+	
+	$query = "";
+}
+
+/**
+ * 
+ * @param $challengeMatchId
+ */
+function loadLadderMatch($challengeMatchId){
+	
+	
+	logMessage("ladderlib.loadLadderMatch: Getting challenge match challengeMatchId $challengeMatchId");
+	
+	$curresidquery = "SELECT 	
+							challenge.id, challenge.score, challenge.date, challenge.courttypeid,
+							challenger.firstname AS challenger_first, 
+							challenger.lastname AS challenger_last,
+							concat_ws(' ', challenger.firstname, challenger.lastname) AS challenger_full, 
+							challenger.userid AS challenger_id, 
+							challengee.firstname AS challengee_first, 
+							challengee.lastname AS challengee_last, 
+							concat_ws(' ', challengee.firstname, challengee.lastname) AS challengee_full,
+							challengee.userid AS challengee_id, 
+							challengerladder.locked AS challenger_locked, 
+							challengeeladder.locked AS challengee_locked
+						FROM tblChallengeMatch challenge
+							INNER JOIN tblUsers challenger ON challenge.challengerid = challenger.userid
+							INNER JOIN tblClubLadder challengerladder ON challenge.challengerid = challengerladder.userid
+							INNER JOIN tblUsers challengee ON challenge.challengeeid = challengee.userid
+							INNER JOIN tblClubLadder challengeeladder ON challenge.challengeeid = challengeeladder.userid
+						WHERE challenge.id =$challengeMatchId
+							AND challengerladder.enddate IS NULL 
+							AND challengeeladder.enddate IS NULL";
+	
+	//print $curresidquery;
+	$result = db_query($curresidquery);
+	
+	$ladder = mysqli_fetch_array($result);
+		
+	$array = array('id' => $ladder['id'], 
+				'score' => $ladder['score'], 
+				'date' => $ladder['date'], 
+				'challenger_full' => $ladder['challenger_full'],
+				'challengee_full' => $ladder['challengee_full'],
+				'courttypeid' => $ladder['courttypeid'],
+				'challengee_id' => $ladder['challengee_id'],
+				'challenger_id' => $ladder['challenger_id']);
+	
+	
+	return $array;
+}
+
+
+
+/**
+ * Used for loading up the challenge match for reporting the score.
+ * 
+ * @param $challengeMatchId
+ */
+function loadDoublesLadderMatch($challengeMatchId){
+	
+	logMessage("ladderlib.loadDoublesLadderMatch: Getting challenge match challengeMatchId $challengeMatchId");
+	
+	$curresidquery = "SELECT 	
+							challenge.id, challenge.score, challenge.date, challenge.courttypeid,
+							challengerladder.locked AS challenger_locked, 
+							challengeeladder.locked AS challengee_locked,
+							challenge.challengerid,
+							challenge.challengeeid
+						FROM tblChallengeMatch challenge
+							INNER JOIN tblClubLadder challengerladder ON challenge.challengerid = challengerladder.userid
+							INNER JOIN tblClubLadder challengeeladder ON challenge.challengeeid = challengeeladder.userid
+						WHERE challenge.id =$challengeMatchId
+							AND challengerladder.enddate IS NULL 
+							AND challengeeladder.enddate IS NULL";
+	
+	//print $curresidquery;
+	$result = db_query($curresidquery);
+	
+	$ladder = mysqli_fetch_array($result);
+	
+	//get users for team id
+	$challengerarray = getFullnameForTeamPlayers($ladder['challengerid']);
+	$challengeearray = getFullnameForTeamPlayers($ladder['challengeeid']);
+	
+	$challenger1 = $challengerarray[0]['firstname']." ".$challengerarray[0]['lastname'];
+	$challenger2 = $challengerarray[1]['firstname']." ".$challengerarray[1]['lastname'];
+	
+	$challengee1 = $challengeearray[0]['firstname']." ".$challengeearray[0]['lastname'];
+	$challengee2 = $challengeearray[1]['firstname']." ".$challengeearray[1]['lastname'];
+	
+	$playerids = array($challengerarray[0]['userid'],$challengerarray[1]['userid'],$challengeearray[0]['userid'],$challengeearray[1]['userid']);
+
+	$array = array('id' => $ladder['id'], 
+				'score' => $ladder['score'], 
+				'date' => $ladder['date'], 
+				'challenger_full' => $challenger1." and ".$challenger2,
+				'challengee_full' => $challengee1." and ".$challengee2,
+				'courttypeid' => $ladder['courttypeid'],
+				'challengee_id' => $ladder['challengeeid'],
+				'challenger_id' => $ladder['challengerid'],
+				'ids' => $playerids);
+		
+
+	return $array;
+	
+}
+
+function unlockLadderPlayers($challengerid, $challengeeid, $ladderid){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.unlockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on ladderid $ladderid");
+	
+	$query = "UPDATE tblClubLadder ladder SET ladder.locked = 'n' WHERE ladder.userid = $challengerid OR ladder.userid = $challengeeid
+				AND ladder.enddate IS NULL and ladder.ladderid = $ladderid and ladder.clubid = ".get_clubid();
+	
+	db_query($query);
+	
+}
+
+/**
+ * Locks the players in the ladder
+ * 
+ * @param $challengerid
+ * @param $challengeeid
+ */
+function lockLadderPlayers($challengerid, $challengeeid, $ladderid){
+	
+	if( isDebugEnabled(1) ) logMessage("ladderlib.lockLadderPlayers: locking challenger:  $challengerid and challengee:  $challengeeid on ladderid $ladderid");
+	
+	$query = "UPDATE tblClubLadder ladder SET ladder.locked = 'y' WHERE ladder.userid = $challengerid OR ladder.userid = $challengeeid
+				AND ladder.enddate IS NULL and ladder.ladderid = $ladderid and ladder.clubid = ".get_clubid();
+	
+	db_query($query);
+}
