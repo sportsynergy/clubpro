@@ -292,7 +292,7 @@ function moveDoublesLadderGroup($highestRankedLoserPosition, $lowestRankedWinner
  */
 function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  winnerid = $winneruserid\n loserid = $loseruserid\n ladderid = $ladderid");
+    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  winnerid = $winneruserid loserid = $loseruserid ladderid = $ladderid");
     
 	$var = new clubpro_obj;
     $var->winnerid = $winneruserid;
@@ -348,7 +348,7 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
     
     if ($winnerposition < $loserposition) {
         
-        if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  Winner is already ahead of the loser. Just update the going attribute");
+        if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  Winner is already ahead of the loser. Just update the going attribute");
 
         //add new record for the guy that lost
         $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going) VALUES (
@@ -364,10 +364,10 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
         return $var;
     }
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  The winner was ranked below the loser, adjusting...");
+    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  The winner was ranked below the loser, adjusting...");
     moveLadderGroup($loserposition, $winnerposition, $ladderid);
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  Setting winner ($winneruserid) to position $loserposition and going to $wgoing");
+    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  Setting winner ($winneruserid) to position $loserposition and going to $wgoing");
 
     //The winner gets the losers (higher) ladder position
     //add new record for the guy that won

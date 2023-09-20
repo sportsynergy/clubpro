@@ -255,7 +255,6 @@ function getLadder($ladderid) {
 						tblClubLadder ladder
                     WHERE 
 						users.userid = ladder.userid
-                    AND ladder.clubid=" . get_clubid() . "
                     AND ladder.ladderid=$ladderid
 					AND ladder.enddate IS NULL
                     ORDER BY ladder.ladderposition";

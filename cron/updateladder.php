@@ -30,7 +30,7 @@ class LadderUpdateService{
         if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. Starting...");
         
         $yesterday = date('Y-m-d', time() - 60 * 60 * 24);
-        $yesterday = '2023-09-17';
+        $yesterday = '2023-09-18';
 
         $query = "SELECT tCSL.*
                 FROM tblClubSites sites
@@ -67,8 +67,7 @@ class LadderUpdateService{
                                 AND date(ladder.match_time) = '$yesterday'
                             ORDER BY ladder.match_time ASC";
 
-                if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders query $query");
-
+    
                 if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders. ".$ladder_array['id']);
 
                 $result = db_query($query);
@@ -81,10 +80,10 @@ class LadderUpdateService{
                 }
 
                 // Update last updated
-                if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. updated lastUpdate".$ladder_array['id']);
+                if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. updated lastUpdate for ladder #".$ladder_array['id']);
 
                 $query = "UPDATE tblClubSiteLadders SET lastUpdated = CURRENT_TIMESTAMP WHERE id = ".$ladder_array['id'];
-                $result = db_query($query);
+                
 
         }
 
