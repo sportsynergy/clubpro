@@ -228,7 +228,7 @@ function moveLadderGroup($highestrankedloserposition, $lowestrankedwinnerpositio
         $position = $array['ladderposition'];
         $userid = $array['userid'];
         $newposition = $position + 1;
-		$fullname = $array['firstname'] + " " + $array['lastname'];
+		$fullname = $array['firstname']. ' '. $array['lastname'];
         
         if (isDebugEnabled(2)) logMessage("ladderlib: moveLadderGroup.  Setting person at position $position to position $newposition for id $id and user $fullname ($userid)");
         $updateLoserQuery = "UPDATE tblClubLadder 
