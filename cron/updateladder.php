@@ -30,7 +30,6 @@ class LadderUpdateService{
         if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. Starting...");
         
         $yesterday = date('Y-m-d', time() - 60 * 60 * 24);
-        $yesterday = '2023-09-18';
 
         $query = "SELECT tCSL.*
                 FROM tblClubSites sites
@@ -61,29 +60,32 @@ class LadderUpdateService{
                             inner join tblUsers winner on ladder.winnerid = winner.userid
                             inner join tblUsers loser on ladder.loserid = loser.userid
                             inner join tblClubSiteLadders tCSL on ladder.ladderid = tCSL.id
-                            WHERE ladder.ladderid = ".$ladder_array['id']."
-                                AND tCSL.enddate IS NULL
+                            WHERE ladder.ladderid = ".$ladder_array['id']." AND tCSL.enddate IS NULL
                                 AND ladder.enddate IS NULL
                                 AND date(ladder.match_time) = '$yesterday'
-                            ORDER BY ladder.match_time ASC";
-
-    
-                if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders. ".$ladder_array['id']);
-
+                             ORDER BY ladder.match_time ASC, ladder.reported_time ASC";
+               
+                
                 $result = db_query($query);
                 while($match_array = mysqli_fetch_array($result) ){
-
                     if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders ".$match_array['winner_full']. " defeated ". $match_array['loser_full']. " ". $match_array['score']);
-
                     adjustClubLadder( $match_array['winner_id'], $match_array['loser_id'], $match_array['ladder_id']);
-
+            
                 }
 
-                // Update last updated
-                if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. updated lastUpdate for ladder #".$ladder_array['id']);
+                if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders ".$ladder_array['id'] . " has ". mysqli_num_rows($result). " results");
+                
+                // If there are adjustments in the ladder
+                if ( mysqli_num_rows($result) > 0 ){
 
-                $query = "UPDATE tblClubSiteLadders SET lastUpdated = CURRENT_TIMESTAMP WHERE id = ".$ladder_array['id'];
-                db_query($query);
+                    // Update last updated
+                    if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. updated lastUpdate for ladder #".$ladder_array['id']);
+    
+                    $query = "UPDATE tblClubSiteLadders SET lastUpdated = CURRENT_TIMESTAMP WHERE id = ".$ladder_array['id'];
+                    db_query($query);
+
+                }
+               
 
         }
 

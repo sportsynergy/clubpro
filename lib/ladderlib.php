@@ -766,7 +766,7 @@ function getLadderMatches($ladderid, $limit){
 						WHERE ladder.ladderid =$ladderid
 							AND tCSL.enddate IS NULL
 							AND ladder.enddate IS NULL
-						ORDER BY ladder.match_time DESC 
+						ORDER BY ladder.match_time DESC , ladder.reported_time DESC
 						LIMIT $limit";
 	
 	//print $curresidquery;
@@ -1013,3 +1013,123 @@ function lockLadderPlayers($challengerid, $challengeeid, $ladderid){
 	
 	db_query($query);
 }
+
+
+/**
+ * Gets the ladder for the given court type
+ *
+ * @param unknown_type $courttypeid
+ */
+function getLadder($ladderid) {
+    
+    if (isDebugEnabled(1)) logMessage("player_ladder.getLadder: getting the players in the ladder for ladderid $ladderid");
+    $rankquery = "SELECT 
+						users.userid,
+						ladder.ladderposition,
+						ladder.going,
+						users.firstname, 
+						users.lastname,
+						concat_ws(' ', users.firstname, users.lastname) as fullname,
+						users.email,
+						ladder.locked
+                    FROM 
+						tblUsers users, 
+						tblClubLadder ladder
+                    WHERE 
+						users.userid = ladder.userid
+                    AND ladder.ladderid=$ladderid
+					AND ladder.enddate IS NULL
+                    ORDER BY ladder.ladderposition";
+    
+    return db_query($rankquery);
+}
+/**
+ * True is user is, false if player isn't
+ * @param $userid
+ */
+function isPlayingInLadder($userid, $ladderid) {
+    $query = "SELECT 1 FROM tblClubLadder 
+                WHERE userid = $userid 
+                AND ladderid = $ladderid 
+                AND clubid = " . get_clubid() . " AND enddate IS NULL";
+    
+    $result = db_query($query);
+    $rows = mysqli_num_rows($result);
+    
+    if ($rows > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+/**
+ * Send off an email to the challenger and the challengee
+ *
+ * @param unknown_type $challengerid
+ * @param unknown_type $challengeeid
+ */
+function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
+    
+    if (isDebugEnabled(1)) logMessage("player_ladder.sendEmailsForLadderMatch: sending out emails to challenger $challengerid and challengee $challengeeid ");
+
+    //Set some variables
+    $subject = get_clubname() . " - Ladder Match Confirmation";
+
+    /* load up the user record for the winner */
+    $query = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
+						FROM tblUsers users
+						WHERE users.userid = '$challengerid'";
+    $qid = db_query($query);
+    $challenger = db_fetch_object($qid);
+
+    /* load up the user record for the winner */
+    $query = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email 
+						FROM tblUsers users
+						WHERE users.userid = '$challengeeid'";
+    $qid = db_query($query);
+    $challengee = db_fetch_object($qid);
+
+    /* email the user with the new account information */
+    $var = new clubpro_obj;
+    $var->challenger_firstname = $challenger->firstname;
+    $var->challenger_fullname = $challenger->firstname . " " . $challenger->lastname;
+    $var->challengee_firstname = $challengee->firstname;
+    $var->challengee_fullname = $challengee->firstname . " " . $challengee->lastname;
+    $var->support = $_SESSION["CFG"]["support"];
+    $template = get_sitecode();
+    $challenger_emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/confirm_ladder_match_challenger.php", $var);
+    $challenger_emailbody = nl2br($challenger_emailbody);
+
+    // Provide Content for Challenger
+    $challenger_email = array(
+        $challenger->email => array(
+            'name' => $challenger->firstname
+        )
+    );
+    $content = new clubpro_obj;
+    $content->line1 = $challenger_emailbody;
+    $content->clubname = get_clubname();
+
+
+    //Send the email
+    send_email($subject, $challenger_email, $content, "Ladder Match");
+
+    // Provide Content for Challengee
+    $challengee_email = array(
+        $challengee->email => array(
+            'name' => $challengee->firstname
+        )
+    );
+    $content = new clubpro_obj;
+    $message = nl2br($message);
+    $content->line1 = $message;
+    $content->clubname = get_clubname();
+    $from_email = "$var->challenger_fullname <$challenger->email>";
+    $template = get_sitecode() . "-blank";
+    $subject = get_clubname() . " - You've been challenged in a ladder match";
+
+    //Send the email
+    send_email($subject, $challengee_email, $content, "Ladder Match");
+}
+
+?>
