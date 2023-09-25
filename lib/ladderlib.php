@@ -464,7 +464,6 @@ function moveUpOneInClubLadder($ladderid, $clubid, $userid) {
     $query = "SELECT ladder.* 
 				FROM tblClubLadder ladder
 				WHERE ladder.ladderid = $ladderid
-				AND ladder.clubid = $clubid
 				AND ladder.userid = $userid
 				AND ladder.enddate IS NULL";
     $result = db_query($query);
