@@ -57,7 +57,6 @@ function adjustDoublesClubLadder($winner1userid, $winner2userid, $loser1userid, 
     $winner1query = "SELECT ladder.ladderposition 
 						FROM tblClubLadder ladder 
 						WHERE ladder.ladderid = $ladderid 
-						AND ladder.clubid =  $clubid 
 						AND ladder.userid = $winner1userid
 						AND ladder.enddate IS NULL";
     $winner1result = db_query($winner1query);
@@ -67,7 +66,6 @@ function adjustDoublesClubLadder($winner1userid, $winner2userid, $loser1userid, 
     $winner2query = "SELECT ladder.ladderposition 
 						FROM tblClubLadder ladder 
 						WHERE ladder.ladderid = $ladderid 
-						AND ladder.clubid =  $clubid 
 						AND ladder.userid = $winner2userid
 						AND ladder.enddate IS NULL";
     $winner2result = db_query($winner2query);
@@ -87,7 +85,6 @@ function adjustDoublesClubLadder($winner1userid, $winner2userid, $loser1userid, 
     $loser2query = "SELECT ladder.ladderposition 
 						FROM tblClubLadder ladder 
 						WHERE ladder.ladderid = $ladderid 
-						AND ladder.clubid =  $clubid 
 						AND ladder.userid = $loser2userid
 						AND ladder.enddate IS NULL";
     $loser2result = db_query($loser2query);
@@ -248,8 +245,7 @@ function moveDoublesLadderGroup($highestRankedLoserPosition, $lowestRankedWinner
 
     //Everybody in the ladder between the lowest ranking winner (which moved up) and the highest ranking loser ( which moved down)
     $everybodyQuery = "SELECT ladder.* from tblClubLadder ladder
-							WHERE ladder.clubid = $clubid
-							AND ladder.enddate IS NULL
+							WHERE ladder.enddate IS NULL
 							AND ladder.ladderid = $ladderid
 							AND ladder.ladderposition >= $highestRankedLoserPosition
 							AND ladder.ladderposition <= $lowestRankedWinnerPosition
@@ -405,7 +401,6 @@ function moveEveryOneInClubLadderUp($ladderid, $clubid, $ladderposition) {
     $query = "SELECT ladder.* 
 				FROM tblClubLadder ladder
 				WHERE ladder.ladderid = $ladderid
-				AND ladder.clubid = $clubid
 				AND ladder.ladderposition >= $ladderposition
 				AND ladder.enddate IS NULL";
     $result = db_query($query);
@@ -431,7 +426,6 @@ function moveEveryOneInClubLadderDown($ladderid, $clubid, $ladderposition) {
     $query = "SELECT ladder.* 
 				FROM tblClubLadder ladder
 				WHERE ladder.ladderid = $ladderid
-				AND ladder.clubid = $clubid
 				AND ladder.ladderposition >= $ladderposition
 				AND ladder.enddate IS NULL";
     $result = db_query($query);
@@ -483,7 +477,6 @@ function moveUpOneInClubLadder($ladderid, $clubid, $userid) {
     $query = "SELECT ladder.* 
 				FROM tblClubLadder ladder
 				WHERE ladder.ladderid = $ladderid
-				AND ladder.clubid = $clubid
 				AND ladder.ladderposition = $oneup
 				AND ladder.enddate IS NULL";
     $result = db_query($query);

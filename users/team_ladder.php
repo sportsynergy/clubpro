@@ -232,7 +232,6 @@ function getLadderTeam($ladderid) {
 				FROM tblClubLadder ladder
 				WHERE ladder.ladderid=$ladderid
 				AND ladder.enddate IS NULL
-				AND ladder.clubid = $clubid
 				ORDER BY ladder.ladderposition";
     $result = db_query($query);
     $array = array();
