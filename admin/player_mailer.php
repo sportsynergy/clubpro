@@ -105,6 +105,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 						 AND siteauth.siteid = $siteid
 						 AND clubuser.enddate IS NULL
 						 AND users.email IS NOT NULL
+                         AND clubuser.recemail ='y'
 						 AND clubuser.clubid=" . get_clubid() . " 
                          AND clubuser.enable ='y'
                          AND clubuser.roleid != 4";
@@ -160,6 +161,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 						 AND siteauth.siteid = $siteid
 						 AND users.gender = 0
                          AND clubuser.enable ='y'
+                         AND clubuser.recemail ='y'
 						 AND clubuser.enddate IS NULL
 						 AND clubuser.clubid=" . get_clubid() . "
                          AND clubuser.roleid != 4";
@@ -218,6 +220,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 						 AND users.gender = 1
 						 AND clubuser.clubid=" . get_clubid() . "
                          AND clubuser.enable = 'y'
+                         AND clubuser.recemail ='y'
 						 AND clubuser.enddate IS NULL
                          AND clubuser.roleid != 4
                          ORDER BY users.lastname";
@@ -240,6 +243,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 										   AND rankings.usertype = 0
 										   AND clubuser.enddate IS NULL
 					                       AND clubuser.enable='y'
+                                           AND clubuser.recemail ='y'
 					                        ORDER BY users.lastname";
             }
 
@@ -280,6 +284,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 							 AND clubuser.enddate IS NULL
 							 AND clubuser.clubid=" . get_clubid() . "
 	                         AND clubuser.roleid != 4
+                             AND clubuser.recemail ='y'
 	                          ORDER BY users.lastname";
         }
 
@@ -300,6 +305,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 			                         AND clubuser.enable = 'y'
 									 AND clubuser.enddate IS NULL
 									 AND clubuser.clubid=" . get_clubid() . "
+                                     AND clubuser.recemail ='y'
 			                         AND clubuser.roleid != 4";
             }
 
@@ -323,6 +329,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 									 AND clubuser.enddate IS NULL
 									 AND clubuser.clubid=" . get_clubid() . "
 			                         AND clubuser.roleid != 4
+                                     AND clubuser.recemail ='y'
 			                          ORDER BY users.lastname";
             }
         }
@@ -339,6 +346,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 								 AND clubuser.enddate IS NULL
 								 AND clubuser.clubid=" . get_clubid() . "
 		                         AND clubuser.enable = 'y'
+                                 AND clubuser.recemail ='y'
 		                          ORDER BY users.lastname";
         }
 
@@ -359,6 +367,7 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 									 AND clubuser.enddate IS NULL
 									 AND clubuser.clubid=" . get_clubid() . "
 			                         AND clubuser.enable = 'y'
+                                     AND clubuser.recemail ='y'
 			                          ORDER BY users.lastname";
             }
 
@@ -378,17 +387,20 @@ function send_message($subject, $message, $siteid, $category, $sport, $ranking) 
 									 AND clubuser.enddate IS NULL
 									 AND clubuser.clubid=" . get_clubid() . "
 			                         AND clubuser.enable = 'y'
+                                     AND clubuser.recemail ='y'
 			                          ORDER BY users.lastname";
             }
         }
     }
     elseif($category == "ladderPlayers"){
-    	$emailidquery = "SELECT DISTINCT users.firstname, users.lastname, users.email
-    						FROM tblUsers users, tblClubLadder ladder
-    						WHERE users.userid = ladder.userid
-    						AND	ladder.enddate IS NULL
-    						AND users.enddate IS NULL
-    						AND ladder.clubid=". get_clubid() ;
+    	$emailidquery = "SELECT users.firstname, users.lastname, users.email
+        FROM tblUsers users
+        INNER JOIN tblClubLadder ladder ON users.userid = ladder.userid
+        INNER JOIN tblClubSiteLadders tCSL on ladder.ladderid = tCSL.id
+        INNER JOIN tblClubSites tCS on ladder.clubid = tCS.clubid
+        WHERE users.userid = ladder.userid
+        AND	ladder.enddate IS NULL
+        AND tCS.clubid=". get_clubid() ;
     }
 
     // run the query on the database
