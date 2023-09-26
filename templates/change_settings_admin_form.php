@@ -323,7 +323,7 @@ function onSubmitButtonClicked(){
             <td colspan="2" height="20"><hr></td>
         </tr>
         <tr>
-            <td class="label">Receive Players Wanted Notifications:</td>
+            <td class="label">Receive Email Notifications:</td>
             <td><select name="recemail"> 
                  <option value="y">Yes</option>
                 <option value="n" <? if($frm["recemail"]=='n') print "selected" ?> >No</option>

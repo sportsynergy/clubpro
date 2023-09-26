@@ -83,7 +83,7 @@ function onSubmitButtonClicked(){
         </tr>
           <tr>
         
-        <td class="label medwidth">Receive Players Wanted Notifications:</td>
+        <td class="label medwidth">Receive Email Notifications:</td>
           <td>
         
         <select name="recemail">
