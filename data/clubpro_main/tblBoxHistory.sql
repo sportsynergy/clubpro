@@ -1,4 +1,4 @@
-create table clubpro_main.tblBoxHistory
+create table tblBoxHistory
 (
     boxid         int       default 0                 not null,
     reservationid int       default 0                 not null,
@@ -7,5 +7,5 @@ create table clubpro_main.tblBoxHistory
     engine = MyISAM;
 
 create index boxid
-    on clubpro_main.tblBoxHistory (boxid);
+    on tblBoxHistory (boxid);
 

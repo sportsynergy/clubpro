@@ -1,4 +1,4 @@
-create table clubpro_main.tblkpTeams
+create table tblkpTeams
 (
     userid       int       default 0                 not null,
     teamid       int       default 0                 not null,
@@ -8,5 +8,5 @@ create table clubpro_main.tblkpTeams
     engine = MyISAM;
 
 create index teamid
-    on clubpro_main.tblkpTeams (teamid);
+    on tblkpTeams (teamid);
 

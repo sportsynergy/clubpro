@@ -1,10 +1,10 @@
-create table clubpro_main.tblCourts
+create table tblCourts
 (
     courtid                int(8) auto_increment
         primary key,
     courttypeid            int(8)             default 0                 not null,
     clubid                 int(8)             default 0                 not null,
-    courtname              varchar(155) charset utf8 charset utf8 not null,
+    courtname              varchar(155) charset utf8                    not null,
     enable                 tinyint            default 1                 not null,
     siteid                 mediumint unsigned default 0                 not null,
     displayorder           smallint           default 0                 not null,

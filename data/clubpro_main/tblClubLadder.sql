@@ -1,4 +1,4 @@
-create table clubpro_main.tblClubLadder
+create table tblClubLadder
 (
     id             int auto_increment
         primary key,

@@ -1,4 +1,4 @@
-create table clubpro_main.tblCourtHours
+create table tblCourtHours
 (
     id           int auto_increment
         primary key,

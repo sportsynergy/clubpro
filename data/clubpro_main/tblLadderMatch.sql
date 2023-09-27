@@ -1,4 +1,4 @@
-create table clubpro_main.tblLadderMatch
+create table tblLadderMatch
 (
     id            int auto_increment
         primary key,

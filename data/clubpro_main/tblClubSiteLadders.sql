@@ -1,4 +1,4 @@
-create table clubpro_main.tblClubSiteLadders
+create table tblClubSiteLadders
 (
     id          int auto_increment
         primary key,
@@ -11,5 +11,5 @@ create table clubpro_main.tblClubSiteLadders
     engine = MyISAM;
 
 create index clubid
-    on clubpro_main.tblClubSiteLadders (siteid);
+    on tblClubSiteLadders (siteid);
 

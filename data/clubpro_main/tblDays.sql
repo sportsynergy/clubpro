@@ -1,4 +1,4 @@
-create table clubpro_main.tblDays
+create table tblDays
 (
     dayid tinyint      default 0  not null
         primary key,

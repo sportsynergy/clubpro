@@ -1,4 +1,4 @@
-create table clubpro_main.tblMatchType
+create table tblMatchType
 (
     id           smallint     default 0                 not null
         primary key,

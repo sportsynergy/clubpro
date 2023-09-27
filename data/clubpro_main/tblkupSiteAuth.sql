@@ -1,4 +1,4 @@
-create table clubpro_main.tblkupSiteAuth
+create table tblkupSiteAuth
 (
     userid       mediumint default 0                 not null,
     siteid       mediumint default 0                 not null,
@@ -7,5 +7,5 @@ create table clubpro_main.tblkupSiteAuth
     engine = MyISAM;
 
 create index userid
-    on clubpro_main.tblkupSiteAuth (userid);
+    on tblkupSiteAuth (userid);
 

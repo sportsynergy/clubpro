@@ -1,4 +1,4 @@
-create table clubpro_main.tblMatchScore
+create table tblMatchScore
 (
     id          int auto_increment
         primary key,

@@ -1,4 +1,4 @@
-create table clubpro_main.tblCourtGroupingEntry
+create table tblCourtGroupingEntry
 (
     id           int auto_increment
         primary key,

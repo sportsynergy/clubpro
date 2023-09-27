@@ -1,4 +1,4 @@
-create table clubpro_main.tblParameterOptions
+create table tblParameterOptions
 (
     parameteroptionid smallint auto_increment
         primary key,
