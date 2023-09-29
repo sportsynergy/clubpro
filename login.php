@@ -98,7 +98,7 @@ if (match_referer() && isset($_POST)) {
     }
 }
 
-if (  isset(get_clubid()) ) {
+if (  null !==  get_clubid() ) {
     $rSql = "SELECT tblClubs.clubname,tblClubSites.sitecode 
     FROM tblClubs 
     INNER JOIN tblClubSites on tblClubs.clubid = tblClubSites.clubid
