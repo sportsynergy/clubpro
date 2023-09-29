@@ -98,14 +98,20 @@ if (match_referer() && isset($_POST)) {
     }
 }
 
-$rSql = "SELECT tblClubs.clubname,tblClubSites.sitecode 
-FROM tblClubs 
-INNER JOIN tblClubSites on tblClubs.clubid = tblClubSites.clubid
-WHERE tblClubs.clubid =%s";
+if (  isset(get_clubid()) ) {
+    $rSql = "SELECT tblClubs.clubname,tblClubSites.sitecode 
+    FROM tblClubs 
+    INNER JOIN tblClubSites on tblClubs.clubid = tblClubSites.clubid
+    WHERE tblClubs.clubid =%s";
 
-$clubNameSql = sprintf($rSql,get_clubid());
-unset($rSql);
-list($clubName, $sitecode) = mysqli_fetch_row(db_query($clubNameSql));
+    $clubNameSql = sprintf($rSql,get_clubid());
+    unset($rSql);
+    list($clubName, $sitecode) = mysqli_fetch_row(db_query($clubNameSql));
 
-include ($_SESSION["CFG"]["templatedir"] . "/login_form.php");
+    include ($_SESSION["CFG"]["templatedir"] . "/login_form.php");
+} else {
+    if (isDebugEnabled(1)) logMessage("Login.php: this form can't be displayed because of some session timeout thing.");
+    header("Location: https://www.sportsynergy.net/");
+}
+
 ?>
