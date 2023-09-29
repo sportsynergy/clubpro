@@ -397,7 +397,7 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
  * Starting with the position, moves everyone in the ladder up.  This is used
  * when someone is removed from a club ladder
  */
-function moveEveryOneInClubLadderUp($ladderid, $clubid, $ladderposition) {
+function moveEveryOneInClubLadderUp($ladderid, $ladderposition) {
     $query = "SELECT ladder.* 
 				FROM tblClubLadder ladder
 				WHERE ladder.ladderid = $ladderid
@@ -416,13 +416,13 @@ function moveEveryOneInClubLadderUp($ladderid, $clubid, $ladderposition) {
         ++$count;
     }
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: moveEveryOneInClubLadderUp.  Starting with position $ladderposition moved $count people up in ladderid id $ladderid ladder for club $clubid");
+    if (isDebugEnabled(2)) logMessage("ladderlib: moveEveryOneInClubLadderUp.  Starting with position $ladderposition moved $count people up in ladderid id $ladderid ladder");
 }
 /**
  * Starting with the position, moves everyone in the ladder up.  This is used
  * when someone is added to the ladder
  */
-function moveEveryOneInClubLadderDown($ladderid, $clubid, $ladderposition) {
+function moveEveryOneInClubLadderDown($ladderid, $ladderposition) {
     $query = "SELECT ladder.* 
 				FROM tblClubLadder ladder
 				WHERE ladder.ladderid = $ladderid
@@ -441,7 +441,7 @@ function moveEveryOneInClubLadderDown($ladderid, $clubid, $ladderposition) {
         ++$count;
     }
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: moveEveryOneInClubLadderDown.  Starting with position $ladderposition moved $count people up in ladder id $ladderid ladder for club $clubid");
+    if (isDebugEnabled(2)) logMessage("ladderlib: moveEveryOneInClubLadderDown.  Starting with position $ladderposition moved $count people up in ladder id $ladderid");
 }
 /**
  * Used by club administrators when moving people up one in the club ladder. Quietly exits if there is a problem.

@@ -74,7 +74,6 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         //Check to see if player is already in ladder
         $check = "SELECT count(*) from tblClubLadder 
         				WHERE userid = $userid 
-        				AND clubid = $clubid 
         				AND ladderid = $ladderid 
         				AND enddate IS NULL";
         $checkResult = db_query($check);
@@ -85,21 +84,19 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         
         if ($exists == 0) {
             $position = $frm['placement'];
-            moveEveryOneInClubLadderDown($ladderid, $clubid, $position);
+            moveEveryOneInClubLadderDown($ladderid, $position);
             
-            if (isDebugEnabled(2)) logMessage("player_rankings: adding user $userid to club ladder for club $clubid for courttypeid $courttypeid in position $position");
+            if (isDebugEnabled(2)) logMessage("player_rankings: adding user $userid to club ladder for club $clubid for ladder $ladderid in position $position");
             $query = "INSERT INTO tblClubLadder (
-		                userid, courttypeid, ladderid, ladderposition, clubid
+		                userid, ladderid, ladderposition
 		                ) VALUES (
 		                          $userid
-		                          ,0
                                   ,$ladderid
-		                          ,$position
-		                          ,$clubid)";
+		                          ,$position)";
             db_query($query);
         } else {
             
-            if (isDebugEnabled(2)) logMessage("player_ladder: user $userid is already playing in this ladder with court typeid $courttypeid ");
+            if (isDebugEnabled(2)) logMessage("player_ladder: user $userid is already playing in this ladder with an id $ladderid ");
         }
     } else 
     if ($frm['cmd'] == 'moveupinladder') {
@@ -115,12 +112,12 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $result = db_query($query);
         $position = mysqli_result($result, 0);
         
-        if (isDebugEnabled(1)) logMessage("player_ladder: removing user $userid to club ladder for club $clubid for ladderid $ladderid");
-        $query = "UPDATE tblClubLadder SET enddate = NOW() WHERE userid = $userid AND  ladderid = $ladderid AND clubid = $clubid";
+        if (isDebugEnabled(1)) logMessage("player_ladder: removing user $userid to club ladder for ladderid $ladderid");
+        $query = "UPDATE tblClubLadder SET enddate = NOW() WHERE userid = $userid AND  ladderid = $ladderid";
         db_query($query);
 
         //Move everybody else up
-        moveEveryOneInClubLadderUp($ladderid, $clubid, $position + 1);
+        moveEveryOneInClubLadderUp($ladderid, $position + 1);
     } 
 
     // Challenge Player
