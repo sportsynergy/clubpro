@@ -1,4 +1,4 @@
-create table tblParameter
+create table clubpro_main.tblParameter
 (
     parameterid     smallint    default 0  not null
         primary key,

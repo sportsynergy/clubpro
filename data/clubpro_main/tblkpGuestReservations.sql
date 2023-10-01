@@ -1,15 +1,12 @@
-create table tblkpGuestReservations
+create table clubpro_main.tblkpGuestReservations
 (
-    reservationid int,
-    name          text charset utf8                   not null,
+    reservationid int                                 null,
+    name          text charset utf8 charset utf8 not null,
     userid        int                                 null,
     lastmodified  timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
 )
     engine = MyISAM;
 
 create index id
-    on tblkpGuestReservations (reservationid);
-
-alter table tblkpGuestReservations
-    modify reservationid int auto_increment;
+    on clubpro_main.tblkpGuestReservations (reservationid);
 

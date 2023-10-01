@@ -1,4 +1,4 @@
-create table tblMessageType
+create table clubpro_main.tblMessageType
 (
     messagetypeid smallint    not null
         primary key,

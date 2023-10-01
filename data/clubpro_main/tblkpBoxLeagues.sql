@@ -1,4 +1,4 @@
-create table tblkpBoxLeagues
+create table clubpro_main.tblkpBoxLeagues
 (
     boxid        int       default 0                 not null,
     userid       int       default 0                 not null,

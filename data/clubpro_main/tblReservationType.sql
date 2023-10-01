@@ -1,4 +1,4 @@
-create table tblReservationType
+create table clubpro_main.tblReservationType
 (
     reservationtypeid   tinyint   default 0                 not null
         primary key,

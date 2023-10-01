@@ -1,4 +1,4 @@
-create table tblChallengeMatch
+create table clubpro_main.tblChallengeMatch
 (
     id           int auto_increment
         primary key,
@@ -14,5 +14,5 @@ create table tblChallengeMatch
     engine = MyISAM;
 
 create index siteid
-    on tblChallengeMatch (siteid);
+    on clubpro_main.tblChallengeMatch (siteid);
 

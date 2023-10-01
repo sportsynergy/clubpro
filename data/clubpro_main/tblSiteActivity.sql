@@ -1,4 +1,4 @@
-create table tblSiteActivity
+create table clubpro_main.tblSiteActivity
 (
     id           int auto_increment
         primary key,
@@ -10,5 +10,5 @@ create table tblSiteActivity
     engine = MyISAM;
 
 create index siteid
-    on tblSiteActivity (siteid);
+    on clubpro_main.tblSiteActivity (siteid);
 

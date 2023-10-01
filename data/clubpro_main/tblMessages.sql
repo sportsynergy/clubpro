@@ -1,4 +1,4 @@
-create table tblMessages
+create table clubpro_main.tblMessages
 (
     id            int auto_increment
         primary key,

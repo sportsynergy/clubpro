@@ -1,4 +1,4 @@
-create table tblHoursException
+create table clubpro_main.tblHoursException
 (
     id           int auto_increment
         primary key,
@@ -12,5 +12,5 @@ create table tblHoursException
     engine = MyISAM;
 
 create index time
-    on tblHoursException (time);
+    on clubpro_main.tblHoursException (time);
 

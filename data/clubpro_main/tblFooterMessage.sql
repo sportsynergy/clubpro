@@ -1,4 +1,4 @@
-create table tblFooterMessage
+create table clubpro_main.tblFooterMessage
 (
     id      int auto_increment
         primary key,

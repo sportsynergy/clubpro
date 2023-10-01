@@ -1,4 +1,4 @@
-create table tblRoles
+create table clubpro_main.tblRoles
 (
     roleid          tinyint auto_increment
         primary key,
