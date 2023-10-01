@@ -108,7 +108,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
     else if ($frm['cmd'] == 'removefromladder') {
 
         //get current position
-        $query = "SELECT ladderposition from tblClubLadder where clubid = $clubid and ladderid = $ladderid AND userid = $userid AND enddate IS NULL";
+        $query = "SELECT ladderposition from tblClubLadder where ladderid = $ladderid AND userid = $userid AND enddate IS NULL";
         $result = db_query($query);
         $position = mysqli_result($result, 0);
         

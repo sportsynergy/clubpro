@@ -30,6 +30,7 @@ class LadderUpdateService{
         if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. Starting...");
         
         $yesterday = date('Y-m-d', time() - 60 * 60 * 24);
+        $yesterday = '2023-10-01';
 
         $query = "SELECT tCSL.*
                 FROM tblClubSites sites

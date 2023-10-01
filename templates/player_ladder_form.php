@@ -149,7 +149,7 @@ to add your name now.
 									<a
 									href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img
 										src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png"
-										title="remove this chump from the ladder" /> </a> <a
+										title="remove this person from the ladder" /> </a> <a
 									href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);"><img
 										src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png"
 										title="bump this guy up one spot"> </a> <?}

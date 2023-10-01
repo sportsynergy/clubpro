@@ -142,7 +142,7 @@ Ask your club pro to get the ball rolling with this.
 								<? if(get_roleid()==2 || get_roleid()==4){?> <a
 									href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img
 										src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png"
-										title="remove these chumpts from the ladder" /> </a> 
+										title="remove this team from the ladder" /> </a> 
 										<a href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);">
 											<img src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png" title="bump these guys up one spot"></a> <?}
 

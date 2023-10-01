@@ -298,6 +298,7 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
 						WHERE ladder.ladderid = $ladderid 
 						AND ladder.userid = $winneruserid
 						AND ladder.enddate IS NULL";
+
     $winnerresult = db_query($winnerquery);
     $winnerarray = mysqli_fetch_array($winnerresult);
     $winnerposition = $winnerarray['ladderposition'];
@@ -320,25 +321,7 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
     
     if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  The winners position/going is $winnerposition/$winnergoing and the losers position/going is $loserposition/$losergoing");
 
-    //Set the goings
     
-    if ($winnergoing == "up") {
-        $wgoing = "up";
-    } else 
-    if ($winnergoing == "steady") {
-        $wgoing = "up";
-    } else {
-        $wgoing = "steady";
-    }
-    
-    if ($losergoing == "up") {
-        $lgoing = "steady";
-    } else 
-    if ($losergoing == "steady") {
-        $lgoing = "down";
-    } else {
-        $lgoing = "down";
-    }
 
     //if the winner is already ahead of the loser don't do anything
     
@@ -347,51 +330,60 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
         if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  Winner is already ahead of the loser. Just update the going attribute");
 
         //add new record for the guy that lost
-        $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going) VALUES (
-                          $loseruserid,$ladderid,$loserposition,'$lgoing')";
+        $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going, lastmatchresult, lastmatchuserid) VALUES (
+                          $loseruserid,$ladderid,$loserposition,'steady', FALSE, $winneruserid)";
         db_query($query);
-        $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going) VALUES (
-                          $winneruserid,$ladderid,$winnerposition,'$wgoing')";
+        $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going, lastmatchresult, lastmatchuserid) VALUES (
+                          $winneruserid,$ladderid,$winnerposition,'steady', TRUE, $loseruserid)";
         db_query($query);
 
         //end date old ones
         $updateWinnerQuery = "UPDATE tblClubLadder SET enddate = NOW() WHERE id = " . $winnerarray['id'] . " OR id = " . $loserarray['id'];
         db_query($updateWinnerQuery);
         return $var;
-    }
+    } 
+	
+	//if the loser was ranked ahead of the winner adjust. upset
+	else {
+
+
+
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  The winner was ranked below the loser, adjusting...");
+		moveLadderGroup($loserposition, $winnerposition, $ladderid);
+		
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  Setting winner ($winneruserid) to position $loserposition and going to up");
+
+		//The winner gets the losers (higher) ladder position
+		//add new record for the guy that won
+
+		$query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going,lastmatchresult, lastmatchuserid) VALUES (
+							$winneruserid,$ladderid,$loserposition,'up', TRUE, $loseruserid)";
+		db_query($query);
+
+		//end date old one
+		$updateWinnerQuery = "UPDATE tblClubLadder SET enddate = NOW() WHERE id = " . $winnerarray['id'];
+		db_query($updateWinnerQuery);
+
+		// The loser's ladder position goes down one
+		$newloserposition = $loserposition + 1;
+		$var->losernewspot = $newloserposition;
+		$var->winnernewspot = $loserposition;
+		
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  Setting loser ($loseruserid) down one to $newloserposition and going to down");
+
+		//add new record for the guy that lost
+		$query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going, lastmatchresult, lastmatchuserid) VALUES (
+							$loseruserid,$ladderid,$newloserposition,'down', FALSE, $winneruserid)";
+		db_query($query);
+
+		// end date the old one
+		$updateLoserQuery = "UPDATE tblClubLadder SET enddate = NOW() WHERE id = " . $loserarray['id'];
+		db_query($updateLoserQuery);
+		return $var;
+
+	}
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  The winner was ranked below the loser, adjusting...");
-    moveLadderGroup($loserposition, $winnerposition, $ladderid);
     
-    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  Setting winner ($winneruserid) to position $loserposition and going to $wgoing");
-
-    //The winner gets the losers (higher) ladder position
-    //add new record for the guy that won
-
-    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going) VALUES (
-                          $winneruserid,$ladderid,$loserposition,'$wgoing')";
-    db_query($query);
-
-    //end date old one
-    $updateWinnerQuery = "UPDATE tblClubLadder SET enddate = NOW() WHERE id = " . $winnerarray['id'];
-    db_query($updateWinnerQuery);
-
-    // The loser's ladder position goes down one
-    $newloserposition = $loserposition + 1;
-    $var->losernewspot = $newloserposition;
-    $var->winnernewspot = $loserposition;
-    
-    if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  Setting loser ($loseruserid) down one to $newloserposition and going to $lgoing");
-
-    //add new record for the guy that lost
-    $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going) VALUES (
-                          $loseruserid,$ladderid,$newloserposition,'$lgoing')";
-    db_query($query);
-
-    // end date the old one
-    $updateLoserQuery = "UPDATE tblClubLadder SET enddate = NOW() WHERE id = " . $loserarray['id'];
-    db_query($updateLoserQuery);
-    return $var;
 }
 /**
  * Starting with the position, moves everyone in the ladder up.  This is used
