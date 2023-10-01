@@ -794,7 +794,6 @@ function getLadders($userid){
 	WHERE tblClubLadder.userid = $userid
 	AND tblClubLadder.enddate IS NULL";
 
-if( isDebugEnabled(1) ) logMessage("ladderlib query: $query");
 	//print $curresidquery;
 	return db_query($query);
 	
