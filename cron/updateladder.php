@@ -55,7 +55,8 @@ class LadderUpdateService{
                             loser.userid AS loser_id,
                             ladder.ladderid as ladder_id, 
                             ladder.score, ladder.match_time, ladder.reported_time,
-                            ladder.score
+                            ladder.score,
+                            ladder.id as ladder_match_id
                             FROM tblLadderMatch ladder
                             inner join tblUsers winner on ladder.winnerid = winner.userid
                             inner join tblUsers loser on ladder.loserid = loser.userid
@@ -70,6 +71,9 @@ class LadderUpdateService{
                 while($match_array = mysqli_fetch_array($result) ){
                     if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders ".$match_array['winner_full']. " defeated ". $match_array['loser_full']. " ". $match_array['score']);
                     adjustClubLadder( $match_array['winner_id'], $match_array['loser_id'], $match_array['ladder_id']);
+
+                    $query = "update tblLadderMatch set processed = TRUE where id  = ".$match_array['ladder_match_id'];
+                    db_query($query);
             
                 }
 
