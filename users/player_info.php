@@ -39,6 +39,7 @@
 */
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
+require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 require_login();
 
 // Log user out if they are in the wrong club

@@ -756,6 +756,49 @@ function getLadderMatches($ladderid, $limit){
 	//print $curresidquery;
 	return db_query($curresidquery);
 }
+
+function getLadderMatchesForUser($ladderid, $userid, $limit){
+
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderMatchesForUser: Getting ladder matches for ladderid $ladderid with limit $limit");
+	
+	$curresidquery = "SELECT
+						winner.firstname AS winner_first,
+						winner.lastname AS winner_last,
+						concat_ws(' ', winner.firstname, winner.lastname) AS winner_full,
+						winner.userid AS winner_id,
+						loser.firstname AS loser_first,
+						loser.lastname AS loser_last,
+						loser.userid AS loser_id,
+						ladder.id, ladder.score, ladder.match_time
+						FROM tblLadderMatch ladder
+						inner join tblUsers winner on ladder.winnerid = winner.userid
+						inner join tblUsers loser on ladder.loserid = loser.userid
+						inner join tblClubSiteLadders tCSL on ladder.ladderid = tCSL.id
+						WHERE ladder.ladderid =$ladderid
+						AND (loser.userid = $userid OR winner.userid = $userid)
+						AND tCSL.enddate IS NULL
+						AND ladder.enddate IS NULL
+						ORDER BY ladder.match_time DESC , ladder.reported_time DESC
+						LIMIT $limit";
+	
+	//print $curresidquery;
+	return db_query($curresidquery);
+}
+
+
+function getLadders($userid){
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderMatchesForUser: Getting ladder matches for ladderid $ladderid with limit $limit");
+
+	$query = "SELECT DISTINCT tblClubSiteLadders.id, tblClubSiteLadders.name, tblClubLadder.ladderposition FROM tblClubSiteLadders
+	INNER JOIN tblClubLadder on tblClubSiteLadders.id = tblClubLadder.ladderid
+	WHERE tblClubLadder.userid = $userid
+	AND tblClubLadder.enddate IS NULL";
+
+if( isDebugEnabled(1) ) logMessage("ladderlib query: $query");
+	//print $curresidquery;
+	return db_query($query);
+	
+}
 /**
  * Gets the recent challenges matches
  * 
@@ -1115,5 +1158,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
     //Send the email
     send_email($subject, $challengee_email, $content, "Ladder Match");
 }
+
+
 
 ?>

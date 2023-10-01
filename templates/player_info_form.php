@@ -46,8 +46,7 @@
 		  while( $parameterArray = db_fetch_array($extraParametersResult)){ 
 			
 			$parameterValue = load_site_parameter($parameterArray['parameterid'], $userid );
-
-			
+	
 			if($parameterArray['parametertypename'] == "text" && !empty($parameterValue) ){ ?>
           <tr>
             <td class="label"><? pv($parameterArray['parameterlabel'])?>
@@ -62,15 +61,16 @@
           </tr>
           <? } ?>
           <? } ?>
-          <? if( $frm["lastlogin"] != null){ ?>
+          
           <tr>
             <td class="label">Last Login:</td>
             <td class="normal"><?=determineLastLoginText($frm["lastlogin"], get_clubid()) ?></td>
           </tr>
-          <? } ?>
+          
           <tr>
             <td class="label" valign="top">Rankings:</td>
-            <td colspan="2"><table width="300">
+            <td colspan="2">
+              <table width="300">
                 <?  while ($registeredArray = db_fetch_array($registeredSports)){ ?>
                 <tr>
                   <td style="padding: 0px"><?=$registeredArray['courttypename']?></td>
@@ -78,44 +78,82 @@
                 </tr>
                 <?  }
 							?>
-              </table></td>
+              </table>
+            </td>
           </tr>
           <tr height="15">
             <td colspan="3"></td>
           </tr>
-        </table></td>
+          
+          <?php
+              # if player is on the ladder
+              if ( isJumpLadderRankingScheme() ){ 
+                $laddersforuserResult = getLadders($userid);
+                
+                while($ladder = mysqli_fetch_array($laddersforuserResult)){ 
+
+              ?>
+
+              <tr>
+              <td class="label" valign="top"><?=$ladder['name'] ?> Ladder Results:</td>
+              <td colspan="2">
+
+                <?
+                $ladderMatchResult = getLadderMatchesForUser($ladder['id'], $userid, 40 );
+                
+                if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
+
+                  <table class="activitytable" width="400">
+                    <tr>
+                      <th>Date</th>
+                      <th>Winner</th>
+                      <th>Loser</th>
+                      <th>Score</th>
+                    </tr>
+                    
+                <?
+                while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
+
+                  $scored = $challengeMatch['score'];
+                  $winner_obj = new clubpro_obj;
+                  $winner_obj->fullname =  $challengeMatch['winner_first']." ". $challengeMatch['winner_last'];
+                  $winner_obj->id = $challengeMatch['winner_id'];
+                  
+                  $loser_obj = new clubpro_obj;
+                  $loser_obj->fullname =  $challengeMatch['loser_first']." ". $challengeMatch['loser_last'];
+                  $loser_obj->id = $challengeMatch['loser_id'];
+                  
+                  //don't include timestamp
+                  $challengeDate = explode(" ",$challengeMatch['match_time']);
+                  printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored);
+                      
+                } ?>
+                </table>
+                <td>
+              </tr>
+             <? } 
+             
+              }
+              ?>
+
+
+
+
+              </td>
+              </tr>
+              <?  }  ?>
+        
+          </tr>
+          <tr height="15">
+            <td colspan="3"></td>
+          </tr>
+        </table>
+      
+      </td>
     </tr>
   </table>
   <div style="height: 2em;"></div>
   <div style="text-align: left;">
-    <?php
-
-// This page may be loaded from either the rankings page or the player lookup.  In either case, we should 
-// return the user from where they came from
-
-// Update 1-11-2012
-// Now that the navigation to this page has been converted from POST to get, this below can likely be removed
-// Users can instead use the standard Back button in their browser.  As the GET method is stored in the history of the URL.
-
-/*
-if($origin=="lookup"){ ?>
-    <form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">
-      <a href="javascript:submitForm('backtolistform');"><< Back to List</a>
-      <input type="hidden" name="searchname" value="<?=$searchname?>">
-    </form>
-    <? } elseif($origin=="ladder"){ ?>
-    <form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">
-      <a href="javascript:submitForm('backtolistform');"><< Back to Ladder</a>
-    </form>
-    <? }elseif($origin=="rankings") {?>
-    <form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">
-      <a href="javascript:submitForm('backtolistform');"><< Back to Rankings</a>
-      <input type="hidden" name="courttypeid" value="<?=$courttypeid?>">
-      <input type="hidden" name="sortoption" value="<?=$sortoption?>">
-      <input type="hidden" name="displayoption" value="<?=$displayoption?>">
-      <input type="hidden" name="origin" value="<?=$origin?>">
-    </form>
-    <? }*/ 
-?>
+   
   </div>
 </div>

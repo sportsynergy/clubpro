@@ -6224,8 +6224,11 @@ function determineLastLoginText($theTimeTheyLastLoggedIn, $clubid){
 	elseif( $timeSinceLastLogin < (86400 * 6 ) ){
 		$timeSinceLastLoginString = "Six days ago";
 	}
-	else{
+	elseif( $timeSinceLastLogin < (86400 * 7 ) ){
 		$timeSinceLastLoginString = "More than a week ago";
+	}
+	else{
+		$timeSinceLastLoginString = "Never";
 	}
 
 	return $timeSinceLastLoginString;
