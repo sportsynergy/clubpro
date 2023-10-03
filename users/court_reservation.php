@@ -679,7 +679,7 @@ function validate_form(&$frm, &$errors) {
         elseif ($frm['action'] == "create" && isFrontDeskGuestDoublesReservation($frm["playeroneid"], $frm["playeronename"], $frm["playertwoid"], $frm["playertwoname"], $frm["playerthreeid"], $frm["playerthreename"], $frm["playerfourid"], $frm["playerfourname"]) && isDoublesSpotAvailable($frm["playeronename"], $frm["playertwoname"], $frm["playerthreename"], $frm["playerfourname"])) {
             $msg.= "If you type in at least one name, you aren't allowed to leave any spot open.";
         } else {
-            $msg = validateSchedulePolicies($courtid, $time);
+            $msg = validateSchedulePolicies($courtid, $time, '');
         }
     } 
     else if( $frm['courttype'] == "resource" ){
