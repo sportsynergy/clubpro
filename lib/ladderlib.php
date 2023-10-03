@@ -605,7 +605,7 @@ function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate,
 }
 
 
-function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score){
+function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score, $processed){
 	
 	?>
 	
@@ -621,6 +621,17 @@ function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score){
 		</td>
 		<td>
 			<?=$score ?>
+		</td>
+		<td>
+            <? if( ! $processed ){ ?>
+				<a href="javascript:submitForm('removematch<?=$id?>')" >x</a>
+			
+			<form name="removematch<?=$id?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php" method="post">
+				<input type="hidden" name="laddermatchid" value="<?=$id?>">
+				<input type="hidden" name="cmd" value="removematch">
+			</form>
+			<? } ?>
+			
 		</td>
 		
 		
@@ -742,7 +753,7 @@ function getLadderMatches($ladderid, $limit){
 						loser.firstname AS loser_first,
 						loser.lastname AS loser_last,
 						loser.userid AS loser_id,
-						ladder.id, ladder.score, ladder.match_time
+						ladder.id, ladder.score, ladder.match_time, ladder.processed
 						FROM tblLadderMatch ladder
 						inner join tblUsers winner on ladder.winnerid = winner.userid
 						inner join tblUsers loser on ladder.loserid = loser.userid
@@ -1157,6 +1168,7 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
     //Send the email
     send_email($subject, $challengee_email, $content, "Ladder Match");
 }
+
 
 
 

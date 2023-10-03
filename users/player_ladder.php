@@ -66,11 +66,19 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
     $userid = $frm['userid'];
     $clubid = get_clubid();
 
+    if ($frm['cmd'] == 'removematch') {
+
+        $laddermatchid = $frm['laddermatchid'];
+        if (isDebugEnabled(1)) logMessage("player_ladder: removing this ladder match $laddermatchid");
+        $query = "UPDATE tblLadderMatch SET enddate = CURRENT_TIMESTAMP WHERE id = $laddermatchid";
+        $result = db_query($query);
+        
+
+    }
+
     // Add User to Ladder
-    
     if ($frm['cmd'] == 'addtoladder') {
         
-    
         //Check to see if player is already in ladder
         $check = "SELECT count(*) from tblClubLadder 
         				WHERE userid = $userid 

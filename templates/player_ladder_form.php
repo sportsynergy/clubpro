@@ -74,15 +74,12 @@ to add your name now.
 
 <div id="ladderControlPanel" style="padding-bottom: 5px;">
 	<span class="normal">
-	<a href="javascript:newWindow('../help/club_ladders.html')">
-			Ladders explained</a> <?  if(get_roleid()==2 || get_roleid()==4){ ?>
-		| <span class="normal" id="show"><a
+	<?  if(get_roleid()==2 || get_roleid()==4){ ?>
+		<span class="normal" id="show"><a
 			style="text-decoration: underline; cursor: pointer"> Add Player</a> </span>
 		| <span class="normal" id="showreportscores"><a
 			style="text-decoration: underline; cursor: pointer"> Report Score</a>
 		</span>
-
-
 			<? } ?>
 
 	</span>
@@ -149,7 +146,7 @@ to add your name now.
 									<a
 									href="javascript:removeFromLadder(<?=$playerarray['userid']?>);"><img
 										src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png"
-										title="remove this person from the ladder" /> </a> <a
+										title="remove this person from the ladder" /></a> <a
 									href="javascript:moveUpInLadder(<?=$playerarray['userid']?>);"><img
 										src="<?=$_SESSION["CFG"]["imagedir"]?>/gtk_media_forward_ltr.png"
 										title="bump this guy up one spot"> </a> <?}

@@ -39,11 +39,9 @@
 
 $ladderMatchResult = getLadderMatches($ladderid, 40 );
 
-if(mysqli_num_rows($ladderMatchResult) > 0){ 
+if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
-  ?>
-
-  <table class="activitytable" width="400">
+<table class="activitytable" width="400">
     <tr>
       <th>Date</th>
       <th>Winner</th>
@@ -52,7 +50,7 @@ if(mysqli_num_rows($ladderMatchResult) > 0){
     </tr>
     
     <?
-	
+$rownum = mysqli_num_rows($ladderMatchResult);	
 while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
 
   $scored = $challengeMatch['score'];
@@ -67,12 +65,16 @@ while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){
 	
 		//don't include timestamp
 		$challengeDate = explode(" ",$challengeMatch['match_time']);
+
+    $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
 		
-		printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored);
+		printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['processed']);
 	    
 }
 ?>
 </table>
+
+      
   <div style="margin-top: 20px"> <span class="smallbold">Ladders last updated:</span> 
   <?php
     
