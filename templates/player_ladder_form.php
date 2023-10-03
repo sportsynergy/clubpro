@@ -137,9 +137,9 @@ to add your name now.
 							<tr class="<?=$rc?>">
 								<td><?=$playerarray['ladderposition']?> <? if($playerarray['going']=="up"){ ?>
 									<img src="<?=$_SESSION["CFG"]["imagedir"]?>/raise.png"
-									title="Won the last challenge match"> <? } else if($playerarray['going']=="down"){ ?>
+									title="Moved up the ladder after winning the last match"> <? } else if($playerarray['going']=="down"){ ?>
 									<img src="<?=$_SESSION["CFG"]["imagedir"]?>/fall.png"
-									title="Lost the last challenge match"> <? } ?>
+									title="Moved down the ladder after losing the last  match"> <? } ?>
 								</td>
 								<td><a href="javascript:submitForm('playerform<?=$numrows?>')"><?=$playerarray['firstname']?>
 								<?=$playerarray['lastname']?> </a> <? if(get_roleid()==2 || get_roleid()==4){?>
