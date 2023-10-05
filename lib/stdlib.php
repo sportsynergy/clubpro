@@ -258,4 +258,19 @@ function frmchecked(&$var, $true_value = "checked", $false_value = "") {
         echo $false_value;
     }
 }
+
+
+function startsWith( $haystack, $needle ) {
+    $length = strlen( $needle );
+    return substr( $haystack, 0, $length ) === $needle;
+}
+
+function endsWith( $haystack, $needle ) {
+    $length = strlen( $needle );
+    if( !$length ) {
+        return true;
+    }
+    return substr( $haystack, -$length ) === $needle;
+}
+
 ?>

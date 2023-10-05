@@ -38,6 +38,7 @@
  * $LastChangedDate: 2011-03-14 23:08:03 -0500 (Mon, 14 Mar 2011) $
 */
 include ("../application.php");
+require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 $DOC_TITLE = "Club Reports";
 require_priv("2");
 
@@ -47,13 +48,24 @@ if (match_referer() && isset($_POST['submitme'])) {
     
     if (empty($errormsg)) {
         include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
-        
+
         if ($frm["report"] == "memberactivity") {
             run_member_activity_report($frm);
         } elseif ($frm["report"] == "courtutil") {
             run_court_utilization_report($frm);
         } elseif ($frm["report"] == "courtbookinglog") {
             run_court_booking_report($frm);
+        } elseif (  startsWith( $frm["report"], 'ladderreport' )  ){
+            $ladderinfo = explode("-", $frm["report"]);
+
+            $query = "SELECT name from tblClubSiteLadders where id = $ladderinfo[1];";
+            $result = db_query($query );
+            $ladder_name = mysqli_result($result, 0);
+
+            run_ladder_score_report($ladderinfo[1], $ladder_name);
+        }
+        else{
+            print "nothing";
         }
         include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
         die;
@@ -80,7 +92,90 @@ function validate_form(&$frm, &$errors) {
     return $msg;
 }
 
+function run_ladder_score_report($ladderid, $ladder_name) {
 
+    if (isDebugEnabled(1)) logMessage("club_reports.php.run_ladder_score_report");
+    $reportName = "$ladder_name Score Report";
+    $reportDescription = "This report is used to view all reported scores for Jump ladders";
+
+    $ladderMatchResult = getLadderMatches( $ladderid, 100 );
+
+    // Display the data
+    ?>
+     <table cellspacing="0" cellpadding="0" border="0" width="710" align="center" class="borderless">
+        <tr>
+            <td>
+            <?
+            include($_SESSION["CFG"]["includedir"]."/include_reportSelectHeader.php");
+             ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="normal">
+           <?pv($reportDescription)?>
+             </td>
+        </tr>
+        <tr>
+          <td>
+          <div>
+            <a href="javascript:submitForm('exportDataForm')">Export full report</a>
+            <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/ladder_score_log.php" method="post">
+                <input type="hidden" name="ladderid" value="<?=$ladderid?>">
+            </form>
+                
+            </div>
+          </td>
+         </tr>
+         <tr>
+          <td height="40"></td>
+         </tr>
+        <tr> 
+        
+         <tr>
+            <td>
+            <?
+    
+    if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
+
+        <table class="activitytable" width="450">
+            <tr>
+            <th>Date</th>
+            <th>Challenger</th>
+            <th>Challengee</th>
+            <th>Winner</th>
+            </tr>
+        
+        <? while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
+
+        $scored = $challengeMatch['score'];
+      
+            $winner_obj = new clubpro_obj;
+            $winner_obj->fullname =  $challengeMatch['winner_first']." ". $challengeMatch['winner_last'];
+            $winner_obj->id = $challengeMatch['winner_id'];
+            
+            $loser_obj = new clubpro_obj;
+            $loser_obj->fullname =  $challengeMatch['loser_first']." ". $challengeMatch['loser_last'];
+            $loser_obj->id = $challengeMatch['loser_id'];
+        
+            //don't include timestamp
+            $challengeDate = explode(" ",$challengeMatch['match_time']);
+
+            printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['processed']);
+            
+        }?>
+        </td></tr>
+        </table>
+        
+    
+    <? } else { ?>
+        <tr>
+            <td>No challenge matches found.</td>
+        </tr>
+        
+    <? } ?>
+
+  </table> <?
+}
 
 function run_member_activity_report(&$frm) {
     
@@ -407,7 +502,8 @@ function run_court_utilization_report(&$frm) {
       <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/booking_log.php" method="post">
 </form>
     </td>
-  </tr>
+ </tr>
+ 
   </table>
 <?
 

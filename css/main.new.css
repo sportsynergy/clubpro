@@ -44,6 +44,13 @@ body{
 	font-weight: bold;
 	color: Gray;
 }
+
+.reportSubTitle {
+	font-size: 18pt;
+	font-weight: bold;
+	color: Gray;
+}
+
 .whiteh1 { 
 	font-size: 14pt; 
 	font-weight: bold; 

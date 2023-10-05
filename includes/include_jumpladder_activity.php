@@ -66,8 +66,6 @@ while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){
 		//don't include timestamp
 		$challengeDate = explode(" ",$challengeMatch['match_time']);
 
-    $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
-		
 		printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['processed']);
 	    
 }

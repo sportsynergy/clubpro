@@ -623,7 +623,7 @@ function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score, $proc
 			<?=$score ?>
 		</td>
 		<td>
-            <? if( ! $processed ){ ?>
+            <? if( ! $processed &&  get_roleid()=="2" ){ ?>
 				<a href="javascript:submitForm('removematch<?=$id?>')" >x</a>
 			
 			<form name="removematch<?=$id?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php" method="post">
@@ -724,6 +724,7 @@ function isLadderChallengable($myposition, $playerposition){
 }
 
 
+
 /**
  * Gets the recent challenges matches
  * 
@@ -809,6 +810,19 @@ function getLadders($userid){
 	return db_query($query);
 	
 }
+
+function getLaddersForSite($siteid){
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLaddersForSite: Getting ladder matches for ladderid $ladderid with limit $limit");
+
+	$query = "SELECT DISTINCT tblClubSiteLadders.id, tblClubSiteLadders.name FROM tblClubSiteLadders
+	INNER JOIN tblClubLadder on tblClubSiteLadders.id = tblClubLadder.ladderid
+	WHERE tblClubSiteLadders.siteid = ". get_siteid() ."
+	AND tblClubLadder.enddate IS NULL";
+
+	//print $curresidquery;
+	return db_query($query);
+	
+}
 /**
  * Gets the recent challenges matches
  * 
@@ -840,7 +854,7 @@ function getChallengeMatches($siteid, $ladderid, $limit){
 							AND challengerladder.enddate IS NULL 
 							AND challengeeladder.enddate IS NULL 
 					 ORDER BY challenge.date DESC LIMIT $limit";
-	
+
 	//print $curresidquery;
 	return db_query($curresidquery);
 }

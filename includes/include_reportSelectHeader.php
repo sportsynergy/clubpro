@@ -57,14 +57,40 @@ function onSubmitButtonClicked(){
 <table cellspacing="0" cellpadding="5" width="700" id="formtable">
 
        <tr>
-           <td><font class="reportTitle">
+           <td><font class="reportSubTitle">
            <?pv($reportName)?>
            </font>
            </td>
            <td><select name="report">
                 <option value="">Select Report</option>
-                <option value="memberactivity">Member Activity Report</option>
-                <option value="courtutil">Court Utilization Report</option>
+
+                <? if ($frm["report"]== "memberactivity") {
+                    $selected_report1 = "selected";
+                } elseif ($frm["report"]== "courtutil"){
+                    $selected_report2 = "selected";
+                }
+                    ?>
+                <option value="memberactivity" <?=$selected_report1?>>Member Activity Report</option>
+                <option value="courtutil" <?=$selected_report2?>>Court Utilization Report</option>
+                
+                <? if ( isJumpLadderRankingScheme() ) { 
+                    
+                    // for each ladder 
+                    $result = getLaddersForSite( get_siteid() );
+                    while($ladder = mysqli_fetch_array($result)){  
+                        
+                        if ( $ladder['id'] == $ladderid ){
+                            $selected = "selected";
+                        } else {
+                            $selected = "";
+                        }
+                        
+                        ?>
+                        <option value="ladderreport-<?=$ladder['id']?>" <?=$selected?>><?=$ladder['name'] ?> Score Report</option>
+                   
+                    <? } ?>
+               
+                <? }  ?>
                </select>
           <input type="hidden" name="submitme" value="submitme">
           <input type="button" name="submit" value="Run Report" id="submitbutton">
