@@ -14,7 +14,8 @@ create table clubpro_main.tblUsers
     useraddress  varchar(255)                         not null,
     gender       tinyint(1) default 1                 not null,
     lastmodified timestamp  default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    enddate      timestamp                            null
+    enddate      timestamp                            null,
+    photo        longblob                             null
 )
     engine = MyISAM
     charset = utf8;
