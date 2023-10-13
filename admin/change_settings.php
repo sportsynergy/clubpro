@@ -56,11 +56,47 @@ $extraParametersResult = load_site_parameters();
 
 /* form has been submitted, check if it the user login information is correct */
 
-if (isset($_POST['submitme'])) {
+if (isset($_POST['formname']) && $_POST['formname'] == "photoform") {
+    $frm = $_POST;
+
+    if(!empty($_FILES["image"]["name"])) { 
+       
+
+        $fileName = basename($_FILES["image"]["name"]); 
+        $fileType = pathinfo($fileName, PATHINFO_EXTENSION); 
+
+        if (isDebugEnabled(1)) logMessage("change_settings: photo size is: $fileName");
+
+
+        $image_info = getimagesize($_FILES["image"]["tmp_name"]);
+        $image_width = $image_info[0];
+        $image_height = $image_info[1];
+        if (isDebugEnabled(1)) logMessage("change_settings: photo size is: $image_width and $image_height");
+
+        if($image_width <= 180 && $image_height <= 180 ){
+            // Allow certain file formats 
+            $allowTypes = array('jpg','png','jpeg','gif'); 
+            if(in_array($fileType, $allowTypes)){ 
+                $image = $_FILES['image']['tmp_name']; 
+                $imgContent = addslashes(file_get_contents($image)); 
+                // Insert image content into database 
+                $query = "UPDATE tblUsers set photo = '$imgContent' WHERE userid = $userid";
+                $result = db_query($query);
+                $noticemsg = "Your profile was saved.  Good Job!<br/><br/>"; 
+            }
+        } else {
+            $errormsg = "This photo is too big, please resize to 180 x 180"; 
+        }
+        
+
+    }
+} 
+
+
+if (isset($_POST['formname']) && $_POST['formname'] == "entryform") {
     $frm = $_POST;
 
     // Do a special check for duplicate email addresses.
-    
     if (isset($userid)) {
         $useridstring = "?userid=$userid";
     }
@@ -69,6 +105,7 @@ if (isset($_POST['submitme'])) {
     $errormsg = validate_form($frm, $errors);
     
     if (empty($errormsg)) {
+        
         update_settings($frm, $availableSites, $availbleSports, $extraParametersResult);
 
         //Refresh the data
@@ -233,6 +270,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
     } else {
         $enable = 'n';
     }
+
     
     if (isSiteAutoLogin()) {
         $username = $frm['memberid'];

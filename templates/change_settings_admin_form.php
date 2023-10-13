@@ -147,7 +147,7 @@ function onSubmitButtonClicked(){
 
 
 
-<table width="650" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
+<table width="650" cellpadding="40" cellspacing="0" class="generictable" id="formtable">
     <tr>
     <td class=clubid<?=get_clubid()?>th>
     	<span class="whiteh1">
@@ -155,6 +155,17 @@ function onSubmitButtonClicked(){
     	</span>
     </td>
  </tr>
+
+ <tr>
+    <td>
+        <form name="photoform" action="<?=$ME?>" method="post" enctype="multipart/form-data">
+            <input type="file" name="image">
+            <input type="hidden" name="formname" value="photoform">
+            <input type="hidden" name="userid" value="<?pv($userid) ?>">
+            <input type="submit" value="Upload photo" id="submitbutton1" >
+        </form>
+    </td>
+</tr>
 
  <tr>
     <td>
@@ -167,7 +178,11 @@ function onSubmitButtonClicked(){
 			<td class="normal"><? pv($frm["userid"]) ?></td>
 			 <td rowspan="9" valign="top" >
 					<div align="center">
-						<img src="<?=get_gravatar($frm["email"],120 )?>" />
+                        <?  if( isset($frm["photo"]) ){ ?>
+                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($frm["photo"]); ?>" width="180" height="180">
+                        <?   } else{  ?>
+						<img src="<?=get_gravatar($frm["email"],180 )?>" />
+                        <?   }   ?>
 					</div>
 	
 				</td>
@@ -462,18 +477,18 @@ function onSubmitButtonClicked(){
             <td colspan="2">
             <input type="button" name="submit" value="Update Settings" id="submitbutton">
             <input type="button" value="Cancel" id="cancelbutton" >
-
+            <input type="hidden" name="userid" value="<?pv($userid) ?>">
+            <input type="hidden" name="mycourttypes" value="<? pv($mycourtTypes) ?>">
+            <input type="hidden" name="mysites" value="<? pv($mysites) ?>">
+            <input type="hidden" name="searchname" value="<? pv($searchname)?>">
+            <input type="hidden" name="formname" value="entryform">
             </td>
         </tr>
 
 
         </table>
         
-        <input type="hidden" name="userid" value="<?pv($userid) ?>"></td>
-        <input type="hidden" name="mycourttypes" value="<? pv($mycourtTypes) ?>">
-        <input type="hidden" name="mysites" value="<? pv($mysites) ?>">
-        <input type="hidden" name="searchname" value="<? pv($searchname)?>">
-        <input type="hidden" name="submitme" value="submitme">
+        
             
        </form>
 

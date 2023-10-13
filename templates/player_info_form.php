@@ -10,11 +10,20 @@
         </span></td>
     </tr>
     <tr>
-      <td><table cellspacing="5" cellpadding="1" width="650" class="borderless">
+      <td><table cellspacing="0" cellpadding="1" width="650" class="borderless">
           <tr>
             <td class=label>First Name:</td>
             <td class="normal"><?=$frm["firstname"] ?></td>
-            <td rowspan="4" valign="top"><div align="center"> <img src="<?=get_gravatar($frm["email"],120 )?>" /> </div></td>
+            <td rowspan="6" valign="top">
+              <div align="center"> 
+
+                   <?  if( isset($frm["photo"]) ){ ?>
+                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($frm["photo"]); ?>" width="180" height="180">
+                        <?   } else{  ?>
+						                <img src="<?=get_gravatar($frm["email"],180 )?>" />
+                        <?   }   ?>
+              </div>
+          </td>
           </tr>
           <tr>
             <td class=label>Last Name:</td>
