@@ -49,18 +49,12 @@ if($userRelation->isUserLoggedin()){
 	}
 }
 
-// Include jQuery
-//define("_JQUERY_", true);
-
-
-
 if (!empty($_POST['ladderid'])) {
     $_SESSION["ladder_id"] = $_POST['ladderid'];
 }
 $ladderid = $_SESSION["ladder_id"];
 
 /* form has been submitted */
-
 if (isset($_POST['submit']) || isset($_POST['cmd'])) {
     $frm = $_POST;
     $userid = $frm['userid'];
@@ -73,7 +67,6 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $query = "UPDATE tblLadderMatch SET enddate = CURRENT_TIMESTAMP WHERE id = $laddermatchid";
         $result = db_query($query);
         
-
     }
 
     // Add User to Ladder

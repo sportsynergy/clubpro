@@ -161,8 +161,7 @@
             <div class="spacer"></div>
             <?php
             if( $origin == 'ladder') { ?>
-            <a href="<?="$wwwroot/users/player_ladder.php"?>">Back to ladder </a>
-
+          
             <? }?>
             </td>
           </tr>
