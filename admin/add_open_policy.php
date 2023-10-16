@@ -40,7 +40,6 @@ $DOC_TITLE = "Club Hours Policy";
 
 if (match_referer() && isset($_POST['submitme'])) {
    
-logMessage("im in");
     $frm = $_POST;
     $errormsg = validate_form($frm, $errors);
     $wwwroot = $_SESSION["CFG"]["wwwroot"];

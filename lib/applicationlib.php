@@ -6197,6 +6197,8 @@ function isMailDebugEnabled($level){
  */
 function determineLastLoginText($theTimeTheyLastLoggedIn, $clubid){
 
+	
+
 	$clubquery = "SELECT timezone from tblClubs WHERE clubid=$clubid";
 	$clubresult = db_query($clubquery);
 	$timezonevalArray = mysqli_fetch_array($clubresult);
@@ -6207,6 +6209,11 @@ function determineLastLoginText($theTimeTheyLastLoggedIn, $clubid){
 
 	$timeSinceLastLogin = $theTimeItIsRightNow - $theTimeTheyLastLoggedIn;
 
+	if( isDebugEnabled(1) ) logMessage("applicationlib.determineLastLoginText: theTimeTheyLastLoggedIn $theTimeTheyLastLoggedIn timeSinceLastLogin $timeSinceLastLogin");
+	
+
+	$timeSinceLastLogin = 0;
+	
 	if( $timeSinceLastLogin < 86400 ){
 		$timeSinceLastLoginString =  "Within the last day";
 	}

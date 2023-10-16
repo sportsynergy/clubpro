@@ -71,40 +71,44 @@
           <? } ?>
           <? } ?>
           
-          <tr>
-            <td class="label">Last Login:</td>
-            <td class="normal"><?=determineLastLoginText($frm["lastlogin"], get_clubid()) ?></td>
-          </tr>
-          
+          <? if( isPointRankingScheme()  ) { ?>
           <tr>
             <td class="label" valign="top">Rankings:</td>
-            <td colspan="2">
+            <td >
               <table width="300">
                 <?  while ($registeredArray = db_fetch_array($registeredSports)){ ?>
                 <tr>
-                  <td style="padding: 0px"><?=$registeredArray['courttypename']?></td>
-                  <td style="padding: 0px"><?=$registeredArray['ranking']?></td>
+                  <td><?=$registeredArray['courttypename']?>:
+                  <?=$registeredArray['ranking']?></td>
                 </tr>
                 <?  }
 							?>
               </table>
             </td>
           </tr>
+
+          <? } ?>
           <tr height="15">
-            <td colspan="3"></td>
+            <td colspan="2"></td>
           </tr>
           
           <?php
               # if player is on the ladder
               if ( isJumpLadderRankingScheme() ){ 
                 $laddersforuserResult = getLadders($userid);
-                
+               
                 while($ladder = mysqli_fetch_array($laddersforuserResult)){ 
 
               ?>
 
               <tr>
-              <td class="label" valign="top"><?=$ladder['name'] ?> Ladder Results:</td>
+              <td class="label" valign="top" colspan="2"><?=$ladder['name'] ?> Ladder Results</td>
+              </tr>
+              <tr>
+              <td class="label" valign="top" >Position</td>
+              <td> <?=$ladder['ladderposition'] ?> </td>
+              </tr>
+              <tr>
               <td colspan="2">
 
                 <?
@@ -123,6 +127,7 @@
                 <?
                 while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
 
+
                   $scored = $challengeMatch['score'];
                   $winner_obj = new clubpro_obj;
                   $winner_obj->fullname =  $challengeMatch['winner_first']." ". $challengeMatch['winner_last'];
@@ -134,6 +139,7 @@
                   
                   //don't include timestamp
                   $challengeDate = explode(" ",$challengeMatch['match_time']);
+
                   printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored);
                       
                 } ?>
@@ -145,24 +151,30 @@
               }
               ?>
 
-
-
-
               </td>
               </tr>
               <?  }  ?>
         
           </tr>
           <tr height="15">
-            <td colspan="3"></td>
+            <td colspan="2">
+            <div class="spacer"></div>
+            <?php
+            if( $origin == 'ladder') { ?>
+            <a href="<?="$wwwroot/users/player_ladder.php"?>">Back to ladder </a>
+
+            <? }?>
+            </td>
           </tr>
         </table>
       
       </td>
     </tr>
   </table>
-  <div style="height: 2em;"></div>
-  <div style="text-align: left;">
-   
+  <div style="height: 2em;">
+
+</div>
+  <div style="text-align: right;">
+  
   </div>
 </div>

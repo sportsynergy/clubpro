@@ -605,7 +605,7 @@ function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate,
 }
 
 
-function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score, $processed){
+function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score, $processed=TRUE){
 	
 	?>
 	
@@ -771,7 +771,7 @@ function getLadderMatches($ladderid, $limit){
 
 function getLadderMatchesForUser($ladderid, $userid, $limit){
 
-	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderMatchesForUser: Getting ladder matches for ladderid $ladderid with limit $limit");
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderMatchesForUser: Gettingi ladder matches for ladderid $ladderid with limit $limit");
 	
 	$curresidquery = "SELECT
 						winner.firstname AS winner_first,
@@ -799,7 +799,7 @@ function getLadderMatchesForUser($ladderid, $userid, $limit){
 
 
 function getLadders($userid){
-	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderMatchesForUser: Getting ladder matches for ladderid $ladderid with limit $limit");
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderMatchesForUser: Getting ladder matches for user $userid with limit $limit");
 
 	$query = "SELECT DISTINCT tblClubSiteLadders.id, tblClubSiteLadders.name, tblClubLadder.ladderposition FROM tblClubSiteLadders
 	INNER JOIN tblClubLadder on tblClubSiteLadders.id = tblClubLadder.ladderid
