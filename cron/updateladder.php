@@ -69,7 +69,7 @@ class LadderUpdateService{
                 
                 $result = db_query($query);
                 while($match_array = mysqli_fetch_array($result) ){
-                    if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders ".$match_array['winner_full']. " defeated ". $match_array['loser_full']. " ". $match_array['score']);
+                    if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders (".$match_array['ladder_match_id']. ")".$match_array['winner_full']. " defeated ". $match_array['loser_full']. " ". $match_array['score']);
                     adjustClubLadder( $match_array['winner_id'], $match_array['loser_id'], $match_array['ladder_id']);
 
                     $query = "update tblLadderMatch set processed = TRUE where id  = ".$match_array['ladder_match_id'];
