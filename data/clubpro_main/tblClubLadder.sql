@@ -5,7 +5,6 @@ create table clubpro_main.tblClubLadder
     userid         int                           default 0                 not null,
     courttypeid    int                           default 0                 not null,
     ladderposition int                           default 0                 not null,
-    clubid         int                           default 0                 not null,
     lastmodified   timestamp                     default CURRENT_TIMESTAMP not null,
     enddate        timestamp                                               null,
     going          enum ('steady', 'down', 'up') default 'steady'          not null,
