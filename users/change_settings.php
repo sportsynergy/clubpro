@@ -165,7 +165,6 @@ function update_settings(&$frm, $extraParametersResult) {
                 ,homephone = '$frm[homephone]'
                 ,workphone = '$frm[workphone]'
                 ,cellphone = '$frm[cellphone]'
-                ,pager = '$frm[pager]'
                 ,useraddress = '$frm[useraddress]'
         WHERE userid = '$userid'";
     db_query($updateQuery);
@@ -173,7 +172,8 @@ function update_settings(&$frm, $extraParametersResult) {
     //Update Club user
     $qid = db_query("
         UPDATE tblClubUser SET
-			recemail = '$frm[recemail]'
+			recemail = '$frm[recemail]',
+            availability = '$frm[availability]'
         WHERE userid = '$userid'");
 
     // Update the Custom Parameters

@@ -299,6 +299,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
 		        ,gender = '$frm[gender]'
         WHERE userid = '$userid'";
     $qid = db_query($updateUserQuery);
+
     $updateClubUserQuery = "
         UPDATE tblClubUser SET
                 recemail = '$frm[recemail]'
@@ -306,6 +307,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
                 ,memberid = '$frm[memberid]'
 				,roleid 	  =  '$frm[roleid]'
 				,msince  =  '$frm[msince]'
+                ,availability = '$frm[availability]'
         WHERE userid = '$userid'";
     $qid = db_query($updateClubUserQuery);
 

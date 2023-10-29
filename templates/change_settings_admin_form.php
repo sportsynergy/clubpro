@@ -278,6 +278,21 @@ function onSubmitButtonClicked(){
                 <?err($errors->gender)?>
             </td>
         </tr>
+
+        <tr>
+                <td class="label medwidth">Match Availability:</td>
+                <td>
+
+                  <select name="availability">
+                    <option value="5" <?=$frm["availability"]=='5' ? "selected":""?>>5 pm</option>
+                    <option value="6" <?=$frm["availability"]=='6' ? "selected":""?>>6 pm</option>
+                    <option value="7" <?=$frm["availability"]=='7' ? "selected":""?>>7 pm</option>
+                    <option value="any" <?=$frm["availability"]=='any' ? "selected":""?>>Any</option>
+                    <option value="self" <?=$frm["availability"]=='self' ? "selected":""?>>Self</option>
+                    <option value="out" <?=$frm["availability"]=='out' ? "selected":""?>>Out</option>
+                  </select>
+                </td>
+              </tr>
         
         <?
 		// Get the Custom Parameters
