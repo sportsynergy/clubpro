@@ -307,7 +307,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
                 ,memberid = '$frm[memberid]'
 				,roleid 	  =  '$frm[roleid]'
 				,msince  =  '$frm[msince]'
-                ,availability = '$frm[availability]'
+                ,available = '$frm[available]'
         WHERE userid = '$userid'";
     $qid = db_query($updateClubUserQuery);
 
