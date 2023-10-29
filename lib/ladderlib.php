@@ -1102,7 +1102,7 @@ function isPlayingInLadder($userid, $ladderid) {
     $query = "SELECT 1 FROM tblClubLadder 
                 WHERE userid = $userid 
                 AND ladderid = $ladderid 
-                AND clubid = " . get_clubid() . " AND enddate IS NULL";
+                AND enddate IS NULL";
     
     $result = db_query($query);
     $rows = mysqli_num_rows($result);
