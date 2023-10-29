@@ -3782,7 +3782,7 @@ function load_user_profile($userid) {
 							users.gender,
 							clubuser.lastlogin,
 							users.photo,
-							clubuser.availability
+							clubuser.available
 						FROM tblUsers users, tblClubUser clubuser
 						WHERE users.userid = $userid
 							AND clubuser.userid = users.userid");
