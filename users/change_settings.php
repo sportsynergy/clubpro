@@ -173,7 +173,7 @@ function update_settings(&$frm, $extraParametersResult) {
     $qid = db_query("
         UPDATE tblClubUser SET
 			recemail = '$frm[recemail]',
-            availability = '$frm[availability]'
+            available = '$frm[available]'
         WHERE userid = '$userid'");
 
     // Update the Custom Parameters

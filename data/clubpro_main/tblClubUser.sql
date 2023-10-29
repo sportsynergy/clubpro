@@ -13,7 +13,7 @@ create table clubpro_main.tblClubUser
     lastmodified timestamp                                  default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
     enddate      timestamp                                                            null,
     ccnew        enum ('y', 'n')                            default 'n'               null,
-    availability enum ('5', '6', '7', 'any', 'self', 'out') default 'out'             null
+    available    enum ('5', '6', '7', 'any', 'self', 'out') default 'out'             null
 )
     engine = MyISAM
     charset = utf8;
