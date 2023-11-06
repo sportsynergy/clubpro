@@ -68,12 +68,12 @@ function validate_form(&$frm, &$errors) {
         $msg.= "You did not specify a court type.";
     }
 
-    if ( empty($frm["ladder"]) ){
-        
-        $errors->ladder = true;
-        $msg.= "Please specifiy the ladder.";
-        
-        
+    if( isJumpLadderRankingScheme() ) {
+        if ( empty($frm["ladder"]) ){
+            
+            $errors->ladder = true;
+            $msg.= "Please specifiy the ladder."; 
+        }
     }
 
     return $msg;
@@ -108,10 +108,11 @@ function insert_box(&$frm) {
     $numberofrows = mysqli_num_rows($useridresult);
     $lastboxrank = $numberofrows + 1;
     $ladderid = isset($frm[ladder]) ? $frm[ladder] : "NULL";
+    $boxname = addslashes($frm['boxname']);
     $query = "INSERT INTO tblBoxLeagues (
                 boxname, siteid, courttypeid, boxrank, enddate, enddatestamp,ladderid
                 ) VALUES (
-                          '$frm[boxname]'
+                          '$boxname'
                           ,'" . get_siteid() . "'
                           ,$frm[courttypeid]
                           ,$lastboxrank
