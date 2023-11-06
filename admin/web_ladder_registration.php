@@ -67,6 +67,15 @@ function validate_form(&$frm, &$errors) {
         $errors->courttypeid = true;
         $msg.= "You did not specify a court type.";
     }
+
+    if ( empty($frm["ladder"]) ){
+        
+        $errors->ladder = true;
+        $msg.= "Please specifiy the ladder.";
+        
+        
+    }
+
     return $msg;
 }
 function insert_box(&$frm) {
@@ -98,15 +107,17 @@ function insert_box(&$frm) {
     $useridresult = db_query($useridquery);
     $numberofrows = mysqli_num_rows($useridresult);
     $lastboxrank = $numberofrows + 1;
+    $ladderid = isset($frm[ladder]) ? $frm[ladder] : "NULL";
     $query = "INSERT INTO tblBoxLeagues (
-                boxname, siteid, courttypeid, boxrank, enddate, enddatestamp
+                boxname, siteid, courttypeid, boxrank, enddate, enddatestamp,ladderid
                 ) VALUES (
                           '$frm[boxname]'
                           ,'" . get_siteid() . "'
                           ,$frm[courttypeid]
                           ,$lastboxrank
                           ,$datestring
-                          ,$timestamp)";
+                          ,$timestamp
+                          ,$ladderid)";
 
     // run the query on the database
     $result = db_query($query);

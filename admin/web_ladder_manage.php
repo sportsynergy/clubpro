@@ -54,10 +54,10 @@ if (match_referer() && isset($_POST['submitme'])) {
 }
 
 
-$boxnamequery = "SELECT boxleague.boxname, boxleague.courttypeid, boxleague.enddate
-                           FROM tblBoxLeagues boxleague
-                           WHERE boxid=$boxid";
-
+$boxnamequery = "SELECT boxleague.boxname, boxleague.courttypeid, boxleague.enddate, tCSL.name, boxleague.ladderid
+                        FROM tblBoxLeagues boxleague
+                        left join tblClubSiteLadders tCSL on boxleague.ladderid = tCSL.id
+                        WHERE boxid=$boxid";
 
 if(!isset($boxid) ){
     header("Location: $wwwroot/admin/web_ladder_registration.php");

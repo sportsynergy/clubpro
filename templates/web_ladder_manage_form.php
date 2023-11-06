@@ -227,7 +227,7 @@ $userid = $_REQUEST["userid"];
       <table width="550" cellspacing="5" cellpadding="0" class="borderless">
       
 		<tr>
-			<td class="medbold">End Date:</td>
+			<td class="label">End Date:</td>
 			<td>
 				<?
 					$datesArray = explode("-", $boxarray["enddate"]);
@@ -292,12 +292,34 @@ $userid = $_REQUEST["userid"];
 		
 		<tr>
 
-        <td class="medbold">Add A User:</td>
+        <td class="label">Add A User:</td>
         <td>
             
  				<input id="name1" name="name1" type="text" size="30" class="form-autocomplete" />
                 <input id="id1" name="boxuser" type="hidden" />
+
+          <? if( isset($boxarray["ladderid"]) ) { ?>
     			<script>
+                <?
+                 $ladderid = $boxarray["ladderid"];
+                 $wwwroot = $_SESSION["CFG"]["wwwroot"];
+                 pat_autocomplete( array(
+                  'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+                  'source'=>'name1',
+                  'target'=>'id1',
+                  'className'=>'autocomplete',
+                  'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&ladderid=$ladderid",
+                  'progressStyle'=>'throbbing',
+                  'minimumCharacters'=>3,
+                  ));
+
+                
+                 ?>
+            </script>
+
+            <? }  else { ?>
+
+              <script>
                 <?
                  $wwwroot = $_SESSION["CFG"]["wwwroot"];
                  pat_autocomplete( array(
@@ -311,13 +333,23 @@ $userid = $_REQUEST["userid"];
 						));
            
                  ?>
+            </script>
 
-                </script>
+
+              <? }  ?>
         </td>
-
+  <?php
+  if ( isJumpLadderRankingScheme() ) {
+  ?>
+        <tr>
+        <td class="label">Ladder:</td>
+          <td> <?= $boxarray["name"]?></td>
+        </tr>
+    <? } ?>
        <tr>
             <td></td>
             <td>
+            <input type="hidden" name="ladderid" value="<?=$boxarray["ladderid"] ?>">
             	<input type="hidden" name="boxid" value="<?=$boxid ?>">
             	<input type="hidden" name="courttype" value="<?=$courttype?>">
 				<input type="hidden" name="boxenddatemonth" value="<?=ltrim($datesArray[1], '0')?>">
@@ -326,11 +358,7 @@ $userid = $_REQUEST["userid"];
             	<input type="hidden" name="submitme" value="submitme">
 			</td>
        </tr>
-       <tr>
-			<td colspan="2" class="normal">
-				To search for a name type in the players first or last name. <br><br>
-			</td>
-		</tr>
+       
      <tr>
       <td><input type="button" value="Submit" name="submit" id="submitbutton"></td>
       <td> </td>
@@ -356,13 +384,13 @@ $userid = $_REQUEST["userid"];
        <table width="500" class="borderless">
        <tr>
 	       	<td align="center">
-	       		<span class="medbold">Place</span>
+	       		<span class="label">Place</span>
 	       	</td>
 	       	<td>
-	       		<span class="medbold">Player</span>
+	       		<span class="label">Player</span>
 	       	</td>
 	       	<td align="center">
-	       		<span class="medbold">Games Played</span>
+	       		<span class="label">Games Played</span>
 	       	</td>
 	       <td></td>
 	       <td></td>
