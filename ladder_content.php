@@ -93,10 +93,12 @@ if ($clubid) {
 <tr>
 <td align="right" colspan="2">
 
-
+        <? if (isLadderRankingScheme() ) { ?>
 		<span class="normal">
 			<a href="javascript:newWindow('../../help/box_leagues.html')">Box Leagues Explained</a>
 		</span>
+
+        <? } ?>
 
 	
 	<br><br>
@@ -182,8 +184,10 @@ $datestring = explode("-",$wlobj->enddate);
 	                       
 	                        <td>
 	                        	<span class="normal">
+                                    <? if ( isLadderRankingScheme() ) { ?>
 									<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/web_ladder_history.php?boxid=<?=$wluserobj->boxid?>&userid=<?=$wluserobj->userid?>" title="view history">
-									<?=$wluserobj->score?></span>
+									<? } ?>
+                                    <?=$wluserobj->score?></span>
 									</a>
 	                        </td>
 

@@ -310,6 +310,23 @@ print "var thisyear = new Array(13);
           </select>
           </td>
       </tr>
+    
+  <? if( isJumpLadderRankingScheme() ){ # only available for jump ladders ?>
+    <tr>
+        <td class="label">Ladder:</td>
+        <td>
+            <select name="ladder">
+                <option value="0"></option>
+            <? 
+             $ladders = getClubSiteLadders( get_siteid() );
+             for ($i=0; $i < count($ladders); ++$i) { ?>
+                <option value="<?=$ladders[$i]['id'] ?>"><?=$ladders[$i]['name'] ?></option>
+            <?  } ?>
+            <?err($errors->ladder)?>
+        </td>
+    </tr>
+
+    <? } ?>
      <tr>
       <td colspan="2">
       <input type="button" name ="submit" value="Submit" id="submitbutton">
