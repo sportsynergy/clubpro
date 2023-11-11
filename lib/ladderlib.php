@@ -288,6 +288,27 @@ function moveDoublesLadderGroup($highestRankedLoserPosition, $lowestRankedWinner
  */
 function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
     
+
+	/**
+	 * make sure that both player are on the ladder. It messes things if a player is removed
+	 * from the ladder when this is run
+	 */
+
+	$query = "SELECT count(*) from tblClubLadder where ( userid = $winneruserid  OR userid = 		$loseruserid)
+	AND ladderid = $ladderid
+	AND enddate is null";
+
+	$result = db_query($query);
+	$count = mysqli_num_rows($result);
+
+	if($count == 2){
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. Both players are in the ladder. Keep going....  ");
+	} else {
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. One or both of the players are no longer in the ladder. Skipping.... ");
+		return;
+	}
+
+
     if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  winnerid = $winneruserid loserid = $loseruserid ladderid = $ladderid");
     
 	$var = new clubpro_obj;
@@ -321,7 +342,6 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
     
     if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  The winners position/going is $winnerposition/$winnergoing and the losers position/going is $loserposition/$losergoing");
 
-    
 
     //if the winner is already ahead of the loser don't do anything
     
@@ -345,8 +365,6 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
 	
 	//if the loser was ranked ahead of the winner adjust. upset
 	else {
-
-
 
 		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  The winner was ranked below the loser, adjusting...");
 		moveLadderGroup($loserposition, $winnerposition, $ladderid);
