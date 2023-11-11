@@ -302,9 +302,9 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
 	$count = mysqli_num_rows($result);
 
 	if($count > 0){
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. $winneruserid in the ladder. Keep going...  ");
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. The winner ($winneruserid) in the ladder. Keep going...  ");
 	} else {
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. $winneruserid is no longer in the ladder with count. Skipping... ");
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. The winner ($winneruserid) is no longer in the ladder. Skipping... ");
 		return;
 	}
 
@@ -316,9 +316,9 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
 	$count = mysqli_num_rows($result);
 
 	if($count > 0){
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. $loseruserid in the ladder. Keep going...  ");
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. The loser ($loseruserid) in the ladder. Keep going...  ");
 	} else {
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. $loseruserid is no longer in the ladder with count. Skipping... ");
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. The loser ($loseruserid) is no longer in the ladder. Skipping... ");
 		return;
 	}
 
