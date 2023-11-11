@@ -294,17 +294,31 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
 	 * from the ladder when this is run
 	 */
 
-	$query = "SELECT * from tblClubLadder where ( userid = $winneruserid  OR userid = 		$loseruserid)
-	AND ladderid = $ladderid
-	AND enddate is null";
+	$query = "SELECT * from tblClubLadder WHERE userid = $winneruserid  
+				AND ladderid = $ladderid
+				AND enddate is null";
 
 	$result = db_query($query);
 	$count = mysqli_num_rows($result);
 
-	if($count == 2){
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. Both players are in the ladder with count $count. Keep going....  ");
+	if($count > 0){
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. $winneruserid in the ladder. Keep going...  ");
 	} else {
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. One or both of the players are no longer in the ladder with count $count Skipping.... ");
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. $winneruserid is no longer in the ladder with count. Skipping... ");
+		return;
+	}
+
+	$query = "SELECT * from tblClubLadder WHERE userid = $loseruserid  
+				AND ladderid = $ladderid
+				AND enddate is null";
+
+	$result = db_query($query);
+	$count = mysqli_num_rows($result);
+
+	if($count > 0){
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. $loseruserid in the ladder. Keep going...  ");
+	} else {
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. $loseruserid is no longer in the ladder with count. Skipping... ");
 		return;
 	}
 
