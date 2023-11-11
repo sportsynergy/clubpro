@@ -294,7 +294,7 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
 	 * from the ladder when this is run
 	 */
 
-	$query = "SELECT count(*) from tblClubLadder where ( userid = $winneruserid  OR userid = 		$loseruserid)
+	$query = "SELECT * from tblClubLadder where ( userid = $winneruserid  OR userid = 		$loseruserid)
 	AND ladderid = $ladderid
 	AND enddate is null";
 
@@ -302,9 +302,9 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
 	$count = mysqli_num_rows($result);
 
 	if($count == 2){
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. Both players are in the ladder. Keep going....  ");
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. Both players are in the ladder with count $count. Keep going....  ");
 	} else {
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. One or both of the players are no longer in the ladder. Skipping.... ");
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder. One or both of the players are no longer in the ladder with count $count Skipping.... ");
 		return;
 	}
 
