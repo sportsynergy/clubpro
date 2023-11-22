@@ -156,24 +156,32 @@
               <?  }  ?>
         
           </tr>
-          <tr height="15">
-            <td colspan="2">
-            <div class="spacer"></div>
-            <?php
-            if( $origin == 'ladder') { ?>
-          
-            <? }?>
-            </td>
-          </tr>
+         
         </table>
       
       </td>
     </tr>
+   
   </table>
+  <table width="650" cellpadding="20" cellspacing="0" >
+  <tr height="15">
+            <td colspan="2">
+            <div class="spacer"></div>
+            <?php
+            if( $origin == 'ladder') { ?>
+              <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">< Back to ladder</a>
+            <? } elseif ($origin == 'league') { ?>
+              <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">< Back to leagues</a>
+              
+              <? }  ?>
+            </td>
+          </tr>
+            </table>
   <div style="height: 2em;">
 
+
 </div>
-  <div style="text-align: right;">
+  <div style="text-align: left;">
   
   </div>
 </div>

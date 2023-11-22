@@ -25,8 +25,6 @@
  * $Id:$
  */
 
-
-
 //Load necessary libraries and set the wanturl to get back here.
 $_SESSION["wantsurl"] = qualified_mewithq();
 $_SESSION["siteprefs"] = getSitePreferences($siteid);
@@ -79,11 +77,11 @@ include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 
 if ($clubid) {
 
-
     //Get all of the web ladders for the club
-    $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable
+    $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable, tCSL.leaguesUpdated AS lastupdated
                       FROM tblBoxLeagues
-                      WHERE (((tblBoxLeagues.siteid)=$siteid))
+                      INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
+                      WHERE tblBoxLeagues.siteid=$siteid
                       ORDER BY tblBoxLeagues.boxrank";
     $getwebladdersresult = db_query($getwebladdersquery);
 ?>
@@ -108,24 +106,35 @@ if ($clubid) {
 <?
 
 $resultcounter = 0;
+$playercounter = 0;
+
+// hacky thing to get tables to look right
+if ( isJumpLadderRankingScheme() ){
+    $colspan = 4;
+} else {
+    $colspan = 3;
+}
 
 while ($wlobj = db_fetch_object($getwebladdersresult)) {
 $datestring = explode("-",$wlobj->enddate);
+$lastupdatestring = $wlobj->lastupdated;
        if ($resultcounter==0){ ?>
                <tr valign="top">
-          <? } ?> 
-           
-           
+          <? }     
+    ?> 
+            
       <td width="350"  nowrap>
 
               <table width="350" cellpadding="0" cellspacing="0" class="bordertable">
               	<tr valign="top">
-              		<td class=clubid<?=get_clubid()?>th colspan="3">
-              			<span class="whiteh1"><div align="center"><?=$wlobj->boxname?></div></span>
+              		<td class=clubid<?=get_clubid()?>th colspan="<?=$colspan?>">
+              			<span class="whiteh1"><div align="center">
+                            <?=$wlobj->boxname?></div>
+                        </span>
               		</td>
                	</tr>
                	<tr>
-              		<td class=clubid<?=get_clubid()?>th colspan="3">
+              		<td class=clubid<?=get_clubid()?>th colspan="<?=$colspan?>">
               			<span class="whitenorm">
               				<div align="center">End Date: <?=$datestring[1]."-".$datestring[2]."-".$datestring[0]?></div>
               	</span>
@@ -134,8 +143,6 @@ $datestring = explode("-",$wlobj->enddate);
               </tr>
               
              
-              
-
               <tr align="center" class=clubid<?=get_clubid()?>th>
 	              	<td>
 	              		<span class="whitenorm">Place</span>
@@ -146,10 +153,14 @@ $datestring = explode("-",$wlobj->enddate);
 	              	<td>
 	              		<span class="whitenorm">Points</span>
 	              	</td>
+                    <? if( isJumpLadderRankingScheme() ) { ?>
+                      <td>
+	              		<span class="whitenorm">Games Won</span>
+	              	</td>
+                    <?  } ?>
+
               </tr>
-
-             
-
+        
 <?
                // Now list the players in the ladder
                $webladderuserquery = "SELECT tblkpBoxLeagues.boxplace,
@@ -157,12 +168,13 @@ $datestring = explode("-",$wlobj->enddate);
 										tblUsers.lastname, 
 										tblUsers.email, 
 										tblkpBoxLeagues.score,
+                                        tblkpBoxLeagues.gameswon,
 										tblUsers.userid,
 										tblkpBoxLeagues.boxid
                                       FROM tblUsers
                                       INNER JOIN tblkpBoxLeagues ON tblUsers.userid = tblkpBoxLeagues.userid
                                       WHERE tblkpBoxLeagues.boxid=$wlobj->boxid
-                                      ORDER BY tblkpBoxLeagues.score DESC, tblUsers.lastname";
+                                      ORDER BY tblkpBoxLeagues.score DESC, tblkpBoxLeagues.gameswon DESC, tblUsers.lastname";
 
                 $webladderuserresult = db_query($webladderuserquery);
                 //Set the place variable
@@ -179,7 +191,18 @@ $datestring = explode("-",$wlobj->enddate);
 	                        	<span class="normal"><?=$n?></span>
 	                        </td>
 	                        <td>
-	                        	<span class="normal"><a href="mailto:<?=$wluserobj->email?>"><?=$wluserobj->firstname?> <?=$wluserobj->lastname?></a></span>
+                            <form name="playerform<?=$playercounter?>" method="get"
+								action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php">
+								<input type="hidden" name="userid"
+									value="<?=$wluserobj->userid?>"> 
+                                    <input type="hidden" name="origin" value="league">
+							</form>
+	                        	<span class="normal">
+                                    <a href="javascript:submitForm('playerform<?=$playercounter?>')">
+                                    <?=$wluserobj->firstname?> <?=$wluserobj->lastname?>
+                                    </a>
+                                    
+                                    </span>
 	                        </td>
 	                       
 	                        <td>
@@ -190,11 +213,18 @@ $datestring = explode("-",$wlobj->enddate);
                                     <?=$wluserobj->score?></span>
 									</a>
 	                        </td>
+                            <td>
+                                    <span class="normal">
+                                    <?=$wluserobj->gameswon?></span>
+                                    </span>
+                            </td>
+                                
 
                         </tr>
                      <?
                         $n++;
 						$rownum = $rownum - 1;
+                        ++$playercounter;
                 }
 
 				?>
@@ -209,6 +239,7 @@ $datestring = explode("-",$wlobj->enddate);
            }
 
        ++$resultcounter;
+       
 
        //Reset the result counter
        if ($resultcounter==2){
@@ -220,11 +251,31 @@ $datestring = explode("-",$wlobj->enddate);
                echo "</tr>";
            }
 
-
-
 echo "</table>";
 
 }
 
+if( isJumpLadderRankingScheme() ){
+?>
+
+<div style="margin-top: 20px"> <span class="smallbold">Box leagues last updated:</span> 
+  <?php
+    
+    if( is_null($lastupdatestring) ){
+      $lastupdated = "Never";
+    } else {
+      //$lastupdated = ladderdetails['lastUpdated'];
+      $lastupdated = $lastupdatestring;
+    } ?>
+
+  <span class="smallreg">
+  <?=$lastupdated?>
+  </span>
+
+
+  </div>
+
+<?
+}
 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
 ?>
