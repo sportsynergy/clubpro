@@ -5,7 +5,8 @@ create table clubpro_main.tblkpBoxLeagues
     boxplace     int       default 0                 not null,
     games        tinyint   default 0                 not null,
     score        smallint  default 0                 not null,
-    lastmodified timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
+    lastmodified timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
+    gameswon     tinyint   default 0                 null
 )
     engine = MyISAM;
 
