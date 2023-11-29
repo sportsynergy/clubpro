@@ -179,7 +179,6 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $currDay = gmdate("j", $curtime);
         $hourplayed = str_pad($hourplayed, 2, "0", STR_PAD_LEFT);
         $matchtime = "$currYear-$currMonth-$currDay $hourplayed:$minuteofday:00";
-       
 
         $query = "INSERT INTO tblLadderMatch (
             ladderid, score, winnerid, loserid, match_time
@@ -190,8 +189,6 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
                       ,$loserid
                       ,'$matchtime'
                       )";
-
-        if (isDebugEnabled(1)) logMessage($query);
         
         db_query($query);
 
