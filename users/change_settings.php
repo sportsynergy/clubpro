@@ -157,6 +157,20 @@ function update_settings(&$frm, $extraParametersResult) {
         $lastName = addslashes($frm['lastname']);
     }
 
+    $available_5pm = 'false';
+    $available_6pm = 'false';
+    $available_7pm = 'false';
+
+    if( $frm['available_5pm'] == 'on' ){
+        $available_5pm = 'true';
+    } 
+    if( $frm['available_6pm'] == 'on' ){
+        $available_6pm = 'true';
+    }
+    if( $frm['available_7pm'] == 'on' ){
+        $available_7pm = 'true';
+    }
+
     //Update User
     $updateQuery = "UPDATE tblUsers SET
                  email = '$frm[email]'
@@ -172,8 +186,10 @@ function update_settings(&$frm, $extraParametersResult) {
     //Update Club user
     $qid = db_query("
         UPDATE tblClubUser SET
-			recemail = '$frm[recemail]',
-            available = '$frm[available]'
+			recemail = '$frm[recemail]'
+            ,available_at_5 = $available_5pm
+            ,available_at_6 = $available_6pm
+            ,available_at_7 = $available_7pm
         WHERE userid = '$userid'");
 
     // Update the Custom Parameters

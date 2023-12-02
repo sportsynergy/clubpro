@@ -135,6 +135,7 @@ if (isset($_POST['formname']) && $_POST['formname'] == "entryform") {
     }
 }
 $frm = load_user_profile($userid);
+
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/change_settings_admin_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
@@ -285,6 +286,21 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
         $firstName = addslashes($frm['firstname']);
         $lastName = addslashes($frm['lastname']);
     }
+
+    $available_5pm = 'false';
+    $available_6pm = 'false';
+    $available_7pm = 'false';
+
+    if( $frm['available_5pm'] == 'on' ){
+        $available_5pm = 'true';
+    } 
+    if( $frm['available_6pm'] == 'on' ){
+        $available_6pm = 'true';
+    }
+    if( $frm['available_7pm'] == 'on' ){
+        $available_7pm = 'true';
+    }
+
     $updateUserQuery = "
         UPDATE tblUsers SET
 				username = '$username'
@@ -307,7 +323,9 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
                 ,memberid = '$frm[memberid]'
 				,roleid 	  =  '$frm[roleid]'
 				,msince  =  '$frm[msince]'
-                ,available = '$frm[available]'
+                ,available_at_5 = $available_5pm
+                ,available_at_6 = $available_6pm
+                ,available_at_7 = $available_7pm
         WHERE userid = '$userid'";
     $qid = db_query($updateClubUserQuery);
 
@@ -319,8 +337,6 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
     }
 
     // Update the Custom Parameters
-    
-
     while ($parameterArray = mysqli_fetch_array($extraParametersResult)) {
         
         $parameterId = $parameterArray['parameterid'];

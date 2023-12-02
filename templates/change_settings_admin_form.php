@@ -279,20 +279,28 @@ function onSubmitButtonClicked(){
             </td>
         </tr>
 
+        <?  if ( isJumpLadderRankingScheme() ){ 
+            
+            if($frm['available_at_5']==true){
+                $selected5 = "checked=checked"; 
+            }
+            if($frm['available_at_6']==true){
+                $selected6 = "checked=checked"; 
+            }
+            if($frm['available_at_7']==true){
+                $selected7 = "checked=checked"; 
+            }
+            
+            ?>
         <tr>
                 <td class="label medwidth">Match Availability:</td>
                 <td>
-
-                  <select name="available">
-                    <option value="5" <?=$frm["available"]=='5' ? "selected":""?>>5 pm</option>
-                    <option value="6" <?=$frm["available"]=='6' ? "selected":""?>>6 pm</option>
-                    <option value="7" <?=$frm["available"]=='7' ? "selected":""?>>7 pm</option>
-                    <option value="any" <?=$frm["available"]=='any' ? "selected":""?>>Any</option>
-                    <option value="self" <?=$frm["available"]=='self' ? "selected":""?>>Self</option>
-                    <option value="out" <?=$frm["available"]=='out' ? "selected":""?>>Out</option>
-                  </select>
+                <input type="checkbox" name="available_5pm" <?=$selected5?>/> 5pm  
+                <input type="checkbox" name="available_6pm" <?=$selected6?>/> 6pm  
+                <input type="checkbox" name="available_7pm" <?=$selected7?>/> 7pm    
                 </td>
               </tr>
+        <? } ?>
         
         <?
 		// Get the Custom Parameters
