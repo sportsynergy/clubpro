@@ -113,7 +113,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $result = db_query($query);
         $position = mysqli_result($result, 0);
         
-        if (isDebugEnabled(1)) logMessage("player_ladder: removing user $userid to club ladder for ladderid $ladderid");
+        if (isDebugEnabled(1)) logMessage("player_ladder: removing user $userid to club ladder for ladderid $ladderid by user:" . get_userid() );
         $query = "UPDATE tblClubLadder SET enddate = NOW() WHERE userid = $userid AND  ladderid = $ladderid";
         db_query($query);
 
