@@ -40,6 +40,14 @@ require "../vendor/autoload.php";
 $DOC_TITLE = "Player Ladder";
 require_loginwq();
 
+//Get General Club info (make sure current_time is fresh as can be)
+$clubquery = "SELECT * from tblClubs WHERE clubid='" . $clubid . "'";
+$clubresult = db_query($clubquery);
+$clubobj = db_fetch_object($clubresult);
+$tzdelta = $clubobj->timezone * 3600;
+$curtime = mktime() + $tzdelta;
+$_SESSION["current_time"] = $curtime;
+
 
 // Log user out if they are in the wrong club
 $userRelation = new UserClubRelation();
@@ -174,6 +182,8 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
             $hourplayed = $hourplayed + 12;
         }
         $curtime = $_SESSION["current_time"];
+
+
         $currYear = gmdate("Y", $curtime);
         $currMonth = gmdate("n", $curtime);
         $currDay = gmdate("j", $curtime);
