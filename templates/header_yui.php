@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta http-equiv="refresh" content="600">
+<meta http-equiv="refresh" content="3600">
 <meta name="referrer" content="always">
 <title><? pv($DOC_TITLE) ?>
 </title>
