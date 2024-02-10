@@ -80,7 +80,7 @@ to add your name now.
 			| <span class="normal" id="showreportscores"><a
 			style="text-decoration: underline; cursor: pointer"> Report Score</a></span>
 	<? } ?>		
-	<?  if(get_roleid()==1){ ?>
+	<?  if(get_roleid()==1 && $playingInLadder){ ?>
 			 <span class="normal" id="showreportscoresplayer"><a
 			style="text-decoration: underline; cursor: pointer"> Report Score</a></span>
 	<? } ?>
@@ -217,16 +217,13 @@ to add your name now.
 						'progressStyle'=>'throbbing',
 						'minimumCharacters'=>3,
 						));
-           
                  ?>
-
                 </script>
 			</div>
 
 			<div style="margin:10px"> 
 				<span>Defeated</span>
 			</div>
-
 			<div>
 				<input id="rsname2" name="" type="text" size="30"
 					class="form-autocomplete" autocomplete="off"/> 
