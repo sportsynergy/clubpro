@@ -73,16 +73,18 @@ to add your name now.
 <? } else{ ?>
 
 <div id="ladderControlPanel" style="padding-bottom: 5px;">
-	<span class="normal">
+
 	<?  if(get_roleid()==2 || get_roleid()==4){ ?>
 		<span class="normal" id="show"><a
 			style="text-decoration: underline; cursor: pointer"> Add Player</a> </span>
-		| <span class="normal" id="showreportscores"><a
-			style="text-decoration: underline; cursor: pointer"> Report Score</a>
-		</span>
-			<? } ?>
+			| <span class="normal" id="showreportscores"><a
+			style="text-decoration: underline; cursor: pointer"> Report Score</a></span>
+	<? } ?>		
+	<?  if(get_roleid()==1){ ?>
+			 <span class="normal" id="showreportscoresplayer"><a
+			style="text-decoration: underline; cursor: pointer"> Report Score</a></span>
+	<? } ?>
 
-	</span>
 </div>
 
 
@@ -199,7 +201,7 @@ to add your name now.
 		<form method="POST" action="<?=$ME?>" autocomplete="off">
 			
 			<div>
-				<input id="rsname1" name="rsplayeronename" type="text" size="30"
+				<input id="rsname1" name="" type="text" size="30"
 					class="form-autocomplete" autocomplete="off"/> 
 					<input id="rsid1" name="rsuserid" type="hidden" />
 
@@ -226,7 +228,7 @@ to add your name now.
 			</div>
 
 			<div>
-				<input id="rsname2" name="rsplayertwoname" type="text" size="30"
+				<input id="rsname2" name="" type="text" size="30"
 					class="form-autocomplete" autocomplete="off"/> 
 					<input id="rsid2" name="rsuserid2" type="hidden" />
 
@@ -261,6 +263,91 @@ to add your name now.
 			</div>
 
 			<div>
+				<select name="hourplayed">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8" selected>8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="00">12</option>
+				</select>
+
+				<select name="minuteofday">
+					<option value="00">00</option>
+					<option value="15">15</option>
+					<option value="30">30</option>
+					<option value="45">45</option>
+				</select>
+
+				<select name="timeofday">
+					<option value="AM">AM</option>
+					<option value="PM" selected>PM</option>
+				</select>
+			</div>
+
+		
+				<input type="hidden" name="cmd" value="reportladderscore">
+		</form>
+
+</div>
+	
+</div>
+
+<div id="reportscoredialogplayer" class="yui-pe-content">
+
+<div class="bd">
+		<form method="POST" action="<?=$ME?>" autocomplete="off">
+			
+
+		 <div style="margin:10px"> 
+			<span class="label">Outcome:</span>
+			<select name="outcome">
+					<option value="defeated">Won</option>
+					<option value="lostto">Lost</option>
+				</select>
+			</div>
+
+			<div style="margin:10px"> 
+			<span class="label">Opponent:</span>
+				<input id="rsname3" name="" type="text" size="30"
+					class="form-autocomplete" autocomplete="off"/> 
+					<input id="rsid3" name="rsuserid3" type="hidden" />
+
+				<script>
+                <?
+                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+                 pat_autocomplete( array(
+						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+						'source'=>'rsname3',
+						'target'=>'rsid3',
+						'className'=>'autocomplete',
+						'parameters'=> "action=autocomplete&name={rsname3}&userid=".get_userid()."&ladderid=$ladderid",
+						'progressStyle'=>'throbbing',
+						'minimumCharacters'=>3,
+						));
+                 ?>
+
+                </script>
+			</div>
+
+			<div style="margin:10px"> 
+			<span class="label">Score:</span>
+			<select name="score">
+					<option value="3-2">3-2</option>
+					<option value="3-1" selected>3-1</option>
+					<option value="2-1" selected>2-1</option>
+					<option value="3-0" selected>3-0</option>
+				</select>
+			</div>
+
+			<div style="margin:10px"> 
+			<span class="label"> Time </span>
 				<select name="hourplayed">
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -410,6 +497,7 @@ to add your name now.
 		
 		    // Remove progressively enhanced content class, just before creating the module
 		    YAHOO.util.Dom.removeClass("reportscoredialog", "yui-pe-content");
+			YAHOO.util.Dom.removeClass("reportscoredialogplayer", "yui-pe-content");
 		
 			// Instantiate the Dialog
 			YAHOO.clubladder.container.reportscoredialog = new YAHOO.widget.Dialog("reportscoredialog", 
@@ -420,8 +508,17 @@ to add your name now.
 									  constraintoviewport : true,
 									  buttons : [ { text:"Record Score", handler:handleSubmit, isDefault:true } ]
 									});
+			YAHOO.clubladder.container.reportscoredialogplayer = new YAHOO.widget.Dialog("reportscoredialogplayer", 
+								{ width : "30em",
+									fixedcenter : true,
+									modal: true,
+									visible : false, 
+									constraintoviewport : true,
+									buttons : [ { text:"Record Score", handler:handleSubmit, isDefault:true } ]
+								});
 		
 			YAHOO.clubladder.container.reportscoredialog.setHeader('Record Score');
+			YAHOO.clubladder.container.reportscoredialogplayer.setHeader('Record Score');
 		
 			// Validate the entries in the form to require that both first and last name are entered
 			YAHOO.clubladder.container.reportscoredialog.validate = function() {
@@ -438,14 +535,19 @@ to add your name now.
 			// Wire up the success and failure handlers
 			YAHOO.clubladder.container.reportscoredialog.callback = { success: handleSuccess,
 								     failure: handleFailure };
+
+			YAHOO.clubladder.container.reportscoredialogplayer.callback = { success: handleSuccess,
+									failure: handleFailure };
 			
 			// Render the Dialog
 			YAHOO.clubladder.container.reportscoredialog.render();
+			YAHOO.clubladder.container.reportscoredialogplayer.render();
 		
 			YAHOO.util.Event.addListener("showreportscores", "click", YAHOO.clubladder.container.reportscoredialog.show, YAHOO.clubladder.container.reportscoredialog, true);
 			YAHOO.util.Event.addListener("showreportscores", "click", disablenewlines, false, true);
 			
-			
+			YAHOO.util.Event.addListener("showreportscoresplayer", "click", YAHOO.clubladder.container.reportscoredialogplayer.show, YAHOO.clubladder.container.reportscoredialogplayer, true);
+			YAHOO.util.Event.addListener("showreportscoresplayer", "click", disablenewlines, false, true);
 		});
 		
 

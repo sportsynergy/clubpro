@@ -77,6 +77,7 @@ if ( isset ($ladderid) ){
 	AND tCL.ladderid=$ladderid
 	AND clubuser.enable='y'
 	AND clubuser.enddate IS NULL
+	AND users.userid != $userid
 	AND
 		(users.firstname LIKE '%$name%'
 		 OR users.lastname LIKE '%$name%'

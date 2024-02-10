@@ -170,19 +170,36 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $minuteofday = $frm['minuteofday'];
         $timeofday = $frm['timeofday'];
 
-        if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday");
 
-    
         $score = $frm['score'];
-        $winnerid = $frm['rsuserid'];
-        $loserid = $frm['rsuserid2'];
+        $kind = "";
+
+        // when players report
+        if ( $frm['outcome'] == "defeated"){
+            $winnerid = get_userid();
+            $loserid = $frm['rsuserid3'];
+            $kind = "by user";
+
+
+        } elseif ( $frm['outcome'] == "lostto" ){
+            $winnerid = $frm['rsuserid3'];
+            $loserid = get_userid();
+            $kind = "by user";
+
+        } else {
+            $winnerid = $frm['rsuserid'];
+            $loserid = $frm['rsuserid2'];
+            $kind = "by admin";
+        }
+
+        if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: winner: $winnerid, loser: $loserid, hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday, kind: $kind");
+
 
         // Set the match time
         if ( $timeofday == "PM"){
             $hourplayed = $hourplayed + 12;
         }
         $curtime = $_SESSION["current_time"];
-
 
         $currYear = gmdate("Y", $curtime);
         $currMonth = gmdate("n", $curtime);
@@ -203,6 +220,8 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         db_query($query);
 
     }
+
+    
 }
 
 // Initialize view with data
