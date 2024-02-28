@@ -153,7 +153,7 @@ function delete_player(&$frm) {
     //Remove them from any club ladder
     $userid = $frm['userid'];
     $clubid = get_clubid();
-    $query = "SELECT ladder.* FROM tblClubLadder ladder WHERE clubid = $clubid AND userid = $userid AND enddate IS NULL";
+    $query = "SELECT ladder.* FROM tblClubLadder ladder WHERE userid = $userid AND enddate IS NULL";
     $result = db_query($query);
 
     //For each ladder they were in, remove them and move everyone up.
