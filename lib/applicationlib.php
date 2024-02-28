@@ -851,10 +851,22 @@ function isLadderRankingScheme() {
     return $_SESSION["siteprefs"]["rankingscheme"] == 'ladder' ? true : false;
 }
 
+/** 
+ * Can include jump ladder or jump ladder plus
+ */
 function isJumpLadderRankingScheme() {
 
+	if($_SESSION["siteprefs"]["rankingscheme"] == 'jumpladder' || 
+	$_SESSION["siteprefs"]["rankingscheme"] == 'jumpladderplus'){
+		return true;
+	}
+	return false;
+}
+
+function isJumpLadderPlusRankingScheme() {
+
     /* this function simply returns the whether or not the site has solo reservations enabled. */
-    return $_SESSION["siteprefs"]["rankingscheme"] == 'jumpladder' ? true : false;
+    return $_SESSION["siteprefs"]["rankingscheme"] == 'jumpladderplus' ? true : false;
 }
 
 
