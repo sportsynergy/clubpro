@@ -49,6 +49,8 @@
           </div>
         </div>
       </li>
+      <? } if(isTournamentsEnabled()  )  { ?>
+        <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Tournaments</a></li>
       <? } if(isPointRankingScheme() || isJumpLadderPlusRankingScheme() )  { ?>
       <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Rankings</a></li>
       <? }?>

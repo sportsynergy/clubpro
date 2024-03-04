@@ -5795,6 +5795,13 @@ function isSiteBoxLeageEnabled(){
 	return $_SESSION["siteprefs"]["boxenabled"]=='true'?true:false;
 }
 
+
+function isTournamentsEnabled(){
+
+	return $_SESSION["siteprefs"]["tourneys"]=='true'?true:false;
+}
+
+
 /**
  * Gets the usertype of a reservation (1=Doubles, 0=Singles)
  * 
