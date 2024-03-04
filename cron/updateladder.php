@@ -37,7 +37,7 @@ class LadderUpdateService{
         $query = "SELECT tCSL.*
                 FROM tblClubSites sites
                 INNER JOIN tblClubSiteLadders tCSL on sites.siteid = tCSL.siteid
-                WHERE sites.rankingscheme = 'jumpladder'";
+                WHERE sites.rankingscheme like 'jumpladder%'";
 	
 	  	$ladders_result = db_query($query);
 
