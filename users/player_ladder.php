@@ -194,7 +194,6 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
 
         if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: winner: $winnerid, loser: $loserid, hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday, kind: $kind");
 
-
         // Set the match time
         if ( $timeofday == "PM"){
             $hourplayed = $hourplayed + 12;
@@ -207,17 +206,35 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $hourplayed = str_pad($hourplayed, 2, "0", STR_PAD_LEFT);
         $matchtime = "$currYear-$currMonth-$currDay $hourplayed:$minuteofday:00";
 
-        $query = "INSERT INTO tblLadderMatch (
-            ladderid, score, winnerid, loserid, match_time
-            ) VALUES (
-                      $ladderid
-                      ,'$score'
-                      ,$winnerid
-                      ,$loserid
-                      ,'$matchtime'
-                      )";
-        
-        db_query($query);
+        //Make sure this same exact thing hasn't been entered already
+        $check = "SELECT count(*) from tblLadderMatch 
+        				WHERE ladderid = $ladderid 
+                        AND winnerid = $winnerid 
+        				AND loserid = $loserid
+                        AND match_time = $matchtime
+        				AND enddate IS NULL";
+        $checkResult = db_query($check);
+
+        $dontexist = mysqli_result($checkResult, 0);
+
+        if($dontexist){
+
+            $query = "INSERT INTO tblLadderMatch (
+                ladderid, score, winnerid, loserid, match_time
+                ) VALUES (
+                          $ladderid
+                          ,'$score'
+                          ,$winnerid
+                          ,$loserid
+                          ,'$matchtime'
+                          )";
+            
+            db_query($query);
+        } else {
+            if (isDebugEnabled(1)) logMessage("player_ladder: this match was already recorded. going to do nothing.");
+        }
+
+       
 
     }
 

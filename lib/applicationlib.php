@@ -942,6 +942,17 @@ function isRequireLogin() {
     return $_SESSION["siteprefs"]["requirelogin"] == 'y' ? true : false;
 }
 
+function getTimeOutLink() {
+
+    // If something is set, use it otherwise use  
+    if ( isset($_SESSION["siteprefs"]["timeoutlink"])  ) {
+		return $_SESSION["siteprefs"]["timeoutlink"];
+	} else {
+		return  "http://" . $_SESSION["CFG"]["dns"] . "/";
+	}
+	
+}
+
 // Getter
 function get_roleid() {
 
@@ -5691,7 +5702,8 @@ function getSitePreferences($siteid) {
 					clubs.clubname,
                     clubs.timezone,
                     sites.showplayernames,
-                    sites.requirelogin
+                    sites.requirelogin,
+					sites.timeoutlink
 	        FROM tblClubSites sites, tblClubs clubs
 			WHERE sites.siteid = '$siteid'
 			AND sites.clubid = clubs.clubid";

@@ -32,6 +32,7 @@ create table clubpro_main.tblClubSites
     requirelogin                enum ('y', 'n')                                          default 'n'               not null comment 'require login before accessing main booking page',
     ccadmins                    enum ('y', 'n')                                          default 'n'               not null,
     allowplayerslooking         enum ('y', 'n')                                          default 'y'               null,
+    timeoutlink                 varchar(255)                                                                       null comment 'the url after a timeout',
     constraint sitecode
         unique (sitecode)
 )

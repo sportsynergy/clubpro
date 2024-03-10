@@ -66,6 +66,8 @@ if (match_referer() && isset($_POST)) {
         $updateLastLoginQuery = "UPDATE tblClubUser SET lastlogin = $curtime WHERE userid = $user[userid] AND clubid = " . get_clubid() . "";
         db_query($updateLastLoginQuery);
         $_SESSION["user"] = $user;
+
+        setcookie("timeoutlink", getTimeOutLink() , time() + 31536000);
         
         if (isset($_POST["remember"])) {
 
@@ -111,7 +113,9 @@ if (  null !==  get_clubid() ) {
     include ($_SESSION["CFG"]["templatedir"] . "/login_form.php");
 } else {
     if (isDebugEnabled(1)) logMessage("Login.php: this form can't be displayed because of some session timeout thing.");
-    header("Location: https://www.sportsynergy.net/");
+    $timeoutlink = $_COOKIE["timeoutlink"];
+    header("Location: $timeoutlink");
+    
 }
 
 ?>

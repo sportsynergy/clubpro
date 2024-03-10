@@ -49,6 +49,9 @@ if($userRelation->isUserLoggedin()){
 $_SESSION["wantsurl"] = qualified_mewithq();
 $siteprefs = getSitePreferences($siteid);
 $_SESSION["siteprefs"] = $siteprefs;
+setcookie("timeoutlink", "");
+setcookie("timeoutlink", getTimeOutLink() , time() + 31536000);
+
 
 
 //Only load the site ladders if the ranking scheme is configured as such
