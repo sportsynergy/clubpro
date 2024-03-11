@@ -948,7 +948,7 @@ function getTimeOutLink() {
     if ( isset($_SESSION["siteprefs"]["timeoutlink"])  ) {
 		return $_SESSION["siteprefs"]["timeoutlink"];
 	} else {
-		return  "http://" . $_SESSION["CFG"]["dns"] . "/";
+		return  "https://" . $_SESSION["CFG"]["dns"] . "/".$_SESSION["CFG"]["clubconfig"]. "/clubs//". $_SESSION["siteprefs"]["sitecode"];
 	}
 	
 }
