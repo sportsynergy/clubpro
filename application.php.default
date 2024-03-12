@@ -32,7 +32,7 @@
 */
 /* define a generic object */
 
-class object {
+class clubpro_obj {
 };
 
 /* define database error handling behavior, since we are in development stages
