@@ -427,11 +427,17 @@ to add your name now.
 				Spot: <select name="placement">
 				<?
 				mysqli_data_seek($ladderplayers,0);
+
+
+				$lastspot = mysqli_num_rows($ladderplayers) + 1;
+
 				for ( $i = 1; $i<= mysqli_num_rows($ladderplayers)+1; ++$i){
 
-					if($i == count($ladderplayers)+1 ){
+					$selected = "";
+					if($i == $lastspot ){
 						$selected = "selected=\"selected\"";
 					}
+
 					?>
 					<option value="<?=$i?>" <?=$selected?>>
 					<?=$i?>

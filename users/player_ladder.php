@@ -206,19 +206,24 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $hourplayed = str_pad($hourplayed, 2, "0", STR_PAD_LEFT);
         $matchtime = "$currYear-$currMonth-$currDay $hourplayed:$minuteofday:00";
 
+        if (isDebugEnabled(1)) logMessage("player_ladder: Checking to see if this match has already been entered ");
+
+
         //Make sure this same exact thing hasn't been entered already
         $check = "SELECT count(*) from tblLadderMatch 
         				WHERE ladderid = $ladderid 
                         AND winnerid = $winnerid 
         				AND loserid = $loserid
-                        AND match_time = $matchtime
+                        AND match_time = '$matchtime'
         				AND enddate IS NULL";
-        $checkResult = db_query($check);
 
+        $checkResult = db_query($check);
         $dontexist = mysqli_result($checkResult, 0);
 
-        if($dontexist){
+        if( $dontexist == 0){
 
+            if (isDebugEnabled(1)) logMessage("player_ladder: this match was  not already recorded. Adding.. ");
+   
             $query = "INSERT INTO tblLadderMatch (
                 ladderid, score, winnerid, loserid, match_time
                 ) VALUES (
