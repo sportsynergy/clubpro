@@ -137,7 +137,8 @@ function onCancelButtonClicked(){
                  <?  //Get Club Players
                $query = "SELECT eventid, eventname
                           FROM tblEvents
-                          WHERE siteid = ".get_siteid()."";
+                          WHERE siteid = ".get_siteid()."
+						  ORDER BY eventname";
 
                 // run the query on the database
                 $result = db_query($query);
