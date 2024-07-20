@@ -1,4 +1,4 @@
-create table clubpro_main.tblTimezones
+create table tblTimezones
 (
     tzid         tinyint auto_increment
         primary key,

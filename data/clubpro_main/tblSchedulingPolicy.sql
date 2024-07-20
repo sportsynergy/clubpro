@@ -1,4 +1,4 @@
-create table clubpro_main.tblSchedulingPolicy
+create table tblSchedulingPolicy
 (
     policyid       int auto_increment
         primary key,
@@ -17,5 +17,5 @@ create table clubpro_main.tblSchedulingPolicy
     engine = MyISAM;
 
 create index siteid
-    on clubpro_main.tblSchedulingPolicy (siteid);
+    on tblSchedulingPolicy (siteid);
 

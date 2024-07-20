@@ -1,4 +1,4 @@
-create table clubpro_main.tblTournament
+create table tblTournament
 (
     id        int auto_increment
         primary key,

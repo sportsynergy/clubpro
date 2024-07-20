@@ -1,4 +1,4 @@
-create table clubpro_main.tblParameterAccessType
+create table tblParameterAccessType
 (
     parameteraccesstypeid   int         default 0  not null
         primary key,

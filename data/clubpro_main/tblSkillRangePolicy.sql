@@ -1,4 +1,4 @@
-create table clubpro_main.tblSkillRangePolicy
+create table tblSkillRangePolicy
 (
     policyid     int auto_increment
         primary key,

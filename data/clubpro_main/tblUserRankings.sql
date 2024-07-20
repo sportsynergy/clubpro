@@ -1,4 +1,4 @@
-create table clubpro_main.tblUserRankings
+create table tblUserRankings
 (
     userid       int(8)    default 0                 not null,
     courttypeid  int       default 0                 not null,
@@ -11,14 +11,14 @@ create table clubpro_main.tblUserRankings
     charset = utf8;
 
 create index courttypeid
-    on clubpro_main.tblUserRankings (courttypeid);
+    on tblUserRankings (courttypeid);
 
 create index hot
-    on clubpro_main.tblUserRankings (hot);
+    on tblUserRankings (hot);
 
 create index userid
-    on clubpro_main.tblUserRankings (userid);
+    on tblUserRankings (userid);
 
 create index usertype
-    on clubpro_main.tblUserRankings (usertype);
+    on tblUserRankings (usertype);
 

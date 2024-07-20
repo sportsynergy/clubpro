@@ -1,4 +1,4 @@
-create table clubpro_main.tblClubEventParticipants
+create table tblClubEventParticipants
 (
     id           int auto_increment
         primary key,
@@ -16,5 +16,5 @@ create table clubpro_main.tblClubEventParticipants
                                                                       charset = utf8;
 
 create index userid
-    on clubpro_main.tblClubEventParticipants (userid);
+    on tblClubEventParticipants (userid);
 

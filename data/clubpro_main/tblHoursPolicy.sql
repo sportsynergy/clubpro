@@ -1,4 +1,4 @@
-create table clubpro_main.tblHoursPolicy
+create table tblHoursPolicy
 (
     policyid     int(8) auto_increment
         primary key,
@@ -14,5 +14,5 @@ create table clubpro_main.tblHoursPolicy
     engine = MyISAM;
 
 create index siteid
-    on clubpro_main.tblHoursPolicy (siteid);
+    on tblHoursPolicy (siteid);
 

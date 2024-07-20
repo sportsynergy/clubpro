@@ -1,4 +1,4 @@
-create table clubpro_main.tblUsers
+create table tblUsers
 (
     userid       int(8) auto_increment
         primary key,
@@ -21,11 +21,11 @@ create table clubpro_main.tblUsers
     charset = utf8;
 
 create index email
-    on clubpro_main.tblUsers (email);
+    on tblUsers (email);
 
 create fulltext index fulltextsearch
-    on clubpro_main.tblUsers (username, firstname, lastname, email, workphone, homephone, cellphone, pager);
+    on tblUsers (username, firstname, lastname, email, workphone, homephone, cellphone, pager);
 
 create index username
-    on clubpro_main.tblUsers (username);
+    on tblUsers (username);
 

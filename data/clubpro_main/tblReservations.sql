@@ -1,4 +1,4 @@
-create table clubpro_main.tblReservations
+create table tblReservations
 (
     reservationid int auto_increment
         primary key,
@@ -19,17 +19,17 @@ create table clubpro_main.tblReservations
     engine = MyISAM;
 
 create index courtid
-    on clubpro_main.tblReservations (courtid);
+    on tblReservations (courtid);
 
 create index enddate
-    on clubpro_main.tblReservations (enddate);
+    on tblReservations (enddate);
 
 create index matchtype
-    on clubpro_main.tblReservations (matchtype);
+    on tblReservations (matchtype);
 
 create index time
-    on clubpro_main.tblReservations (time);
+    on tblReservations (time);
 
 create index usertype
-    on clubpro_main.tblReservations (usertype);
+    on tblReservations (usertype);
 

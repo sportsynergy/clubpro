@@ -1,4 +1,4 @@
-create table clubpro_main.tblLadderMatch
+create table tblLadderMatch
 (
     id            int auto_increment
         primary key,
@@ -9,6 +9,7 @@ create table clubpro_main.tblLadderMatch
     reported_time timestamp  default CURRENT_TIMESTAMP not null,
     match_time    datetime                             not null,
     enddate       timestamp                            null,
-    processed     tinyint(1) default 0                 not null
+    processed     tinyint(1) default 0                 not null,
+    league        bit        default b'0'              not null
 );
 

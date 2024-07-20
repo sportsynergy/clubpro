@@ -1,4 +1,4 @@
-create table clubpro_main.tblClubs
+create table tblClubs
 (
     clubid       int(8)    default 0                 not null
         primary key,
