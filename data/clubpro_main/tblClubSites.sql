@@ -21,7 +21,7 @@ create table clubpro_main.tblClubSites
     displaysitenavigation       enum ('y', 'n')                                          default 'y'               not null,
     displayrecentactivity       enum ('y', 'n')                                          default 'y'               not null,
     allownearrankingadvertising enum ('y', 'n')                                          default 'y'               not null,
-    rankingscheme               enum ('point', 'ladder', 'jumpladder', 'jumpladderplus') default 'point'           not null,
+    rankingscheme               enum ('point', 'ladder', 'jumpladder') default 'point'           not null,
     challengerange              smallint                                                 default 2                 not null,
     facebookurl                 varchar(255)                                                                       null,
     twitterurl                  varchar(255)                                                                       null,

@@ -256,6 +256,7 @@ include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/player_ladder_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
 
+
 /******************************************************************************
  * FUNCTIONS
  *****************************************************************************/

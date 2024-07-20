@@ -1106,22 +1106,27 @@ function lockLadderPlayers($challengerid, $challengeeid, $ladderid){
 function getLadder($ladderid) {
     
     if (isDebugEnabled(1)) logMessage("player_ladder.getLadder: getting the players in the ladder for ladderid $ladderid");
-    $rankquery = "SELECT 
+    $rankquery = "SELECT
 						users.userid,
 						ladder.ladderposition,
 						ladder.going,
-						users.firstname, 
+						users.firstname,
 						users.lastname,
 						concat_ws(' ', users.firstname, users.lastname) as fullname,
 						users.email,
-						ladder.locked
-                    FROM 
-						tblUsers users, 
-						tblClubLadder ladder
-                    WHERE 
+						ladder.locked,
+						rankings.ranking
+                    FROM
+						tblUsers users
+					INNER JOIN tblClubLadder ladder on users.userid = ladder.userid
+                    INNER JOIN tblUserRankings rankings on users.userid = rankings.userid
+                    INNER JOIN tblClubSiteLadders sites on ladder.ladderid = sites.id
+                    WHERE
 						users.userid = ladder.userid
-                    AND ladder.ladderid=$ladderid
-					AND ladder.enddate IS NULL
+                        AND ladder.ladderid=$ladderid
+                        AND rankings.usertype = 0
+                        AND rankings.courttypeid = sites.courttypeid
+					    AND ladder.enddate IS NULL
                     ORDER BY ladder.ladderposition";
     
     return db_query($rankquery);

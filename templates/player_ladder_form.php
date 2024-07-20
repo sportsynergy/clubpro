@@ -1,5 +1,5 @@
 
-
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
 <?
 
 //Set some important variables
@@ -107,13 +107,15 @@ to add your name now.
 				<tr>
 					<td>
 
-						<table cellspacing="1" cellpadding="5" width="300"
-							class="borderless">
+						<table cellspacing="1" cellpadding="5" width="350" class="sortable" >
 							<tr>
-								<td><span class="bold">Place</span>
+								<td width="25%"><span class="bold">Place</span>
 								
 								</th>
 								<td><span class="bold">Name</span>
+								
+								</th>
+								<td><span class="bold">Ranking</span>
 								
 								</th>
 							</tr>
@@ -162,6 +164,9 @@ to add your name now.
 								</span> <?} 
 
 								?></td>
+								<td>
+								<?=$playerarray['ranking']?>
+									</td>
 							</tr>
 
 							<?

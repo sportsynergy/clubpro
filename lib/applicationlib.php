@@ -863,11 +863,7 @@ function isJumpLadderRankingScheme() {
 	return false;
 }
 
-function isJumpLadderPlusRankingScheme() {
 
-    /* this function simply returns the whether or not the site has solo reservations enabled. */
-    return $_SESSION["siteprefs"]["rankingscheme"] == 'jumpladderplus' ? true : false;
-}
 
 
 function getChallengeRange() {
