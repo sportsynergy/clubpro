@@ -29,6 +29,9 @@
 $_SESSION["wantsurl"] = qualified_mewithq();
 $_SESSION["siteprefs"] = getSitePreferences($siteid);
 
+$DOC_TITLE = "Sportsynergy Box Leagues";
+include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+
 if (isRequireLogin()) require_login();
 
 //Set the footer message
@@ -72,18 +75,41 @@ if (isset($_POST["frompickform"])) {
         $_SESSION["user"] = $user;
     }
 }
-$DOC_TITLE = "Sportsynergy Box Leagues";
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 
-if ($clubid) {
+if ($siteid) {
 
-    //Get all of the web ladders for the club
-    $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable, tCSL.leaguesUpdated AS lastupdated
-                      FROM tblBoxLeagues
-                      INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
-                      WHERE tblBoxLeagues.siteid=$siteid
-                      ORDER BY tblBoxLeagues.boxrank";
+    
+    // filter on ladder if this is passed in
+    if (isset($_POST["ladderid"])) {
+
+        $ladderid = $_POST["ladderid"];
+
+        //Get all of the web ladders for the club
+        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated
+                        FROM tblBoxLeagues
+                        INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
+                        WHERE tblBoxLeagues.siteid=$siteid
+                        AND tCSL.id = $ladderid
+                        ORDER BY tblBoxLeagues.boxrank";
+
+    } else {
+
+        //Get all of the web ladders for the club
+        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated
+                        FROM tblBoxLeagues
+                        INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
+                        WHERE tblBoxLeagues.siteid=$siteid
+                        ORDER BY tblBoxLeagues.boxrank";
+    }
+
     $getwebladdersresult = db_query($getwebladdersquery);
+
+    $getleaguesquery = "SELECT DISTINCT tCSL.name as ladder_name, tCSL.id
+                            FROM tblBoxLeagues
+                            INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
+                            WHERE tblBoxLeagues.siteid=$siteid";
+    $getleagueresult = db_query($getleaguesquery);
+
 ?>
 
 <table width="710" cellspacing="0" cellpadding="0" align="center" class="borderless">
@@ -98,13 +124,32 @@ if ($clubid) {
 
         <? } ?>
 
-	
-	<br><br>
 	</td>
 	</tr>
 
+    <? if (mysqli_num_rows($getleagueresult)>0) { ?>
+        <tr>
+            <td align="right" colspan="2">
+            <a href="">All Ladders</a> | 
+            <? 
+            // Create the links to filter
+            $counter = 0;
+            while ($leagueobj = db_fetch_object($getleagueresult)) {
+                
+                if($counter>0){ ?>
+                    |
+               <? } ?>
+            <a href="javascript:submitLeagueForm(<?=$leagueobj->id?>)"><?=$leagueobj->ladder_name?></a>
+            <? 
+               
+               $counter++ ;
+             } ?>
+            <div style="height: 1em"></div>
+            </td>
+        </tr>
+    <? } ?>
+   
 <?
-
 $resultcounter = 0;
 $playercounter = 0;
 
@@ -274,6 +319,19 @@ if( isJumpLadderRankingScheme() ){
 
 
   </div>
+  <form name="league_form" method="POST" action="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">
+  <input type="hidden" name="ladderid">
+</form>
+
+  <script type="text/javascript" >
+
+function submitLeagueForm( ladderid){
+   document.league_form.ladderid.value = ladderid;
+   document.league_form.submit();
+}
+
+</script> 
+
 
 <?
 }

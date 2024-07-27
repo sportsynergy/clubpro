@@ -41,7 +41,8 @@ class CreateBoxLeagueSchedule {
             $box_query = "SELECT concat(tU.firstname,' ',tU.lastname) as full_name, tU.userid
                             FROM tblkpBoxLeagues
                             INNER JOIN clubpro_main.tblUsers tU on tblkpBoxLeagues.userid = tU.userid
-                            WHERE boxid = ".$box_array['boxid'];
+                            WHERE boxid = ".$box_array['boxid']."
+                            ORDER BY rand()";
             $bresult = db_query($box_query);
             
             $all_players = array();
@@ -78,7 +79,7 @@ class CreateBoxLeagueSchedule {
                     if (isDebugEnabled(1)) logMessage("\tStill needs to play $playerid" ); 
     
                 }
-                
+
             }
 
            
