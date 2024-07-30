@@ -1,6 +1,12 @@
 
 /**********General***************************************************/
-
+.isDisabled {
+	color: currentColor;
+	cursor: not-allowed;
+	opacity: 0.5;
+	text-decoration: none;
+  }
+  
 .shadow {
 -moz-box-shadow: 0 0 30px 5px #999;
 -webkit-box-shadow: 0 0 30px 5px #999;

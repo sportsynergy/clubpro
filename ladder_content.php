@@ -130,6 +130,8 @@ if ($siteid) {
     <? if (mysqli_num_rows($getleagueresult)>0) { ?>
         <tr>
             <td align="right" colspan="2">
+            <span class="normal" id="showreportscoresplayer"><a
+			style="text-decoration: underline; cursor: pointer">Report Score</a></span> |
             <a href="">All Ladders</a> | 
             <? 
             // Create the links to filter
@@ -140,8 +142,7 @@ if ($siteid) {
                     |
                <? } ?>
             <a href="javascript:submitLeagueForm(<?=$leagueobj->id?>)"><?=$leagueobj->ladder_name?></a>
-            <? 
-               
+            <?  
                $counter++ ;
              } ?>
             <div style="height: 1em"></div>
@@ -323,12 +324,152 @@ if( isJumpLadderRankingScheme() ){
   <input type="hidden" name="ladderid">
 </form>
 
+<div id="reportscoredialogplayer" class="yui-pe-content">
+
+<div class="bd">
+		<form method="POST" action="<?=$ME?>" autocomplete="off">
+			
+
+		 <div style="margin:10px"> 
+			<span class="label">Outcome:</span>
+			<select name="outcome">
+					<option value="defeated">Won</option>
+					<option value="lostto">Lost</option>
+				</select>
+			</div>
+
+			<div style="margin:10px"> 
+			<span class="label">Opponent:</span>
+				<input id="rsname3" name="" type="text" size="30"
+					class="form-autocomplete" autocomplete="off"/> 
+					<input id="rsid3" name="rsuserid3" type="hidden" />
+
+				<script>
+                <?
+                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+                 pat_autocomplete( array(
+						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+						'source'=>'rsname3',
+						'target'=>'rsid3',
+						'className'=>'autocomplete',
+						'parameters'=> "action=autocomplete&name={rsname3}&userid=".get_userid()."&ladderid=$ladderid",
+						'progressStyle'=>'throbbing',
+						'minimumCharacters'=>3,
+						));
+                 ?>
+
+                </script>
+			</div>
+
+			<div style="margin:10px"> 
+			<span class="label">Score:</span>
+			<select name="score">
+					<option value="3-2">3-2</option>
+					<option value="3-1" selected>3-1</option>
+					<option value="2-1" selected>2-1</option>
+					<option value="3-0" selected>3-0</option>
+				</select>
+			</div>
+
+			<div style="margin:10px"> 
+			<span class="label"> Time </span>
+				<select name="hourplayed">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8" selected>8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+					<option value="11">11</option>
+					<option value="00">12</option>
+				</select>
+
+				<select name="minuteofday">
+					<option value="00">00</option>
+					<option value="15">15</option>
+					<option value="30">30</option>
+					<option value="45">45</option>
+				</select>
+
+				<select name="timeofday">
+					<option value="AM">AM</option>
+					<option value="PM" selected>PM</option>
+				</select>
+			</div>
+
+		
+				<input type="hidden" name="cmd" value="reportladderscore">
+		</form>
+
+</div>
+	
+</div>
+
   <script type="text/javascript" >
 
-function submitLeagueForm( ladderid){
-   document.league_form.ladderid.value = ladderid;
-   document.league_form.submit();
-}
+    function submitLeagueForm( ladderid){
+    document.league_form.ladderid.value = ladderid;
+    document.league_form.submit();
+    }
+
+    var allownewlines = false;
+    
+    YAHOO.namespace("clubladder.container");
+
+
+    /*
+    * Report score dialoge
+    */
+
+    YAHOO.util.Event.onDOMReady(function () {
+        
+        // Define various event handlers for Dialog
+        var handleSubmit = function() {
+            this.submit();
+        };
+        var handleCancel = function() {
+            this.cancel();
+        };
+        var handleSuccess = function(o) {
+            window.location.href=window.location.href;
+        };
+    
+        var handleFailure = function(o) {
+            alert("Submission failed: " + o.status);
+        };
+    
+        // Remove progressively enhanced content class, just before creating the module
+        YAHOO.util.Dom.removeClass("reportscoredialogplayer", "yui-pe-content");
+    
+        // Instantiate the Dialog
+
+        YAHOO.clubladder.container.reportscoredialogplayer = new YAHOO.widget.Dialog("reportscoredialogplayer", 
+                            { width : "30em",
+                                fixedcenter : true,
+                                modal: true,
+                                visible : false, 
+                                constraintoviewport : true,
+                                buttons : [ { text:"Record Score", handler:handleSubmit, isDefault:true } ]
+                            });
+    
+
+        YAHOO.clubladder.container.reportscoredialogplayer.setHeader('Record Score');
+    
+ 
+    
+        // Wire up the success and failure handlers
+        YAHOO.clubladder.container.reportscoredialogplayer.callback = { success: handleSuccess,
+                                failure: handleFailure };
+        
+        // Render the Dialog
+        YAHOO.clubladder.container.reportscoredialogplayer.render();
+        YAHOO.util.Event.addListener("showreportscoresplayer", "click", YAHOO.clubladder.container.reportscoredialogplayer.show, YAHOO.clubladder.container.reportscoredialogplayer, true);
+        YAHOO.util.Event.addListener("showreportscoresplayer", "click", disablenewlines, false, true);
+    });
 
 </script> 
 
