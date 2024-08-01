@@ -130,8 +130,9 @@ if ($siteid) {
     <? if (mysqli_num_rows($getleagueresult)>0) { ?>
         <tr>
             <td align="right" colspan="2">
-            <span class="normal" id="showreportscoresplayer"><a
-			style="text-decoration: underline; cursor: pointer">Report Score</a></span> |
+            <span class="normal" id="showreportscoresplayer" >
+                <a style="text-decoration: underline; cursor: pointer">Record Score</a> |
+            </span> 
             <a href="">All Ladders</a> | 
             <? 
             // Create the links to filter
@@ -412,20 +413,27 @@ if( isJumpLadderRankingScheme() ){
   <script type="text/javascript" >
 
     function submitLeagueForm( ladderid){
+        
     document.league_form.ladderid.value = ladderid;
     document.league_form.submit();
     }
 
     var allownewlines = false;
     
-    YAHOO.namespace("clubladder.container");
 
+    <? 
+        // hide the report score link if ladderid isn't set
+        if( !isset($ladderid)) { ?>
+        var moresection = document.getElementById('showreportscoresplayer');
+        moresection.style.display = "none";
+    <? } ?>
 
     /*
     * Report score dialoge
     */
-
+    YAHOO.namespace("clubladder.container");
     YAHOO.util.Event.onDOMReady(function () {
+        
         
         // Define various event handlers for Dialog
         var handleSubmit = function() {
