@@ -3803,7 +3803,8 @@ function load_user_profile($userid) {
 							users.photo,
 							clubuser.available_at_5,
 							clubuser.available_at_6,
-							clubuser.available_at_7
+							clubuser.available_at_7,
+							clubuser.recleaguematchnotifications
 						FROM tblUsers users, tblClubUser clubuser
 						WHERE users.userid = $userid
 							AND clubuser.userid = users.userid");

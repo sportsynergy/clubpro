@@ -88,6 +88,7 @@ if (match_referer() && isset($_POST['submitme']) ) {
 }
 
 $frm = load_user_profile($userid);
+
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/change_settings_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
@@ -190,6 +191,7 @@ function update_settings(&$frm, $extraParametersResult) {
             ,available_at_5 = $available_5pm
             ,available_at_6 = $available_6pm
             ,available_at_7 = $available_7pm
+            ,recleaguematchnotifications = '$frm[recleaguematchnotifications]'
         WHERE userid = '$userid'");
 
     // Update the Custom Parameters

@@ -101,14 +101,32 @@ function onSubmitButtonClicked(){
                 }
                 echo "</select>";
                 ?>
-          <?err($errors->recemail)?>
+            
+         
             </td>
           
             </tr>
-        
 
-            <?  if ( isJumpLadderRankingScheme() ){ 
-            
+            <?  if ( isJumpLadderRankingScheme() ){  
+              
+                if($frm['recleaguematchnotifications']=='y'){
+                  $leaguematchselected = "selected"; 
+  
+                } 
+              
+              ?>
+               <?err($errors->recleaguematchnotifications)?>
+              <tr>
+              <td class="label medwidth">Receive League Reminder Notifications:</td> 
+              <td>
+                  <select name="recleaguematchnotifications">
+                      <option value="n">No</option>
+                      <option value="y" <?=$leaguematchselected?> >Yes</option>
+                </select>
+              </td></tr>
+           <? 
+           
+
             if($frm['available_at_5']==true){
                 $selected5 = "checked=checked"; 
             }

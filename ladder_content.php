@@ -28,7 +28,8 @@
 //Load necessary libraries and set the wanturl to get back here.
 $_SESSION["wantsurl"] = qualified_mewithq();
 $_SESSION["siteprefs"] = getSitePreferences($siteid);
-
+$frm = $_POST;
+$ladderid = $frm['ladderid'];
 $DOC_TITLE = "Sportsynergy Box Leagues";
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 
@@ -43,7 +44,6 @@ if (!isset($_SESSION["footermessage"])) {
 }
 
 //Display the multiuser login form
-
 if (isset($username) && isset($password) && !is_logged_in()) {
 
     $usersResult = getAllUsersWithIdResult($username, $clubid);
@@ -65,10 +65,9 @@ if (isset($username) && isset($password) && !is_logged_in()) {
 }
 
 //Get user log in the user in from the multiuser login form
+if (isset($frm["frompickform"])) {
 
-if (isset($_POST["frompickform"])) {
-
-    $user = load_user($_POST["userid"]);
+    $user = load_user($frm["userid"]);
     
     if ($user) {
 
@@ -77,12 +76,87 @@ if (isset($_POST["frompickform"])) {
 }
 
 if ($siteid) {
+ 
+    // Record ladder score
+    if ($frm['cmd'] == 'reportladderscore') {
 
+        $hourplayed = $frm['hourplayed'];
+        $score = $frm['score'];
+        $minuteofday = $frm['minuteofday'];
+        $timeofday = $frm['timeofday'];
+        $score = $frm['score'];
+        $kind = "";
+
+        // when players report
+        if ( $frm['outcome'] == "defeated"){
+            $winnerid = get_userid();
+            $loserid = $frm['rsuserid3'];
+            $kind = "by user";
+
+        } elseif ( $frm['outcome'] == "lostto" ){
+            $winnerid = $frm['rsuserid3'];
+            $loserid = get_userid();
+            $kind = "by user";
+
+        } else {
+            $winnerid = $frm['rsuserid'];
+            $loserid = $frm['rsuserid2'];
+            $kind = "by admin";
+        }
+
+        if (isDebugEnabled(1)) logMessage("box_leagues: Reporting a ladder score: winner: $winnerid, loser: $loserid, hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday, kind: $kind");
+
+        // Set the match time
+        if ( $timeofday == "PM"){
+            $hourplayed = $hourplayed + 12;
+        }
+        $curtime = $_SESSION["current_time"];
+
+        $currYear = gmdate("Y", $curtime);
+        $currMonth = gmdate("n", $curtime);
+        $currDay = gmdate("j", $curtime);
+        $hourplayed = str_pad($hourplayed, 2, "0", STR_PAD_LEFT);
+        $matchtime = "$currYear-$currMonth-$currDay $hourplayed:$minuteofday:00";
+
+        if (isDebugEnabled(1)) logMessage("box_leagues: Checking to see if this match has already been entered ");
+
+        //Make sure this same exact thing hasn't been entered already
+        $check = "SELECT count(*) from tblLadderMatch 
+        				WHERE ladderid = $ladderid 
+                        AND winnerid = $winnerid 
+        				AND loserid = $loserid
+                        AND match_time = '$matchtime'
+        				AND enddate IS NULL";
     
-    // filter on ladder if this is passed in
-    if (isset($_POST["ladderid"])) {
+    if (isDebugEnabled(1)) logMessage("box_leagues: tTest $check");
+        $checkResult = db_query($check);
+        $dontexist = mysqli_result($checkResult, 0);
+       
+        if( $dontexist == 0){
 
-        $ladderid = $_POST["ladderid"];
+            if (isDebugEnabled(1)) logMessage("box_leagues: this match was  not already recorded. Adding.. ");
+   
+            $query = "INSERT INTO tblLadderMatch (
+                ladderid, score, winnerid, loserid, match_time, league
+                ) VALUES (
+                          $ladderid
+                          ,'$score'
+                          ,$winnerid
+                          ,$loserid
+                          ,'$matchtime'
+                          ,1
+                          )";
+            if (isDebugEnabled(1)) logMessage("box_leagues: query $query");
+            db_query($query);
+        } else {
+            if (isDebugEnabled(1)) logMessage("box_leagues: this match was already recorded. going to do nothing.");
+        }
+    }
+
+    // filter on ladder if this is passed in
+    if (isset($ladderid)) {
+
+        if (isDebugEnabled(1)) logMessage("box_leagues: ladderid is here on 159! $ladderid");
 
         //Get all of the web ladders for the club
         $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated
@@ -130,7 +204,7 @@ if ($siteid) {
     <? if (mysqli_num_rows($getleagueresult)>0) { ?>
         <tr>
             <td align="right" colspan="2">
-            <span class="normal" id="showreportscoresplayer" >
+            <span class="normal" id="showreportscoresplayer" style="display:none">
                 <a style="text-decoration: underline; cursor: pointer">Record Score</a> |
             </span> 
             <a href="">All Ladders</a> | 
@@ -402,7 +476,7 @@ if( isJumpLadderRankingScheme() ){
 				</select>
 			</div>
 
-		
+                 <input type="hidden" name="ladderid" value="<?=$ladderid?>">
 				<input type="hidden" name="cmd" value="reportladderscore">
 		</form>
 
@@ -420,13 +494,7 @@ if( isJumpLadderRankingScheme() ){
 
     var allownewlines = false;
     
-
-    <? 
-        // hide the report score link if ladderid isn't set
-        if( !isset($ladderid)) { ?>
-        var moresection = document.getElementById('showreportscoresplayer');
-        moresection.style.display = "none";
-    <? } ?>
+   
 
     /*
     * Report score dialoge
@@ -434,7 +502,8 @@ if( isJumpLadderRankingScheme() ){
     YAHOO.namespace("clubladder.container");
     YAHOO.util.Event.onDOMReady(function () {
         
-        
+        document.getElementById('rsname3').setAttribute("autocomplete", "off");
+
         // Define various event handlers for Dialog
         var handleSubmit = function() {
             this.submit();
@@ -444,6 +513,7 @@ if( isJumpLadderRankingScheme() ){
         };
         var handleSuccess = function(o) {
             window.location.href=window.location.href;
+
         };
     
         var handleFailure = function(o) {
@@ -454,7 +524,6 @@ if( isJumpLadderRankingScheme() ){
         YAHOO.util.Dom.removeClass("reportscoredialogplayer", "yui-pe-content");
     
         // Instantiate the Dialog
-
         YAHOO.clubladder.container.reportscoredialogplayer = new YAHOO.widget.Dialog("reportscoredialogplayer", 
                             { width : "30em",
                                 fixedcenter : true,
