@@ -82,9 +82,9 @@ function load_league_schedule(){
 
     $query = "SELECT concat(tU1.firstname, ' ',tU1.lastname) AS player1, concat(tU2.firstname, ' ',tU2.lastname) AS player2, tBL.boxname
                 FROM tblBoxLeagueSchedule
-                INNER JOIN clubpro_main.tblBoxLeagues tBL on tblBoxLeagueSchedule.boxid = tBL.boxid
-                INNER JOIN clubpro_main.tblUsers tU1 on tblBoxLeagueSchedule.userid1 = tU1.userid
-                INNER JOIN clubpro_main.tblUsers tU2 on tblBoxLeagueSchedule.userid2 = tU2.userid
+                INNER JOIN tblBoxLeagues tBL on tblBoxLeagueSchedule.boxid = tBL.boxid
+                INNER JOIN tblUsers tU1 on tblBoxLeagueSchedule.userid1 = tU1.userid
+                INNER JOIN tblUsers tU2 on tblBoxLeagueSchedule.userid2 = tU2.userid
                 WHERE tBL.siteid = ". get_siteid();
 
     return db_query($query);
