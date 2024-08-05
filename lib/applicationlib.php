@@ -3817,9 +3817,7 @@ function load_user_profile($userid) {
 /* This will retrieve the registered sports*/
 
 function load_registered_sports($userid) {
-
-
-    
+ 
 	$registeredSportsQuery = "SELECT rankings.courttypeid, rankings.ranking,courttype.courttypename,courttype.reservationtype
 	                         FROM tblUserRankings rankings, tblCourtType courttype
 							 WHERE rankings.courttypeid = courttype.courttypeid

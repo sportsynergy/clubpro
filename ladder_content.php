@@ -204,23 +204,32 @@ if ($siteid) {
     <? if (mysqli_num_rows($getleagueresult)>0) { ?>
         <tr>
             <td align="right" colspan="2">
-            <span class="normal" id="showreportscoresplayer" style="display:none">
-                <a style="text-decoration: underline; cursor: pointer">Record Score</a> |
-            </span> 
-            <a href="">All Ladders</a> | 
-            <? 
-            // Create the links to filter
-            $counter = 0;
-            while ($leagueobj = db_fetch_object($getleagueresult)) {
-                
-                if($counter>0){ ?>
-                    |
-               <? } ?>
-            <a href="javascript:submitLeagueForm(<?=$leagueobj->id?>)"><?=$leagueobj->ladder_name?></a>
-            <?  
-               $counter++ ;
-             } ?>
-            <div style="height: 1em"></div>
+
+            <div style="display:inline">
+                <div style="float: left">
+                    <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/league_schedule.php">Schedule</a>
+                </div>
+                <div style="float: right">
+                        <span class="normal" id="showreportscoresplayer" style="display:none">
+                        <a style="text-decoration: underline; cursor: pointer">Record Score</a> |
+                    </span> 
+                    <a href="">All Ladders</a> | 
+                    <? 
+                    // Create the links to filter
+                    $counter = 0;
+                    while ($leagueobj = db_fetch_object($getleagueresult)) {
+                        
+                        if($counter>0){ ?>
+                            |
+                    <? } ?>
+                    <a href="javascript:submitLeagueForm(<?=$leagueobj->id?>)"><?=$leagueobj->ladder_name?></a>
+                    <?  
+                    $counter++ ;
+                    } ?>
+                </div>
+            </div>
+            
+            <div style="height: 2em"></div>
             </td>
         </tr>
     <? } ?>
