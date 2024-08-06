@@ -1,0 +1,1 @@
+Just a friendly reminder, you have a league match to play with $var->otherguy soon. If you have already played this match, go in and record the results.

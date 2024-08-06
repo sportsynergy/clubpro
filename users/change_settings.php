@@ -121,13 +121,8 @@ function validate_form(&$frm, &$errors) {
     } elseif (empty($frm["lastname"])) {
         $errors->lastname = true;
         $msg.= "You did not specify your last name";
-    } elseif (empty($frm["homephone"])) {
-        $errors->homephone = true;
-        $msg.= "You did not specify a home phone number";
-    } elseif (empty($frm["workphone"])) {
-        $errors->workphone = true;
-        $msg.= "You did not specify a work phone number";
     }
+    
     return $msg;
 }
 function update_settings(&$frm, $extraParametersResult) {
