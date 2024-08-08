@@ -48,7 +48,7 @@ class LeagueReminderService{
                 $_SESSION["siteprefs"]["sitecode"] = $player_array['sitecode']; 
                 $_SESSION["siteprefs"]["siteid"] = $player_array['siteid']; 
 
-                if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule:  found ". mysqli_num_rows($result) ." reservations");
+                
 
                 //only send to people who want these emails
                 if( $player_array['rec1']=='y' ){
@@ -88,6 +88,8 @@ class LeagueReminderService{
         $to_emails[$to_email] = array(
             'name' => $firstname
         );
+
+        if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders: sending reminder email to $firstname ($email)");
 
         //Send email to player one
         send_email($subject, $to_emails, $content, "League Match Reminders");
