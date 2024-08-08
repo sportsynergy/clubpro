@@ -29,7 +29,8 @@ class LeagueReminderService{
                     tBL.boxname,
                     tCL.clubname,
                     tCS.sitecode,
-                    tCS.siteid
+                    tCS.siteid,
+                    tblBoxLeagueSchedule.scored
                 FROM tblBoxLeagueSchedule
                 INNER JOIN tblBoxLeagues tBL on tblBoxLeagueSchedule.boxid = tBL.boxid
                 INNER JOIN tblUsers tU1 on tblBoxLeagueSchedule.userid1 = tU1.userid
@@ -49,7 +50,7 @@ class LeagueReminderService{
                 $_SESSION["siteprefs"]["siteid"] = $player_array['siteid']; 
 
                 //only send to people who want these emails
-                if( $player_array['rec1']=='y' ){
+                if( $player_array['rec1']=='y' && $player_array['scored']==FALSE ){
 
                     $otherguy = $player_array['firstname2'] ." " . $player_array['lastname2'];
                     $this->sendReminderEmail($player_array['email1'], $player_array['firstname1'], $player_array['boxname'], $otherguy, $player_array['clubname']);
@@ -58,7 +59,7 @@ class LeagueReminderService{
 
                 }
 
-                if( $player_array['rec2']=='y' ){
+                if( $player_array['rec2']=='y' && $player_array['scored']==FALSE){
 
                     $otherguy = $player_array['firstname1']. " ". $player_array['lastname1'];
                     $this->sendReminderEmail($player_array['email2'], $player_array['firstname2'], $player_array['boxname'], $otherguy,$player_array['clubname']);
