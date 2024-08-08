@@ -368,7 +368,23 @@ function onSubmitButtonClicked(){
                 <?err($errors->recemail)?>
                 </td>
         </tr>
-
+        <?  if ( isJumpLadderRankingScheme() ){  
+              
+              if($frm['recleaguematchnotifications']=='y'){
+                $leaguematchselected = "selected"; 
+              } 
+            
+            ?>
+        <tr>
+              <td class="label medwidth">Receive League Reminder Notifications:</td> 
+              <td>
+                  <select name="recleaguematchnotifications">
+                      <option value="n">No</option>
+                      <option value="y" <?=$leaguematchselected?> >Yes</option>
+                </select>
+              </td>
+        </tr>
+        <? } ?>
 		<tr>
             <td class="label">Role:</td>
             <td>

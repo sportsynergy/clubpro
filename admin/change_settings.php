@@ -326,6 +326,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
                 ,available_at_5 = $available_5pm
                 ,available_at_6 = $available_6pm
                 ,available_at_7 = $available_7pm
+                ,recleaguematchnotifications = '$frm[recleaguematchnotifications]'
         WHERE userid = '$userid'";
     $qid = db_query($updateClubUserQuery);
 
