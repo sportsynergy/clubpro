@@ -207,12 +207,12 @@ if ($siteid) {
 
             <div style="display:inline">
                 <div style="float: left">
+                    <? if ( get_roleid() == 2 ) {?>
                     <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/league_schedule.php">Schedule</a>
+                    <? } ?>
                 </div>
                 <div style="float: right">
-                        <span class="normal" id="showreportscoresplayer" style="display:none">
-                        <a style="text-decoration: underline; cursor: pointer">Record Score</a> |
-                    </span> 
+                        
                     <a href="">All Ladders</a> | 
                     <? 
                     // Create the links to filter
