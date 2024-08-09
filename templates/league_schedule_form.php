@@ -1,8 +1,3 @@
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.3/css/dataTables.dataTables.css" />
-<script src="https://cdn.datatables.net/2.1.3/js/dataTables.js"></script>
-  
-
-
 
 <div>
   <form name="entryform" method="post" action="<?=$ME?>">
@@ -20,16 +15,21 @@
             <tr>
               <th>Players</th>
               <th>League</th>
-              <th>Score</td>
+              <th>Scored</td>
             </td>
 
             <? 
              while ($leagues = mysqli_fetch_array($league_schedule)) {
+
+              $isscored = "No";
+              if( $leagues['scored'] == TRUE){
+                $isscored = "Yes";
+              }
             ?>
             <tr>
               <td><?=$leagues['player1'] ?> vs. <?=$leagues['player2']  ?></td>
               <td><?=$leagues['boxname'] ?></td>
-              <td><a href="">Score</a></td>
+              <td> <?= $isscored?></td>
             </td>
             <? } ?>
           </table>

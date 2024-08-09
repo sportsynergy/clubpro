@@ -80,7 +80,10 @@ function validate_form(&$frm, &$errors) {
 
 function load_league_schedule(){
 
-    $query = "SELECT concat(tU1.firstname, ' ',tU1.lastname) AS player1, concat(tU2.firstname, ' ',tU2.lastname) AS player2, tBL.boxname
+    $query = "SELECT concat(tU1.firstname, ' ',tU1.lastname) AS player1, 
+                concat(tU2.firstname, ' ',tU2.lastname) AS player2, 
+                tBL.boxname,
+                scored
                 FROM tblBoxLeagueSchedule
                 INNER JOIN tblBoxLeagues tBL on tblBoxLeagueSchedule.boxid = tBL.boxid
                 INNER JOIN tblUsers tU1 on tblBoxLeagueSchedule.userid1 = tU1.userid

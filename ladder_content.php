@@ -156,7 +156,7 @@ if ($siteid) {
     // filter on ladder if this is passed in
     if (isset($ladderid)) {
 
-        if (isDebugEnabled(1)) logMessage("box_leagues: ladderid is here on 159! $ladderid");
+        if (isDebugEnabled(1)) logMessage("box_leagues: ladderid is:  $ladderid");
 
         //Get all of the web ladders for the club
         $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated
@@ -177,12 +177,28 @@ if ($siteid) {
     }
 
     $getwebladdersresult = db_query($getwebladdersquery);
-
     $getleaguesquery = "SELECT DISTINCT tCSL.name as ladder_name, tCSL.id
                             FROM tblBoxLeagues
                             INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
                             WHERE tblBoxLeagues.siteid=$siteid";
     $getleagueresult = db_query($getleaguesquery);
+
+    $scheduledmatches = "SELECT tU1.userid AS userid1, tU2.userid AS userid2
+                        FROM tblBoxLeagueSchedule
+                            INNER JOIN tblBoxLeagues tBL on tblBoxLeagueSchedule.boxid = tBL.boxid
+                            INNER JOIN tblUsers tU1 on tblBoxLeagueSchedule.userid1 = tU1.userid
+                            INNER JOIN tblUsers tU2 on tblBoxLeagueSchedule.userid2 = tU2.userid
+                        WHERE tblBoxLeagueSchedule.scored = FALSE AND tBL.siteid = ".get_siteid();
+    
+    $scheduledmatchresult = db_query($scheduledmatches);
+    $isscheduled = FALSE; 
+   
+    while ($match = db_fetch_array($scheduledmatchresult)) {
+        if (isDebugEnabled(1)) logMessage("box_leagues: checking to see if ". $match['userid1'] ." or ".$match['userid1']. " is me (".get_userid().")");
+        if ( $match['userid1'] == get_userid() || $match['userid2'] == get_userid() ){
+            $isscheduled = TRUE;
+        }
+    }
 
 ?>
 
@@ -200,6 +216,20 @@ if ($siteid) {
 
 	</td>
 	</tr>
+
+    <? if( $isscheduled) {?>
+    <tr>
+        <td >
+            <p id="rcorners1">
+                You are scheduled for league match. Record that score 
+                <span class="normal" id="showreportscoresplayer"><a
+			style="text-decoration: underline; cursor: pointer"> here</a></span>
+                
+                <div style="height:10px"></div>
+            </p>
+        </td>
+    </tr>
+    <? } ?>
 
     <? if (mysqli_num_rows($getleagueresult)>0) { ?>
         <tr>
@@ -234,6 +264,7 @@ if ($siteid) {
         </tr>
     <? } ?>
    
+    
 <?
 $resultcounter = 0;
 $playercounter = 0;
@@ -503,8 +534,6 @@ if( isJumpLadderRankingScheme() ){
 
     var allownewlines = false;
     
-   
-
     /*
     * Report score dialoge
     */

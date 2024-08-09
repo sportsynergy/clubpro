@@ -317,6 +317,14 @@ table.legend, table.legend td{
 	font-size: 8pt;
 }
 
+#rcorners1 {
+	border-radius: 25px;
+	background: #e4e4e3;
+	padding: 10px;
+	width: 400px;
+  }
+  
+
 /********* For Tabs*********************************************************/
 
 table.tabtable { 
