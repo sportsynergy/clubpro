@@ -183,7 +183,7 @@ if ($siteid) {
                             WHERE tblBoxLeagues.siteid=$siteid";
     $getleagueresult = db_query($getleaguesquery);
 
-    $scheduledmatches = "SELECT tU1.userid AS userid1, tU2.userid AS userid2
+    $scheduledmatches = "SELECT tU1.userid AS userid1, tU2.userid AS userid2, tblBoxLeagueSchedule.boxid, tblBoxLeagueSchedule.id
                         FROM tblBoxLeagueSchedule
                             INNER JOIN tblBoxLeagues tBL on tblBoxLeagueSchedule.boxid = tBL.boxid
                             INNER JOIN tblUsers tU1 on tblBoxLeagueSchedule.userid1 = tU1.userid
@@ -192,11 +192,13 @@ if ($siteid) {
     
     $scheduledmatchresult = db_query($scheduledmatches);
     $isscheduled = FALSE; 
-   
+    
     while ($match = db_fetch_array($scheduledmatchresult)) {
         if (isDebugEnabled(1)) logMessage("box_leagues: checking to see if ". $match['userid1'] ." or ".$match['userid1']. " is me (".get_userid().")");
         if ( $match['userid1'] == get_userid() || $match['userid2'] == get_userid() ){
             $isscheduled = TRUE;
+            $scheduledbox = $match['boxid'];
+            $scheduledmatchid = $match['id'];
         }
     }
 
@@ -231,16 +233,12 @@ if ($siteid) {
     </tr>
     <? } ?>
 
-    <? if (mysqli_num_rows($getleagueresult)>0) { ?>
+    <? if (mysqli_num_rows($getleagueresult)>1) { ?>
         <tr>
             <td align="right" colspan="2">
 
             <div style="display:inline">
-                <div style="float: left">
-                    <? if ( get_roleid() == 2 ) {?>
-                    <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/league_schedule.php">Schedule</a>
-                    <? } ?>
-                </div>
+                
                 <div style="float: right">
                         
                     <a href="">All Ladders</a> | 
@@ -467,7 +465,7 @@ if( isJumpLadderRankingScheme() ){
 						'source'=>'rsname3',
 						'target'=>'rsid3',
 						'className'=>'autocomplete',
-						'parameters'=> "action=autocomplete&name={rsname3}&userid=".get_userid()."&ladderid=$ladderid",
+						'parameters'=> "action=autocomplete&name={rsname3}&userid=".get_userid()."&boxid=$boxid",
 						'progressStyle'=>'throbbing',
 						'minimumCharacters'=>3,
 						));

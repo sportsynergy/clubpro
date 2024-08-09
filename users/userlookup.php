@@ -41,6 +41,7 @@ $courttype = $_GET['courttype'];
 $siteid = $_GET['siteid'];
 $userid = $_GET['userid'];
 $ladderid = $_GET['ladderid'];
+$boxid = $_GET['boxid'];
 
 $limit = 17;
 
@@ -58,6 +59,8 @@ if( isset($ladderid) ){
 
 }
 
+
+
 //Don't exclude administrators
 
 if (isProgramAdmin($userid)) {
@@ -67,7 +70,29 @@ if (isProgramAdmin($userid)) {
 // If a courtype isn't defined, then just leave this out of the query.  This will be cases like on the
 // my buddies page where a courttype really isn't involved.
 
-if ( isset ($ladderid) ){
+if ( isset($boxid) ){
+
+	$query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
+	FROM tblUsers users
+	INNER JOIN clubpro_main.tblClubUser tCU on users.userid = tCU.userid
+	INNER JOIN tblClubLadder tCL on tCU.userid = tCL.userid
+	INNER JOIN tblkpBoxLeagues tBL on users.userid = tBL.userid
+	WHERE tCU.roleid!= 4
+	AND tBL.boxid = 922
+	AND users.userid = tCU.userid
+	AND tCU.enable='y'
+	AND tCU.enddate IS NULL
+	AND
+		(users.firstname LIKE '%$name%'
+		 OR users.lastname LIKE '%$name%'
+		 OR (
+			users.firstname = SPLIT_STR('%$name%', ' ', 1)
+			AND users.lastname = SPLIT_STR('%$name%', ' ', 2)
+			 ))
+	ORDER BY users.lastname
+	LIMIT $limit";
+}
+else if ( isset ($ladderid) ){
 
 	$query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
 	FROM tblUsers users, tblClubUser clubuser
