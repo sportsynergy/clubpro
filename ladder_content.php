@@ -85,26 +85,20 @@ if ($siteid) {
         $minuteofday = $frm['minuteofday'];
         $timeofday = $frm['timeofday'];
         $score = $frm['score'];
+        $scheduledmatchid = $frm['scheduledmatchid'];
         $kind = "";
 
         // when players report
         if ( $frm['outcome'] == "defeated"){
             $winnerid = get_userid();
-            $loserid = $frm['rsuserid3'];
-            $kind = "by user";
+            $loserid = $frm['otherguyid'];
 
         } elseif ( $frm['outcome'] == "lostto" ){
-            $winnerid = $frm['rsuserid3'];
+            $winnerid = $frm['otherguyid'];
             $loserid = get_userid();
-            $kind = "by user";
+        } 
 
-        } else {
-            $winnerid = $frm['rsuserid'];
-            $loserid = $frm['rsuserid2'];
-            $kind = "by admin";
-        }
-
-        if (isDebugEnabled(1)) logMessage("box_leagues: Reporting a ladder score: winner: $winnerid, loser: $loserid, hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday, kind: $kind");
+        if (isDebugEnabled(1)) logMessage("box_leagues: Reporting a ladder score: winner: $winnerid, loser: $loserid, hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday for schedulematchid = $scheduledmatchid");
 
         // Set the match time
         if ( $timeofday == "PM"){
@@ -128,7 +122,7 @@ if ($siteid) {
                         AND match_time = '$matchtime'
         				AND enddate IS NULL";
     
-    if (isDebugEnabled(1)) logMessage("box_leagues: tTest $check");
+    
         $checkResult = db_query($check);
         $dontexist = mysqli_result($checkResult, 0);
        
@@ -146,11 +140,16 @@ if ($siteid) {
                           ,'$matchtime'
                           ,1
                           )";
-            if (isDebugEnabled(1)) logMessage("box_leagues: query $query");
+            
             db_query($query);
         } else {
             if (isDebugEnabled(1)) logMessage("box_leagues: this match was already recorded. going to do nothing.");
         }
+
+
+        // update the laddermatch schedule
+        $scoredquery = "UPDATE tblBoxLeagueSchedule SET scored = TRUE WHERE id = $scheduledmatchid";
+        db_query($scoredquery);
     }
 
     // filter on ladder if this is passed in
@@ -177,28 +176,45 @@ if ($siteid) {
     }
 
     $getwebladdersresult = db_query($getwebladdersquery);
-    $getleaguesquery = "SELECT DISTINCT tCSL.name as ladder_name, tCSL.id
+    $getleaguesquery = "SELECT DISTINCT tCSL.name as ladder_name, tCSL.id, ladderid
                             FROM tblBoxLeagues
                             INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
                             WHERE tblBoxLeagues.siteid=$siteid";
     $getleagueresult = db_query($getleaguesquery);
 
-    $scheduledmatches = "SELECT tU1.userid AS userid1, tU2.userid AS userid2, tblBoxLeagueSchedule.boxid, tblBoxLeagueSchedule.id
-                        FROM tblBoxLeagueSchedule
-                            INNER JOIN tblBoxLeagues tBL on tblBoxLeagueSchedule.boxid = tBL.boxid
-                            INNER JOIN tblUsers tU1 on tblBoxLeagueSchedule.userid1 = tU1.userid
-                            INNER JOIN tblUsers tU2 on tblBoxLeagueSchedule.userid2 = tU2.userid
-                        WHERE tblBoxLeagueSchedule.scored = FALSE AND tBL.siteid = ".get_siteid();
+
+    $scheduledmatches = "SELECT tU1.userid AS userid1,
+                        concat(tU1.firstname, ' ', tU1.lastname) AS name1,
+                        tU2.userid AS userid2,
+                        concat(tU2.firstname, ' ', tU2.lastname) AS name2,
+                        tblBoxLeagueSchedule.boxid,
+                        tblBoxLeagueSchedule.id,
+                        tBL.ladderid
+                                    FROM tblBoxLeagueSchedule
+                                        INNER JOIN tblBoxLeagues tBL on tblBoxLeagueSchedule.boxid = tBL.boxid
+                                        INNER JOIN tblUsers tU1 on tblBoxLeagueSchedule.userid1 = tU1.userid
+                                        INNER JOIN tblUsers tU2 on tblBoxLeagueSchedule.userid2 = tU2.userid
+                                    WHERE tblBoxLeagueSchedule.scored = FALSE AND tBL.siteid = ".get_siteid();
     
     $scheduledmatchresult = db_query($scheduledmatches);
     $isscheduled = FALSE; 
     
     while ($match = db_fetch_array($scheduledmatchresult)) {
-        if (isDebugEnabled(1)) logMessage("box_leagues: checking to see if ". $match['userid1'] ." or ".$match['userid1']. " is me (".get_userid().")");
-        if ( $match['userid1'] == get_userid() || $match['userid2'] == get_userid() ){
+       
+        if ( $match['userid1'] == get_userid()  ){
             $isscheduled = TRUE;
             $scheduledbox = $match['boxid'];
             $scheduledmatchid = $match['id'];
+            $otherguy = $match['name2'];
+            $otherguyid = $match['userid2'];
+            $ladderid = $match['ladderid'];
+        }  elseif ($match['userid2'] == get_userid()  ){
+            $isscheduled = TRUE;
+            $scheduledbox = $match['boxid'];
+            $scheduledmatchid = $match['id'];
+            $otherguy = $match['name1'];
+            $otherguyid = $match['userid1'];
+            $ladderid = $match['ladderid'];
         }
     }
 
@@ -221,11 +237,11 @@ if ($siteid) {
 
     <? if( $isscheduled) {?>
     <tr>
-        <td >
+        <td colspan="2">
             <p id="rcorners1">
-                You are scheduled for league match. Record that score 
+                You are scheduled for league match with <?=$otherguy ?>. Record that score 
                 <span class="normal" id="showreportscoresplayer"><a
-			style="text-decoration: underline; cursor: pointer"> here</a></span>
+			style="text-decoration: underline; cursor: pointer"> here</a>.</span>
                 
                 <div style="height:10px"></div>
             </p>
@@ -446,32 +462,9 @@ if( isJumpLadderRankingScheme() ){
 		 <div style="margin:10px"> 
 			<span class="label">Outcome:</span>
 			<select name="outcome">
-					<option value="defeated">Won</option>
-					<option value="lostto">Lost</option>
+					<option value="defeated">I won</option>
+					<option value="lostto">I lost</option>
 				</select>
-			</div>
-
-			<div style="margin:10px"> 
-			<span class="label">Opponent:</span>
-				<input id="rsname3" name="" type="text" size="30"
-					class="form-autocomplete" autocomplete="off"/> 
-					<input id="rsid3" name="rsuserid3" type="hidden" />
-
-				<script>
-                <?
-                $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
-                 pat_autocomplete( array(
-						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-						'source'=>'rsname3',
-						'target'=>'rsid3',
-						'className'=>'autocomplete',
-						'parameters'=> "action=autocomplete&name={rsname3}&userid=".get_userid()."&boxid=$boxid",
-						'progressStyle'=>'throbbing',
-						'minimumCharacters'=>3,
-						));
-                 ?>
-
-                </script>
 			</div>
 
 			<div style="margin:10px"> 
@@ -513,7 +506,8 @@ if( isJumpLadderRankingScheme() ){
 					<option value="PM" selected>PM</option>
 				</select>
 			</div>
-
+                 <input type="hidden" name="scheduledmatchid" value="<?=$scheduledmatchid?>">
+                 <input type="hidden" name="otherguyid" value="<?=$otherguyid?>">
                  <input type="hidden" name="ladderid" value="<?=$ladderid?>">
 				<input type="hidden" name="cmd" value="reportladderscore">
 		</form>
@@ -538,7 +532,7 @@ if( isJumpLadderRankingScheme() ){
     YAHOO.namespace("clubladder.container");
     YAHOO.util.Event.onDOMReady(function () {
         
-        document.getElementById('rsname3').setAttribute("autocomplete", "off");
+        
 
         // Define various event handlers for Dialog
         var handleSubmit = function() {

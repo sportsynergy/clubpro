@@ -200,7 +200,7 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 					}
 				}
 				?>
-					<div id="scrolling" style="height: 20px; margin-top: 3px">
+					<div id="scrolling" style="height: 20px; margin-top: 10px">
 
 
 
