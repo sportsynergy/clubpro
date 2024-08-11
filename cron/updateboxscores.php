@@ -66,6 +66,7 @@ class UpdateBoxLeagueScores{
                         INNER JOIN tblUsers loser ON tblLadderMatch.loserid = loser.userid
                         WHERE (winnerid = ".$lm_player_array['player'] ." OR loserid = ".$lm_player_array['player'] .") 
                         AND tblLadderMatch.enddate IS NULL
+                        AND league = TRUE
                         AND ladderid = ".$box_array['ladderid'];
 
                 $lpresult = db_query($query);
