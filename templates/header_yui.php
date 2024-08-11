@@ -187,8 +187,6 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 				<div class="yui-b">
 					
 					
-					
-					
 				<?php
 		 	    //Only show when logged in
 				if( is_logged_in() ){
@@ -201,9 +199,6 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 				}
 				?>
 					<div id="scrolling" style="height: 20px; margin-top: 10px">
-
-
-
 
 					<?php include($_SESSION["CFG"]["includedir"]."/include_scrollingmessage.php"); ?>
 					</div>

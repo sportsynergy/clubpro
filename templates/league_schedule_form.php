@@ -1,7 +1,8 @@
 
+
 <div>
   <form name="entryform" method="post" action="<?=$ME?>">
-    <table width="80%" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
+    <table width="90%" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
       <tr class="borderow">
         <td class=clubid<?=get_clubid()?>th><font class=whiteh1>
           <div align="center">
