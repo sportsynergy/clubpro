@@ -83,13 +83,15 @@ class UpdateBoxLeagueScores{
                         
                         $pastmatches = array_count_values($players)[$lp_match_array['loserid']] ?? 0;
 
+                        $scores = explode("-", $lp_match_array['score']);
+
                         #score
-                        if ($lp_match_array['score'] == '3-0'){
+                        if ($scores[0] == '3'){
                             $wins = 3;
                           
-                        } elseif ($lp_match_array['score'] == '2-1') {
+                        } elseif ($scores[0] == '2') {
                             $wins = 2;
-                            
+                        
                         } else {
                             if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Not a valid score ".$lp_match_array['score']  ); 
                         }
@@ -123,10 +125,14 @@ class UpdateBoxLeagueScores{
                     // when the player loses
                     if( $lm_player_array['player'] == $lp_match_array['loserid']){
                         
+                        $scores = explode("-", $lp_match_array['score']);
+
                          #score
-                         if ($lp_match_array['score'] == '2-1') {
+                         if ($scores[1]==1 ) {
                             $wins = 1;
-                        } else {
+                        } elseif($scores[1]==2 ){
+                            $wins = 2;
+                        }else {
                             $wins = 0;
                         }
 
