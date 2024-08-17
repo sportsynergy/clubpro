@@ -637,12 +637,13 @@ function printLadderEvent($id, $challengerName, $challengeeName, $challengeDate,
 }
 
 
-function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score, $processed=TRUE){
+function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score, $league, $processed=TRUE){
 	
 	?>
 	
 	<tr>
-		<td>
+		<td >
+		
 			<?=formatDateStringSimple( $challengeDate)?>
 		</td>
 		<td>
@@ -655,14 +656,20 @@ function printLadderMatchRow($id, $winner, $loser, $challengeDate, $score, $proc
 			<?=$score ?>
 		</td>
 		<td>
+		<? if($league){ ?>
+				<img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif">
+			<? } ?>
+		</td>
+		<td>	
             <? if( ! $processed &&  get_roleid()=="2" ){ ?>
 				<a href="javascript:submitForm('removematch<?=$id?>')" >x</a>
-			
+				
 			<form name="removematch<?=$id?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php" method="post">
 				<input type="hidden" name="laddermatchid" value="<?=$id?>">
 				<input type="hidden" name="cmd" value="removematch">
 			</form>
 			<? } ?>
+			
 			
 		</td>
 		
@@ -786,7 +793,7 @@ function getLadderMatches($ladderid, $limit){
 						loser.firstname AS loser_first,
 						loser.lastname AS loser_last,
 						loser.userid AS loser_id,
-						ladder.id, ladder.score, ladder.match_time, ladder.processed
+						ladder.id, ladder.score, ladder.match_time, ladder.processed, ladder.league
 						FROM tblLadderMatch ladder
 						inner join tblUsers winner on ladder.winnerid = winner.userid
 						inner join tblUsers loser on ladder.loserid = loser.userid
@@ -813,7 +820,7 @@ function getLadderMatchesForUser($ladderid, $userid, $limit){
 						loser.firstname AS loser_first,
 						loser.lastname AS loser_last,
 						loser.userid AS loser_id,
-						ladder.id, ladder.score, ladder.match_time
+						ladder.id, ladder.score, ladder.match_time, ladder.league
 						FROM tblLadderMatch ladder
 						inner join tblUsers winner on ladder.winnerid = winner.userid
 						inner join tblUsers loser on ladder.loserid = loser.userid
@@ -1220,6 +1227,25 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
     send_email($subject, $challengee_email, $content, "Ladder Match");
 }
 
+/**
+ * 
+ */
+function isInBoxLeagueTogether($userid1, $userid2){
+
+	$query = "SELECT count(*) FROM tblkpBoxLeagues
+				WHERE userid = $userid1 OR userid = $userid2
+				GROUP BY boxid";
+    
+    $result = db_query($query);
+	$sameleague = mysqli_result($result, 0);
+   
+    if ($sameleague == 2) {
+        return true;
+    } else {
+        return false;
+    }
+
+}
 
 
 

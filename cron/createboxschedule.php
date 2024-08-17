@@ -117,6 +117,8 @@ class CreateBoxLeagueSchedule {
 
             if (isDebugEnabled(1)) logMessage("CreateBoxLeagueSchedule: Here is the number of people scheduled: ". count($scheduled) ); 
 
+            
+
         }   
     }
 

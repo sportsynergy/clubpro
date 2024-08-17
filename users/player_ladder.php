@@ -74,7 +74,6 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         if (isDebugEnabled(1)) logMessage("player_ladder: removing this ladder match $laddermatchid");
         $query = "UPDATE tblLadderMatch SET enddate = CURRENT_TIMESTAMP WHERE id = $laddermatchid";
         $result = db_query($query);
-        
     }
 
     // Add User to Ladder
@@ -169,8 +168,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $score = $frm['score'];
         $minuteofday = $frm['minuteofday'];
         $timeofday = $frm['timeofday'];
-
-
+        $league = isset($frm['league'])?"TRUE":"FALSE";
         $score = $frm['score'];
         $kind = "";
 
@@ -192,14 +190,18 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
             $kind = "by admin";
         }
 
-        if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: winner: $winnerid, loser: $loserid, hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday, kind: $kind");
+        if(!isInBoxLeagueTogether($winnerid, $loserid) && $league){
+            if (isDebugEnabled(1)) logMessage("player_ladder: Players ($winnerid, $loserid) are not in a box league together, but this was recorded as a league match. This will still be recorded but just not as a league match.");
+            $league = "FALSE";
+        }
+
+        if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: winner: $winnerid, loser: $loserid, hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday, kind: $kind, and league: $league");
 
         // Set the match time
         if ( $timeofday == "PM"){
             $hourplayed = $hourplayed + 12;
         }
         $curtime = $_SESSION["current_time"];
-
         $currYear = gmdate("Y", $curtime);
         $currMonth = gmdate("n", $curtime);
         $currDay = gmdate("j", $curtime);
@@ -225,13 +227,14 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
             if (isDebugEnabled(1)) logMessage("player_ladder: this match was  not already recorded. Adding.. ");
    
             $query = "INSERT INTO tblLadderMatch (
-                ladderid, score, winnerid, loserid, match_time
+                ladderid, score, winnerid, loserid, match_time, league
                 ) VALUES (
                           $ladderid
                           ,'$score'
                           ,$winnerid
                           ,$loserid
                           ,'$matchtime'
+                          , $league
                           )";
             
             db_query($query);

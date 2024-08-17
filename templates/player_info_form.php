@@ -127,7 +127,6 @@
                 <?
                 while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
 
-
                   $scored = $challengeMatch['score'];
                   $winner_obj = new clubpro_obj;
                   $winner_obj->fullname =  $challengeMatch['winner_first']." ". $challengeMatch['winner_last'];
@@ -140,7 +139,7 @@
                   //don't include timestamp
                   $challengeDate = explode(" ",$challengeMatch['match_time']);
 
-                  printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored);
+                  printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['league']);
                       
                 } ?>
                 </table>

@@ -160,7 +160,7 @@ function run_ladder_score_report($ladderid, $ladder_name) {
             //don't include timestamp
             $challengeDate = explode(" ",$challengeMatch['match_time']);
 
-            printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['processed']);
+            printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['league'], $challengeMatch['processed']);
             
         }?>
         </td></tr>

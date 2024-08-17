@@ -204,7 +204,6 @@ to add your name now.
 
 <div class="bd">
 		<form method="POST" action="<?=$ME?>" autocomplete="off">
-			
 			<div>
 				<input id="rsname1" name="" type="text" size="30"
 					class="form-autocomplete" autocomplete="off"/> 
@@ -292,7 +291,9 @@ to add your name now.
 					<option value="PM" selected>PM</option>
 				</select>
 			</div>
-
+			<div style="margin:10px">
+			<input type="checkbox" name="league" /> League Match
+			</div>
 		
 				<input type="hidden" name="cmd" value="reportladderscore">
 		</form>
@@ -428,11 +429,10 @@ to add your name now.
 					class="form-autocomplete" autocomplete="off"/> 
 					<input id="id1" name="userid" type="hidden" />
 			</div>
-			<div>
+			<div style="margin:10px">
 				Spot: <select name="placement">
 				<?
 				mysqli_data_seek($ladderplayers,0);
-
 
 				$lastspot = mysqli_num_rows($ladderplayers) + 1;
 
@@ -478,9 +478,10 @@ to add your name now.
 <script>
 
 		var allownewlines = false;
+		document.getElementById('rsname1').setAttribute("autocomplete", "off");
+		document.getElementById('rsname2').setAttribute("autocomplete", "off");
 		
 		YAHOO.namespace("clubladder.container");
-
 
 		/*
 		* Report score dialoge

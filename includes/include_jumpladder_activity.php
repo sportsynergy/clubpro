@@ -66,14 +66,16 @@ while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){
 		//don't include timestamp
 		$challengeDate = explode(" ",$challengeMatch['match_time']);
 
-		printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['processed']);
+		printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['league'], $challengeMatch['processed']);
 	    
 }
 ?>
 </table>
 
-      
-  <div style="margin-top: 20px"> <span class="smallbold">Ladders last updated:</span> 
+  <div style="margin-top: 20px">
+    <img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif "\> <font class="normalsm"> Indicates League Match</font>
+  </div>
+  <div > <span class="smallbold">Ladders last updated:</span> 
   <?php
     
     if( is_null($ladderdetails->lastUpdated) ){
