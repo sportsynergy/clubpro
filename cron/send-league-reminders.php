@@ -41,10 +41,10 @@ class LeagueReminderService{
                 INNER JOIN tblClubs tCL on tCS.clubid = tCL.clubid";
 	
 	  	$result = db_query($query);
+        if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders: Found ". mysqli_num_rows($result) ." auto-scheduled league matches");
+
 		while($player_array = mysqli_fetch_array($result) ){
 				
-			    if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders: Found ". mysqli_num_rows($result) ." auto-scheduled league matches");
-
                 // little bit of a hack, but this is needed for email template. normally this is set when the user logs in
                 $_SESSION["siteprefs"]["sitecode"] = $player_array['sitecode']; 
                 $_SESSION["siteprefs"]["siteid"] = $player_array['siteid']; 
@@ -56,13 +56,13 @@ class LeagueReminderService{
                     $this->sendReminderEmail($player_array['email1'], $player_array['firstname1'], $player_array['boxname'], $otherguy, $player_array['clubname']);
                 } else {
                     if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders:". $player_array['email1']. " is not set up to receive these reminders.");
-
                 }
 
                 if( $player_array['rec2']=='y' && $player_array['scored']==FALSE){
 
                     $otherguy = $player_array['firstname1']. " ". $player_array['lastname1'];
                     $this->sendReminderEmail($player_array['email2'], $player_array['firstname2'], $player_array['boxname'], $otherguy,$player_array['clubname']);
+                    
                 } else {
                     if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders:". $player_array['email2']. " is not set up to receive these reminders.");
                 }
