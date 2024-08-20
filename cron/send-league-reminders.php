@@ -57,7 +57,7 @@ class LeagueReminderService{
                     $otherguy = $player_array['firstname2'] ." " . $player_array['lastname2'];
                     $otherguy_email = $player_array['email2'];
                     $otherguy_phone = $player_array['phone2'];
-                    $this->sendReminderEmail($player_array['email1'], $player_array['firstname1'], $player_array['boxname'], $otherguy, $player_array['clubname']);
+                    $this->sendReminderEmail($player_array['email1'], $player_array['firstname1'], $player_array['boxname'], $otherguy, $otherguy_email, $otherguy_phone, $player_array['clubname']);
                 } else {
                     if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders:". $player_array['firstname1']. " ".$player_array['lastname1']." is not set up to receive these reminders.");
                 }
