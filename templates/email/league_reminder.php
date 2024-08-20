@@ -1,1 +1,1 @@
-This is just a friendly reminder that you have a league match to play with <a href="mailto:$var->otherguy_email">$var->otherguy</a> soon. If you have already played this match, you can go in and record the results <a href="$var->url">here</a>.
+This is just a friendly reminder that you have been scheduled to play a league match with <a href="mailto:$var->otherguy_email">$var->otherguy</a>. If you have already played this match, you can go in and record the results <a href="$var->url">here</a>.
