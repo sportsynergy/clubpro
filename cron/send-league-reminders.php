@@ -80,8 +80,7 @@ class LeagueReminderService{
     private function sendReminderEmail($email, $firstname, $boxname, $otherguy, $otherguy_email, $otherguy_phone,$clubname){
 	
         $var = new clubpro_obj;
-        $var->url = $_SESSION["CFG"]["wwwroot"]."/clubs/".get_sitecode()."/web_ladder.php";
-        $var->url = "http://" . $_SESSION["CFG"]["dns"] . "/" . $_SESSION["CFG"]["wwwroot"] . "/clubs/".get_sitecode()."/web_ladder.php";
+        $var->url = "https://" . $_SESSION["CFG"]["dns"] . $_SESSION["CFG"]["wwwroot"] . "/clubs/".get_sitecode()."/web_ladder.php";
         $var->otherguy = $otherguy;
         $var->otherguy_email = $otherguy_email;
         $var->otherguy_phone = $otherguy_phone;
