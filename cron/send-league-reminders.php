@@ -82,6 +82,8 @@ class LeagueReminderService{
         $var = new clubpro_obj;
         $var->url = $_SESSION["CFG"]["wwwroot"]."/clubs/".get_sitecode()."/web_ladder.php";
         $var->otherguy = $otherguy;
+        $var->otherguy_email = $otherguy_email;
+        $var->otherguy_phone = $otherguy_phone;
         
         $emailbody = read_template($_SESSION["CFG"]["templatedir"] . "/email/league_reminder.php", $var);
         $emailbody = nl2br($emailbody);	
