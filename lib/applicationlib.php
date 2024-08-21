@@ -796,7 +796,6 @@ function require_loginwq() {
 
             } else{
                 
-				if (isDebugEnabled(1)) logMessage("applicationlib.require_loginwq: Autologin site with no password");
 
 				// this will happen if a person at a auto login site manually 
 				// puts in the clubpro url
@@ -5663,7 +5662,8 @@ function getSitePreferencesForCourt($courtid) {
 					clubs.clubname,
                     clubs.timezone,
                     sites.showplayernames,
-                    sites.requirelogin
+                    sites.requirelogin,
+					sites.timeoutlink
 	        FROM tblClubSites sites, tblCourts courts, tblClubs clubs
 			WHERE sites.siteid = courts.siteid
 			AND sites.clubid = clubs.clubid
