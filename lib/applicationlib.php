@@ -796,6 +796,8 @@ function require_loginwq() {
 
             } else{
                 
+				if (isDebugEnabled(1)) logMessage("applicationlib.require_loginwq: Autologin site with no password");
+
 				// this will happen if a person at a auto login site manually 
 				// puts in the clubpro url
 				if ( isset($_SESSION["siteprefs"]["timeoutlink"])  ) {
