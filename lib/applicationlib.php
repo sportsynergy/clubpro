@@ -768,7 +768,7 @@ function require_loginwq() {
     if (!is_logged_in()) {
 
         // For clubsites set to auto login, look for username and password REQUEST parameters to 
-        // use for logging in.
+        // use for logging in. For security reason, this isn't supposed to be done anymore
         if( isSiteAutoLogin() ){
 
             $url_parts = parse_url(qualified_mewithq());
@@ -777,25 +777,47 @@ function require_loginwq() {
             if( isset($params['username']) && isset($params['password']) ){
                 
                 if (isDebugEnabled(1)) logMessage("applicationlib.require_loginwq: logging in autologin user: ". $params['username']);
+				if (isDebugEnabled(1)) logMessage("applicationlib.require_loginwq: ********* This is a problem, please have club not login this way ");
         
+
                 $user = verify_login( $params['username'],$params['password'], false );
 
                 if( $user ){
                     if (isDebugEnabled(1)) logMessage("applicationlib.require_loginwq: valid user");
                     $_SESSION["user"] = $user;
                 } else{
-                    redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+                    // if timeout link set go to that, otherwise, just the loni
+					if ( isset($_SESSION["siteprefs"]["timeoutlink"])  ) {
+						redirect($_SESSION["siteprefs"]["timeoutlink"]);
+					} else {
+						redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+					}
                 } 
 
             } else{
-                redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+                
+				// this will happen if a person at a auto login site manually 
+				// puts in the clubpro url
+				if ( isset($_SESSION["siteprefs"]["timeoutlink"])  ) {
+					redirect($_SESSION["siteprefs"]["timeoutlink"]);
+				} else {
+					redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+				}
+
+				
             }
 
         } else {
 
             $_SESSION["wantsurl"] = qualified_mewithq();
-            redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+			// if timeout link set go to that, otherwise, just the loni
+			if ( isset($_SESSION["siteprefs"]["timeoutlink"])  ) {
+				redirect($_SESSION["siteprefs"]["timeoutlink"]);
+			} else {
+				redirect($_SESSION["CFG"]["wwwroot"] . "/login.php");
+			}
 
+            
         }
     }
 }
