@@ -171,13 +171,14 @@ class UpdateBoxLeagueScores{
                         $query = "UPDATE tblkpBoxLeagues SET score = $points, games = $games, gameswon = $gameswon WHERE boxid = $boxid AND userid = ".$lm_player_array['player'];
                         $result = db_query($query);
 
+                        if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Total points for ".$lm_player_array['playername'] . " is: $points and total games is $gameswon and gameswon is $gameswon" ); 
 
                     } else {
                         if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: ".$lm_player_array['playername']. " not in $boxid" ); 
                     }
                 }
                 
-                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Total points for ".$lm_player_array['playername'] . " is: $points and total games is $gameswon and gameswon is $gameswon" ); 
+                
             }
            
             // Update last updated

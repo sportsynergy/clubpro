@@ -65,8 +65,8 @@ class LeagueReminderService{
                 if( $player_array['rec2']=='y' && $player_array['scored']==FALSE){
 
                     $otherguy = $player_array['firstname1']. " ". $player_array['lastname1'];
-                    $otherguy_email = $player_array['email2'];
-                    $otherguy_phone = $player_array['phone2'];
+                    $otherguy_email = $player_array['email1'];
+                    $otherguy_phone = $player_array['phone1'];
                     $this->sendReminderEmail($player_array['email2'], $player_array['firstname2'], $player_array['boxname'], $otherguy,$otherguy_email, $otherguy_phone,$player_array['clubname']);
                     
                 } else {

@@ -85,11 +85,6 @@ $userid = $_REQUEST["userid"];
 $courttype = $_REQUEST["courttype"];
 $courtid = $_REQUEST["courtid"];
 
-if (isDebugEnabled(1)) {
-    logMessage("court_reservation: loading page with the these variables: 
-    courtid: $courtid, time: $time, userid: $userid, courttype: $courttype, courtid: $courtid");
-}
-
 
 /* In case the user is loading this page from a link on an email,
 we have to load in the site preferences (normally this is done in
