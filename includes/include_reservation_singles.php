@@ -77,7 +77,7 @@ pat_autocomplete(array(
 	<tr>
       <td class="label">Match Type:</td>
       <td><select name="matchtype" onchange="disablePlayerDropDownWithSoloSelection(this);onlyAllowLessonReoccuring(this)">
-          <? if( isSiteBoxLeageEnabled() ){ ?>
+          <? if( isSiteBoxLeageEnabled() && isLadderRankingScheme()){ ?>
           <option value="1">Box League</option>
           <? } ?>
           <? if ( isPointRankingScheme() ) {?>

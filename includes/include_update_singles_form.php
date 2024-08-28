@@ -230,7 +230,7 @@ function enable()
                       
                       <option value="2" <?= $matchtype=="2" ? "selected=selected" : "" ?> >Challenge</option>
 
-                      <? if( isSiteBoxLeageEnabled() ){ ?>
+                      <? if( isSiteBoxLeageEnabled() && isLadderRankingScheme()){ ?>
                       <option value="1" <?= $matchtype=="1" ? "selected=selected" : "" ?> >Box League</option>
                       <? } ?>
                       <option value="0" <?= $matchtype=="0" ? "selected=selected" : "" ?> >Practice</option>
