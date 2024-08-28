@@ -1232,12 +1232,15 @@ function sendEmailsForLadderMatch($challengerid, $challengeeid, $message) {
  */
 function isInBoxLeagueTogether($userid1, $userid2, $ladderid){
 
+
 	$query = "SELECT count(*) FROM tblkpBoxLeagues
 				INNER JOIN tblBoxLeagues  tBL on tblkpBoxLeagues.boxid = tBL.boxid
 				WHERE (userid = $userid1 OR userid = $userid2)
 				AND tBL.ladderid = $ladderid
-				GROUP BY boxid";
+				GROUP BY tBL.boxid";
     
+	if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score $query");
+
     $result = db_query($query);
 	$sameleague = mysqli_result($result, 0);
    
