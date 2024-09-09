@@ -115,7 +115,7 @@ to add your name now.
 								<td><span class="bold">Name</span>
 								
 								</th>
-								<td><span class="bold">Ranking</span>
+								<td><span class="bold">Rating</span>
 								
 								</th>
 							</tr>
