@@ -1142,7 +1142,7 @@ function getLadder($ladderid) {
  * True is user is, false if player isn't
  * @param $userid
  */
-function isPlayingInLadder($userid, $ladderid) {
+function isIndividualPlayingInLadder($userid, $ladderid) {
     $query = "SELECT 1 FROM tblClubLadder 
                 WHERE userid = $userid 
                 AND ladderid = $ladderid 

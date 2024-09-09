@@ -29,7 +29,6 @@
 * Function list:
 * - createChallengematch()
 * - getLadder()
-* - isPlayingInLadder()
 * - sendEmailsForLadderMatch()
 * Classes list:
 */
@@ -254,7 +253,7 @@ $availbleSports = load_avail_sports();
 $ladderplayers = getLadder($ladderid);
 $ladderdetails = getLadderDetails($ladderid);
 
-$playingInLadder = isPlayingInLadder(get_userid() , $ladderid);
+$playingInLadder = isIndividualPlayingInLadder(get_userid() , $ladderid);
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/player_ladder_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
