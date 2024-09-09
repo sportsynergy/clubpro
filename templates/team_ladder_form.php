@@ -20,10 +20,10 @@ if(count($teamINClause) > 0 ){
 	$rawQuery = "SELECT ladder.ladderposition, ladder.locked, ladder.userid
 						FROM tblClubLadder ladder
 						WHERE ladder.userid IN (%s) 
-						AND ladder.courttypeid = %s 
+						AND ladder.ladderid = %s 
 						AND ladder.clubid = %s 
 						AND enddate IS NULL";
-	$query = sprintf($rawQuery, implode(',',$teamINClause), $courttypeid, get_clubid() );
+	$query = sprintf($rawQuery, implode(',',$teamINClause), $ladderid, get_clubid() );
 
 	$result = db_query($query);
 	if( mysqli_num_rows($result) > 0 ){
