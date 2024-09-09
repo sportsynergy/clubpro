@@ -21,9 +21,8 @@ if(count($teamINClause) > 0 ){
 						FROM tblClubLadder ladder
 						WHERE ladder.userid IN (%s) 
 						AND ladder.ladderid = %s 
-						AND ladder.clubid = %s 
 						AND enddate IS NULL";
-	$query = sprintf($rawQuery, implode(',',$teamINClause), $ladderid, get_clubid() );
+	$query = sprintf($rawQuery, implode(',',$teamINClause), $ladderid );
 
 	$result = db_query($query);
 	if( mysqli_num_rows($result) > 0 ){
