@@ -69,7 +69,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $userid = rtrim($frm['userid']);
         $userid2 = rtrim($frm['userid2']);
         
-        if (isDebugEnabled(2)) logMessage("team_ladder: addtoladder with users $userid and $userid2 with courttypeid: $ladderid");
+        if (isDebugEnabled(2)) logMessage("team_ladder: addtoladder with users $userid and $userid2 with ladderid: $ladderid");
         $playerOnePlaying = isPlayingInLadder($userid2, $ladderid);
         $playerTwoPlaying = isPlayingInLadder($userid2, $ladderid);
         $teamid = getTeamIDForPlayers($courttypeid, $userid, $userid2);
@@ -190,7 +190,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
 if (isDebugEnabled(1)) logMessage("team_ladder: initializing the view");
 $availbleSports = load_avail_sports();
 $ladderplayers = getLadderTeam($ladderid);
-$playingInLadder = isPlayingInLadder(get_userid() , $courttypeid);
+$playingInLadder = isPlayingInLadder(get_userid() , $ladderid);
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/team_ladder_form.php");
 include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
