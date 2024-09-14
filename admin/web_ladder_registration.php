@@ -109,8 +109,9 @@ function insert_box(&$frm) {
     $lastboxrank = $numberofrows + 1;
     $ladderid = isset($frm[ladder]) ? $frm[ladder] : "NULL";
     $boxname = addslashes($frm['boxname']);
+    $autoschedule = 'yes' ? 'TRUE':'FALSE';
     $query = "INSERT INTO tblBoxLeagues (
-                boxname, siteid, courttypeid, boxrank, enddate, enddatestamp,ladderid
+                boxname, siteid, courttypeid, boxrank, enddate, enddatestamp,ladderid,autoschedule
                 ) VALUES (
                           '$boxname'
                           ,'" . get_siteid() . "'
@@ -118,7 +119,8 @@ function insert_box(&$frm) {
                           ,$lastboxrank
                           ,$datestring
                           ,$timestamp
-                          ,$ladderid)";
+                          ,$ladderid
+                          ,$autoschedule)";
 
     // run the query on the database
     $result = db_query($query);

@@ -10,7 +10,8 @@ create table tblBoxLeagues
     enddatestamp int       default 0                 not null,
     enable       int       default 1                 not null,
     lastmodified timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    ladderid     int                                 null
+    ladderid     int                                 null,
+    autoschedule bit       default b'0'              not null comment 'included in league autoscheduler'
 )
     engine = MyISAM;
 

@@ -13,8 +13,8 @@ create table tblClubUser
     lastmodified                timestamp       default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
     enddate                     timestamp                                 null,
     ccnew                       enum ('y', 'n') default 'n'               null,
-    available_at_6              bit             default b'0'              not null,
     available_at_5              bit             default b'0'              not null,
+    available_at_6              bit             default b'0'              not null,
     available_at_7              bit             default b'0'              not null,
     recleaguematchnotifications enum ('y', 'n') default 'n'               not null
 )

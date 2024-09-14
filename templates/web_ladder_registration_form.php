@@ -322,7 +322,17 @@ print "var thisyear = new Array(13);
              for ($i=0; $i < count($ladders); ++$i) { ?>
                 <option value="<?=$ladders[$i]['id'] ?>"><?=$ladders[$i]['name'] ?></option>
             <?  } ?>
+             </select>
             <?err($errors->ladder)?>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">Auto Schedule: </td>
+        <td>
+            <select name="autoschedule">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+             </select>
         </td>
     </tr>
 

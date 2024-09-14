@@ -15,9 +15,6 @@ create table tblClubLadder
 )
     engine = MyISAM;
 
-create index tblClubLadder_ladderid_index
-    on tblClubLadder (ladderid);
-
 create index tblClubLadder_userid_index
     on tblClubLadder (userid);
 
