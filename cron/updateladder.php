@@ -28,8 +28,8 @@ class LadderUpdateService{
 	public function updateJumpLadders(){
 
         
-        #$yesterday = date('Y-m-d', time() - 60 * 60 * 24);
-        $yesterday = '2024-08-17';
+        $yesterday = date('Y-m-d', time() - 60 * 60 * 24);
+        #$yesterday = '2024-08-17';
 
         if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. Starting up. Processing records for $yesterday");
         
