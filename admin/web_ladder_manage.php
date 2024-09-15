@@ -54,7 +54,7 @@ if (match_referer() && isset($_POST['submitme'])) {
 }
 
 
-$boxnamequery = "SELECT boxleague.boxname, boxleague.courttypeid, boxleague.enddate, tCSL.name, boxleague.ladderid
+$boxnamequery = "SELECT boxleague.boxname, boxleague.courttypeid, boxleague.enddate, tCSL.name, boxleague.ladderid, autoschedule
                         FROM tblBoxLeagues boxleague
                         left join tblClubSiteLadders tCSL on boxleague.ladderid = tCSL.id
                         WHERE boxid=$boxid";

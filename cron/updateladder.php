@@ -28,8 +28,8 @@ class LadderUpdateService{
 	public function updateJumpLadders(){
 
         
-        $yesterday = date('Y-m-d', time() - 60 * 60 * 24);
-        #$yesterday = '2023-11-05';
+        #$yesterday = date('Y-m-d', time() - 60 * 60 * 24);
+        $yesterday = '2024-08-17';
 
         if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. Starting up. Processing records for $yesterday");
         
@@ -59,13 +59,20 @@ class LadderUpdateService{
                             ladder.ladderid as ladder_id, 
                             ladder.score, ladder.match_time, ladder.reported_time,
                             ladder.score,
-                            ladder.id as ladder_match_id
+                            ladder.id as ladder_match_id,
+                            wrankings.ranking as wranking,
+                            lrankings.ranking as lranking,
+                            tCSL.courttypeid
                             FROM tblLadderMatch ladder
                             inner join tblUsers winner on ladder.winnerid = winner.userid
                             inner join tblUsers loser on ladder.loserid = loser.userid
                             inner join tblClubSiteLadders tCSL on ladder.ladderid = tCSL.id
+                            inner join tblUserRankings wrankings on winner.userid = wrankings.userid
+                            inner join tblUserRankings lrankings on loser.userid = lrankings.userid
                             WHERE ladder.ladderid = ".$ladder_array['id']." AND tCSL.enddate IS NULL
                                 AND ladder.enddate IS NULL
+                                AND wrankings.courttypeid = tCSL.courttypeid
+                                AND lrankings.courttypeid = tCSL.courttypeid
                                 AND date(ladder.match_time) = '$yesterday'
                              ORDER BY ladder.match_time ASC, ladder.reported_time ASC";
                
@@ -73,7 +80,35 @@ class LadderUpdateService{
                 $result = db_query($query);
                 while($match_array = mysqli_fetch_array($result) ){
                     if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders (".$match_array['ladder_match_id']. ")".$match_array['winner_full']. " defeated ". $match_array['loser_full']. " ". $match_array['score']);
+                    
+
                     adjustClubLadder( $match_array['winner_id'], $match_array['loser_id'], $match_array['ladder_id']);
+
+                    // update scores
+                    $rankingArray = calculateRankings($match_array['wranking'], $match_array['lranking']);
+                    $newWinnerRanking = $rankingArray['winner'];
+                    $newWinnerRanking = round($newWinnerRanking, 3);
+                    $newLoserRanking = $rankingArray['loser'];
+                    $newLoserRanking = round($newLoserRanking, 3);
+
+                    //Set rankings
+                    $winnersUpdate = "UPDATE tblUserRankings rankings
+                        SET rankings.ranking = $newWinnerRanking
+                        WHERE rankings.userid = " . $match_array['winner_id'] . "
+                        AND rankings.courttypeid = " . $match_array['courttypeid'] . "
+                        AND rankings.usertype = 0";
+                    db_query($winnersUpdate);
+
+                    if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateLadder: updating rating for winner (".$match_array['winner_id'] .") from ".$match_array['wranking']." to $newWinnerRanking");
+                    
+                    $losersUpdate = "UPDATE tblUserRankings rankings
+                        SET rankings.ranking = $newLoserRanking
+                        WHERE rankings.userid = " . $match_array['loser_id'] . "
+                        AND rankings.courttypeid = " . $match_array['courttypeid'] . "
+                        AND rankings.usertype = 0";
+                    db_query($losersUpdate);
+
+                    if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateLadder: updating rating for loser (".$match_array['loser_id'] .") from ".$match_array['lranking']." to $newLoserRanking");
 
                     $query = "update tblLadderMatch set processed = TRUE where id  = ".$match_array['ladder_match_id'];
                     db_query($query);

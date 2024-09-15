@@ -342,9 +342,13 @@ $userid = $_REQUEST["userid"];
   if ( isJumpLadderRankingScheme() ) {
   ?>
         <tr>
-        <td class="label">Ladder:</td>
+          <td class="label">Ladder:</td>
           <td> <?= $boxarray["name"]?></td>
         </tr>
+        <tr>
+          <td class="label">Autoschedule:</td>
+          <td> <?= $boxarray["autoschedule"] == 1 ? "Yes": "No" ?></td>
+  </tr>
     <? } ?>
        <tr>
             <td></td>
