@@ -109,7 +109,7 @@ function insert_box(&$frm) {
     $lastboxrank = $numberofrows + 1;
     $ladderid = isset($frm[ladder]) ? $frm[ladder] : "NULL";
     $boxname = addslashes($frm['boxname']);
-    $autoschedule = 'yes' ? 'TRUE':'FALSE';
+    $autoschedule =  $frm['autoschedule'] == 'yes' ? 'TRUE':'FALSE';
     $query = "INSERT INTO tblBoxLeagues (
                 boxname, siteid, courttypeid, boxrank, enddate, enddatestamp,ladderid,autoschedule
                 ) VALUES (
