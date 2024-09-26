@@ -515,7 +515,7 @@ to add your name now.
 									  modal: true,
 									  visible : false, 
 									  constraintoviewport : true,
-									  buttons : [ { text:"Record Score", handler:handleSubmit, isDefault:true } ]
+									  buttons : [ { text:"Report Score", handler:handleSubmit, isDefault:true } ]
 									});
 			YAHOO.clubladder.container.reportscoredialogplayer = new YAHOO.widget.Dialog("reportscoredialogplayer", 
 								{ width : "30em",
@@ -523,11 +523,11 @@ to add your name now.
 									modal: true,
 									visible : false, 
 									constraintoviewport : true,
-									buttons : [ { text:"Record Score", handler:handleSubmit, isDefault:true } ]
+									buttons : [ { text:"Report Score", handler:handleSubmit, isDefault:true } ]
 								});
 		
-			YAHOO.clubladder.container.reportscoredialog.setHeader('Record Score');
-			YAHOO.clubladder.container.reportscoredialogplayer.setHeader('Record Score');
+			YAHOO.clubladder.container.reportscoredialog.setHeader('Report Score');
+			YAHOO.clubladder.container.reportscoredialogplayer.setHeader('Report Score');
 		
 			// Validate the entries in the form to require that both first and last name are entered
 			YAHOO.clubladder.container.reportscoredialog.validate = function() {
