@@ -292,7 +292,7 @@ to add your name now.
 				</select>
 			</div>
 			<div style="margin:10px">
-			<input type="checkbox" name="league" /> League Match
+			<input type="checkbox" name="league" /> Box League Match
 			</div>
 		
 				<input type="hidden" name="cmd" value="reportladderscore">
