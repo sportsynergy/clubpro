@@ -53,7 +53,6 @@ if (match_referer() && isset($_POST['submitme'])) {
     }
 }
 
-
 $boxnamequery = "SELECT boxleague.boxname, boxleague.courttypeid, boxleague.enddate, tCSL.name, boxleague.ladderid, autoschedule
                         FROM tblBoxLeagues boxleague
                         left join tblClubSiteLadders tCSL on boxleague.ladderid = tCSL.id
@@ -86,7 +85,11 @@ function validate_form($frm) {
     $msg = "";
     
     if (!empty($frm['boxuser'])) {
-        $boxUserQuery = "SELECT userid from tblkpBoxLeagues WHERE userid = $frm[boxuser]";
+        $boxUserQuery = "SELECT userid  FROM tblkpBoxLeagues
+                            INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid
+                            WHERE tblkpBoxLeagues.userid = $frm[boxuser]
+                            AND tblBoxLeagues.ladderid IS NULL";
+        
         $boxUserResult = db_query($boxUserQuery);
         
         if (mysqli_num_rows($boxUserResult) > 0) {
@@ -95,6 +98,35 @@ function validate_form($frm) {
             $errors->boxuser = true;
             $msg.= "A player cannot be in more that one box at a time.";
         }
+
+        // put a check in here to look for this user already in a box assigned to the ladder
+        $boxUserQuery2 = "SELECT tblBoxLeagues.*  FROM tblkpBoxLeagues
+                            INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid
+                            WHERE tblkpBoxLeagues.userid = $frm[boxuser]
+                            AND tblBoxLeagues.ladderid IS NOT NULL";
+
+        $boxUserResult2 = db_query($boxUserQuery2);
+
+        // for each ladder
+        while ($league = db_fetch_array($boxUserResult2)) {
+
+            $boxUserQuery3 = "SELECT userid FROM tblkpBoxLeagues
+                                INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid
+                                WHERE userid = $frm[boxuser]
+                                AND tblBoxLeagues.ladderid = ".$league['ladderid'];
+
+        if (isDebugEnabled(1)) logMessage("\t-> bmy query $boxUserQuery3"); 
+            $boxUserResult3 = db_query($boxUserQuery3);
+
+            if (mysqli_num_rows($boxUserResult3) > 0) {
+                        
+                if (isDebugEnabled(1)) logMessage("\t-> boxuser is not in a box");
+                $errors->boxuser = true;
+                $msg.= "A player cannot be in more that one box at a time.";
+            }
+        }
+
+        
     }
     return $msg;
 }
