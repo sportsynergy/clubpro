@@ -168,20 +168,20 @@ if ($siteid) {
     } else {
 
         //Get all of the web ladders for the club
-        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated
-                        FROM tblBoxLeagues
-                        INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
-                        WHERE tblBoxLeagues.siteid=$siteid
-                        ORDER BY tblBoxLeagues.boxrank";
+        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable
+                      FROM tblBoxLeagues
+                      WHERE (((tblBoxLeagues.siteid)=$siteid))
+                      ORDER BY tblBoxLeagues.boxrank";
     }
 
     $getwebladdersresult = db_query($getwebladdersquery);
+
     $getleaguesquery = "SELECT DISTINCT tCSL.name as ladder_name, tCSL.id, ladderid
                             FROM tblBoxLeagues
                             INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
                             WHERE tblBoxLeagues.siteid=$siteid";
+    
     $getleagueresult = db_query($getleaguesquery);
-
 
     $scheduledmatches = "SELECT tU1.userid AS userid1,
                         concat(tU1.firstname, ' ', tU1.lastname) AS name1,
@@ -394,12 +394,13 @@ $lastupdatestring = $wlobj->lastupdated;
                                     <?=$wluserobj->score?></span>
 									</a>
 	                        </td>
+                            <? if ( isJumpLadderRankingScheme() ) { ?>
                             <td>
                                     <span class="normal">
                                     <?=$wluserobj->gameswon?></span>
                                     </span>
                             </td>
-                                
+                            <? } ?>   
 
                         </tr>
                      <?

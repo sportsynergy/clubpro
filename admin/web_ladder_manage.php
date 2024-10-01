@@ -85,47 +85,46 @@ function validate_form($frm) {
     $msg = "";
     
     if (!empty($frm['boxuser'])) {
-        $boxUserQuery = "SELECT userid  FROM tblkpBoxLeagues
-                            INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid
-                            WHERE tblkpBoxLeagues.userid = $frm[boxuser]
-                            AND tblBoxLeagues.ladderid IS NULL";
+        
+        $boxUserQuery = "SELECT ladderid  FROM tblBoxLeagues
+                            WHERE tblBoxLeagues.boxid = $frm[boxid]";
         
         $boxUserResult = db_query($boxUserQuery);
+
+        $isLadderBox = mysqli_result($boxUserResult, 0);
         
-        if (mysqli_num_rows($boxUserResult) > 0) {
-            
-            if (isDebugEnabled(1)) logMessage("\t-> boxuser is not in a box");
-            $errors->boxuser = true;
-            $msg.= "A player cannot be in more that one box at a time.";
-        }
+        // if not associated with a ladder, then the user can only be in one box
+        if ( !isset($isLadderBox ) ){
 
-        // put a check in here to look for this user already in a box assigned to the ladder
-        $boxUserQuery2 = "SELECT tblBoxLeagues.*  FROM tblkpBoxLeagues
-                            INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid
-                            WHERE tblkpBoxLeagues.userid = $frm[boxuser]
-                            AND tblBoxLeagues.ladderid IS NOT NULL";
-
-        $boxUserResult2 = db_query($boxUserQuery2);
-
-        // for each ladder
-        while ($league = db_fetch_array($boxUserResult2)) {
-
-            $boxUserQuery3 = "SELECT userid FROM tblkpBoxLeagues
+            $boxUserQuery = "SELECT userid  FROM tblkpBoxLeagues
                                 INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid
-                                WHERE userid = $frm[boxuser]
-                                AND tblBoxLeagues.ladderid = ".$league['ladderid'];
+                                WHERE tblkpBoxLeagues.userid = $frm[boxuser]";
 
-        if (isDebugEnabled(1)) logMessage("\t-> bmy query $boxUserQuery3"); 
-            $boxUserResult3 = db_query($boxUserQuery3);
-
-            if (mysqli_num_rows($boxUserResult3) > 0) {
-                        
+            $boxUserResult = db_query($boxUserQuery); 
+            if (mysqli_num_rows($boxUserResult) > 0) {
+            
                 if (isDebugEnabled(1)) logMessage("\t-> boxuser is not in a box");
                 $errors->boxuser = true;
-                $msg.= "A player cannot be in more that one box at a time.";
-            }
-        }
+                $msg= "A player cannot be in more than one box at a time.";
+            }              
 
+        // just look for leagues for that ladder
+        } else {
+
+            $boxUserQuery = "SELECT userid FROM tblkpBoxLeagues
+                            INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid
+                            WHERE userid = $frm[boxuser]
+                            AND tblBoxLeagues.ladderid=$frm[ladderid]";
+            
+            $boxUserResult = db_query($boxUserQuery); 
+            if (mysqli_num_rows($boxUserResult) > 0) {
+            
+                if (isDebugEnabled(1)) logMessage("\t-> boxuser is not in a box");
+                $errors->boxuser = true;
+                $msg= "A player cannot be in more than one box at a time.";
+            } 
+             
+        }
         
     }
     return $msg;
