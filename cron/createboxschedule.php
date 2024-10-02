@@ -52,7 +52,7 @@ class CreateBoxLeagueSchedule {
             // For each person in the league, get the number of matches player for other players
             $box_query = "SELECT concat(tU.firstname,' ',tU.lastname) as full_name, tU.userid
                             FROM tblkpBoxLeagues
-                            INNER JOIN clubpro_main.tblUsers tU on tblkpBoxLeagues.userid = tU.userid
+                            INNER JOIN tblUsers tU on tblkpBoxLeagues.userid = tU.userid
                             WHERE boxid = ".$box_array['boxid']."
                             ORDER BY rand()";
             $bresult = db_query($box_query);

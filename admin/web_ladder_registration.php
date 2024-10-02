@@ -99,7 +99,7 @@ function insert_box(&$frm) {
     }
     $datestring = "$frm[enddateyear]$monthstring$daystring";
     $timestamp = gmmktime(0, 0, 0, $frm['enddatemonth'], $frm['enddateday'], $frm['enddateyear']);
-
+    $startdate = date("Ymd");
     //Get the number of Boxes at the club
     $useridquery = "SELECT boxrank
                           FROM tblBoxLeagues
@@ -111,12 +111,13 @@ function insert_box(&$frm) {
     $boxname = addslashes($frm['boxname']);
     $autoschedule =  $frm['autoschedule'] == 'yes' ? 'TRUE':'FALSE';
     $query = "INSERT INTO tblBoxLeagues (
-                boxname, siteid, courttypeid, boxrank, enddate, enddatestamp,ladderid,autoschedule
+                boxname, siteid, courttypeid, boxrank, startdate, enddate, enddatestamp,ladderid,autoschedule
                 ) VALUES (
                           '$boxname'
                           ,'" . get_siteid() . "'
                           ,$frm[courttypeid]
                           ,$lastboxrank
+                          ,$startdate
                           ,$datestring
                           ,$timestamp
                           ,$ladderid

@@ -3951,7 +3951,7 @@ function get_doublesMatchscoresForSite($siteid){
 function getAllMatchScores(){
 
     $query = "SELECT courttypeid, gameswon, gameslost 
-                FROM clubpro_main.tblMatchScore";
+                FROM tblMatchScore";
 
     return db_query($query);
 }
@@ -5748,7 +5748,7 @@ function getSitePreferences($siteid) {
 
     
         // Get user parameters
-        $query = "SELECT tblPreferencesOverride.preference, tblPreferencesOverride.override FROM clubpro_main.tblParameterValue 
+        $query = "SELECT tblPreferencesOverride.preference, tblPreferencesOverride.override FROM tblParameterValue 
                     INNER JOIN tblParameterOptions on tblParameterValue.parametervalue = tblParameterOptions.optionvalue
                     INNER JOIN tblPreferencesOverride ON tblParameterOptions.parameteroptionid = tblPreferencesOverride.parameteroptionid
                     WHERE userid =  ". get_userid();

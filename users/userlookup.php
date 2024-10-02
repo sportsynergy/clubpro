@@ -74,7 +74,7 @@ if ( isset($boxid) ){
 
 	$query = "SELECT DISTINCT users.userid, users.firstname, users.lastname
 	FROM tblUsers users
-	INNER JOIN clubpro_main.tblClubUser tCU on users.userid = tCU.userid
+	INNER JOIN tblClubUser tCU on users.userid = tCU.userid
 	INNER JOIN tblClubLadder tCL on tCU.userid = tCL.userid
 	INNER JOIN tblkpBoxLeagues tBL on users.userid = tBL.userid
 	WHERE tCU.roleid!= 4
