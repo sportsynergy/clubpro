@@ -158,7 +158,7 @@ if ($siteid) {
         if (isDebugEnabled(1)) logMessage("box_leagues: ladderid is:  $ladderid");
 
         //Get all of the web ladders for the club
-        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated
+        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.startdate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated
                         FROM tblBoxLeagues
                         INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
                         WHERE tblBoxLeagues.siteid=$siteid

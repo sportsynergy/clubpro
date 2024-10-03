@@ -31,13 +31,16 @@ class UpdateBoxLeagueScores{
         
         /* 1.) Get all box leagues with ladders matches */
 
-        $query = "SELECT boxname, ladderid, startdate FROM tblBoxLeagues 
+        $query = "SELECT boxname, ladderid, startdate, boxid FROM tblBoxLeagues 
                     INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
                     WHERE startdate IS NOT NULL ";
         $mresult = db_query($query);
         
         while($box_array = mysqli_fetch_array($mresult) ){
 
+            // Reset the points to start
+            $query = "UPDATE tblkpBoxLeagues SET score = 0,  gameswon = 0 WHERE boxid = ".$box_array['boxid'];
+            db_query($query);
 
             /* 2. For each ladder make a unique list of players */
        
@@ -69,7 +72,7 @@ class UpdateBoxLeagueScores{
                         WHERE (winnerid = ".$lm_player_array['player'] ." OR loserid = ".$lm_player_array['player'] .") 
                         AND tblLadderMatch.enddate IS NULL
                         AND league = TRUE
-                        AND match_time >= ".$box_array['startdate']."
+                        AND match_time >= '".$box_array['startdate']."'
                         AND ladderid = ".$box_array['ladderid'];
 
                 $lpresult = db_query($query);
