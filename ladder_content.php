@@ -440,7 +440,7 @@ echo "</table>";
 
 }
 
-if( isJumpLadderRankingScheme() ){
+if( isJumpLadderRankingScheme() && isset($ladderid) ){
 ?>
 
 <div style="margin-top: 20px"> <span class="smallbold">Box leagues last updated:</span> 
