@@ -168,7 +168,7 @@ if ($siteid) {
     } else {
 
         //Get all of the web ladders for the club
-        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.enable
+        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.startdate, tblBoxLeagues.enddate, tblBoxLeagues.enable
                       FROM tblBoxLeagues
                       WHERE (((tblBoxLeagues.siteid)=$siteid))
                       ORDER BY tblBoxLeagues.boxrank";
@@ -298,6 +298,7 @@ if ( isJumpLadderRankingScheme() ){
 
 while ($wlobj = db_fetch_object($getwebladdersresult)) {
 $datestring = explode("-",$wlobj->enddate);
+$startdatestring = explode("-",$wlobj->startdate);
 $lastupdatestring = $wlobj->lastupdated;
        if ($resultcounter==0){ ?>
                <tr valign="top">
@@ -316,9 +317,11 @@ $lastupdatestring = $wlobj->lastupdated;
                	</tr>
                	<tr>
               		<td class=clubid<?=get_clubid()?>th colspan="<?=$colspan?>">
-              			<span class="whitenorm">
-              				<div align="center">End Date: <?=$datestring[1]."-".$datestring[2]."-".$datestring[0]?></div>
-              	</span>
+              			<span class="whitenormsm">
+              				<div align="center">Start Date: <?=$startdatestring[1]."-".$startdatestring[2]."-".$startdatestring[0]?> 
+              	            End Date: <?=$datestring[1]."-".$datestring[2]."-".$datestring[0]?></div>
+                        </span>
+
               	<div style="height: .5em"></div>
               	</td>
               </tr>
