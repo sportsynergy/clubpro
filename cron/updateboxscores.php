@@ -69,7 +69,7 @@ class UpdateBoxLeagueScores{
                         WHERE (winnerid = ".$lm_player_array['player'] ." OR loserid = ".$lm_player_array['player'] .") 
                         AND tblLadderMatch.enddate IS NULL
                         AND league = TRUE
-                        AND match_time = ".$box_array['startdate']."
+                        AND match_time >= ".$box_array['startdate']."
                         AND ladderid = ".$box_array['ladderid'];
 
                 $lpresult = db_query($query);
