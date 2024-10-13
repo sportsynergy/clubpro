@@ -356,10 +356,10 @@ if ($clubid) {
 		 ?>
 <?
 	 		
-	 		$grouping = "SELECT grouping.name, grouping.id 
-							FROM tblCourtGrouping grouping
-							WHERE grouping.siteid = $siteid
-							ORDER BY grouping.id";
+	 		$grouping = "SELECT gp.name, gp.id 
+							FROM tblCourtGrouping gp
+							WHERE gp.siteid = $siteid
+							ORDER BY gp.id";
 	
 			 $groupingResult = db_query($grouping);
 			 
