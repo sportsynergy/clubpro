@@ -111,9 +111,9 @@ include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 // When a site has a court group configured set a session variable.  The first court group id will be the default.
 // If a court group isn't found, just display the courts by displayorder (using the navigation arrows if necessary)
 
-$grouping = "SELECT grouping.id from tblCourtGrouping grouping
-							WHERE grouping.siteid = $siteid
-							ORDER BY grouping.id";
+$grouping = "SELECT gp.id from tblCourtGrouping gp
+							WHERE gp.siteid = $siteid
+							ORDER BY gp.id";
 $groupingResult = db_query($grouping);
 
 //Update the court group session variable if set
@@ -356,10 +356,10 @@ if ($clubid) {
 		 ?>
 <?
 	 		
-	 		$grouping = "SELECT grouping.name, grouping.id 
-							FROM tblCourtGrouping grouping
-							WHERE grouping.siteid = $siteid
-							ORDER BY grouping.id";
+	 		$grouping = "SELECT gp.name, gp.id 
+							FROM tblCourtGrouping gp
+							WHERE gp.siteid = $siteid
+							ORDER BY gp.id";
 	
 			 $groupingResult = db_query($grouping);
 			 

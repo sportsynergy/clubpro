@@ -46,6 +46,7 @@ array_push($csvHeaderArray, "Date");
 array_push($csvHeaderArray, "Winner");
 array_push($csvHeaderArray, "Loser");
 array_push($csvHeaderArray, "Score");
+array_push($csvHeaderArray, "League");
 
 
 //Print the Headers
@@ -63,11 +64,13 @@ while ($row = mysqli_fetch_array($ladderMatchResult)) {
     $winner =  $row['winner_first']." ". $row['winner_last'];
     $loser =  $row['loser_first']." ". $row['loser_last'];
     $score = $row['score'];
+    $league = $row['league'];
 
     array_push($csvDataArray, wrapWithDoubleQuotes( formatDateStringSimple( $challengeDate[0] )));
     array_push($csvDataArray, wrapWithDoubleQuotes($winner));
     array_push($csvDataArray, wrapWithDoubleQuotes($loser));
     array_push($csvDataArray, wrapWithDoubleQuotes($score));
+    array_push($csvDataArray, wrapWithDoubleQuotes($league));
     
     print implode(",", $csvDataArray);
     print "\n";
