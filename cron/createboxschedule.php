@@ -86,9 +86,9 @@ class CreateBoxLeagueSchedule {
 
                 // add the players this person has beat to to the already played array
                 $winner_query = "SELECT winnerid FROM tblLadderMatch WHERE league = TRUE AND loserid = ".$boxplayer_array['userid'];
-                $winner_result = db_query($loser_query);
-                while($loserid_array = mysqli_fetch_array($loser_result) ){
-                    array_push($already_played, $loserid_array['winnerid']);
+                $winner_result = db_query($winner_query);
+                while($winnerid_array = mysqli_fetch_array($winner_result) ){
+                    array_push($already_played, $winnerid_array['winnerid']);
                 }
 
                 $havent_played = array_diff($all_players, $already_played);
