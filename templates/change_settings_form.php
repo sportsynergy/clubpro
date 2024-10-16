@@ -146,7 +146,9 @@ function onSubmitButtonClicked(){
                 <input type="checkbox" name="available_7pm" <?=$selected7?>/> 7pm    
                 </td>
               </tr>
-        <? } ?>
+        <? }  else { ?>
+          <input type="hidden" name="recleaguematchnotifications" value="n">
+     <?   }?>
           
           <?
 		// Get the Custom Parameters
