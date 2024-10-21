@@ -50,11 +50,14 @@ class CreateBoxLeagueSchedule {
             if (isDebugEnabled(1)) logMessage("CreateBoxLeagueSchedule: Processing ". $box_array['boxname'] . "(".$box_array['ladderid'].") "); 
         
             // For each person in the league, get the number of matches player for other players
-            $box_query = "SELECT concat(tU.firstname,' ',tU.lastname) as full_name, tU.userid
-                            FROM tblkpBoxLeagues
-                            INNER JOIN tblUsers tU on tblkpBoxLeagues.userid = tU.userid
-                            WHERE boxid = ".$box_array['boxid']."
-                            ORDER BY rand()";
+            $box_query = "SELECT concat(tU.firstname,' ',tU.lastname) as full_name, tU.userid, tBL.startdate
+                    FROM tblkpBoxLeagues
+                    INNER JOIN tblUsers tU on tblkpBoxLeagues.userid = tU.userid
+                    INNER JOIN tblBoxLeagues tBL on tblkpBoxLeagues.boxid = tBL.boxid
+                    WHERE tBL.boxid = ".$box_array['boxid']."
+                    AND tBL.startdate IS NOT NULL
+                    ORDER BY rand()";
+                 
             $bresult = db_query($box_query);
             
             $all_players = array();
@@ -78,14 +81,15 @@ class CreateBoxLeagueSchedule {
                 }
 
                 // add the players this person has lost to the already played array
-                $loser_query = "SELECT loserid FROM tblLadderMatch WHERE league = TRUE AND winnerid = ".$boxplayer_array['userid'];
+                $loser_query = "SELECT loserid FROM tblLadderMatch WHERE league = TRUE AND winnerid = ".$boxplayer_array['userid']." AND match_time > ".$boxplayer_array['startdate'];
+                
                 $loser_result = db_query($loser_query);
                 while($loserid_array = mysqli_fetch_array($loser_result) ){
                     array_push($already_played, $loserid_array['loserid']);
                 }
 
                 // add the players this person has beat to to the already played array
-                $winner_query = "SELECT winnerid FROM tblLadderMatch WHERE league = TRUE AND loserid = ".$boxplayer_array['userid'];
+                $winner_query = "SELECT winnerid FROM tblLadderMatch WHERE league = TRUE AND loserid = ".$boxplayer_array['userid']." AND match_time > ".$boxplayer_array['startdate'];
                 $winner_result = db_query($winner_query);
                 while($winnerid_array = mysqli_fetch_array($winner_result) ){
                     array_push($already_played, $winnerid_array['winnerid']);
