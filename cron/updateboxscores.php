@@ -166,22 +166,14 @@ class UpdateBoxLeagueScores{
                         array_push($players, $lp_match_array['winnerid']);
                     }
 
-                    // Get the box for the player, then update games and score
-                    $query = "SELECT boxid FROM tblkpBoxLeagues WHERE userid = ".$lm_player_array['player'];
-                    $result = db_query($query);
-                    $boxid = mysqli_result($result, 0);
+                  
+                #Set the score and games played
+                $query = "UPDATE tblkpBoxLeagues SET score = $points, games = $games, gameswon = $gameswon WHERE boxid = ".$box_array['boxid']." AND userid = ".$lm_player_array['player'];
+                $result = db_query($query);
 
-                    if ( isset($boxid) ) {
+                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Total points for ".$lm_player_array['playername'] . " is: $points and total games is $games and gameswon is $gameswon for box ".$box_array['boxid'].".  " ); 
 
-                         #Set the score and games played
-                        $query = "UPDATE tblkpBoxLeagues SET score = $points, games = $games, gameswon = $gameswon WHERE boxid = $boxid AND userid = ".$lm_player_array['player'];
-                        $result = db_query($query);
-
-                        if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Total points for ".$lm_player_array['playername'] . " is: $points and total games is $games and gameswon is $gameswon for box $boxid" ); 
-
-                    } else {
-                        if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: ".$lm_player_array['playername']. " not in $boxid" ); 
-                    }
+                    
                 }
                 
                 
