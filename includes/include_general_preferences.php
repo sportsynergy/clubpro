@@ -169,7 +169,7 @@
           <tr>
             <td class="label">Display Player Names:</td>
             <td>
-                <select name="requirelogin">
+                <select name="showplayernames">
                   <option value="y"
                   <? 
 
@@ -189,7 +189,7 @@
           <tr>
             <td class="label">Require Login:</td>
             <td>
-                <select name="showplayernames">
+                <select name="requirelogin">
                   <option value="y"
                   <? 
                   if($generalPreferences["requirelogin"] =='y'){ echo "selected";} ?>>Yes</option>

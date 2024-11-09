@@ -78,6 +78,7 @@ if (match_referer() && isset($_POST['submitme'])) {
         $frm = $_POST;
         
         if (empty($errormsg)) {
+
             update_general_clubprefs($frm);
             $noticemsg = "Preferences Saved.  Good Job!<br/><br/>";
         }
@@ -595,36 +596,12 @@ function update_general_clubprefs(&$frm) {
                 ,allowplayerslooking = '$frm[allowmatchlooking]'
                 WHERE siteid = '" . get_siteid() . "'";
 
+
     // run the query on the database
     $result = db_query($query);
 
-    /* Here is a little quirk.  When an administrator sets the player inactivity adjustment, they probably
-    expect that this be executed starting today, meaning that one month from now people will have their
-	rankings adjusted and 3 weeks from now players may get a warning email sent.  Do to this we have to
-	update the rankings lastupdate time when this value changes since this is how whe know when their ranking
-	was last changed */
 
-    
-    if (getRankingAdjustment() != $frm['inactivity']) {
-        $siteusersquery = "SELECT rankings.userid  FROM tblUserRankings rankings, tblkupSiteAuth siteauth, tblUsers users
-								WHERE siteauth.siteid = " . get_siteid() . "
-								AND siteauth.userid = rankings.userid
-								AND siteauth.userid = users.userid
-								AND users.enddate IS NULL
-								AND rankings.usertype = 0";
-        $result = db_query($siteusersquery);
-
-        // Go through and update.
-        while ($array = db_fetch_array($result)) {
-            
-            if (isDebugEnabled(1)) logMessage("general_preferneces.update_clubprefs: Updating the lastmodified date for user $array[0]");
-            $updatequery = "UPDATE tblUserRankings SET lastmodified = NOW() WHERE usertype = 0 and userid = $array[0] ";
-            $updateresult = db_query($updatequery);
-        }
-    } else {
-        
-        if (isDebugEnabled(1)) logMessage("general_preferneces.update_clubprefs: The ranking adjustment hasnt' changed not doing anything.");
-    }
+   
 }
 /**
  * Clears out the club messages.  this is available in absense of being able to individually edit/remove them.
