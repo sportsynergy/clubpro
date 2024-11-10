@@ -189,7 +189,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
             $kind = "by admin";
         }
 
-        if(!isInBoxLeagueTogether($winnerid, $loserid, $ladderid) && $league){
+        if(!isPlayerAbleToScoreLeagueMatch($winnerid, $loserid, $ladderid) && $league){
             if (isDebugEnabled(1)) logMessage("player_ladder: Players ($winnerid, $loserid) are not in a box league together in league $leagues, but this was recorded as a league match. This will still be recorded but just not as a league match.");
             $league = "FALSE";
         }
