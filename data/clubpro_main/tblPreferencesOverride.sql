@@ -1,4 +1,4 @@
-create table tblPreferencesOverride
+create table clubpro_main.tblPreferencesOverride
 (
     id                int auto_increment
         primary key,

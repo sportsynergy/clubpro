@@ -1,4 +1,4 @@
-create table tblClubSites
+create table clubpro_main.tblClubSites
 (
     siteid                      mediumint auto_increment
         primary key,

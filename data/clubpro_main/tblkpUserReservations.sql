@@ -1,4 +1,4 @@
-create table tblkpUserReservations
+create table clubpro_main.tblkpUserReservations
 (
     id            int auto_increment
         primary key,
@@ -12,14 +12,14 @@ create table tblkpUserReservations
     charset = utf8;
 
 create index outcome
-    on tblkpUserReservations (outcome);
+    on clubpro_main.tblkpUserReservations (outcome);
 
 create index reservationid
-    on tblkpUserReservations (reservationid);
+    on clubpro_main.tblkpUserReservations (reservationid);
 
 create index userid
-    on tblkpUserReservations (userid);
+    on clubpro_main.tblkpUserReservations (userid);
 
 create index usertype
-    on tblkpUserReservations (usertype);
+    on clubpro_main.tblkpUserReservations (usertype);
 

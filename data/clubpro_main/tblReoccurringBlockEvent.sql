@@ -1,4 +1,4 @@
-create table tblReoccurringBlockEvent
+create table clubpro_main.tblReoccurringBlockEvent
 (
     id           int auto_increment
         primary key,

@@ -1,4 +1,4 @@
-create table tblClubEvents
+create table clubpro_main.tblClubEvents
 (
     id               int auto_increment
         primary key,
@@ -17,5 +17,5 @@ create table tblClubEvents
     engine = MyISAM;
 
 create index clubid
-    on tblClubEvents (clubid);
+    on clubpro_main.tblClubEvents (clubid);
 

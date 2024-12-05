@@ -1,4 +1,4 @@
-create table tblReoccurringBlockEventEntry
+create table clubpro_main.tblReoccurringBlockEventEntry
 (
     id                     int auto_increment
         primary key,
@@ -8,5 +8,5 @@ create table tblReoccurringBlockEventEntry
     engine = MyISAM;
 
 create index reoccuringblockeventid
-    on tblReoccurringBlockEventEntry (reoccuringblockeventid, reoccuringentryid);
+    on clubpro_main.tblReoccurringBlockEventEntry (reoccuringblockeventid, reoccuringentryid);
 

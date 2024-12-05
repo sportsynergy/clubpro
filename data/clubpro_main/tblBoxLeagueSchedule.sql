@@ -1,4 +1,4 @@
-create table tblBoxLeagueSchedule
+create table clubpro_main.tblBoxLeagueSchedule
 (
     id           int auto_increment
         primary key,
