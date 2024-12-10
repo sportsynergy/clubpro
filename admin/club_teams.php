@@ -64,6 +64,12 @@ function validate_form(&$frm, &$errors) {
         $errors->clubteam = true;
         $msg.= "You did not specify a club team ";
     } 
+    
+    if ( empty($frm["ladder"]) ){
+            
+        $errors->ladder = true;
+        $msg.= "Please specifiy the ladder."; 
+    }
 
     
 
@@ -71,21 +77,12 @@ function validate_form(&$frm, &$errors) {
 }
 function insert_clubteam(&$frm) {
 
-   
     $clubteam = addslashes($frm['clubteam']);
-    $autoschedule =  $frm['autoschedule'] == 'yes' ? 'TRUE':'FALSE';
     $query = "INSERT INTO tblClubLadderTeam (
-                clubteam, siteid, courttypeid, boxrank, startdate, enddate, enddatestamp,ladderid,autoschedule
+                name, ladderid
                 ) VALUES (
-                          '$boxname'
-                          ,'" . get_siteid() . "'
-                          ,$frm[courttypeid]
-                          ,$lastboxrank
-                          ,$startdate
-                          ,$datestring
-                          ,$timestamp
-                          ,$ladderid
-                          ,$autoschedule)";
+                          '$clubteam'
+                          ,$frm[ladder])";
 
     // run the query on the database
     $result = db_query($query);

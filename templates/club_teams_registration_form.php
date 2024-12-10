@@ -142,7 +142,7 @@ $action = $_REQUEST["action"];
             <?err($errors->ladder)?>
         </td>
     </tr>
-    
+
         <tr>
 
      <tr>
@@ -163,32 +163,35 @@ $action = $_REQUEST["action"];
 
      </tr>
      
-        <table width="550" class="borderless">
-     
+        <table width="350" class="borderless">
+            <tr>
+                <th>Team Name</th>
+                <th>Ladder Name</th>
+            </tr>
         
         <?
+        
+        $query = "SELECT tCLT.name AS teamname, tCSL.name AS laddername
+                    FROM tblClubLadderTeam tCLT
+                    INNER JOIN clubpro_main.tblClubSiteLadders tCSL ON tCLT.ladderid = tCSL.id
+                    WHERE tCSL.siteid = ".get_siteid().";";
+
+        // run the query on the database
+        $result = db_query($query);
+
        $numrows = mysqli_num_rows($result);
        $rowcount =  $numrows;
        $i=1;
-       while($row = mysqli_fetch_row($result)) { 
+       while($row = mysqli_fetch_array($result)) { 
 		
        	 $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
        	 
        	?>
+            
+            <tr class="<?=$rc?>">
+            <td class="normal"><?=$row[teamname]?></td>
+            <td class="normal"><?=$row[laddername]?></td>
 
-            <tr >
-            <td class="normal"><?=$row[3]?></td>
-            <td class="normal"><?=$row[0]?></td>
-
-            <td align="right">
-            <form name="removeClubTeam<?=$rowcount?>" method="post" action="<?=$ME?>">
-                 <input type="hidden" name="action" value="remove">
-                 <input type="hidden" name="teamid" value="<?=$row[1]?>">
-            </form>
-
-              <a href="javascript:submitForm('removeWebLadder<?=$rowcount?>')"><span>Remove</span></a> 
-				
-			</td>
             </tr>
 
             <? $rowcount = $rowcount - 1; 
@@ -198,7 +201,7 @@ $action = $_REQUEST["action"];
 
         if ($numrows==0){ ?>
            <tr>
-           <td colspan="6"><font class="normalsm">There are currently no club teams configured.</font></td>
+           <td colspan="2"><font class="normalsm">There are currently no club teams configured.</font></td>
            </tr>
       
         <?  }  ?>
