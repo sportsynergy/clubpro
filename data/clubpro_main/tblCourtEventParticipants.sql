@@ -1,4 +1,4 @@
-create table tblCourtEventParticipants
+create table clubpro_main.tblCourtEventParticipants
 (
     reservationid int                                 not null,
     userid        int                                 not null,
@@ -8,5 +8,5 @@ create table tblCourtEventParticipants
     engine = MyISAM;
 
 create index reservationid
-    on tblCourtEventParticipants (reservationid);
+    on clubpro_main.tblCourtEventParticipants (reservationid);
 

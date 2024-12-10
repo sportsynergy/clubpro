@@ -1,4 +1,4 @@
-create table tblTeams
+create table clubpro_main.tblTeams
 (
     teamid       int auto_increment
         primary key,

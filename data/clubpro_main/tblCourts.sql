@@ -1,4 +1,4 @@
-create table tblCourts
+create table clubpro_main.tblCourts
 (
     courtid                int(8) auto_increment
         primary key,

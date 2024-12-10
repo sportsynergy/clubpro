@@ -1,4 +1,4 @@
-create table tblBoxLeagues
+create table clubpro_main.tblBoxLeagues
 (
     boxid        int auto_increment
         primary key,

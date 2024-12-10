@@ -1,4 +1,4 @@
-create table tblBuddies
+create table clubpro_main.tblBuddies
 (
     bid          int auto_increment
         primary key,
@@ -9,5 +9,5 @@ create table tblBuddies
     engine = MyISAM;
 
 create index buddyid
-    on tblBuddies (buddyid);
+    on clubpro_main.tblBuddies (buddyid);
 
