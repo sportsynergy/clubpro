@@ -281,15 +281,9 @@ function onSubmitButtonClicked(){
 
         <?  if ( isJumpLadderRankingScheme() ){ 
             
-            if($frm['available_at_5']==true){
-                $selected5 = "checked=checked"; 
-            }
-            if($frm['available_at_6']==true){
-                $selected6 = "checked=checked"; 
-            }
-            if($frm['available_at_7']==true){
-                $selected7 = "checked=checked"; 
-            }
+           
+
+
             
             ?>
         <tr>
@@ -300,6 +294,7 @@ function onSubmitButtonClicked(){
                 <input type="checkbox" name="available_7pm" <?=$selected7?>/> 7pm    
                 </td>
               </tr>
+              
         <? } ?>
         
         <?
