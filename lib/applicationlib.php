@@ -3683,6 +3683,22 @@ function load_avail_sports() {
 }
 
 /************************************************************************************************************************/
+/* Load in the clubs availble team */
+function load_avail_teams($userid) {
+
+	$teamquery = "SELECT tblClubLadderTeam.name, tblClubLadderTeam.id FROM tblClubLadderTeam
+					INNER JOIN tblClubSiteLadders ON tblClubLadderTeam.ladderid = tblClubSiteLadders.id
+					INNER JOIN tblClubLadder ON tblClubLadderTeam.ladderid = tblClubLadder.ladderid
+					WHERE tblClubLadder.userid = $userid
+					AND tblClubLadder.enddate IS NULL";
+
+	$sportresult = db_query($teamquery);
+
+	return $sportresult;
+
+}
+
+/************************************************************************************************************************/
 /* Load in the clubs availble timezones */
 function load_avail_timezones() {
 

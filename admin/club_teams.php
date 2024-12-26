@@ -37,14 +37,22 @@ require_priv("2");
 
 /* form has been submitted, check if it the user login information is correct */
 
+
 if (match_referer() && isset($_POST['submitme'])) {
     $frm = $_POST;
-    $errormsg = validate_form($frm, $errors);
     
-    if (empty($errormsg) && empty($action)) {
-        insert_clubteam($frm);
+    if (empty($errormsg) && $frm['action']=='remove') {
+        delete_club_team($frm);
+    } else {
+
+        $errormsg = validate_form($frm, $errors);
+        if (empty($errormsg) && empty($action)) {
+            insert_clubteam($frm);
+        }
     }
+    
 }
+
 $DOC_TITLE = "Club Teams Setup";
 include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
 include ($_SESSION["CFG"]["templatedir"] . "/club_teams_registration_form.php");
@@ -87,6 +95,17 @@ function insert_clubteam(&$frm) {
     // run the query on the database
     $result = db_query($query);
 }
+
+function delete_club_team(&$frm) {
+
+    if (isDebugEnabled(1)) logMessage("club_team_manage: deleting a team now");
+    
+    $query = "UPDATE tblClubLadderTeam SET enddate = NOW() where id = $frm[teamid]";
+    $result = db_query($query);
+    
+
+}
+
 ?>
 
 

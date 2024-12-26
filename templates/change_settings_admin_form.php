@@ -279,23 +279,7 @@ function onSubmitButtonClicked(){
             </td>
         </tr>
 
-        <?  if ( isJumpLadderRankingScheme() ){ 
-            
-           
-
-
-            
-            ?>
-        <tr>
-                <td class="label medwidth">Match Availability:</td>
-                <td>
-                <input type="checkbox" name="available_5pm" <?=$selected5?>/> 5pm  
-                <input type="checkbox" name="available_6pm" <?=$selected6?>/> 6pm  
-                <input type="checkbox" name="available_7pm" <?=$selected7?>/> 7pm    
-                </td>
-              </tr>
-              
-        <? } ?>
+       
         
         <?
 		// Get the Custom Parameters

@@ -1,77 +1,5 @@
 <?
 
-
-
-//Set the http variables
-$action = $_REQUEST["action"];
-
-
- if($action=="remove"){
-   // Get the box place of the guy who is being removed.
-    $oldboxplaceresult = db_query("SELECT boxrank
-                             FROM tblBoxLeagues
-                             WHERE boxid = $boxid
-                             AND siteid = ".get_siteid()." ");
-
-   $boxrankval = mysqli_result($oldboxplaceresult, 0);
-
-   //Remove Box
-   $qid1 = db_query("DELETE FROM tblBoxLeagues
-                     WHERE boxid = $boxid");
-
-
-   //Remove the people from the box
-   $qid1 = db_query("DELETE FROM tblkpBoxLeagues
-                     WHERE boxid = $boxid");
-
-
-   //Set all current reservations for this box to practice.
-
-   $historyQuery = "SELECT reservationid from tblBoxHistory WHERE boxid = $boxid";
-   $historyResult = db_query($historyQuery);
-
-   while($historyArray = mysqli_fetch_array($historyResult)){
-          markMatchType($historyArray[reservationid],0);
-   }
-
-   //Finally Clean up with box league history
-   $qid1 = db_query("DELETE FROM tblBoxHistory
-                     WHERE boxid = $boxid");
-
-
-
-
-
-   // Now adjust all boxes who were ranked below this box
-
-   $adjustquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxrank
-                   FROM tblBoxLeagues
-                   WHERE (((tblBoxLeagues.boxrank)>$boxrankval))
-                   AND siteid=".get_siteid()."
-                   ORDER BY tblBoxLeagues.boxrank";
-
-
-    // run the query on the database
-    $adjustresult = db_query($adjustquery);
-
-   //Update the rankings
-   while ($adjustobj = db_fetch_object($adjustresult)) {
-
-       $newboxrankval = $adjustobj->boxrank - 1;
-
-       $qid = db_query("
-        UPDATE tblBoxLeagues
-        SET boxrank = '$newboxrankval'
-        WHERE boxid = '$adjustobj->boxid'");
-
-
-   }
-
-
-  }
- 
- 
-
   $clubquery = "SELECT timezone from tblClubs WHERE clubid=".get_clubid()."";
   $clubresult = db_query($clubquery);
   $clubobj = db_fetch_object($clubresult);
@@ -82,18 +10,12 @@ $action = $_REQUEST["action"];
 
   ?>
 
-
-
 <script language="JavaScript">
 
-
      YAHOO.example.init = function () {
-
     	    YAHOO.util.Event.onContentReady("formtable", function () {
-
     	        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
     	        oSubmitButton1.on("click", onSubmitButtonClicked);
-
     	    });
 
     	} ();
@@ -151,7 +73,6 @@ $action = $_REQUEST["action"];
       <input type="hidden" name ="submitme" value="submitme" >
       </form>
 
-       
 
       </td>
 
@@ -167,14 +88,16 @@ $action = $_REQUEST["action"];
             <tr>
                 <th>Team Name</th>
                 <th>Ladder Name</th>
+                <th></th>
             </tr>
         
         <?
         
-        $query = "SELECT tCLT.name AS teamname, tCSL.name AS laddername
+        $query = "SELECT tCLT.name AS teamname, tCSL.name AS laddername, tCLT.id AS teamid
                     FROM tblClubLadderTeam tCLT
                     INNER JOIN clubpro_main.tblClubSiteLadders tCSL ON tCLT.ladderid = tCSL.id
-                    WHERE tCSL.siteid = ".get_siteid().";";
+                    WHERE tCLT.enddate IS NULL
+                    AND tCSL.siteid = ".get_siteid().";";
 
         // run the query on the database
         $result = db_query($query);
@@ -187,10 +110,25 @@ $action = $_REQUEST["action"];
        	 $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
        	 
        	?>
-            
+            <form name="removeteam<?=$rowcount?>" method="post" 
+            action="<?=$ME?>">
+            <input type="hidden" name="teamid" value="<?=$row[teamid]?>">
+            <input type="hidden" name ="submitme" value="submitme" >
+            <input type="hidden" name="action" value="remove">
+            </form>
+
+            <form name="manageteam<?=$rowcount?>" method="post" 
+            action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_team_manage.php">
+            <input type="hidden" name="teamid" value="<?=$row[teamid]?>">
+            </form>
+      
             <tr class="<?=$rc?>">
             <td class="normal"><?=$row[teamname]?></td>
             <td class="normal"><?=$row[laddername]?></td>
+            <td class="normal">
+            
+            <a href="javascript:submitForm('manageteam<?=$rowcount?>')">Manage</a>
+            | <a href="javascript:submitForm('removeteam<?=$rowcount?>')">Delete</a></td>
 
             </tr>
 
@@ -201,14 +139,10 @@ $action = $_REQUEST["action"];
 
         if ($numrows==0){ ?>
            <tr>
-           <td colspan="2"><font class="normalsm">There are currently no club teams configured.</font></td>
+            <td colspan="2"><font class="normalsm">There are currently no club teams configured.</font></td>
            </tr>
-      
         <?  }  ?>
-      
-      
      </table>
-
 
    </td>
  </tr>

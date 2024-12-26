@@ -51,6 +51,7 @@ if ( !isset($userid) ){
 $registeredSports = load_registered_sports($userid);
 $authSites = load_auth_sites($userid);
 $availbleSports = load_avail_sports();
+$availbleTeams = load_avail_teams($userid);
 $availableSites = load_avail_sites();
 $extraParametersResult = load_site_parameters();
 
@@ -271,7 +272,6 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
     } else {
         $enable = 'n';
     }
-
     
     if (isSiteAutoLogin()) {
         $username = $frm['memberid'];
@@ -292,7 +292,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
     $available_7pm = 'false';
 
 
-               
+       
 
    if( !isset($frm['recleaguematchnotifications']) ){
 
