@@ -31,29 +31,15 @@ function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
 
-
 </script>
 
 <?
 
-// Set some timezone variables
-$clubquery = "SELECT timezone from tblClubs WHERE clubid=".get_clubid()."";
-$clubresult = db_query($clubquery);
-$clubobj = db_fetch_object($clubresult);
-
-$gmtime =   gmmktime();
-$tzdelta = $clubobj->timezone*3600;
-$curtime =   $gmtime+$tzdelta;
-
-
-
 //Set the http variables
 $action = $_REQUEST["action"];
-$boxid = $_REQUEST["boxid"];
 $userid = $_REQUEST["userid"];
 
-
-  ?>
+?>
 
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
@@ -69,10 +55,9 @@ $userid = $_REQUEST["userid"];
 
  <tr>
     <td>
-
       <table width="550" cellspacing="5" cellpadding="0" class="borderless">
 		<tr>
-        <td >
+        <td>
             <input type="button" value="Add Player" name="submit" id="submitbutton">
         </td>
         <td>
@@ -101,6 +86,7 @@ $userid = $_REQUEST["userid"];
             <td></td>
             <td>
             	<input type="hidden" name="teamid" value="<?=$teamid ?>">
+              <input type="hidden" name="ladderid" value="<?=$ladderid ?>">
             	<input type="hidden" name="submitme" value="submitme">
 			</td>
        </tr>

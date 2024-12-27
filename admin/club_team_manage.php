@@ -88,12 +88,26 @@ include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
  *****************************************************************************/
 function validate_form($frm) {
 
-    // Make sure that they aren't on another team for the same ladder
-
-    // Make sure that they aren't already on this team
+       
     $errors = new clubpro_obj;
     $msg = "";
-    
+
+
+    // Make sure that they aren't on another team for the same ladder
+    $query = "SELECT count(*) FROM tblClubLadderTeamMember tCLTm
+                INNER JOIN tblClubLadderTeam tCLT ON tCLTm.teamid = tCLT.id
+                WHERE tCLT.ladderid=$frm[ladderid]
+                AND tCLTm.userid = $frm[teamplayer]";
+    $result = db_query($query);
+    $alreadyonteam = mysqli_result($result, 0);
+
+    if ( $alreadyonteam > 0) {
+        $errors->clubteam = true;
+        $msg.= "This player is already on another team for the ladder ";
+    } 
+
+ 
+    // Make sure that they aren't already on this team
     $query = "SELECT count(*) from tblClubLadderTeamMember
                 WHERE teamid = $frm[teamid] and userid= $frm[teamplayer]";
     $result = db_query($query);
