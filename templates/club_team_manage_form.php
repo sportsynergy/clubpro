@@ -101,6 +101,8 @@ $userid = $_REQUEST["userid"];
       </td>
 
      </tr>
+    </table>
+    </form>
      <?
        //List out all of the players in the team
        $query = "SELECT concat(tU.firstname, ' ', tU.lastname) AS teamplayername, tCLT.id, tU.userid

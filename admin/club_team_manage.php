@@ -44,7 +44,7 @@ $teamid = $_REQUEST["teamid"];
 if (match_referer() && isset($_POST['submitme'])) {
     $frm = $_POST;
 
-    
+    if (isDebugEnabled(1)) logMessage("club_team_manage: action is: $frm[action]");
 
     if (empty($errormsg) && $frm['action']=='remove') {
         remove_teamplayer($frm);
@@ -67,7 +67,7 @@ if(!isset($teamid) ){
 $teamquery = "SELECT tCLT.name AS teamname, tCSL.name AS laddername, tCLT.id,  tCSL.id AS ladderid
                 FROM tblClubLadderTeam tCLT
                 INNER JOIN clubpro_main.tblClubSiteLadders tCSL ON tCLT.ladderid = tCSL.id
-                WHERe tCLT.id =$teamid";
+                WHERE tCLT.id =$teamid";
 
 // run the query on the database
 $result = db_query($teamquery);
@@ -92,12 +92,12 @@ function validate_form($frm) {
     $errors = new clubpro_obj;
     $msg = "";
 
-
     // Make sure that they aren't on another team for the same ladder
     $query = "SELECT count(*) FROM tblClubLadderTeamMember tCLTm
                 INNER JOIN tblClubLadderTeam tCLT ON tCLTm.teamid = tCLT.id
                 WHERE tCLT.ladderid=$frm[ladderid]
-                AND tCLTm.userid = $frm[teamplayer]";
+                AND tCLTm.userid = $frm[teamplayer]
+                AND tCLTm.enddate IS NULL";
     $result = db_query($query);
     $alreadyonteam = mysqli_result($result, 0);
 
@@ -109,7 +109,10 @@ function validate_form($frm) {
  
     // Make sure that they aren't already on this team
     $query = "SELECT count(*) from tblClubLadderTeamMember
-                WHERE teamid = $frm[teamid] and userid= $frm[teamplayer]";
+                WHERE teamid = $frm[teamid] 
+                AND userid= $frm[teamplayer]
+                AND enddate IS NULL";
+                
     $result = db_query($query);
 
     $alreadyonteam = mysqli_result($result, 0);
