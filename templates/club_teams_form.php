@@ -10,13 +10,13 @@ $rownum = mysqli_num_rows($webladderuserresult);
 while ($clubteam = db_fetch_array( $result )) { 
 
     if ( $count == 0 ){
-        if (isDebugEnabled(1)) logMessage("club_team_manage: resultcounter is $resultcounter. New row"); ?>
+        if (isDebugEnabled(1)) logMessage("club_team_manage: resultcounter is $count. New row"); ?>
         <tr valign="top" id="newrow">
     <?  } ?>
 
     <td width="350" nowrap id="tablecontainer">
            
-           <table width="350" cellpadding="0" cellspacing="0" class="bordertable">
+           <table width="350" cellpadding="0" cellspacing="0" class="bordertablethick">
                <tr valign="top">
                    <td class=clubid<?=get_clubid()?>th>
                        <span class="whiteh1">
@@ -51,8 +51,8 @@ while ($clubteam = db_fetch_array( $result )) {
     
     <?  
     // update counter
-    ++ $count;
-    if(count==2) { 
+    ++$count;
+    if($count==2) { 
         if (isDebugEnabled(1)) logMessage("club_team_manage: resultcounter is resetting");
         $count = 0; ?>
         </tr >

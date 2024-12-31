@@ -282,6 +282,12 @@ tr.borderow{
 	padding:0.25em;
 }
 
+.bordertablethick {
+	border:1px solid #000000;
+	padding:0.25em;
+	margin-bottom: 0.5em;;
+}
+
 .bordertable th{
 	border:1px solid #000000;
 	text-align: center;
