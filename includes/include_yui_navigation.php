@@ -54,8 +54,19 @@
       <? }?>
       <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/players_wanted.php">Players Wanted</a></li>
       <? if( isSiteBoxLeageEnabled() ){ ?>
-      <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">Leagues</a></li>
-      <? } ?>
+        
+        <? if( isJumpLadderRankingScheme() ){ ?>
+          <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#">Leagues</a>
+          <div id="account" class="yuimenu">
+          <div class="bd">
+            <ul class="first-of-type">
+              <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">Box Leagues</a></li>
+              <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/club_teams.php">Club Teams</a></li>
+            </ul>
+          <? } else {?>
+            <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">Leagues</a></li>
+          <? } ?>
+        <? } ?>
       <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#">My Account</a>
         <div id="account" class="yuimenu">
           <div class="bd">

@@ -5,6 +5,7 @@ create table clubpro_main.tblClubLadderTeam
     ladderid int           not null,
     enddate  timestamp     null,
     name     varchar(255)  not null,
-    score    int default 0 not null
+    score    int default 0 not null,
+    games    int default 0 null
 );
 

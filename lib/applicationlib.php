@@ -4366,6 +4366,7 @@ function get_admin_player_search($searchname) {
 	                        AND (users.firstname Like '$searchname%'
 	                        	OR users.lastname Like '$searchname%'
                                 OR clubuser.memberid Like '$searchname%'
+								OR users.email Like '$searchname%'
                                 )
 	                        AND clubuser.enddate is NULL
 							ORDER BY users.lastname";
