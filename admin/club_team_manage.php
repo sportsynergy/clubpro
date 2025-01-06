@@ -97,7 +97,8 @@ function validate_form($frm) {
                 INNER JOIN tblClubLadderTeam tCLT ON tCLTm.teamid = tCLT.id
                 WHERE tCLT.ladderid=$frm[ladderid]
                 AND tCLTm.userid = $frm[teamplayer]
-                AND tCLTm.enddate IS NULL";
+                AND tCLTm.enddate IS NULL
+                AND tCLT.enddate IS NULL";
     $result = db_query($query);
     $alreadyonteam = mysqli_result($result, 0);
 
