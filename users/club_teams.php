@@ -70,7 +70,8 @@ function validate_form(&$frm, &$errors) {
 
 function getClubTeams($siteid) {
 
-    $query = "SELECT tCLT.id, tCLT.name, tCLT.score, tCLT.games, tCLT.lastUpdated FROM tblClubLadderTeam tCLT
+    $query = "SELECT tCLT.id, tCLT.name, tCLT.score, tCLT.games, tCLT.lastUpdated 
+                FROM tblClubLadderTeam tCLT
                 INNER JOIN tblClubSiteLadders tCSL ON tCLT.ladderid = tCSL.id
                 WHERE tCLT.enddate IS NULL
                 AND tCSL.siteid =  $siteid

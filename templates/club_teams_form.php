@@ -6,11 +6,16 @@
 $count = 0;
 $result = getClubTeams( get_siteid() );
 
-$rownum = mysqli_num_rows($webladderuserresult);
-while ($clubteam = db_fetch_array( $result )) { 
+$rownum = db_num_rows($webladderuserresult);
 
-    if ( $count == 0 ){
-        if (isDebugEnabled(1)) logMessage("club_team_manage: resultcounter is $count. New row"); ?>
+$lastUpdated = NULL;
+
+while ($clubteam = db_fetch_array( $result )) {
+
+    if (isDebugEnabled(1)) logMessage("club_team_manage: The last time this was updated was: $clubteam[lastUpdated]"); 
+    $lastUpdated = $clubteam[lastUpdated];
+
+    if ( $count == 0 ){ ?>
         <tr valign="top" id="newrow">
     <?  } ?>
 
@@ -53,7 +58,7 @@ while ($clubteam = db_fetch_array( $result )) {
     // update counter
     ++$count;
     if($count==2) { 
-        if (isDebugEnabled(1)) logMessage("club_team_manage: resultcounter is resetting");
+       
         $count = 0; ?>
         </tr >
     <? }
@@ -62,6 +67,23 @@ while ($clubteam = db_fetch_array( $result )) {
 
     } ?>
 
+<tr>
+    <td>
+        <span class="smallbold">Last Updated: </span>
+        
+        <?
+
+if (isDebugEnabled(1)) logMessage("club_team_manage: lastUpdated is is $lastUpdated");
+        if( is_null($lastUpdated) ){
+            $lastupdated_label = "Never";
+          } else {
+            //$lastupdated = ladderdetails['lastUpdated'];
+            $lastupdated_label = $lastUpdated;
+          }
+          ?>
+          <span class="smallreg"> <?=$lastupdated_label?> </span>
+    </td>
+</tr>
 </table>
 
 <? 
