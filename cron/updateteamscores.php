@@ -47,7 +47,7 @@ class UpdateClubTeamScores{
             $team_score = 0;
             $team_games = 0;
 
-            $member_query = "SELECT concat(tU.firstname, ' ', tU.lastname) AS teamplayername, tU.userid, tCLT.id, tBL.score, tBL.games
+            $member_query = "SELECT concat(tU.firstname, ' ', tU.lastname) AS teamplayername, tU.userid, tCLT.id, tBL.score, tBL.games, tBL.gameswon
                 FROM tblClubLadderTeam tCLT
                 INNER JOIN tblClubLadderTeamMember tCLTm ON tCLT.id = tCLTm.teamid
                 INNER JOIN tblUsers tU ON tCLTm.userid = tU.userid
@@ -60,7 +60,7 @@ class UpdateClubTeamScores{
             while($team_member_array = db_fetch_array($member_result) ){
 
                 # 3.) Get their box score
-                if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Adding $team_member_array[score] points and $team_member_array[games] games for $team_member_array[teamplayername] ");
+                if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Adding $team_member_array[score] points and $team_member_array[gameswon] gameswon for $team_member_array[teamplayername] ");
                 $team_score = $team_score + $team_member_array['score'];
                 $team_games = $team_games + $team_member_array['games'];
             }

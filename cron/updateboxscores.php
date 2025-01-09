@@ -146,6 +146,7 @@ class UpdateBoxLeagueScores{
 
                         if($pastmatches == 0){
 
+                            $games = $games + 1;
                             $gameswon = $gameswon + $wins;
                             $points = $points + 1;
 
@@ -154,6 +155,7 @@ class UpdateBoxLeagueScores{
 
                         } elseif($pastmatches == 1){
 
+                            $games = $games + 1;
                             $gameswon = $gameswon + $wins;
 
                             if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Adding 0 points for a loss (".$lp_match_array['score'].") in a rematch against ".$lp_match_array['winner'] ." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon" ); 
