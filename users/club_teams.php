@@ -75,7 +75,7 @@ function getClubTeams($siteid) {
                 INNER JOIN tblClubSiteLadders tCSL ON tCLT.ladderid = tCSL.id
                 WHERE tCLT.enddate IS NULL
                 AND tCSL.siteid =  $siteid
-                ORDER BY tCLT.score";
+                ORDER BY tCLT.score DESC";
     
     // run the query on the database
     return db_query($query);
