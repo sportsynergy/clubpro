@@ -60,10 +60,7 @@ function isClubEventParticipant($userid, &$clubEventParticipantsResult, $divisio
         // if no division is specified check that the user hasn't already registered at all
         if ($participant['userid'] == $userid ) {
             $isSignedup = true;
-            logMessage("clubadminlib.isClubEventParticipant: just set isSignedup: $isSignedup");
-        } else {
-            logMessage("clubadminlib.isClubEventParticipant: NOT A ClubEventParticipant");
-        }
+        } 
 
        } else { //if a division is specified only check to make sure that the user isn't already in the division
 
@@ -72,10 +69,7 @@ function isClubEventParticipant($userid, &$clubEventParticipantsResult, $divisio
 
         if ($participant['userid'] == $userid && $participant['division']==$division ) {
             $isSignedup = true;
-            logMessage("clubadminlib.isClubEventParticipant: just set isSignedup, but jus tin division: $isSignedup");
-        } else {
-            logMessage("clubadminlib.isClubEventParticipant: NOT A ClubEventParticipant in that division");
-        }
+        } 
 
        }
         

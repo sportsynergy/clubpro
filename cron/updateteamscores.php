@@ -45,9 +45,9 @@ class UpdateClubTeamScores{
             if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Processing $team_array[name]");
 
             $team_score = 0;
-            $team_games = 0;
+            $team_games_won = 0;
 
-            $member_query = "SELECT concat(tU.firstname, ' ', tU.lastname) AS teamplayername, tU.userid, tCLT.id, tBL.score, tBL.games
+            $member_query = "SELECT concat(tU.firstname, ' ', tU.lastname) AS teamplayername, tU.userid, tCLT.id, tBL.score, tBL.games, tBL.gameswon
                 FROM tblClubLadderTeam tCLT
                 INNER JOIN tblClubLadderTeamMember tCLTm ON tCLT.id = tCLTm.teamid
                 INNER JOIN tblUsers tU ON tCLTm.userid = tU.userid
@@ -60,16 +60,16 @@ class UpdateClubTeamScores{
             while($team_member_array = db_fetch_array($member_result) ){
 
                 # 3.) Get their box score
-                if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Adding $team_member_array[score] for $team_member_array[teamplayername] ");
+                if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Adding $team_member_array[score] points and $team_member_array[gameswon] games won for $team_member_array[teamplayername] ");
                 $team_score = $team_score + $team_member_array['score'];
-                $team_games = $team_games + $team_member_array['games'];
+                $team_games_won = $team_games_won + $team_member_array['gameswon'];
             }
 
         # update the team score
-        $team_score_query = "UPDATE tblClubLadderTeam SET score = $team_score , lastUpdated = NOW(), games = $team_games
+        $team_score_query = "UPDATE tblClubLadderTeam SET score = $team_score , lastUpdated = NOW(), games = $team_games_won
         WHERE id = $team_array[id]";
         $team_score_result = db_query($team_score_query);
-        if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Updated $team_array[name] to have a score of $team_score and total games of $team_games");
+        if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Updated $team_array[name] to have a score of $team_score and total games won of $team_games_won");
 
 
     }
