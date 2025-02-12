@@ -231,11 +231,7 @@ if ($siteid) {
 			<a href="javascript:newWindow('../../help/box_leagues.html')">Box Leagues Explained</a>
 		</span>
         <div>
-        <? } elseif ( isJumpLadderRankingScheme()  && get_roleid() == "2") { ?>
-           <div style="margin-bottom: 10px; margin-right: 10px">
-            <span class="normal" id="showschedule"><a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/league_schedule.php"> Scheduled Matches</a></span>
-            <div>
-            <? } ?>
+        <? }  ?>
 
 	</td>
 	</tr>

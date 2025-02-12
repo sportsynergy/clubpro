@@ -577,6 +577,27 @@ function is_inabox($courtid, $userid) {
     }
     return $amIinThisBox;
 }
+
+
+
+function isinBoxLeague($userid){
+	
+	$query = "SELECT * from tblkpBoxLeagues WHERE userid = $userid;";
+    $result = db_query($query);
+	if (mysqli_num_rows($result) > 0) {
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+function getBoxLeaguesForUser($userid){
+	
+	$query = "SELECT * from tblkpBoxLeagues WHERE userid = $userid;";
+    return db_query($query);
+
+}
+
 /**
  * returns the match type for the given reservationid
  *
