@@ -83,17 +83,54 @@ function validate_form(&$frm, &$errors) {
 /*
     Returns a mysql result
 */
+
+function getRecentLadderMatches( $opponent, $boxid ){
+
+    $recent_matches = array("-","-");
+    $current = get_userid();
+
+    // TODO make sure to only get the last two
+    $query = "SELECT *
+            FROM tblLadderMatch tLM
+                    INNER JOIN tblBoxLeagues tBL ON tLM.ladderid = tBL.ladderid
+            WHERE
+                (winnerid = $current and loserid = $opponent
+            OR
+                winnerid = $opponent and loserid = $current)
+            AND tBL.boxid = $boxid
+            AND match_time > tBL.startdate
+            AND tLM.enddate IS NULL
+            AND tLM.league = TRUE";
+
+    $result = db_query($query);
+    $index = 0;
+    while ($ladderresult = db_fetch_array($result)) {
+        
+        //will need to flip these if the opponent won
+        $recent_matches[$index] = $ladderresult['score'];
+        $index = $index = 1;
+    }
+
+    return $recent_matches;
+    
+}
+
+
+/*
+    Returns a mysql result
+*/
 function load_league_schedule( $boxid){
 
     if (isDebugEnabled(1)) logMessage("my_league_schedule: loading up load_league_schedule for $boxid");
 
-    $query = "SELECT concat(tU.firstname,' ',tU.lastname) as fullname , tBL.boxname, tCLT.name
+    $query = "SELECT concat(tU.firstname,' ',tU.lastname) as fullname , tBL.boxname, tCLT.name, tU.userid
         FROM tblBoxLeagues tBL
                 INNER JOIN tblkpBoxLeagues tBLu ON tBLu.boxid = tBL.boxid
                 INNER JOIN tblUsers tU ON tBLu.userid = tU.userid
                 INNER JOIN tblClubLadderTeamMember tCLTM ON tBLu.userid = tCLTM.userid
                 INNER JOIN tblClubLadderTeam tCLT ON tCLTM.teamid = tCLT.id
-        WHERE tCLT.enddate IS NULL AND tBL.boxid = $boxid;";
+        WHERE tCLT.enddate IS NULL AND tBL.boxid = $boxid
+        AND tU.userid <> ".get_userid();
 
     // Get box id for player
 
