@@ -40,8 +40,18 @@ Here are your box league results:
 
                 $recent = getRecentLadderMatches( $league_array['userid'] , $boxesforuserarray['boxid'])
             ?>
+                <form name="playerform<?=$rownum?>" method="get"
+                    action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php">
+                    <input type="hidden" name="userid"
+                        value="<?=$league_array['userid']?>"> <input type="hidden"
+                        name="origin" value="schedule">
+                </form>
+
             <tr class="<?=$rc?>">
-               <td> <?=$league_array['fullname'] ?></td>
+               <td> 
+                
+                <a href="javascript:submitForm('playerform<?=$rownum?>')"><?=$league_array['fullname']?> </a>
+                </td>
                <td> <?=$league_array['name'] ?> </td>
                <td>  <?=$recent[0] ?></td>
                <td> <?=$recent[1] ?> </td>

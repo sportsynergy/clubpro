@@ -172,7 +172,10 @@
             <? } elseif ($origin == 'league') { ?>
               <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">< Back to leagues</a>
               
-              <? }  ?>
+              <? } elseif ($origin == 'schedule') { ?>
+              <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/my_league_schedule.php">< Back to the ladder schedule</a>
+              
+              <? } ?>
             </td>
           </tr>
             </table>
