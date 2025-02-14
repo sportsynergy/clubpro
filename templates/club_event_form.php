@@ -115,7 +115,8 @@ if ($clubEvent['registerteam']=='y' ){
 					<option value="C">C</option>
 					<option value="D">D</option>
 					<option value="60">60+</option>
-					<option value="Father & Son - Open">Centuries, Father & Son (Open)</option>
+					<option value="Centuries">Centuries</option>
+					<option value="Father & Son - Open">Father & Son (Open)</option>
 					<option value="Father & Son - U19">Father & Son (Junior U19)</option>
 				</select>
 			</td>
