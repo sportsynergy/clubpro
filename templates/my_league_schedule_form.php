@@ -1,3 +1,4 @@
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
 
 <?php
 // For each box league that the person is in
@@ -14,7 +15,7 @@ Here are your box league results:
 
 <font class="smallbanner"> <?=$boxesforuserarray['boxname'] ?></font>
 
-<table width="350" cellpadding="0" cellspacing="0" class="bordertable">
+<table width="350" cellpadding="0" cellspacing="0" class="bordertable sortable">
             <tr valign="top" class=clubid<?=get_clubid()?>th >
                 <td >
                     <span class="whitenorm">Opponent</span>
