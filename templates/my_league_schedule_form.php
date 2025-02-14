@@ -2,7 +2,7 @@
 
 <?php
 // For each box league that the person is in
-if (isDebugEnabled(1)) logMessage("my_league_schedule:getting boxes for user");
+
 $boxesforuserresult = getBoxLeaguesForUser( get_userid() );
 while ($boxesforuserarray = db_fetch_array($boxesforuserresult)) {
 
@@ -13,7 +13,11 @@ Here are your box league results:
 </p>
 <br>
 
-<font class="smallbanner"> <?=$boxesforuserarray['boxname'] ?></font>
+<font class="smallbanner"> 
+    <?=$boxesforuserarray['boxname'] ?> - <?=$boxesforuserarray['teamname'] ?>
+
+</font>
+
 
 <table width="350" cellpadding="0" cellspacing="0" class="bordertable sortable">
             <tr valign="top" class=clubid<?=get_clubid()?>th >

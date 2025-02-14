@@ -593,10 +593,14 @@ function isinBoxLeague($userid){
 
 function getBoxLeaguesForUser($userid){
 	
-	$query = "SELECT tBLU.boxid, tBL.boxname
-				FROM tblkpBoxLeagues tBLU
-					INNER JOIN tblBoxLeagues tBL on tBLU.boxid = tBL.boxid
-				WHERE tBLU.userid = $userid;";
+	$query = "SELECT tBL.boxid, tBL.boxname, tCLT.name as teamname
+				FROM tblBoxLeagues tBL
+						INNER JOIN tblkpBoxLeagues tBLu ON tBLu.boxid = tBL.boxid
+						INNER JOIN tblUsers tU ON tBLu.userid = tU.userid
+						INNER JOIN tblClubLadderTeamMember tCLTM ON tBLu.userid = tCLTM.userid
+						INNER JOIN tblClubLadderTeam tCLT ON tCLTM.teamid = tCLT.id AND tCLT.ladderid = tBL.ladderid
+				WHERE tCLT.enddate IS NULL
+				AND tU.userid = $userid";
     return db_query($query);
 
 }

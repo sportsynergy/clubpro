@@ -52,6 +52,10 @@ $eventid = $_REQUEST["clubeventid"];
 
 if (isset($eventid)) {
     $_SESSION["clubeventid"] = $eventid;
+} else{
+         // go to timeout link
+         $timeoutlink = $_COOKIE["timeoutlink"];
+         header("Location: $timeoutlink");
 }
 
 if (match_referer() && isset($_POST['cmd'])) {
@@ -92,6 +96,7 @@ if (match_referer() && isset($_POST['cmd'])) {
 
     }
 }
+
 
 $clubEventResult = loadClubEvent($_SESSION["clubeventid"]);
 $clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);
