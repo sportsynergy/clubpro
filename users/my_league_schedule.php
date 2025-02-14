@@ -44,8 +44,6 @@ if($userRelation->isUserLoggedin()){
 	}
 }
 
-$boxesforuserresult = getBoxLeaguesForUser( get_userid() );
-
 /* form has been submitted, check if it the user login information is correct */
 
 if (match_referer() && isset($_POST)) {
@@ -90,7 +88,7 @@ function getRecentLadderMatches( $opponent, $boxid ){
     $current = get_userid();
 
     // TODO make sure to only get the last two
-    $query = "SELECT *
+    $query = "SELECT tLM.score, tLM.winnerid
             FROM tblLadderMatch tLM
                     INNER JOIN tblBoxLeagues tBL ON tLM.ladderid = tBL.ladderid
             WHERE
@@ -100,21 +98,41 @@ function getRecentLadderMatches( $opponent, $boxid ){
             AND tBL.boxid = $boxid
             AND match_time > tBL.startdate
             AND tLM.enddate IS NULL
-            AND tLM.league = TRUE";
+            AND tLM.league = TRUE
+            ORDER BY tLM.match_time";
 
     $result = db_query($query);
     $index = 0;
     while ($ladderresult = db_fetch_array($result)) {
         
-        //will need to flip these if the opponent won
-        $recent_matches[$index] = $ladderresult['score'];
-        $index = $index = 1;
+        //Switch around if opponent won
+        $score = $ladderresult['score'];
+
+        if($opponent == $ladderresult['winnerid']){
+            if (isDebugEnabled(1)) logMessage("my_league_schedule:opponent won!");
+            $score = reverse_scores( $ladderresult['score'] );
+
+        }
+        $recent_matches[$index] = $score;
+        $index = $index + 1;
     }
+
+    if (isDebugEnabled(1)) logMessage("my_league_schedule:first result for $opponent: ".$recent_matches[0] );
+    if (isDebugEnabled(1)) logMessage("my_league_schedule:second result for $opponent: ".$recent_matches[1] );
 
     return $recent_matches;
     
 }
 
+/**
+ * Does what you think it will do
+ * 
+ */
+function reverse_scores($score){
+
+    $pieces = explode("-", $score);
+    return $pieces[1]."-".$pieces[0];
+}
 
 /*
     Returns a mysql result

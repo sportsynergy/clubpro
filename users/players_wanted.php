@@ -196,7 +196,7 @@ else{
    if(mysqli_num_rows($singlespwresult)>0){
      ?>
        <tr>
-        <td colspan="2"><font class="bigbanner">Players looking for a Singles Match</font></td>
+        <td colspan="2"><font class="smallbanner">Players looking for a Singles Match</font></td>
        </tr>
      <?
 
