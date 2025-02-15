@@ -1,5 +1,10 @@
 <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
 
+<p>
+Here are your box league results:
+</p>
+<br>
+
 <?php
 // For each box league that the person is in
 
@@ -8,10 +13,7 @@ while ($boxesforuserarray = db_fetch_array($boxesforuserresult)) {
 
 ?>
 
-<p>
-Here are your box league results:
-</p>
-<br>
+
 
 <font class="smallbanner"> 
     <?=$boxesforuserarray['boxname'] ?> - <?=$boxesforuserarray['teamname'] ?>
