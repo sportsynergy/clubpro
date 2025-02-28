@@ -148,6 +148,7 @@ function load_league_schedule( $boxid){
                 INNER JOIN tblClubLadderTeamMember tCLTM ON tBLu.userid = tCLTM.userid
                 INNER JOIN tblClubLadderTeam tCLT ON tCLTM.teamid = tCLT.id AND tCLT.ladderid = tBL.ladderid
         WHERE tCLT.enddate IS NULL AND tBL.boxid = $boxid
+        AND tCLTM.enddate IS NULL
         AND tU.userid <> ".get_userid();
 
     // Get box id for player
