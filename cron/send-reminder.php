@@ -184,9 +184,13 @@ class ReminderService{
 
 			$res_result = db_query($reservations);
 
-
 			while( $res_array = mysqli_fetch_array($res_result ) ){
 				
+				$reservationid = $res_array['reservationid'];
+				$clubname = $sites_array['clubname'];
+
+				if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: sending out reminder for reservation $reservationid at $clubname");
+
 				$this->sendReminder($res_array['usertype'],
 						 $res_array['reservationid'],
 						 $res_array['name'],
