@@ -136,19 +136,19 @@ function onSubmitButtonClicked(){
             			<option value="5.0">5.0</option>
             			<option value="5.5">5.5</option>
           		</select>
-	            <?err($errors->ranking)?>
+              <? is_object($errors) ? err($errors->ranking) : ""?>
 	        </td>
        </tr> 
        <tr>
         	<td class=label >Subject:</td>
 	        <td colspan="3"><input type="text" name="subject" size=67 value="<? pv($frm["subject"]) ?>">
-	                <?err($errors->subject)?>
+	                <? is_object($errors) ? err($errors->subject) : ""?>
 	        </td>
        </tr>
        <tr>
            <td class=label valign="top">Message:</td>
                  <td colspan="3"><textarea name="message" cols="80" rows="15"><? pv($frm["message"]) ?></textarea>
-                      <?err($errors->useraddress)?>
+                      <? is_object($errors) ? err($errors->useraddress) : ""?>
                 </td>
         </tr>
        <tr>

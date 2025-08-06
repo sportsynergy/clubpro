@@ -13,7 +13,8 @@
             <tr>
               <td class=label>Member Name:</td>
               <td><input type="text" name="searchname" size="25" value="<? pv($searchname) ?>">
-                <?err($errors->searchname)?></td>
+              <? is_object($errors) ? err($errors->searchname) : ""?>
+              </td>
             </tr>
             <tr>
               <td colspan="2"> Search for the first or last name of a member. *Note partial string are supported. <span style="font-style: italic;"> i.e. Smi for Smith or Pet for Peter.</span> To display all 

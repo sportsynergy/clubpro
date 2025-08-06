@@ -43,7 +43,9 @@ function onSubmitButtonClicked(){
         <tr>
             <td class="label">Name:</td>
             <td>
-            	<input type="text" name="name" maxlength="30" size="30" value="<?=$courtEventName?>"><?err($errors->name)?>
+            	<input type="text" name="name" maxlength="30" size="30" value="<?=$courtEventName?>">
+                <? is_object($errors) ? err($errors->name) : ""?>
+                
             </td>
         </tr>
        

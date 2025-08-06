@@ -44,7 +44,7 @@ $clubquery = "SELECT * from tblClubs WHERE clubid='" . $clubid . "'";
 $clubresult = db_query($clubquery);
 $clubobj = db_fetch_object($clubresult);
 $tzdelta = $clubobj->timezone * 3600;
-$curtime = mktime() + $tzdelta;
+$curtime = time() + $tzdelta;
 $_SESSION["current_time"] = $curtime;
 
 

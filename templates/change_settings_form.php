@@ -45,38 +45,45 @@ function onSubmitButtonClicked(){
         <tr>
           <td class="label medwidth" ><font color="Red" class="normalsm">* </font>First Name:</td>
           <td><input type="text" name="firstname" size="35" value="<? pv($frm["firstname"]) ?>">
-            <?err($errors->firstname)?></td>
+          <? is_object($errors) ? err($errors->firstname) : ""?>
+          </td>
         </tr>
         <tr>
           <td class="label medwidth" ><font color="Red" class=normalsm>* </font>Last Name:</td>
           <td><input type="text" name="lastname" size="35" value="<? pv($frm["lastname"]) ?>">
-            <?err($errors->lastname)?></td>
+          <? is_object($errors) ? err($errors->lastname) : ""?>
+          </td>
         </tr>
         <tr>
           <td class="label medwidth"><font color="Red" class=normalsm>* </font>Email:</td>
           <td><input type="text" name="email" size="35" value="<? pv($frm["email"]) ?>">
-            <?err($errors->email)?></td>
+          <? is_object($errors) ? err($errors->email) : ""?>
+          </td>
         </tr>
         <tr>
           <td class="label medwidth"><font color="Red" class=normalsm>* </font> Home Phone:</td>
           <td><input type="text" name="homephone" size="35" value="<? pv($frm["homephone"]) ?>">
-            <?err($errors->homephone)?></td>
+          <? is_object($errors) ? err($errors->homephone) : ""?>
+          </td>
         </tr>
         <tr>
           <td class="label medwidth"><font color="Red" class=normalsm>* </font>Work Phone:</td>
           <td><input type="text" name="workphone" size="35" value="<? pv($frm["workphone"]) ?>">
-            <?err($errors->workphone)?></td>
+          <? is_object($errors) ? err($errors->workphone) : ""?>
+          </td>
         </tr>
         <tr>
           <td class="label medwidth">Mobile Phone:</td>
           <td><input type="text" name="cellphone" size="25" value="<? pv($frm["cellphone"]) ?>">
-            <?err($errors->cellphone)?></td>
+          <? is_object($errors) ? err($errors->cellphone) : ""?>
+          </td>
         </tr>
         <tr>
           <td class="label medwidth">Address:</td>
           <td colspan="2"><textarea name="useraddress" cols="50" rows="5"><? pv($frm["useraddress"]) ?>
 </textarea>
-            <?err($errors->address)?></td>
+          <? is_object($errors) ? err($errors->address) : ""?>
+          </td>
         </tr>
         <tr>
           <td colspan="2" height="20"><hr></td>
@@ -115,7 +122,7 @@ function onSubmitButtonClicked(){
                 } 
               
               ?>
-               <?err($errors->recleaguematchnotifications)?>
+               <? is_object($errors) ? err($errors->recleaguematchnotifications) : ""?>
               <tr>
               <td class="label medwidth">Receive League Reminder Notifications:</td> 
               <td>

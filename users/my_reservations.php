@@ -59,7 +59,7 @@ function get_myreservations() {
     $clubresult = db_query($clubquery);
     $clubobj = db_fetch_object($clubresult);
     $tzdelta = $clubobj->timezone * 3600;
-    $curtime = mktime() + $tzdelta;
+    $curtime = time() + $tzdelta;
     $simtzdelta = $clubobj->timezone;
     $twoweeksago = $curtime - (14 * 86400);
 ?>
@@ -118,7 +118,7 @@ $curresidresult = db_query($curresidquery);
 
 while($curresidarray = db_fetch_array($curresidresult)) {    
 	
-	if( !isSinglesPartialReservation($curresidarray[reservationid]) ){
+	if( !isSinglesPartialReservation($curresidarray['reservationid']) ){
 		$pastEntry = array($curresidarray['time'] => $curresidarray['reservationid']);
 		array_push_associative($pastReservationsArray, $pastEntry);
 	}

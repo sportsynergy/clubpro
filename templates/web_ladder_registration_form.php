@@ -127,7 +127,7 @@ $boxid = $_REQUEST["boxid"];
   $clubresult = db_query($clubquery);
   $clubobj = db_fetch_object($clubresult);
 
-  $gmtime =   gmmktime();
+  $gmtime =   time();
   $tzdelta = $clubobj->timezone*3600;
   $curtime =   $gmtime+$tzdelta;
 
@@ -238,7 +238,7 @@ print "var thisyear = new Array(13);
 
        <td class="label">Box Name:</td>
         <td><input type="text" name="boxname" size=25>
-                <?err($errors->boxname)?>
+            <? is_object($errors) ? err($errors->boxname) : ""?>
         </td>
        </tr>
         <tr>
@@ -257,7 +257,7 @@ print "var thisyear = new Array(13);
                   echo "<option value=\"$row[0]\">$row[1]</option>";
                  }
                  ?>
-                <?err($errors->courtypeid)?>
+                <? is_object($errors) ? err($errors->courtypeid) : ""?>
                 </select>
 
                 </td>
@@ -323,7 +323,7 @@ print "var thisyear = new Array(13);
                 <option value="<?=$ladders[$i]['id'] ?>"><?=$ladders[$i]['name'] ?></option>
             <?  } ?>
              </select>
-            <?err($errors->ladder)?>
+            <? is_object($errors) ? err($errors->ladder) : ""?>
         </td>
     </tr>
     <tr>

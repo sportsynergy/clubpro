@@ -100,7 +100,7 @@ pat_autocomplete(array(
 	          <option value="weekly">Weekly</option>
 	          <option value="biweekly">Bi-Weekly</option>
 	          <option value="monthly">Monthly</option>
-	          <?err($errors->repeat)?>
+			<? is_object($errors) ? err($errors->repeat) : ""?>
 	        </select></td>
 	    </tr>
 		<tr>
@@ -111,7 +111,7 @@ pat_autocomplete(array(
 	          <option value="week">For a Week</option>
 	          <option value="month">For a Month</option>
 	          <option value="year">For a Year</option>
-	          <?err($errors->duration)?>
+			  <? is_object($errors) ? err($errors->duration) : ""?>
 	        </select></td>
 	    </tr>
 	<? } ?>

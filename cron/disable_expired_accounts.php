@@ -27,7 +27,7 @@ class AccountExpirationService {
 	public function getExpiredUsers($parameter){
 
 		// This format is the same format set in the change settings form.
-		$today = gmdate("m/d/Y", mktime() );
+		$today = gmdate("m/d/Y", time() );
 
 
 		if (isDebugEnabled(1)) logMessage("AccountExpirationService:getExpiredUsers $today for $parameter");

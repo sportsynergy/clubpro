@@ -6220,7 +6220,7 @@ function isInPast($time){
 	$clubobj = db_fetch_array($clubresult);
 
 	$tzdelta = $clubobj[timezone]*3600;
-	$curtime =   mktime()+$tzdelta;
+	$curtime =   time()+$tzdelta;
 
 
 	if($time<$curtime){
@@ -6248,7 +6248,7 @@ function logMessage($message){
 	}
 
 	$fp = fopen ($_SESSION["CFG"]["logFile"], "a+");
-	fwrite($fp,date("r",mktime()).": ".$message."\n");
+	fwrite($fp,date("r",time()).": ".$message."\n");
 	fclose($fp);
 }
 
@@ -6297,7 +6297,7 @@ function determineLastLoginText($theTimeTheyLastLoggedIn, $clubid){
     $timezoneval = $timezonevalArray[0];
 
 	$tzdelta = $timezoneval*3600;
-	$theTimeItIsRightNow =   mktime()+$tzdelta;
+	$theTimeItIsRightNow =   time()+$tzdelta;
 
 	$timeSinceLastLogin = $theTimeItIsRightNow - $theTimeTheyLastLoggedIn;
 

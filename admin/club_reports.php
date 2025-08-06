@@ -186,7 +186,7 @@ function run_member_activity_report(&$frm) {
                               has been booked for.";
 
     /*Get the time value for 30 days ago.  At this point the reports aren't run with parameters.*/
-    $currenttime = mktime() + get_tzdelta();
+    $currenttime = time() + get_tzdelta();
     $monthagotime = $currenttime - 2592000;
 
     //Initialize Data Holders
@@ -354,7 +354,6 @@ function run_court_utilization_report(&$frm) {
 
 
         /*Get the time value for 30 days ago.  At this point the reports aren't run with parameters.*/
-         $gmtime = gmmktime();
          $clubquery = "SELECT * from tblClubs WHERE clubid='".get_clubid()."'";
          $clubresult = db_query($clubquery);
          $clubobj = db_fetch_object($clubresult);
@@ -362,7 +361,7 @@ function run_court_utilization_report(&$frm) {
          $tzdelta = $clubobj->timezone*3600;
 
 
-         $currenttime = mktime() + get_tzdelta();
+         $currenttime = time() + get_tzdelta();
          $monthagotime = $currenttime - 2592000;
          
          //Initialize Data Holders

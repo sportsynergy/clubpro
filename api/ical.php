@@ -26,8 +26,8 @@ $array = db_fetch_array($result);
 
 
 // roughly
-$monthago = mktime() - (60*60*24*30);
-$intwomonths = mktime() + (60*60*24*30*2);
+$monthago = time() - (60*60*24*30);
+$intwomonths = time() + (60*60*24*30*2);
 
 
 // account for timezone

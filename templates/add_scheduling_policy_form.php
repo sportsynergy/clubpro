@@ -57,7 +57,8 @@ function onSubmitButtonClicked(){
               <tr>
                 <td class="label">Name:</td>
                 <td><input type="text" name="name" maxlength="30" size="30" value="<?=$schedulePolicy['policyname']?>">
-                  <?err($errors->name)?></td>
+                  <? is_object($errors) ? err($errors->name) : ""?>
+                </td>
               </tr>
               <tr>
                 <td class="label">Description:</td>
@@ -78,7 +79,7 @@ function onSubmitButtonClicked(){
               <tr>
                 <td class="label">Court:</td>
                 <td><select name="courtid">
-                    <?err($errors->courtid)?>
+                    <? is_object($errors) ? err($errors->courtid) : ""?>
                     <option value="">Select Court</option>
                     <?
             if($schedulePolicy['courtid'] == null){
@@ -102,7 +103,7 @@ function onSubmitButtonClicked(){
               <tr>
                 <td class="label">Day of Week:</td>
                 <td><select name="dow">
-                    <?err($errors->dow)?>
+                    <? is_object($errors) ? err($errors->dow) : ""?>
                     <option value="">Select Day</option>
                     <?
             if($schedulePolicy['dayid'] == null){
@@ -144,7 +145,7 @@ function onSubmitButtonClicked(){
               <tr>
                 <td class=label>Start Time:</td>
                 <td><select name="starttime" <?= $schedulePolicy['starttime']==null ? "disabled" : "" ?>>
-                    <?err($errors->starttime)?>
+                    <? is_object($errors) ? err($errors->starttime) : ""?>
                     <option value="">Select Start Time</option>
                     <option value="">--------------------</option>
                     <?
@@ -160,7 +161,7 @@ function onSubmitButtonClicked(){
               <tr>
                 <td class="label" >End Time:</td>
                 <td><select name="endtime" <?= $schedulePolicy['endtime']==null ? "disabled" : "" ?>>
-                    <?err($errors->endtime)?>
+                    <? is_object($errors) ? err($errors->endtime) : ""?>
                     <option value="">Select End Time</option>
                     <option value="">--------------------</option>
                     <?

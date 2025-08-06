@@ -67,8 +67,7 @@ function get_playerswanted() {
     $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
     $clubresult = db_query($clubquery);
     $clubobj = db_fetch_object($clubresult);
-    $gmtime = gmmktime();
-    $mktime = mktime();
+    $mktime = time();
     $tzdelta = $clubobj->timezone * 3600;
     $curtime = $mktime + $tzdelta;
     $simtzdelta = $clubobj->timezone;
@@ -196,7 +195,7 @@ else{
    if(mysqli_num_rows($singlespwresult)>0){
      ?>
        <tr>
-        <td colspan="2"><font class="smallbanner">Players looking for a Singles Match</font></td>
+        <td colspan="2"><span class="smallbanner">Players looking for a Singles Match</span></td>
        </tr>
      <?
 
@@ -247,7 +246,7 @@ else{
  if(count($doublesArray)>0){
      ?>
        <tr>
-        <td colspan="2"><font class=bigbanner>Players looking for a Doubles Match</font></td>
+        <td colspan="2"><span class="smallbanner">Players looking for a Doubles Match</span></td>
        </tr>
  <?
 

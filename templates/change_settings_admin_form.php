@@ -194,7 +194,7 @@ function onSubmitButtonClicked(){
         <tr>
  			<td class=label><font color="Red" class=normalsm>* </font>Username:</td>
             <td><input type="text" name="username" size="35" value="<? pv($frm["username"]) ?>">
-                <?err($errors->username)?>
+                <? is_object($errors) ? err($errors->username) : ""?>
             </td>
         </tr>
      
@@ -209,54 +209,54 @@ function onSubmitButtonClicked(){
         <tr>
             <td class=label><font color="Red" class="normalsm">* </font>First Name:</td>
             <td><input type="text" name="firstname" size="35" value="<? pv($frm["firstname"]) ?>">
-                <?err($errors->firstname)?>
+                <? is_object($errors) ? err($errors->firstname) : ""?>   
             </td>
         </tr>
         
         <tr>
             <td class=label><font color="Red" class=normalsm>* </font>Last Name:</td>
             <td><input type="text" name="lastname" size="35" value="<? pv($frm["lastname"]) ?>">
-                <?err($errors->lastname)?>
+                <? is_object($errors) ? err($errors->lastname) : ""?> 
                 </td>
         </tr>
 
         <tr>
             <td class=label></font>Email:</td>
             <td><input type="text" name="email" size="35" value="<? pv($frm["email"]) ?>">
-                <?err($errors->email)?>
+                <? is_object($errors) ? err($errors->email) : ""?>
                 </td>
         </tr>
 
         <tr>
             <td class=label></font> Home Phone:</td>
             <td><input type="text" name="homephone" size="35" value="<? pv($frm["homephone"]) ?>">
-                <?err($errors->homephone)?>
+                <? is_object($errors) ? err($errors->homephone) : ""?>
                 </td>
         </tr>
 
         <tr>
             <td class=label></font> Work Phone:</td>
             <td><input type="text" name="workphone" size="35" value="<? pv($frm["workphone"]) ?>">
-                <?err($errors->workphone)?>
+                <? is_object($errors) ? err($errors->workphone) : ""?>
             </td>
         </tr>
          <tr>
             <td class=label>Mobile Phone:</td>
             <td><input type="text" name="cellphone" size="35" value="<? pv($frm["cellphone"]) ?>">
-                <?err($errors->cellphone)?>
+                <? is_object($errors) ? err($errors->cellphone) : ""?>
             </td>
         </tr>
  		<tr>
             <td class=label>Date Joined:</td>
             <td><input type="text" name="msince" size="35" value="<? pv($frm["msince"]) ?>">
-                <?err($errors->msince)?>
+                <? is_object($errors) ? err($errors->msince) : ""?>
             </td>
         </tr>
 
         <tr>
             <td class=label>Address:</td>
             <td colspan="2"><textarea name="useraddress" cols="50" rows="5"><? pv($frm["useraddress"]) ?></textarea>
-                <?err($errors->address)?>
+                <? is_object($errors) ? err($errors->address) : ""?>
             </td>
         </tr>
         <tr>
@@ -266,7 +266,7 @@ function onSubmitButtonClicked(){
              <? } ?>	
             Membership ID:</td>
             <td><input type="text" name="memberid" size=35 value="<? pv($frm["memberid"]) ?>">
-                <?err($errors->memberid)?>
+                <? is_object($errors) ? err($errors->memberid) : ""?>
             </td>
         </tr>
         <tr>
@@ -275,7 +275,7 @@ function onSubmitButtonClicked(){
             	<option value="1">Male</option>
             	<option value="0" <? if($frm["gender"]==0) print "selected" ?> >Female</option>
             </select>
-                <?err($errors->gender)?>
+                <? is_object($errors) ? err($errors->gender) : ""?>
             </td>
         </tr>
 
@@ -344,7 +344,8 @@ function onSubmitButtonClicked(){
             <td><select name="recemail"> 
                  <option value="y">Yes</option>
                 <option value="n" <? if($frm["recemail"]=='n') print "selected" ?> >No</option>
-                <?err($errors->recemail)?>
+                <? is_object($errors) ? err($errors->recemail) : ""?>
+                
                 </td>
         </tr>
         <?  if ( isJumpLadderRankingScheme() ){  
@@ -484,8 +485,7 @@ function onSubmitButtonClicked(){
             echo "<td><input type=\"checkbox\" name=\"enable\" value=\"1\" ></td>";
             }
             ?>
-                <?err($errors->enable)?>
-
+                <? is_object($errors) ? err($errors->enable) : ""?>
         </tr>
 
         <tr>

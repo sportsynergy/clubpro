@@ -120,16 +120,16 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
   <tr class="<?=$rc?>">
     <form name="playerform<?=$rownum?>" method="get">
       <td><div align="center">
-          <?=$row[firstname]?>
+          <?=$row['firstname']?>
         </div></td>
       <td><div align="center">
-          <?=$row[lastname]?>
+          <?=$row['lastname']?>
         </div></td>
-      <td><div align="center"><a href="mailto:<?=$row[email]?>">
-          <?=$row[email]?>
+      <td><div align="center"><a href="mailto:<?=$row['email']?>">
+          <?=$row['email']?>
           </a></div></td>
       <td><div align="center">
-          <?=$row[cellphone]?>
+          <?=$row['cellphone']?>
         </div></td>
       <td colspan="2"><div align="center"> <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/change_settings.php')">Edit</a> | <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_delete.php')">Delete</a> </div></td>
       <input type="hidden" name="userid" value="<?=$row['userid']?>">

@@ -55,13 +55,16 @@ function onSubmitButtonClicked(){
           <tr>
             <td class="label">Name:</td>
             <td><input type="text" name="name" value="<?=$skillRangePolicy['policyname']?>" maxlength="60" size="30">
-              <?err($errors->name)?></td>
+              <? is_object($errors) ? err($errors->name) : ""?>
+            
+            </td>
           </tr>
           <tr>
             <td class="label">Description:</td>
             <td><textarea cols="25" rows="4" name="description" ><?=$skillRangePolicy['description']?>
 </textarea>
-              <?err($errors->description)?></td>
+            <? is_object($errors) ? err($errors->description) : ""?>
+            </td>
           </tr>
           <tr>
             <td class="label">Skill Range:</td>
@@ -73,12 +76,13 @@ function onSubmitButtonClicked(){
                 <option value=".75" <?=$skillRangePolicy['skillrange']==".75" ? "selected" : "" ?>  >.75</option>
                 <option value="1" <?=$skillRangePolicy['skillrange']=="1" ? "selected" : "" ?>  >1</option>
               </select>
-              <?err($errors->skillrange)?></td>
+            <? is_object($errors) ? err($errors->skillrange) : ""?>
+            </td>
           </tr>
           <tr>
             <td class="label">Court:</td>
             <td><select name="courtid">
-                <?err($errors->courtid)?>
+                <? is_object($errors) ? err($errors->courtid) : ""?>
                 <option value="">Select Court</option>
                 <option value="">-----------------------------</option>
                 <option value="all" <?=$skillRangePolicy['courtid'] == null ? "selected" : "" ?>>All Courts</option>
@@ -97,7 +101,7 @@ function onSubmitButtonClicked(){
           <tr>
             <td class="label">Day of Week:</td>
             <td><select name="dow">
-                <?err($errors->dow)?>
+                <? is_object($errors) ? err($errors->dow) : ""?>
                 <option value="">Select Day</option>
                 <option value="">-----------------------------</option>
                 <option value="all" <?=$skillRangePolicy['dayid'] == null ? "selected" : ""?>>All Days</option>
@@ -116,12 +120,13 @@ function onSubmitButtonClicked(){
           <tr>
             <td class=label>Specifiy Window: </td>
             <td><input type="checkbox" name="reservationwindow" value="yes" onclick="toggle(this.checked)" <?=$skillRangePolicy['starttime']!=null ? "checked" : ""?>>
-              <?err($errors->window)?></td>
+              <? is_object($errors) ? err($errors->window) : ""?>
+            </td>
           </tr>
           <tr>
             <td class="label">Start Time:</td>
             <td><select name="starttime" <?= $skillRangePolicy['starttime']==null ? "disabled" : "" ?>>
-                <?err($errors->starttime)?>
+                <? is_object($errors) ? err($errors->starttime) : ""?>
                 <option value="">Select Start Time</option>
                 <option value="">--------------------</option>
                 <?
@@ -137,7 +142,7 @@ function onSubmitButtonClicked(){
           <tr>
             <td class="label">End Time:</td>
             <td><select name="endtime" <?= $skillRangePolicy['endtime']==null ? "disabled" : "" ?>>
-                <?err($errors->endtime)?>
+                <? is_object($errors) ? err($errors->endtime) : ""?>
                 <option value="">Select End Time</option>
                 <option value="">--------------------</option>
                 <?

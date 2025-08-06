@@ -85,7 +85,7 @@ function validate_form(&$frm, &$errors) {
     $month = $datesArray[2];
     $day = $datesArray[1];
     $year = $datesArray[0];
-    $gmttime = mktime();
+    $gmttime = time();
     $thisyear = date("Y", $gmttime);
     
     if (count($datesArray) != 3) {

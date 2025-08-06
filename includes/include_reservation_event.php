@@ -71,7 +71,7 @@ function onEventCancelButtonClicked(){
                   echo "<option value=\"$row[0]\">$row[1]</option>";
                  }
                  ?>
-          <?err($errors->eventid)?>
+          <? is_object($errors) ? err($errors->eventid) : ""?>
         </select></td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ function onEventCancelButtonClicked(){
           <option value="weekly">Weekly</option>
           <option value="biweekly">Bi-Weekly</option>
           <option value="monthly">Monthly</option>
-          <?err($errors->repeat)?>
+          <? is_object($errors) ? err($errors->repeat) : ""?>
         </select></td>
     </tr>
     <tr>
@@ -91,7 +91,7 @@ function onEventCancelButtonClicked(){
           <option value="week">For a Week</option>
           <option value="month">For a Month</option>
           <option value="year">For a Year</option>
-          <?err($errors->duration)?>
+          <? is_object($errors) ? err($errors->duration) : ""?>
         </select></td>
     </tr>
 	<tr> 

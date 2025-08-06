@@ -25,13 +25,15 @@
 		<table width="550" >
 			<tr>
 				<td class="label">Name: <td>
-					<input type="text" name="name" size="35" value="<?=$frm["name"] ?>" maxlength="30"> <?err($errors->subject)?>
+					<input type="text" name="name" size="35" value="<?=$frm["name"] ?>" maxlength="30"> 
+					<? is_object($errors) ? err($errors->subject) : ""?>
 				</td>
 			</tr>
 			<tr>
 				<td class="label">Date:<td>
 					<input type="text" name="eventdate" id="eventdate" value="<?=convertToDateSlashes($frm["eventdate"])?>">
-					<img id="calico" src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png" alt="Open the Calendar control"><?err($errors->eventdate)?>
+					<img id="calico" src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png" alt="Open the Calendar control">
+					 <? is_object($errors) ? err($errors->eventdate) : ""?>
 					<div id="mycal" style="position:absolute;z-index:10;"></div>
 				</td>
 			</tr>
@@ -51,7 +53,8 @@
 				<td class="label">
 					Description:
 				<td>
-					<textarea rows="5" cols="50" name="description" ><?=$frm["description"] ?></textarea> <?err($errors->description)?>
+					<textarea rows="5" cols="50" name="description" ><?=$frm["description"] ?></textarea>
+					 <? is_object($errors) ? err($errors->description) : ""?>
 				</td>
 			</tr>
 			

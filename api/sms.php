@@ -45,7 +45,7 @@ if ($command == $next) {
         $timezone = $timezone_array[0];
 
         // Get the current date
-        $current = mktime() + ($timezone * 3600);
+        $current = time() + ($timezone * 3600);
 
         //lookup user and get first reservation that occurs after the current time
         $query = "SELECT reservations.reservationid, reservations.time, courts.courtname

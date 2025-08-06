@@ -66,7 +66,7 @@ YAHOO.example.init = function () {
         	<td class="label" >Subject:</td>
 	        <td colspan="3">
           <input type="text" name="subject" size=67 value="<? pv($frm["subject"]) ?>">
-	                <?err($errors->subject)?>
+          <? is_object($errors) ? err($errors->subject) : ""?>
 	        </td>
        </tr>
        <tr>

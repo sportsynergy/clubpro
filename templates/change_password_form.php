@@ -33,17 +33,20 @@ function onSubmitButtonClicked(){
             <tr>
               <td class="label">Old Password:</td>
               <td><input type="password" name="oldpassword" size=25>
-                <?err($errors->oldpassword)?></td>
+              <? is_object($errors) ? err($errors->oldpassword) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label">New Password:</td>
               <td><input type="password" name="newpassword" size=25>
-                <?err($errors->newpassword)?></td>
+               <? is_object($errors) ? err($errors->newpassword) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label">Confirm Password:</td>
               <td><input type="password" name="newpassword2" size=25>
-                <?err($errors->newpassword2)?></td>
+              <? is_object($errors) ? err($errors->newpassword2) : ""?>
+              </td>
             </tr>
             <tr>
               <td></td>

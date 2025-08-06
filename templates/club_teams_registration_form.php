@@ -4,7 +4,7 @@
   $clubresult = db_query($clubquery);
   $clubobj = db_fetch_object($clubresult);
 
-  $gmtime =   gmmktime();
+  $gmtime =   time();
   $tzdelta = $clubobj->timezone*3600;
   $curtime =   $gmtime+$tzdelta;
 
@@ -46,7 +46,7 @@
 
        <td class="label">Club Team Name:</td>
         <td><input type="text" name="clubteam" size=25>
-                <?err($errors->clubteam)?>
+                <? is_object($errors) ? err($errors->clubteam) : ""?>
         </td>
        </tr>
 
@@ -61,7 +61,7 @@
                 <option value="<?=$ladders[$i]['id'] ?>"><?=$ladders[$i]['name'] ?></option>
             <?  } ?>
              </select>
-            <?err($errors->ladder)?>
+            <? is_object($errors) ? err($errors->ladder) : ""?>
         </td>
     </tr>
 

@@ -82,7 +82,7 @@ function printSQL($courtid){
 	
 
 	
-	$now = mktime();
+	$now = time();
 	$now = $now - (60*60*24*14);
 	// Gets all of the reservations from two weeks ago
 	

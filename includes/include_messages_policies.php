@@ -76,7 +76,7 @@ function wipeOutClubMessages()
             <td width="125" valign="top"><span class="label">Scrolling Message:</span><br/></td>
             <td><textarea cols="45" rows="4" name="Messagetextarea"><?=$scrollingMessages["message"] ?>
 </textarea>
-              <?err($errors->Messagetextarea)?></td>
+              <? is_object($errors) ? err($errors->Messagetextarea) : ""?></td>
           </tr>
           <tr>
             <td colspan="2" ><div class="biglabel"> <span class="biglabel">Club News Messages</span> </div>

@@ -62,7 +62,7 @@ if (match_referer() && isset($_POST)) {
         $timezoneval = $timezonevalArray[0];
 
         $tzdelta = $timezoneval * 3600;
-        $curtime = mktime() + $tzdelta;
+        $curtime = time() + $tzdelta;
         $updateLastLoginQuery = "UPDATE tblClubUser SET lastlogin = $curtime WHERE userid = $user[userid] AND clubid = " . get_clubid() . "";
         db_query($updateLastLoginQuery);
         $_SESSION["user"] = $user;

@@ -14,54 +14,64 @@
             <tr>
               <td class="label"><span class="warning">* </span>Username:
               <td><input type="text" name="username" size=35 value="<?=$frm["username"] ?>">
-                <?err($errors->username)?></td>
+              <? is_object($errors) ? err($errors->username) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label"><span class="warning">* </span>Password:
               <td><input type="password" name="password" size="35">
-                <?err($errors->password)?></td>
+              <? is_object($errors) ? err($errors->password) : ""?>
+              </td>
             </tr>
             <? }?>
             <tr>
               <td class="label"><span class="warning">* </span>First Name: </td>
               <td><input type="text" name="firstname" size="35" value="<?=$frm["firstname"]?>">
-                <?err($errors->firstname)?></td>
+               <? is_object($errors) ? err($errors->firstname) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label"><span class="warning">* </span>Last Name: </td>
               <td><input type="text" name="lastname" size="35" value="<? pv($frm["lastname"]) ?>">
-                <?err($errors->lastname)?></td>
+               <? is_object($errors) ? err($errors->lastname) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label">Home Phone:</td>
               <td><input type="text" name="homephone" size="35" value="<?=$frm["homephone"] ?>">
-                <?err($errors->homephone)?></td>
+              <? is_object($errors) ? err($errors->homephone) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label">Work Phone:</td>
               <td><input type="text" name="workphone" size="35" value="<?=$frm["workphone"] ?>">
-                <?err($errors->workphone)?></td>
+              <? is_object($errors) ? err($errors->workphone) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label">Email:</td>
               <td><input type="text" name="email" size="35" value="<?=$frm["email"] ?>">
-                <?err($errors->email)?></td>
+              <? is_object($errors) ? err($errors->email) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label">Mobile Phone:</td>
               <td><input type="text" name="cellphone" size="35" value="<?=$frm["cellphone"] ?>">
-                <?err($errors->cellphone)?></td>
+              <? is_object($errors) ? err($errors->cellphone) : ""?>
+              </td>
             </tr>
             <tr valign=top>
               <td class="label">Address:</td>
               <td><textarea name="useraddress" cols=35 rows=5><?=$frm["useraddress"] ?>
 </textarea>
-                <?err($errors->useraddress)?></td>
+              <? is_object($errors) ? err($errors->useraddress) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label">Date Joined:</td>
               <td><input type="text" name="msince" size=35 value="<?=$frm["msince"]?>">
-                <?err($errors->msince)?></td>
+               <? is_object($errors) ? err($errors->msince) : ""?>
+              </td>
             </tr>
             <tr>
               <td class="label"></td>
@@ -81,7 +91,8 @@
                 <? } ?>
                 Membership ID:</td>
               <td><input type="text" name="memberid" size=35 value="<? pv($frm["memberid"]) ?>">
-                <?err($errors->memberid)?></td>
+               <? is_object($errors) ? err($errors->memberid) : ""?>
+              </td>
             </tr>
             <?
 			

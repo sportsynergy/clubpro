@@ -50,7 +50,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=" . get_clubid() . "";
 $clubresult = db_query($clubquery);
 $clubobj = db_fetch_object($clubresult);
 $tzdelta = $clubobj->timezone * 3600;
-$curtime = mktime() + $tzdelta;
+$curtime = time() + $tzdelta;
 $simtzdelta = $clubobj->timezone;
 
 

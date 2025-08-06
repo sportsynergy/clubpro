@@ -232,7 +232,7 @@ function canIcancel($courtid, $time) {
     /* Check to see if the person is either one of the two players or the
      Club administrator or if for a resource, the creator */
     $canIcanel = FALSE;
-    $curtime = mktime() + get_tzdelta() ;
+    $curtime = time() + get_tzdelta() ;
 
     //get the reservation
     $eventQuery = "SELECT reservations.eventid, courts.clubid, sites.allowselfcancel ,  courttype.reservationtype,reservations.creator

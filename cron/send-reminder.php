@@ -36,7 +36,7 @@ class ReminderService{
 		while($sites_array = mysqli_fetch_array($result) ){
 				
 			$tzdelta = $sites_array['timezone'] * 3600;
-			$curtime = mktime() + $tzdelta;
+			$curtime = time() + $tzdelta;
 			$current_hour = gmdate("G", $curtime);
 			$current_minute = gmdate("i", $curtime);
 
@@ -151,7 +151,7 @@ class ReminderService{
 			$_SESSION["siteprefs"] = $siteprefs;
 			
 			$tzdelta = $sites_array['timezone'] * 3600;
-			$curtime = mktime() + $tzdelta;
+			$curtime = time() + $tzdelta;
 			
 			$current_hour = gmdate("G", $curtime);
 			$current_minute = gmdate("i", $curtime);

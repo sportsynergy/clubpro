@@ -91,43 +91,53 @@ function onSubmitButtonClicked(){
 				  <tr>
 				    <td class="label">Club Name:</td>
 				    <td><input name="clubname" type="text" value="<? pv($frm["clubname"]) ?>"/>
-				     <?err($errors->clubname)?></td>
+					 <? is_object($errors) ? err($errors->clubname) : ""?>
+					
+					</td>
 				  </tr>
 				  <tr>
 				    <td class="label">Club Code:<br/>
 				    <span class="italitcsm">Think of this as your call sign</span></td>
 				    <td><input name="clubcode" type="text" value="<? pv($frm["clubcode"]) ?>"/>
-				     <?err($errors->clubcode)?></td>
+				    <? is_object($errors) ? err($errors->clubcode) : ""?>
+					</td>
 				  </tr>
 				  <tr>
 				    <td class="label">Administrator Username:</td>
 				    <td><input name="adminuser" type="text" value="<? pv($frm["adminuser"]) ?>"/>
-				     <?err($errors->adminuser)?></td>
+					<? is_object($errors) ? err($errors->adminuser) : ""?>
+					
+					</td>
 				  </tr>
 				  <tr>
 				    <td class="label">Administrator Password:</td>
 				    <td><input name="adminpass1" type="password" value="<? pv($frm["adminpass1"]) ?>"/>
-				     <?err($errors->adminpass1)?></td>
+					<? is_object($errors) ? err($errors->adminpass1) : ""?>
+					</td>
 				  </tr>
 				  <tr>
 				    <td class="label">Administrator Password (again):</td>
 				    <td><input name="adminpass2" type="password" value="<? pv($frm["adminpass2"]) ?>"/>
-				     <?err($errors->adminpass2)?></td>
+					<? is_object($errors) ? err($errors->adminpass2) : ""?>
+					</td>
 				  </tr>
 				  <tr>
 				    <td class="label">Administrator Email:</td>
 				    <td><input name="adminemail" type="text" value="<? pv($frm["adminemail"]) ?>"/>
-				     <?err($errors->adminemail)?></td>
+					<? is_object($errors) ? err($errors->adminemail) : ""?>
+					</td>
 				  </tr>
 				   <tr>
 				    <td class="label">Administrator First Name:</td>
 				    <td><input name="adminfirstname" type="text" value="<? pv($frm["adminfirstname"]) ?>"/>
-				     <?err($errors->adminfirstname)?></td>
+					<? is_object($errors) ? err($errors->adminfirstname) : ""?>
+					</td>
 				  </tr>
 				   <tr>
 				    <td class="label">Administrator Last Name:</td>
 				    <td><input name="adminlastname" type="text" value="<? pv($frm["adminlastname"]) ?>"/>
-				     <?err($errors->adminlastname)?></td>
+					<? is_object($errors) ? err($errors->adminlastname) : ""?>
+					</td>
 				  </tr>
 				  <tr>
 				  		<td class="label">Timezone:</td>
