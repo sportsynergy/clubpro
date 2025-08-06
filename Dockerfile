@@ -1,4 +1,4 @@
-FROM php:7.2.24-apache
+FROM php:8.1.33-apache
 
 RUN docker-php-ext-install mysqli && docker-php-ext-install pdo_mysql
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
