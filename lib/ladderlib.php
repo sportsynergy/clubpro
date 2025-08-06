@@ -807,6 +807,24 @@ function getLadderMatches($ladderid, $limit){
 	//print $curresidquery;
 	return db_query($curresidquery);
 }
+/**
+ * Gets the recent challenges matches for export
+ * 
+ * @param $ladderid
+ * @param $limit
+ */
+function getLadderExport($ladderid, $limit){
+
+	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderExport: Getting ladder members for ladderid $ladderid with limit $limit");
+	
+	$curresidquery = "SELECT concat(tU.firstname, ' ',tU.lastname) as name, '' as ranking, '' as rating, tU.email, tU.cellphone FROM tblClubLadder cL
+         INNER JOIN clubpro_main.tblUsers tU on cL.userid = tU.userid
+         WHERE cL.enddate IS NULL AND ladderid = $ladderid
+						LIMIT $limit";
+	
+	//print $curresidquery;
+	return db_query($curresidquery);
+}
 
 function getLadderMatchesForUser($ladderid, $userid, $limit){
 

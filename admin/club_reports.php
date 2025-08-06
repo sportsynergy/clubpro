@@ -64,6 +64,15 @@ if (match_referer() && isset($_POST['submitme'])) {
 
             run_ladder_score_report($ladderinfo[1], $ladder_name);
         }
+        elseif (  startsWith( $frm["report"], 'ladderexport' )  ){
+            $ladderinfo = explode("-", $frm["report"]);
+
+            $query = "SELECT name from tblClubSiteLadders where id = $ladderinfo[1];";
+            $result = db_query($query );
+            $ladder_name = mysqli_result($result, 0);
+
+            run_ladder_export_report($ladderinfo[1], $ladder_name);
+        }
         else{
             print "nothing";
         }
@@ -102,6 +111,7 @@ function run_ladder_score_report($ladderid, $ladder_name) {
 
     // Display the data
     ?>
+    <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
      <table cellspacing="0" cellpadding="0" border="0" width="710" align="center" class="borderless">
         <tr>
             <td>
@@ -137,7 +147,7 @@ function run_ladder_score_report($ladderid, $ladder_name) {
     
     if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
-        <table class="activitytable" width="450">
+        <table class="activitytable sortable" width="450">
             <tr>
             <th>Date</th>
             <th>Challenger</th>
@@ -170,6 +180,85 @@ function run_ladder_score_report($ladderid, $ladder_name) {
     <? } else { ?>
         <tr>
             <td>No challenge matches found.</td>
+        </tr>
+        
+    <? } ?>
+
+  </table> <?
+}
+
+function run_ladder_export_report($ladderid, $ladder_name) {
+
+    if (isDebugEnabled(1)) logMessage("club_reports.php.run_ladder_export");
+    $reportName = "$ladder_name Full Export";
+    $reportDescription = "This report is used to export data for Jump ladders";
+
+    $ladderMatchResult = getLadderExport( $ladderid, 100 );
+
+    // Display the data
+    ?>
+    <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
+     <table cellspacing="0" cellpadding="0" border="0" width="710" align="center" class="borderless">
+        <tr>
+            <td>
+            <?
+            include($_SESSION["CFG"]["includedir"]."/include_reportSelectHeader.php");
+             ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="normal">
+           <?pv($reportDescription)?>
+             </td>
+        </tr>
+        <tr>
+          <td>
+          <div>
+            <a href="javascript:submitForm('exportDataForm')">Export full report</a>
+            <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/ladder_export_log.php" method="post">
+                <input type="hidden" name="ladderid" value="<?=$ladderid?>">
+            </form>
+                
+            </div>
+          </td>
+         </tr>
+         <tr>
+          <td height="40"></td>
+         </tr>
+        <tr> 
+        
+         <tr>
+            <td>
+            <?
+    
+    if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
+
+        <table class="activitytable sortable" width="650" >
+            <tr>
+            <th>Name</th>
+            <th>Ranking</th>
+            <th>Rating</th>
+            <th>Email</th>
+            <th>Phone</th>
+            </tr>
+        
+        <? while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){  ?> 
+            <tr>
+            <td><?=$challengeMatch['name']?></td>
+            <td><?=$challengeMatch['ranking']?></td>
+            <td><?=$challengeMatch['rating']?></td>
+            <td><?=$challengeMatch['email']?></td>
+            <td><?=$challengeMatch['cellphone']?></td>
+            </tr>
+        
+     <?   }?>
+        </td></tr>
+        </table>
+        
+    
+    <? } else { ?>
+        <tr>
+            <td>Nothing found</td>
         </tr>
         
     <? } ?>

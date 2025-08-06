@@ -87,6 +87,7 @@ function onSubmitButtonClicked(){
                         
                         ?>
                         <option value="ladderreport-<?=$ladder['id']?>" <?=$selected?>><?=$ladder['name'] ?> Score Report</option>
+                        <option value="ladderexport-<?=$ladder['id']?>" <?=$selected?>><?=$ladder['name'] ?> Full Export</option>
                    
                     <? } ?>
                
