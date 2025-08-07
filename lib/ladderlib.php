@@ -808,23 +808,12 @@ function getLadderMatches($ladderid, $limit){
 	return db_query($curresidquery);
 }
 /**
- * Gets the recent challenges matches for export
+ * Gets the recent matches for a user in a ladder
  * 
  * @param $ladderid
+ * @param $userid
  * @param $limit
  */
-function getLadderExport($ladderid, $limit){
-
-	if( isDebugEnabled(1) ) logMessage("ladderlib.getLadderExport: Getting ladder members for ladderid $ladderid with limit $limit");
-	
-	$curresidquery = "SELECT concat(tU.firstname, ' ',tU.lastname) as name, '' as ranking, '' as rating, tU.email, tU.cellphone FROM tblClubLadder cL
-         INNER JOIN clubpro_main.tblUsers tU on cL.userid = tU.userid
-         WHERE cL.enddate IS NULL AND ladderid = $ladderid
-						LIMIT $limit";
-	
-	//print $curresidquery;
-	return db_query($curresidquery);
-}
 
 function getLadderMatchesForUser($ladderid, $userid, $limit){
 
@@ -1140,7 +1129,8 @@ function getLadder($ladderid) {
 						concat_ws(' ', users.firstname, users.lastname) as fullname,
 						users.email,
 						ladder.locked,
-						rankings.ranking
+						rankings.ranking,
+						users.cellphone
                     FROM
 						tblUsers users
 					INNER JOIN tblClubLadder ladder on users.userid = ladder.userid

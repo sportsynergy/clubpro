@@ -193,7 +193,7 @@ function run_ladder_export_report($ladderid, $ladder_name) {
     $reportName = "$ladder_name Full Export";
     $reportDescription = "This report is used to export data for Jump ladders";
 
-    $ladderMatchResult = getLadderExport( $ladderid, 100 );
+    $ladderMatchResult = getLadder( $ladderid);
 
     // Display the data
     ?>
@@ -244,10 +244,10 @@ function run_ladder_export_report($ladderid, $ladder_name) {
         
         <? while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){  ?> 
             <tr>
-            <td><?=$challengeMatch['name']?></td>
+            <td><?=$challengeMatch['fullname']?></td>
+            <td><?=$challengeMatch['ladderposition']?></td>
             <td><?=$challengeMatch['ranking']?></td>
-            <td><?=$challengeMatch['rating']?></td>
-            <td><?=$challengeMatch['email']?></td>
+            <td><a href="mailto:<?=$challengeMatch['email']?>"><?=$challengeMatch['email']?></a></td>
             <td><?=$challengeMatch['cellphone']?></td>
             </tr>
         
