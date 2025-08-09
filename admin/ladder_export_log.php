@@ -64,7 +64,7 @@ while ($row = mysqli_fetch_array($ladderMatchResult)) {
     $ladderposition =  $row['ladderposition'];
     $ranking = $row['ranking'];
     $email = $row['email'];
-    $cellphone = $row['email'];
+    $cellphone = $row['cellphone'];
 
     array_push($csvDataArray, wrapWithDoubleQuotes( $name));
     array_push($csvDataArray, wrapWithDoubleQuotes($ladderposition));
