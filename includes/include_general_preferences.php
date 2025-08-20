@@ -196,7 +196,7 @@
                     <option value="n"
                   <? if($generalPreferences["requirelogin"] =='n'){ echo "selected";} ?>>No</option>
               </select>
-              <div class="spacer"/>
+
            </td>
           </tr>
           <tr>
@@ -215,11 +215,26 @@
                     <option value="n"
                   <? if($generalPreferences["allowplayerslooking "] =='n'){ echo "selected";} ?>>No</option>
               </select>
-              <div class="spacer"/>
            </td>
           </tr>
           <tr>
             <td colspan="2" class="spacer"><span class="normal"> Allows players to not specify an opppoent and have the system find a suitable match.</span>
+              <div class="spacer"/></td>
+          </tr>
+
+           <tr>
+            <td class="label"> Automatically Cancel Incomplete Reservations</td>
+            <td>
+                <select name="autocancelincompletes">
+                    <option value="none" <?=$generalPreferences["autocancelincompletes"]=='none'  ? "selected":""?> >none</option>
+                    <option value="1" <?=$generalPreferences["autocancelincompletes"]=='1' ? "selected":""?> >1 hour ahead</option>
+                    <option value="4" <?=$generalPreferences["autocancelincompletes"]=='4' ? "selected":""?> >4 hours ahead</option>
+                    <option value="12" <?=$generalPreferences["autocancelincompletes"]=='12' ? "selected":""?> >12 hours ahead</option>
+                  </select>
+           </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="spacer"><span class="normal"> Automatically cancel reservations that don't have all of the players set.  For example, setting this to 12 hours ahead will cancel all reservations that still need players 12 hours ahead of time.</span>
               <div class="spacer"/></td>
           </tr>
 
