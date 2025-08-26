@@ -1,6 +1,6 @@
 create table clubpro_main.tblEvents
 (
-    eventid      smallint(4) auto_increment
+    eventid      smallint auto_increment
         primary key,
     eventname    text                                not null,
     siteid       mediumint default 0                 not null,

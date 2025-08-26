@@ -2,7 +2,7 @@ create table clubpro_main.tblMessages
 (
     id            int auto_increment
         primary key,
-    siteid        int(8)      default 0                 not null,
+    siteid        int         default 0                 not null,
     heading       varchar(55) default ''                not null,
     message       text                                  not null,
     messagetypeid smallint                              not null,

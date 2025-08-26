@@ -1,6 +1,6 @@
 create table clubpro_main.tblUsers
 (
-    userid       int(8) auto_increment
+    userid       int auto_increment
         primary key,
     username     varchar(55)                          not null,
     firstname    varchar(35)                          not null,

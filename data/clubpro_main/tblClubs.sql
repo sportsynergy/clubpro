@@ -1,6 +1,6 @@
 create table clubpro_main.tblClubs
 (
-    clubid       int(8)    default 0                 not null
+    clubid       int       default 0                 not null
         primary key,
     clubname     text charset utf8                   not null,
     clubaddress  text charset utf8                   not null,

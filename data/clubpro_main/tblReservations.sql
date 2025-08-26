@@ -6,7 +6,7 @@ create table clubpro_main.tblReservations
     time          int             default 0                     not null,
     usertype      tinyint         default 0                     not null,
     matchtype     tinyint         default 0                     not null,
-    eventid       smallint(4)     default 0                     not null,
+    eventid       smallint        default 0                     not null,
     guesttype     tinyint         default 0                     not null,
     creator       int             default 0                     not null,
     createdate    timestamp       default '0000-00-00 00:00:00' not null,

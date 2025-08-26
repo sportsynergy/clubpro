@@ -1,6 +1,6 @@
 create table clubpro_main.tblUserRankings
 (
-    userid       int(8)    default 0                 not null,
+    userid       int       default 0                 not null,
     courttypeid  int       default 0                 not null,
     ranking      float     default 0                 not null,
     hot          tinyint   default 0                 not null,

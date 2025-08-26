@@ -1,11 +1,11 @@
 create table clubpro_main.tblHoursPolicy
 (
-    policyid     int(8) auto_increment
+    policyid     int auto_increment
         primary key,
-    siteid       int(8)    default 0                 not null,
+    siteid       int       default 0                 not null,
     day          tinyint   default 0                 not null,
     month        tinyint   default 0                 not null,
-    year         int(8)    default 0                 not null,
+    year         int       default 0                 not null,
     opentime     time      default '00:00:00'        not null,
     closetime    time      default '00:00:00'        not null,
     enable       tinyint   default 0                 not null,
