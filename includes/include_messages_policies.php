@@ -87,7 +87,8 @@ function wipeOutClubMessages()
             <td width="125" valign="top"><span class="label">News Update:</span><br/></td>
             <td><textarea cols="45" rows="4" name="ClubNewsMessage" onKeyDown="limitText(this.form.ClubNewsMessage,this.form.countdown,140);" 
 			onKeyUp="limitText(this.form.ClubNewsMessage,this.form.countdown,140);"></textarea>
-              <?err($errors->ClubNewsMessage)?>
+              
+               <? is_object($errors) ?err($errors->ClubNewsMessage) : ""?>
               <div> <span class="normalsm"> You have
                 <input readonly type="text" name="countdown" size="3" value="140">
                 characters left. </span> </div></td>
