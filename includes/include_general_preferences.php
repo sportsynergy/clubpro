@@ -234,7 +234,7 @@
            </td>
           </tr>
           <tr>
-            <td colspan="2" class="spacer"><span class="normal"> Automatically cancel reservations that don't have all of the players set.  For example, setting this to 12 hours ahead will cancel all reservations that still need players 12 hours ahead of time.</span>
+            <td colspan="2" class="spacer"><span class="normal"> Automatically cancel reservations that don't have all of the players set.  For example, setting this to 12 hours ahead will cancel all reservations that still need players 12 hours ahead of time.z</span>
               <div class="spacer"/></td>
           </tr>
 
