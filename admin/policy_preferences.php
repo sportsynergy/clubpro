@@ -246,7 +246,8 @@ function load_general_preferences($siteid) {
         						clubsite.facebookurl,
 								clubsite.reminders,
                                 clubsite.showplayernames,
-                                clubsite.requirelogin
+                                clubsite.requirelogin,
+                                clubsite.autocancelincompletes
                          FROM tblClubSites clubsite
                          WHERE clubsite.siteid = $siteid");
     return db_fetch_array($qid);
@@ -581,7 +582,7 @@ function update_general_clubprefs(&$frm) {
     
     if (isDebugEnabled(1)) logMessage("general_preferneces.update_clubprefs: Updating club preferences.");
 
-    $challengerange = isset($frm[challengerange]) ? $frm[challengerange] : '0';
+    $challengerange = isset($frm['challengerange']) ? $frm['challengerange'] : '0';
 
     /* Update the club preferences */
     $query = "Update tblClubSites SET allowselfcancel = '$frm[allowselfcancel]'
@@ -594,6 +595,7 @@ function update_general_clubprefs(&$frm) {
                 ,showplayernames = '$frm[showplayernames]'
                 ,requirelogin = '$frm[requirelogin]'
                 ,allowplayerslooking = '$frm[allowmatchlooking]'
+                ,autocancelincompletes = '$frm[autocancelincompletes]'
                 WHERE siteid = '" . get_siteid() . "'";
 
 
