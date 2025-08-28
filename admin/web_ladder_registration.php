@@ -107,7 +107,7 @@ function insert_box(&$frm) {
     $useridresult = db_query($useridquery);
     $numberofrows = mysqli_num_rows($useridresult);
     $lastboxrank = $numberofrows + 1;
-    $ladderid = isset($frm[ladder]) ? $frm[ladder] : "NULL";
+    $ladderid = isset($frm['ladder']) ? $frm['ladder'] : "NULL";
     $boxname = addslashes($frm['boxname']);
     $autoschedule =  $frm['autoschedule'] == 'yes' ? 'TRUE':'FALSE';
     $query = "INSERT INTO tblBoxLeagues (
