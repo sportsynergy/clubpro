@@ -2,12 +2,11 @@
 
 /*
 
-Updates the the box league scores
+Updates the the box league score
 
 
 - Players play each other twice over the course of the season
 - They get two points for a win, one for a loss in the first match
-- They get one point for a win and zero points for a loss in the rematch
 - In case the players split matches, total games won serves as the tiebreak
 
 This can run all time or by a day
