@@ -41,7 +41,7 @@ $ladderMatchResult = getLadderMatches($ladderid, 40 );
 
 if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
-<table class="activitytable" width="400">
+<table class="activitytable sortable" width="400"">
     <tr>
       <th>Date</th>
       <th>Winner</th>

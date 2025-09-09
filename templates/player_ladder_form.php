@@ -109,14 +109,14 @@ to add your name now.
 
 						<table cellspacing="1" cellpadding="5" width="350" class="sortable" >
 							<tr>
-								<td width="25%"><span class="bold">Place</span>
-								
+								<th width="25%">
+									<span class="bold">Place</span>
 								</th>
-								<td><span class="bold">Name</span>
-								
+								<th>
+									<span class="bold">Name</span>
 								</th>
-								<td><span class="bold">Rating</span>
-								
+								<th>
+									<span class="bold">Rating</span>
 								</th>
 							</tr>
 							<?

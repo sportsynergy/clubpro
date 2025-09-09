@@ -114,9 +114,7 @@ $clubquery = "SELECT timezone from tblClubs WHERE clubid=".get_clubid()."";
 $clubresult = db_query($clubquery);
 $clubobj = db_fetch_object($clubresult);
 
-$gmtime =   gmmktime();
-$tzdelta = $clubobj->timezone*3600;
-$curtime =   $gmtime+$tzdelta;
+$curtime = $_SESSION["current_time"];
 
 
 

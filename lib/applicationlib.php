@@ -916,8 +916,6 @@ function isJumpLadderRankingScheme() {
 }
 
 
-
-
 function getChallengeRange() {
 
     /* this function simply returns the challenge range*/
@@ -5709,7 +5707,8 @@ function getSitePreferencesForCourt($courtid) {
                     clubs.timezone,
                     sites.showplayernames,
                     sites.requirelogin,
-					sites.timeoutlink
+					sites.timeoutlink,
+					sites.boxsession
 	        FROM tblClubSites sites, tblCourts courts, tblClubs clubs
 			WHERE sites.siteid = courts.siteid
 			AND sites.clubid = clubs.clubid

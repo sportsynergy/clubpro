@@ -2,7 +2,7 @@
 
 /*
 
-Updates the the box league scores
+Updates the the box league score from the
 
 
 - Players play each other twice over the course of the season
