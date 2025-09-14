@@ -34,6 +34,7 @@ create table clubpro_main.tblClubSites
     allowplayerslooking         enum ('y', 'n')                                          default 'y'               null,
     timeoutlink                 varchar(255)                                                                       null comment 'the url after a timeout',
     autocancelincompletes       enum ('none', '1', '4', '12')                            default 'none'            not null,
+    boxsession                  date                                                                               null comment 'used with extended box leagues',
     constraint sitecode
         unique (sitecode)
 )
