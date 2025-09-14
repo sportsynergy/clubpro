@@ -146,7 +146,6 @@ if ($siteid) {
             if (isDebugEnabled(1)) logMessage("box_leagues: this match was already recorded. going to do nothing.");
         }
 
-
         // update the laddermatch schedule
         $scoredquery = "UPDATE tblBoxLeagueSchedule SET scored = TRUE WHERE id = $scheduledmatchid";
         db_query($scoredquery);
@@ -156,21 +155,23 @@ if ($siteid) {
     if (isset($ladderid)) {
 
         if (isDebugEnabled(1)) logMessage("box_leagues: ladderid is:  $ladderid");
-
+        
         //Get all of the web ladders for the club
-        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.startdate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated
+        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.startdate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated, tblBoxLeagues.ladder_type
                         FROM tblBoxLeagues
                         INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
                         WHERE tblBoxLeagues.siteid=$siteid
+                        AND tblBoxLeagues.enable = TRUE
                         AND tCSL.id = $ladderid
                         ORDER BY tblBoxLeagues.boxrank";
 
     } else {
 
         //Get all of the web ladders for the club
-        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.startdate, tblBoxLeagues.enddate, tblBoxLeagues.enable
+        $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.startdate, tblBoxLeagues.enddate, tblBoxLeagues.enable, tblBoxLeagues.ladder_type
                       FROM tblBoxLeagues
-                      WHERE (((tblBoxLeagues.siteid)=$siteid))
+                      WHERE (tblBoxLeagues.siteid)=$siteid
+                      AND tblBoxLeagues.enable = TRUE
                       ORDER BY tblBoxLeagues.boxrank";
     }
 
@@ -287,7 +288,7 @@ $playercounter = 0;
 
 // hacky thing to get tables to look right
 if ( isJumpLadderRankingScheme() ){
-    $colspan = 4;
+    $colspan = 6;
 } else {
     $colspan = 3;
 }
@@ -301,7 +302,7 @@ $lastupdatestring = $wlobj->lastupdated;
           <? }     
     ?> 
             
-      <td width="350"  nowrap>
+      <td width="350" >
 
               <table width="350" cellpadding="0" cellspacing="0" class="bordertable">
               	<tr valign="top">
@@ -337,7 +338,18 @@ $lastupdatestring = $wlobj->lastupdated;
                       <td>
 	              		<span class="whitenorm">Games Won</span>
 	              	</td>
+
+                        <?  if( $wlobj->ladder_type == 'extended' ) { ?>
+                        <td>
+                            <span class="whitenorm">Total Points</span>
+                        </td>
+                         <td>
+                            <span class="whitenorm">Total Games Won</span>
+                        </td>
+                        <?  } ?>
+
                     <?  } ?>
+                     
 
               </tr>
         
@@ -350,7 +362,9 @@ $lastupdatestring = $wlobj->lastupdated;
 										tblkpBoxLeagues.score,
                                         tblkpBoxLeagues.gameswon,
 										tblUsers.userid,
-										tblkpBoxLeagues.boxid
+										tblkpBoxLeagues.boxid,
+                                        tblkpBoxLeagues.totalscore,
+                                        tblkpBoxLeagues.totalgameswon
                                       FROM tblUsers
                                       INNER JOIN tblkpBoxLeagues ON tblUsers.userid = tblkpBoxLeagues.userid
                                       WHERE tblkpBoxLeagues.boxid=$wlobj->boxid
@@ -396,9 +410,22 @@ $lastupdatestring = $wlobj->lastupdated;
                             <? if ( isJumpLadderRankingScheme() ) { ?>
                             <td>
                                     <span class="normal">
-                                    <?=$wluserobj->gameswon?></span>
+                                    <?=$wluserobj->gameswon?>
                                     </span>
                             </td>
+
+                                <?  if( $wlobj->ladder_type == 'extended' ) {  ?>
+                                    <td>
+                                        <span class="normal">
+                                             <?=$wluserobj->totalscore?>
+                                        </span>
+                                    </td>
+                                     <td>
+                                        <span class="normal">
+                                             <?=$wluserobj->totalgameswon?>
+                                        </span>
+                                    </td>
+                                    <?  } ?>
                             <? } ?>   
 
                         </tr>

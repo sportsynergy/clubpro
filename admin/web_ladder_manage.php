@@ -98,7 +98,8 @@ function validate_form($frm) {
 
             $boxUserQuery = "SELECT userid  FROM tblkpBoxLeagues
                                 INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid
-                                WHERE tblkpBoxLeagues.userid = $frm[boxuser]";
+                                WHERE tblkpBoxLeagues.userid = $frm[boxuser]
+                                AND tblBoxLeagues.enable=TRUE";
 
             $boxUserResult = db_query($boxUserQuery); 
             if (mysqli_num_rows($boxUserResult) > 0) {
@@ -114,7 +115,8 @@ function validate_form($frm) {
             $boxUserQuery = "SELECT userid FROM tblkpBoxLeagues
                             INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid
                             WHERE userid = $frm[boxuser]
-                            AND tblBoxLeagues.ladderid=$frm[ladderid]";
+                            AND tblBoxLeagues.ladderid=$frm[ladderid]
+                            AND tblBoxLeagues.enable=TRUE";
             
             $boxUserResult = db_query($boxUserQuery); 
             if (mysqli_num_rows($boxUserResult) > 0) {

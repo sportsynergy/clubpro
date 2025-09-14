@@ -107,11 +107,13 @@ function insert_box(&$frm) {
     $useridresult = db_query($useridquery);
     $numberofrows = mysqli_num_rows($useridresult);
     $lastboxrank = $numberofrows + 1;
-    $ladderid = isset($frm[ladder]) ? $frm[ladder] : "NULL";
+    $ladderid = isset($frm['ladder']) ? $frm['ladder'] : "NULL";
     $boxname = addslashes($frm['boxname']);
     $autoschedule =  $frm['autoschedule'] == 'yes' ? 'TRUE':'FALSE';
+    $ladder_type = $frm['ladder_type'];
+
     $query = "INSERT INTO tblBoxLeagues (
-                boxname, siteid, courttypeid, boxrank, startdate, enddate, enddatestamp,ladderid,autoschedule
+                boxname, siteid, courttypeid, boxrank, startdate, enddate, enddatestamp,ladderid,autoschedule,ladder_type
                 ) VALUES (
                           '$boxname'
                           ,'" . get_siteid() . "'
@@ -121,7 +123,8 @@ function insert_box(&$frm) {
                           ,$datestring
                           ,$timestamp
                           ,$ladderid
-                          ,$autoschedule)";
+                          ,$autoschedule
+                          ,'$ladder_type')";
 
     // run the query on the database
     $result = db_query($query);

@@ -16,13 +16,12 @@ $boxid = $_REQUEST["boxid"];
    $boxrankval = mysqli_result($oldboxplaceresult, 0);
 
    //Remove Box
-   $qid1 = db_query("DELETE FROM tblBoxLeagues
+   $qid1 = db_query("UPDATE tblBoxLeagues
+                        SET tblBoxLeagues.enable = FALSE
                      WHERE boxid = $boxid");
 
 
-   //Remove the people from the box
-   $qid1 = db_query("DELETE FROM tblkpBoxLeagues
-                     WHERE boxid = $boxid");
+
 
 
    //Set all current reservations for this box to practice.
@@ -39,15 +38,13 @@ $boxid = $_REQUEST["boxid"];
                      WHERE boxid = $boxid");
 
 
-
-
-
    // Now adjust all boxes who were ranked below this box
 
    $adjustquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxrank
                    FROM tblBoxLeagues
                    WHERE (((tblBoxLeagues.boxrank)>$boxrankval))
                    AND siteid=".get_siteid()."
+                   AND tblBoxLeagues.enable = TRUE
                    ORDER BY tblBoxLeagues.boxrank";
 
 
@@ -63,7 +60,6 @@ $boxid = $_REQUEST["boxid"];
         UPDATE tblBoxLeagues
         SET boxrank = '$newboxrankval'
         WHERE boxid = '$adjustobj->boxid'");
-
 
    }
 
@@ -98,8 +94,6 @@ $boxid = $_REQUEST["boxid"];
    if ( $boxrankval > 1){
 
    $newboxrankval = $boxrankval - 1;
-
-
 
         // MOve the box ahead down
         $qid1 = db_query("
@@ -204,6 +198,8 @@ print "var thisyear = new Array(13);
 
     	    YAHOO.util.Event.onContentReady("formtable", function () {
 
+                document.getElementById('boxname').setAttribute("autocomplete", "off");
+
     	        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
     	        oSubmitButton1.on("click", onSubmitButtonClicked);
 
@@ -233,11 +229,11 @@ print "var thisyear = new Array(13);
 
 
 
-      <table width="550" cellspacing="5" cellpadding="0"  >
+      <table width="550" cellspacing="5" cellpadding="0" autocomplete="off" >
       <tr>
 
        <td class="label">Box Name:</td>
-        <td><input type="text" name="boxname" size=25>
+        <td><input id="boxname" type="text" name="boxname" size=25>
             <? is_object($errors) ? err($errors->boxname) : ""?>
         </td>
        </tr>
@@ -336,7 +332,20 @@ print "var thisyear = new Array(13);
         </td>
     </tr>
 
-    <? } ?>
+    <tr>
+        <td class="label">Rollover Scores: </td>
+        <td>
+            <select name="ladder_type">
+                <option value="basic">No</option>
+                <option value="extended">Yes</option>
+             </select>
+        </td>
+    </tr>
+
+    <? }  else {  # default to this for non jumpladder situations?>
+    <input type="hidden" name ="laddertype" value="manual" >
+
+    <? }   ?>
      <tr>
       <td colspan="2">
       <input type="button" name ="submit" value="Submit" id="submitbutton">
@@ -357,12 +366,12 @@ print "var thisyear = new Array(13);
 
      </tr>
      <?
-       //List out all of the players Buddies
 
 
        $query = "SELECT tblBoxLeagues.boxname, tblBoxLeagues.boxid, tblBoxLeagues.enable, tblBoxLeagues.boxrank
                 FROM tblBoxLeagues
-                WHERE (((tblBoxLeagues.siteid)=".get_siteid()."))
+                WHERE tblBoxLeagues.siteid=".get_siteid()."
+                AND tblBoxLeagues.enable = TRUE
                 ORDER BY tblBoxLeagues.boxrank";
 
        // run the query on the database
@@ -386,7 +395,6 @@ print "var thisyear = new Array(13);
        	 $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
        	 
        	?>
-
 
             <tr >
             <td class="normal"><?=$row[3]?></td>
