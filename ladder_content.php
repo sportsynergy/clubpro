@@ -146,7 +146,6 @@ if ($siteid) {
             if (isDebugEnabled(1)) logMessage("box_leagues: this match was already recorded. going to do nothing.");
         }
 
-
         // update the laddermatch schedule
         $scoredquery = "UPDATE tblBoxLeagueSchedule SET scored = TRUE WHERE id = $scheduledmatchid";
         db_query($scoredquery);
@@ -156,7 +155,7 @@ if ($siteid) {
     if (isset($ladderid)) {
 
         if (isDebugEnabled(1)) logMessage("box_leagues: ladderid is:  $ladderid");
-
+        
         //Get all of the web ladders for the club
         $getwebladdersquery = "SELECT tblBoxLeagues.boxid, tblBoxLeagues.boxname, tblBoxLeagues.enddate, tblBoxLeagues.startdate, tblBoxLeagues.enable, tCSL.name as ladder_name, tCSL.leaguesUpdated AS lastupdated, tblBoxLeagues.ladder_type
                         FROM tblBoxLeagues
@@ -289,7 +288,7 @@ $playercounter = 0;
 
 // hacky thing to get tables to look right
 if ( isJumpLadderRankingScheme() ){
-    $colspan = 5;
+    $colspan = 6;
 } else {
     $colspan = 3;
 }
@@ -342,7 +341,10 @@ $lastupdatestring = $wlobj->lastupdated;
 
                         <?  if( $wlobj->ladder_type == 'extended' ) { ?>
                         <td>
-                            <span class="whitenorm"> Total Games Won</span>
+                            <span class="whitenorm">Total Points</span>
+                        </td>
+                         <td>
+                            <span class="whitenorm">Total Games Won</span>
                         </td>
                         <?  } ?>
 
@@ -360,7 +362,9 @@ $lastupdatestring = $wlobj->lastupdated;
 										tblkpBoxLeagues.score,
                                         tblkpBoxLeagues.gameswon,
 										tblUsers.userid,
-										tblkpBoxLeagues.boxid
+										tblkpBoxLeagues.boxid,
+                                        tblkpBoxLeagues.totalscore,
+                                        tblkpBoxLeagues.totalgameswon
                                       FROM tblUsers
                                       INNER JOIN tblkpBoxLeagues ON tblUsers.userid = tblkpBoxLeagues.userid
                                       WHERE tblkpBoxLeagues.boxid=$wlobj->boxid
@@ -406,9 +410,22 @@ $lastupdatestring = $wlobj->lastupdated;
                             <? if ( isJumpLadderRankingScheme() ) { ?>
                             <td>
                                     <span class="normal">
-                                    <?=$wluserobj->gameswon?></span>
+                                    <?=$wluserobj->gameswon?>
                                     </span>
                             </td>
+
+                                <?  if( $wlobj->ladder_type == 'extended' ) {  ?>
+                                    <td>
+                                        <span class="normal">
+                                             <?=$wluserobj->totalscore?>
+                                        </span>
+                                    </td>
+                                     <td>
+                                        <span class="normal">
+                                             <?=$wluserobj->totalgameswon?>
+                                        </span>
+                                    </td>
+                                    <?  } ?>
                             <? } ?>   
 
                         </tr>

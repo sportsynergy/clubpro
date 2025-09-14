@@ -34,7 +34,9 @@ class UpdateBoxLeagueScores{
         $query = "SELECT boxname, ladderid, startdate, boxid FROM tblBoxLeagues 
                     INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
                     WHERE startdate IS NOT NULL
-                    AND  tblBoxLeagues.ladder_type = 'basic'";
+                    AND  tblBoxLeagues.ladder_type = 'basic'
+                    AND enable=TRUE";
+                    
         $mresult = db_query($query);
         
         while($box_array = mysqli_fetch_array($mresult) ){
