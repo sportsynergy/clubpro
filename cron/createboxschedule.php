@@ -42,7 +42,9 @@ class CreateBoxLeagueSchedule {
         $query = "SELECT boxname, ladderid, boxid FROM tblBoxLeagues 
                     INNER JOIN tblClubSiteLadders tCSL 
                         ON tblBoxLeagues.ladderid = tCSL.id
-                    WHERE tblBoxLeagues.autoschedule IS TRUE"; 
+                    WHERE tblBoxLeagues.autoschedule IS TRUE
+                    AND tblBoxLeagues.enabled IS TRUE"; 
+                    
         $mresult = db_query($query);
        
         while($box_array = mysqli_fetch_array($mresult) ){
