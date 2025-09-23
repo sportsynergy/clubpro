@@ -109,7 +109,7 @@ $trackingid="TRACKING_ID_GOES_HERE";
 /* setup some global variables */
 $ME = qualified_me();
 $MEWQ = qualified_mewithq();
-$dbhost = "localhost";
+$dbhost = "db";  // use "localhost" when not using docker
 $dbname = "clubpro_main";
 $dbuser = "root";
 $dbpass = "clubs4life";
