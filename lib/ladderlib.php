@@ -1284,5 +1284,23 @@ function isPlayerAbleToScoreLeagueMatch($userid1, $userid2, $ladderid){
 
 }
 
+function isOnClubTeam($userid){
+
+	$query = "SELECT count(*) from tblClubLadderTeam tCLT
+				INNER JOIN tblClubLadderTeamMember tCLTm on tCLT.id = tCLTm.teamid
+				WHERE tCLTm.userid = $userid
+				AND tCLT.enddate IS NULL";
+
+	$result = db_query($query);
+	$onClubTeam = mysqli_result($result, 0);
+   
+	if ($onClubTeam > 0) {
+		return true;
+	} else {
+		return false;
+	}	
+
+}
+
 
 ?>
