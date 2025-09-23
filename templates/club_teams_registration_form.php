@@ -112,19 +112,19 @@
        	?>
             <form name="removeteam<?=$rowcount?>" method="post" 
             action="<?=$ME?>">
-            <input type="hidden" name="teamid" value="<?=$row[teamid]?>">
+            <input type="hidden" name="teamid" value="<?=$row['teamid']?>">
             <input type="hidden" name ="submitme" value="submitme" >
             <input type="hidden" name="action" value="remove">
             </form>
 
             <form name="manageteam<?=$rowcount?>" method="post" 
             action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_team_manage.php">
-            <input type="hidden" name="teamid" value="<?=$row[teamid]?>">
+            <input type="hidden" name="teamid" value="<?=$row['teamid']?>">
             </form>
       
             <tr class="<?=$rc?>">
-            <td class="normal"><?=$row[teamname]?></td>
-            <td class="normal"><?=$row[laddername]?></td>
+            <td class="normal"><?=$row['teamname']?></td>
+            <td class="normal"><?=$row['laddername']?></td>
             <td class="normal">
             
             <a href="javascript:submitForm('manageteam<?=$rowcount?>')">Manage</a>

@@ -72,7 +72,7 @@ $teamquery = "SELECT tCLT.name AS teamname, tCSL.name AS laddername, tCLT.id,  t
 // run the query on the database
 $result = db_query($teamquery);
 $teamarray = mysqli_fetch_array($result);
-$ladderid = $teamarray[ladderid];
+$ladderid = $teamarray['ladderid'];
 
 
 

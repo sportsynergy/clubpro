@@ -129,13 +129,13 @@ $userid = $_REQUEST["userid"];
           <tr class="<?=$rc?>" >
 	         <td >
                 
-	         	<span class="normal"><?=$row[teamplayername]?></span>
+	         	<span class="normal"><?=$row['teamplayername']?></span>
 	         </td> 
              <td >
              <form name="removeplayer<?=$rownum?>" method="post" action="<?=$ME?>" >
-                <input type="hidden" name="userid" value="<?=$row[userid]?>">
+                <input type="hidden" name="userid" value="<?=$row['userid']?>">
                 <input type="hidden" name ="submitme" value="submitme" >
-                <input type="hidden" name ="teamid" value="<?=$row[id]?>" >
+                <input type="hidden" name ="teamid" value="<?=$row['id']?>" >
                 <input type="hidden" name="action" value="remove">
               </form>
 
