@@ -63,7 +63,9 @@
           <div class="bd">
             <ul class="first-of-type">
               <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">Box Leagues</a></li>
+              <? if( isSiteClubTeam( get_siteid() ) ) { ?>
               <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/club_teams.php">Club Teams</a></li>
+              <? } ?>
               <? if(isinBoxLeague( get_userid() ) && isOnClubTeam(  get_userid() )) { ?>
               <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/my_league_schedule.php">My Team Matches</a></li>
              <? } ?>

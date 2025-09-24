@@ -6737,4 +6737,23 @@ function isOnClubTeam($userid){
 	}	
 
 }
+
+function isSiteClubTeam($siteid){
+
+	$query = "SELECT count(*) from tblClubLadderTeam tCLT
+				INNER JOIN tblClubSiteLadders tCSL ON tCLT.ladderid = tCSL.id
+				WHERE tCSL.siteid = $siteid
+				AND tCSL.enddate IS NULL
+                AND tCLT.enddate IS NULL";
+
+	$result = db_query($query);
+	$onClubTeam = mysqli_result($result, 0);
+   
+	if ($onClubTeam > 0) {
+		return true;
+	} else {
+		return false;
+	}	
+
+}
 ?>
