@@ -1448,8 +1448,6 @@ function email_players($resid, $emailType) {
         // run the query on the database
         $emailidresult = db_query($emailidquery);
 
-
-        if (isDebugEnabled(1)) logMessage("applicationlib.emailplayers query: $emailidquery");
         
         $to_emails = array();
         while ($emailidrow = db_fetch_row($emailidresult)) {
@@ -6722,5 +6720,21 @@ $close = array(
 "battled past"
     );
 
+function isOnClubTeam($userid){
 
+	$query = "SELECT count(*) from tblClubLadderTeam tCLT
+				INNER JOIN tblClubLadderTeamMember tCLTm on tCLT.id = tCLTm.teamid
+				WHERE tCLTm.userid = $userid
+				AND tCLT.enddate IS NULL";
+
+	$result = db_query($query);
+	$onClubTeam = mysqli_result($result, 0);
+   
+	if ($onClubTeam > 0) {
+		return true;
+	} else {
+		return false;
+	}	
+
+}
 ?>

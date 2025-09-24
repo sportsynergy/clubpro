@@ -29,7 +29,7 @@
 * Function list:
 * Classes list:
 */
-require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
+
 
 ?>
 <div id="productsandservices" class="yuimenubar yuimenubarnav">
