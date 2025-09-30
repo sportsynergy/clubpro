@@ -274,7 +274,7 @@ function printEvent($courtid, $time, $eventid, $reservationid, $ispast, $locked)
               	//only provide links to administrators, who then have the option to cancel or change
               	if( (get_roleid()==2 || get_roleid()==4) && !$ispast ){ ?>
               		 
-              	 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
+              	 <a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
                  <? if($locked=="y"){ ?>
                        <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png"> 
                  <? }?>  
@@ -349,7 +349,7 @@ function printResourceReservation($courtid, $time, $creatorid, $reservationid, $
                     <span class="normalsm1">
                          
                            <? if(!$inpast) { ?>
-                                <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
+                                <a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
                             <? } ?>
                             
                           <?=gmdate("g:i",$time)?><br>
@@ -389,7 +389,7 @@ function printDoublesReservationSinglePlayer($userid, $lock, $matchType, $time, 
 	                      <? }?>
 	                      
 	                      <? if(!$inpast) { ?>
-	                      		<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
+	                      		<a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
 	                      <? } ?>
 	                      
                           <?=gmdate("g:i",$time)?><br>
@@ -438,7 +438,7 @@ function printDoublesReservationTeamWanted($teamid, $lock, $matchType, $time, $c
 			  <? }?>
 			  
 			  <? if( !$inpast){ ?>
-			  	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$teamid?>">
+			  	<a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$teamid?>">
 			  <? } ?>
 			  
 			  <?=gmdate("g:i",$time)?><br>
@@ -495,7 +495,7 @@ function printDoublesReservationPlayerWanted($teamid, $userid, $lock, $matchType
 					<? }?> 
 					
 					<? if(!$inpast) { ?>
-                       <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
+                       <a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>">
                      <? } ?>
                      
 		             <?=gmdate("g:i",$time)?><br>
@@ -549,7 +549,7 @@ function printDoublesReservationPlayersWanted($userid1, $userid2, $lock, $matchT
 					<? }?> 
 					
 				   <? if(!$inpast) { ?>
-                       <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid1?>">
+                       <a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid1?>">
                      <? } ?>
 					
 		             <?=gmdate("g:i",$time)?><br>
@@ -629,9 +629,9 @@ function printDoublesReservationFull($teamid1, $teamid2, $lock, $matchType, $tim
 						<? }?>
 					     
 					       <? if(!$inpast) { ?>
-                       			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
+                       			<a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
                      		<? } else if(!$scored && ($matchType==0 || $matchType==1 || $matchType==2 || $matchType==3)) {?>
-                     			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$reservationid?>">
+                     			<a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$reservationid?>">
                      		<?}  ?>
                      		
 		                  <?=gmdate("g:i",$time)?><br>
@@ -668,7 +668,7 @@ function printEmptyReservation($time, $courtid, $inpast){
      	<td align="center" title="<?=$printtime?>">
      		<span class="normalsm1">
      			<? if(!$inpast) { ?>
-                      <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<? print(sprintf("%d" , $time ))?>&courtid=<?=$courtid?>">
+                      <a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<? print(sprintf("%d" , $time ))?>&courtid=<?=$courtid?>">
                  <? } ?>
                  <? print (gmdate("g:i",$time)."<br>")?>
                  <? if(!$inpast){ ?>
@@ -702,7 +702,7 @@ function printGuestReservation($guest1, $guest2, $time, $courtid, $matchtype, $i
             <td align="center" title="<?=$printtime?>">
             <span class="normalsm1">
             	<? if(!$inpast){?>
-                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>&cmd=cancelall">
+                 <a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>&cmd=cancelall">
                 <? } ?>  
             	
                 <?=gmdate("g:i",$time)?><br>
@@ -775,9 +775,9 @@ function printSinglesReservation($userid1, $userid2, $time, $courtid, $matchtype
             <span class="normalsm1">
             	
             	<? if(!$inpast) { ?>
-                       <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
+                       <a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>">
                  <? } else if(!$scored && ($matchtype==0 ||$matchtype==1 || $matchtype==2 || $matchtype==3)) {?>
-                     	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$reservationid?>">
+                     	<a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_scores.php?reservationid=<?=$reservationid?>">
                  <?}  ?>
                 
                 <?=gmdate("g:i",$time)?><br/>
@@ -838,9 +838,9 @@ function printPartialSinglesReservation($userid, $time, $courtid, $matchtype, $i
              <? if(!$inpast){?>
                  
                   <? if($matchtype==5) { ?>
-                 	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>&cmd=cancelall" title="ranking: <?=$ranking?>">
+                 	<a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php?time=<?=$time?>&courtid=<?=$courtid?>&cmd=cancelall" title="ranking: <?=$ranking?>">
                  <? } else {  ?>
-	                 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>" title="ranking: <?=$ranking?>">
+	                 <a class="r-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_reservation.php?time=<?=$time?>&courtid=<?=$courtid?>&userid=<?=$userid?>" title="ranking: <?=$ranking?>">
 	              <? } ?> 
 	                
              <? } ?>

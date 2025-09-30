@@ -230,6 +230,7 @@ $tzdelta = $clubobj->timezone * 3600;
 $curtime = time() + $tzdelta;
 $_SESSION["current_time"] = $curtime;
 $simtzdelta = $clubobj->timezone;
+$currHour = gmdate("G", $curtime);
 
 //Allow Person to type in the date to load
 if (array_key_exists('month', $_REQUEST)) {
@@ -294,7 +295,13 @@ $oDay = gmdate("n", $userdate);
 $oMonth = gmdate("j", $userdate);
 
 //used in the date picker
-$jsdate = "$oDay/$oMonth/$oYear";
+$jsdate = "$oDay/$oMonth/$oYear"; // date loaded from the picker
+$jsdate2 = "$currMonth/$currDay/$currYear"; //current date
+
+
+
+
+
 
 if ($clubid) {
 ?>
@@ -1033,8 +1040,29 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
     	<span class="italitcsm">* created reservation</span>
     </div>
 
+
+	
+
     <?php
 }
 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+
+
+// can't make reservattions before 6 for normal users on the last day out
+if( get_roleid()==1 && $jsdate2 == $jsdate && $currHour <=  6 ){ 
+
+	?>
+<script>
+
+	// Select the element
+	const elements = document.querySelectorAll('.r-link');
+    // elements is a NodeList. You can iterate over it using forEach or a traditional for loop.
+    elements.forEach(element => {
+		element.classList.add("disabled-link"); 
+    });
+</script>
+	<?
+
+}
 
 ?>

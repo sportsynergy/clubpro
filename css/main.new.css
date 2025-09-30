@@ -426,3 +426,9 @@ border-color:Gray;
 border-color: Gray;
 }
 
+
+
+.disabled-link {
+	pointer-events: none;
+	cursor: default;
+}
