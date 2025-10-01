@@ -45,7 +45,7 @@ class ReminderService{
 						
 			if( $current_hour == $sites_array['reminders'] && $current_minute == "00"){
 
-				if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule: ".$sites_array['sitename'] ." has a reminder set for ". $sites_array['reminders']. " Processing...");
+				if (isDebugEnabled(2)) logMessage("send-reminder.checkTimedSchedule: ".$sites_array['sitename'] ." has a reminder set for ". $sites_array['reminders']. " Processing...");
 
 				//Get all of the reservations for the next 24 hours
 				$in24hours = $curtime + (60*60*24);
@@ -67,7 +67,7 @@ class ReminderService{
 
 					$res_result = db_query($reservations);
 
-					if (isDebugEnabled(1)) logMessage("send-reminder.checkTimedSchedule:  found ". mysqli_num_rows($res_result) ." reservations");
+					if (isDebugEnabled(2)) logMessage("send-reminder.checkTimedSchedule:  found ". mysqli_num_rows($res_result) ." reservations");
 						
 					while( $res_array = mysqli_fetch_array($res_result ) ){
 
@@ -136,7 +136,7 @@ class ReminderService{
 	*/
 	public function checkFor24HoursAhead(){
 
-		if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: checking for reservations 24 hours ahead");
+		if (isDebugEnabled(2)) logMessage("send-reminder.checkFor24HoursAhead: checking for reservations 24 hours ahead");
 
 	    // for each club site look up the setting
 	    $query = "SELECT sites.siteid, sites.sitename, sites.clubid, clubs.clubname, clubs.timezone
@@ -164,7 +164,7 @@ class ReminderService{
 			
 			$in24hours = $interval_time + (60*60*24);
 
-			if (isDebugEnabled(1)) logMessage("send-reminder.checkFor24HoursAhead: checking for reservations at $in24hours");
+			if (isDebugEnabled(2)) logMessage("send-reminder.checkFor24HoursAhead: checking for reservations at $in24hours");
 
 			// Get the reservations 
 			$reservations = "SELECT reservations.reservationid, 
@@ -279,7 +279,7 @@ private function sendReminder($usertype, $reservationid, $matchtype, $courtname,
 */
 private function sendDoublesReminder($reservationid, $matchtype, $courtname, $time, $clubname){
 	
-	if (isDebugEnabled(1)) logMessage("send-reminder.sendDoublesReminder: sending out a doubles reminder for $clubname");
+	if (isDebugEnabled(2)) logMessage("send-reminder.sendDoublesReminder: sending out a doubles reminder for $clubname");
 	
 	$doubles_query = "SELECT users.firstname, users.lastname, users.email 
 							FROM tblkpUserReservations details
@@ -292,7 +292,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 	$doubles_result = db_query($doubles_query);
 
 	if(mysqli_num_rows($doubles_result) != 4 ){
-		if (isDebugEnabled(1)) logMessage("send-reminder: $reservationid is not a full doubles reservation, skipping");
+		if (isDebugEnabled(2)) logMessage("send-reminder: $reservationid is not a full doubles reservation, skipping");
 		return;
 	}
 		
@@ -384,7 +384,7 @@ private function sendDoublesReminder($reservationid, $matchtype, $courtname, $ti
 */
 private function sendSinglesReminder($reservationid, $matchtype, $courtname, $time, $clubname){
 	
-	if (isDebugEnabled(1)) logMessage("send-reminder.sendSinglesReminder: sending out a singles reminder for $clubname");
+	if (isDebugEnabled(2)) logMessage("send-reminder.sendSinglesReminder: sending out a singles reminder for $clubname");
 			
 	$singles_query = "SELECT users.firstname, users.lastname, users.email 
 						FROM tblkpUserReservations details
@@ -395,7 +395,7 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
 	$singles_result = db_query($singles_query);
 	
 	if(mysqli_num_rows($singles_result) != 2 ){
-		if (isDebugEnabled(1)) logMessage("send-reminder: $reservationid is not a full singles reservations, skipping");
+		if (isDebugEnabled(2)) logMessage("send-reminder: $reservationid is not a full singles reservations, skipping");
 		return;
 	}
 	
@@ -449,7 +449,7 @@ private function sendSinglesReminder($reservationid, $matchtype, $courtname, $ti
 */
 private function sendEventReminder($reservationid, $eventname, $courtname, $time, $clubname, $courttypeid, $clubid){
 
-	if (isDebugEnabled(1)) logMessage("send-reminder.sendEventReminder: sending out an event reminder for $clubname");
+	if (isDebugEnabled(2)) logMessage("send-reminder.sendEventReminder: sending out an event reminder for $clubname");
 	
 	$emailidquery = "SELECT  users.firstname, users.lastname, users.email
 					   FROM tblUsers users
@@ -478,7 +478,7 @@ private function sendEventReminder($reservationid, $eventname, $courtname, $time
 	                'name' => $emailidarray['firstname']
 	            );
 			} else {
-				if (isDebugEnabled(1)) logMessage("send-reminder.sendEventReminder: incomplete account for ".$emailidarray['firstname']." ".$emailidarray['lastname']." ".$emailidarray['email']);
+				if (isDebugEnabled(2)) logMessage("send-reminder.sendEventReminder: incomplete account for ".$emailidarray['firstname']." ".$emailidarray['lastname']." ".$emailidarray['email']);
 			}
 
 	 }

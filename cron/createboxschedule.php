@@ -33,7 +33,7 @@ class CreateBoxLeagueSchedule {
 
     public function createSchedule(){
 
-        if (isDebugEnabled(1)) logMessage("CreateBoxLeagueSchedule: Starting...");
+        if (isDebugEnabled(2)) logMessage("CreateBoxLeagueSchedule: Starting...");
         
         // Clear out the old schedule
          $this->clearScheduledMatches();
@@ -49,7 +49,7 @@ class CreateBoxLeagueSchedule {
        
         while($box_array = mysqli_fetch_array($mresult) ){
 
-            if (isDebugEnabled(1)) logMessage("CreateBoxLeagueSchedule: Processing ". $box_array['boxname'] . "(".$box_array['ladderid'].") "); 
+            if (isDebugEnabled(2)) logMessage("CreateBoxLeagueSchedule: Processing ". $box_array['boxname'] . "(".$box_array['ladderid'].") "); 
         
             // For each person in the league, get the number of matches player for other players
             $box_query = "SELECT concat(tU.firstname,' ',tU.lastname) as full_name, tU.userid, tBL.startdate
@@ -73,7 +73,7 @@ class CreateBoxLeagueSchedule {
             mysqli_data_seek($bresult,0);
             while($boxplayer_array = mysqli_fetch_array($bresult) ){
 
-                if (isDebugEnabled(1)) logMessage("CreateBoxLeagueSchedule: Getting results for ". $boxplayer_array['full_name']." (". $boxplayer_array['userid'].")" ); 
+                if (isDebugEnabled(2)) logMessage("CreateBoxLeagueSchedule: Getting results for ". $boxplayer_array['full_name']." (". $boxplayer_array['userid'].")" ); 
                 $already_played = array();
 
                 // check to see if this player is already scheduled
@@ -105,7 +105,7 @@ class CreateBoxLeagueSchedule {
                         continue;
                     }
 
-                    if (isDebugEnabled(1)) logMessage("\tChecking ". $boxplayer_array['userid']." and $playerid" ); 
+                    if (isDebugEnabled(2)) logMessage("\tChecking ". $boxplayer_array['userid']." and $playerid" ); 
                     
                     //take the first one that hasn't been scheduled
                     if( in_array($playerid, $scheduled) ){
@@ -122,7 +122,7 @@ class CreateBoxLeagueSchedule {
 
             }
 
-            if (isDebugEnabled(1)) logMessage("CreateBoxLeagueSchedule: Here is the number of people scheduled: ". count($scheduled) ); 
+            if (isDebugEnabled(2)) logMessage("CreateBoxLeagueSchedule: Here is the number of people scheduled: ". count($scheduled) ); 
 
             
 
@@ -131,7 +131,7 @@ class CreateBoxLeagueSchedule {
 
     private function schedulePlayers($userid1, $userid2, $boxid){
 
-        if (isDebugEnabled(1)) logMessage("CreateBoxLeagueSchedule: scheduling players $userid1, $userid2 for box $boxid" );
+        if (isDebugEnabled(2)) logMessage("CreateBoxLeagueSchedule: scheduling players $userid1, $userid2 for box $boxid" );
 
         $query = "INSERT INTO tblBoxLeagueSchedule (
             boxid, userid1, userid2

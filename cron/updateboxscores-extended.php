@@ -27,7 +27,7 @@ class UpdateBoxLeagueScores{
 
 	public function updateScores(){
 
-        if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): Starting...");
+        if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores(e): Starting...");
         
         /* 1.) Get all box leagues with ladders matches */
 
@@ -58,14 +58,14 @@ class UpdateBoxLeagueScores{
             $lmresult = db_query($query);
             $count = mysqli_num_rows($lmresult);
 
-            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): Processing ". $box_array['boxname'] . "(".$box_array['ladderid'].") for $count players"); 
+            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores(e): Processing ". $box_array['boxname'] . "(".$box_array['ladderid'].") for $count players"); 
           
             /* 3.) for each player in the ladder figure out the scores   */
             while($lm_player_array = mysqli_fetch_array($lmresult) ){
 
-                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): ---------------------------------" ); 
-                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): Calculating scores for ". $lm_player_array['playername']." (".$lm_player_array['player'].") since ". $box_array['startdate'] ); 
-                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): ---------------------------------" ); 
+                if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores(e): ---------------------------------" ); 
+                if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores(e): Calculating scores for ". $lm_player_array['playername']." (".$lm_player_array['player'].") since ". $box_array['startdate'] ); 
+                if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores(e): ---------------------------------" ); 
 
                 $query = "SELECT tblLadderMatch.id,
                             date(tblLadderMatch.match_time) as match_time,
@@ -166,7 +166,7 @@ class UpdateBoxLeagueScores{
                 $result = db_query($query);
 
 
-                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): Total points for ".$lm_player_array['playername'] . " is: $points and total games is $games and gameswon is $gameswon  for box ".$box_array['boxid'].".  " ); 
+                if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores(e): Total points for ".$lm_player_array['playername'] . " is: $points and total games is $games and gameswon is $gameswon  for box ".$box_array['boxid'].".  " ); 
 
                 }
 
@@ -188,13 +188,13 @@ class UpdateBoxLeagueScores{
                     $query = "UPDATE tblkpBoxLeagues SET totalscore = $totalscore, totalgameswon = $totalgameswon WHERE boxid = ".$box_array['boxid']." AND userid = ".$lm_player_array['player'];
                     $result = db_query($query);
 
-                    if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): Grand total games won for the season is $totalgameswon and totalscore is $totalscore  for box ".$box_array['boxid'].".  for player ".$lm_player_array['player'] ); 
+                    if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores(e): Grand total games won for the season is $totalgameswon and totalscore is $totalscore  for box ".$box_array['boxid'].".  for player ".$lm_player_array['player'] ); 
                     
                 
             }
            
             // Update last updated
-            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: updated lastUpdate for ladder ".$box_array['ladderid']);
+            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: updated lastUpdate for ladder ".$box_array['ladderid']);
                 
             $query = "UPDATE tblClubSiteLadders SET leaguesUpdated = CURRENT_TIMESTAMP WHERE id = ".$box_array['ladderid'];
             db_query($query);

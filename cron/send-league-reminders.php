@@ -43,7 +43,7 @@ class LeagueReminderService{
                 INNER JOIN tblClubs tCL on tCS.clubid = tCL.clubid";
 	
 	  	$result = db_query($query);
-        if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders: Found ". mysqli_num_rows($result) ." auto-scheduled league matches");
+        if (isDebugEnabled(2)) logMessage("LeagueReminderService.sendReminders: Found ". mysqli_num_rows($result) ." auto-scheduled league matches");
 
 		while($player_array = mysqli_fetch_array($result) ){
 				
@@ -59,7 +59,7 @@ class LeagueReminderService{
                     $otherguy_phone = $player_array['phone2'];
                     $this->sendReminderEmail($player_array['email1'], $player_array['firstname1'], $player_array['boxname'], $otherguy, $otherguy_email, $otherguy_phone, $player_array['clubname']);
                 } else {
-                    if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders:". $player_array['firstname1']. " ".$player_array['lastname1']." is not set up to receive these reminders.");
+                    if (isDebugEnabled(2)) logMessage("LeagueReminderService.sendReminders:". $player_array['firstname1']. " ".$player_array['lastname1']." is not set up to receive these reminders.");
                 }
 
                 if( $player_array['rec2']=='y' && $player_array['scored']==FALSE){
@@ -70,7 +70,7 @@ class LeagueReminderService{
                     $this->sendReminderEmail($player_array['email2'], $player_array['firstname2'], $player_array['boxname'], $otherguy,$otherguy_email, $otherguy_phone,$player_array['clubname']);
                     
                 } else {
-                    if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders:". $player_array['firstname2']. " ".$player_array['lastname2']." is not set up to receive these reminders.");
+                    if (isDebugEnabled(2)) logMessage("LeagueReminderService.sendReminders:". $player_array['firstname2']. " ".$player_array['lastname2']." is not set up to receive these reminders.");
                 }
                 				
 			}
@@ -104,7 +104,7 @@ class LeagueReminderService{
             'name' => $firstname
         );
 
-        if (isDebugEnabled(1)) logMessage("LeagueReminderService.sendReminders: sending reminder email to $firstname ($email)");
+        if (isDebugEnabled(2)) logMessage("LeagueReminderService.sendReminders: sending reminder email to $firstname ($email)");
 
         //Send email to player one
         send_email($subject, $to_emails, $content, "League Match Reminders");

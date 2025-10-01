@@ -31,7 +31,7 @@ class LadderUpdateService{
         $yesterday = date('Y-m-d', time() - 60 * 60 * 24);
         #$yesterday = '2024-08-17';
 
-        if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. Starting up. Processing records for $yesterday");
+        if (isDebugEnabled(2)) logMessage("LadderUpdateService:updateJumpLadders. Starting up. Processing records for $yesterday");
         
 
         $query = "SELECT tCSL.*
@@ -79,7 +79,7 @@ class LadderUpdateService{
                 
                 $result = db_query($query);
                 while($match_array = mysqli_fetch_array($result) ){
-                    if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders (".$match_array['ladder_match_id']. ")".$match_array['winner_full']. " defeated ". $match_array['loser_full']. " ". $match_array['score']);
+                    if (isDebugEnabled(2)) logMessage("LadderUpdateService:getJumpLadders (".$match_array['ladder_match_id']. ")".$match_array['winner_full']. " defeated ". $match_array['loser_full']. " ". $match_array['score']);
                     
 
                     adjustClubLadder( $match_array['winner_id'], $match_array['loser_id'], $match_array['ladder_id']);
@@ -99,7 +99,7 @@ class LadderUpdateService{
                         AND rankings.usertype = 0";
                     db_query($winnersUpdate);
 
-                    if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateLadder: updating rating for winner (".$match_array['winner_id'] .") from ".$match_array['wranking']." to $newWinnerRanking");
+                    if (isDebugEnabled(2)) logMessage("LadderUpdateService:updateLadder: updating rating for winner (".$match_array['winner_id'] .") from ".$match_array['wranking']." to $newWinnerRanking");
                     
                     $losersUpdate = "UPDATE tblUserRankings rankings
                         SET rankings.ranking = $newLoserRanking
@@ -108,20 +108,20 @@ class LadderUpdateService{
                         AND rankings.usertype = 0";
                     db_query($losersUpdate);
 
-                    if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateLadder: updating rating for loser (".$match_array['loser_id'] .") from ".$match_array['lranking']." to $newLoserRanking");
+                    if (isDebugEnabled(2)) logMessage("LadderUpdateService:updateLadder: updating rating for loser (".$match_array['loser_id'] .") from ".$match_array['lranking']." to $newLoserRanking");
 
                     $query = "update tblLadderMatch set processed = TRUE where id  = ".$match_array['ladder_match_id'];
                     db_query($query);
             
                 }
 
-                if (isDebugEnabled(1)) logMessage("LadderUpdateService:getJumpLadders ".$ladder_array['id'] . " has ". mysqli_num_rows($result). " results");
+                if (isDebugEnabled(2)) logMessage("LadderUpdateService:getJumpLadders ".$ladder_array['id'] . " has ". mysqli_num_rows($result). " results");
                 
                 // If there are adjustments in the ladder
                 if ( mysqli_num_rows($result) > 0 ){
 
                     // Update last updated
-                    if (isDebugEnabled(1)) logMessage("LadderUpdateService:updateJumpLadders. updated lastUpdate for ladder #".$ladder_array['id']);
+                    if (isDebugEnabled(2)) logMessage("LadderUpdateService:updateJumpLadders. updated lastUpdate for ladder #".$ladder_array['id']);
     
                     $query = "UPDATE tblClubSiteLadders SET lastUpdated = CURRENT_TIMESTAMP WHERE id = ".$ladder_array['id'];
                     db_query($query);

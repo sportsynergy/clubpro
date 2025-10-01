@@ -27,7 +27,7 @@ class UpdateBoxLeagueScores{
 
 	public function updateScores(){
 
-        if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Starting...");
+        if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: Starting...");
         
         /* 1.) Get all box leagues with ladders matches */
 
@@ -52,15 +52,15 @@ class UpdateBoxLeagueScores{
             $lmresult = db_query($query);
             $count = mysqli_num_rows($lmresult);
 
-            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Processing ". $box_array['boxname'] . "(".$box_array['ladderid'].") for $count players"); 
+            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: Processing ". $box_array['boxname'] . "(".$box_array['ladderid'].") for $count players"); 
           
 
             /* 3.) for each player in the ladder figure out the scores   */
             while($lm_player_array = mysqli_fetch_array($lmresult) ){
 
-                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: ---------------------------------" ); 
-                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Calculating scores for ". $lm_player_array['playername']." (".$lm_player_array['player'].")" ); 
-                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: ---------------------------------" ); 
+                if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: ---------------------------------" ); 
+                if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: Calculating scores for ". $lm_player_array['playername']." (".$lm_player_array['player'].")" ); 
+                if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: ---------------------------------" ); 
 
                 $query = "SELECT tblLadderMatch.id,
                             date(tblLadderMatch.match_time) as match_time,
@@ -102,7 +102,7 @@ class UpdateBoxLeagueScores{
                             $wins = 2;
                         
                         } else {
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Not a valid score ".$lp_match_array['score']  ); 
+                            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: Not a valid score ".$lp_match_array['score']  ); 
                         }
 
                         if($pastmatches == 0){
@@ -111,7 +111,7 @@ class UpdateBoxLeagueScores{
                             $gameswon = $gameswon + $wins;
                             $points = $points + 2;
                             
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Adding 2 points for a win (".$lp_match_array['score'].") in first match against ".$lp_match_array['loser']." on ".$lp_match_array['match_time'] . " and updated gameswon to $gameswon" );   
+                            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: Adding 2 points for a win (".$lp_match_array['score'].") in first match against ".$lp_match_array['loser']." on ".$lp_match_array['match_time'] . " and updated gameswon to $gameswon" );   
 
 
                         } elseif($pastmatches == 1){
@@ -120,12 +120,12 @@ class UpdateBoxLeagueScores{
                             $gameswon = $gameswon + $wins;
                             $points = $points + 1;
 
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Adding 1 points for a win (".$lp_match_array['score'].") in a rematch against ".$lp_match_array['loser']." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon" );  
+                            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: Adding 1 points for a win (".$lp_match_array['score'].") in a rematch against ".$lp_match_array['loser']." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon" );  
 
 
                         } else {
 
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: no scoring for a win after more than 2 matches against ".$lp_match_array['loser']." on ".$lp_match_array['match_time'] ); 
+                            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: no scoring for a win after more than 2 matches against ".$lp_match_array['loser']." on ".$lp_match_array['match_time'] ); 
                         }
 
                         array_push($players, $lp_match_array['loserid']);
@@ -153,7 +153,7 @@ class UpdateBoxLeagueScores{
                             $gameswon = $gameswon + $wins;
                             $points = $points + 1;
 
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Adding 1 point for a loss (".$lp_match_array['score'].") in first match against ".$lp_match_array['winner'] ." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon" );  
+                            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: Adding 1 point for a loss (".$lp_match_array['score'].") in first match against ".$lp_match_array['winner'] ." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon" );  
 
 
                         } elseif($pastmatches == 1){
@@ -161,11 +161,11 @@ class UpdateBoxLeagueScores{
                             $games = $games + 1;
                             $gameswon = $gameswon + $wins;
 
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Adding 0 points for a loss (".$lp_match_array['score'].") in a rematch against ".$lp_match_array['winner'] ." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon" ); 
+                            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: Adding 0 points for a loss (".$lp_match_array['score'].") in a rematch against ".$lp_match_array['winner'] ." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon" ); 
 
                         } else {
 
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: no scoring for a loss after more than 2 matches against ".$lp_match_array['winnerid'] ." on ".$lp_match_array['match_time'] ); 
+                            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: no scoring for a loss after more than 2 matches against ".$lp_match_array['winnerid'] ." on ".$lp_match_array['match_time'] ); 
                         }
 
                         array_push($players, $lp_match_array['winnerid']);
@@ -176,7 +176,7 @@ class UpdateBoxLeagueScores{
                 $query = "UPDATE tblkpBoxLeagues SET score = $points, games = $games, gameswon = $gameswon WHERE boxid = ".$box_array['boxid']." AND userid = ".$lm_player_array['player'];
                 $result = db_query($query);
 
-                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: Total points for ".$lm_player_array['playername'] . " is: $points and total games is $games and gameswon is $gameswon for box ".$box_array['boxid'].".  " ); 
+                if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: Total points for ".$lm_player_array['playername'] . " is: $points and total games is $games and gameswon is $gameswon for box ".$box_array['boxid'].".  " ); 
 
                     
                 }
@@ -185,7 +185,7 @@ class UpdateBoxLeagueScores{
             }
            
             // Update last updated
-            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores: updated lastUpdate for ladder ".$box_array['ladderid']);
+            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores: updated lastUpdate for ladder ".$box_array['ladderid']);
                 
             $query = "UPDATE tblClubSiteLadders SET leaguesUpdated = CURRENT_TIMESTAMP WHERE id = ".$box_array['ladderid'];
             db_query($query);

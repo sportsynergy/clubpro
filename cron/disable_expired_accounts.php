@@ -30,7 +30,7 @@ class AccountExpirationService {
 		$today = gmdate("m/d/Y", time() );
 
 
-		if (isDebugEnabled(1)) logMessage("AccountExpirationService:getExpiredUsers $today for $parameter");
+		if (isDebugEnabled(2)) logMessage("AccountExpirationService:getExpiredUsers $today for $parameter");
 
 		$query = "SELECT userid FROM tblParameterValue WHERE parameterid = $parameter AND parametervalue = '$today'";
 	
@@ -44,7 +44,7 @@ class AccountExpirationService {
 	  		}
 	  	} else {
 
-	  		if (isDebugEnabled(1)) logMessage("AccountExpirationService.getExpiredUsers: No users to disable for $today for parameter $parameter");
+	  		if (isDebugEnabled(2)) logMessage("AccountExpirationService.getExpiredUsers: No users to disable for $today for parameter $parameter");
 	  	}
 
 
@@ -61,7 +61,7 @@ class AccountExpirationService {
 	*/
 	private function disableUser($userid){
 
-		if (isDebugEnabled(1)) logMessage("AccountExpirationService.disableUser: Disabling: $userid");
+		if (isDebugEnabled(2)) logMessage("AccountExpirationService.disableUser: Disabling: $userid");
 
 		$query = "UPDATE tblClubUser SET enable = 'n' where userid = $userid";
 		$result = db_query($query);

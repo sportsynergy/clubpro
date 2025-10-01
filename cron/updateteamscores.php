@@ -5,7 +5,7 @@ include ("../lib/ladderlib.php");
 
 $service = new UpdateClubTeamScores();
 
-if (isDebugEnabled(1)) logMessage("UpdateClubTeamScores: Starting...");
+if (isDebugEnabled(2)) logMessage("UpdateClubTeamScores: Starting...");
 
 $service->resetteamscores();
 $service->updateScores();
@@ -19,7 +19,7 @@ class UpdateClubTeamScores{
 
     public function resetteamscores(){
 
-        if (isDebugEnabled(1)) logMessage("UpdateClubTeamScores: Reset scores");
+        if (isDebugEnabled(2)) logMessage("UpdateClubTeamScores: Reset scores");
 
         $query = "UPDATE tblClubLadderTeam SET score = 0 WHERE enddate IS NULL";
         $result = db_query($query);
@@ -38,11 +38,11 @@ class UpdateClubTeamScores{
         $mresult = db_query($query);
 
         $teamcount = db_num_rows($mresult);
-        if (isDebugEnabled(1)) logMessage("UpdateClubTeamScores: Found $teamcount teams");
+        if (isDebugEnabled(2)) logMessage("UpdateClubTeamScores: Found $teamcount teams");
 
         while($team_array = db_fetch_array($mresult) ){
 
-            if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Processing $team_array[name]");
+            if (isDebugEnabled(2)) logMessage("\tUpdateClubTeamScores: Processing $team_array[name]");
 
             $team_score = 0;
             $team_games_won = 0;
@@ -60,7 +60,7 @@ class UpdateClubTeamScores{
             while($team_member_array = db_fetch_array($member_result) ){
 
                 # 3.) Get their box score
-                if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Adding $team_member_array[score] points and $team_member_array[gameswon] games won for $team_member_array[teamplayername] ");
+                if (isDebugEnabled(2)) logMessage("\tUpdateClubTeamScores: Adding $team_member_array[score] points and $team_member_array[gameswon] games won for $team_member_array[teamplayername] ");
                 $team_score = $team_score + $team_member_array['score'];
                 $team_games_won = $team_games_won + $team_member_array['gameswon'];
             }
@@ -69,7 +69,7 @@ class UpdateClubTeamScores{
         $team_score_query = "UPDATE tblClubLadderTeam SET score = $team_score , lastUpdated = NOW(), games = $team_games_won
         WHERE id = $team_array[id]";
         $team_score_result = db_query($team_score_query);
-        if (isDebugEnabled(1)) logMessage("\tUpdateClubTeamScores: Updated $team_array[name] to have a score of $team_score and total games won of $team_games_won");
+        if (isDebugEnabled(2)) logMessage("\tUpdateClubTeamScores: Updated $team_array[name] to have a score of $team_score and total games won of $team_games_won");
 
 
     }
