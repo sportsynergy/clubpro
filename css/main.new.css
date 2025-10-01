@@ -430,5 +430,6 @@ border-color: Gray;
 
 .disabled-link {
 	pointer-events: none;
+	color: #000;
 	cursor: default;
 }
