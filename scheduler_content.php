@@ -1048,7 +1048,7 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
 
 // can't make reservattions before 6 for normal users on the last day out
-if(  (!is_logged_in() || get_roleid()==1) && $jsdate2 == $jsdate && $currHour <=  6 ){ 
+if(  (!is_logged_in() || get_roleid()==1) && $jsdate2 == $jsdate && $currHour <  6 ){ 
 
 	if( isDebugEnabled(1) ) logMessage("scheduler main: Current hour is: $currHour disabling links because last day out and before 6am");
 	
