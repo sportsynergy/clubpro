@@ -1269,7 +1269,8 @@ function isPlayerAbleToScoreLeagueMatch($userid1, $userid2, $ladderid){
 	$query = "SELECT count(*) FROM tblkpBoxLeagues
 				INNER JOIN tblBoxLeagues  tBL on tblkpBoxLeagues.boxid = tBL.boxid
 				WHERE (userid = $userid1 OR userid = $userid2)
-				AND tBL.ladderid = $ladderid";
+				AND tBL.ladderid = $ladderid
+				AND tBL.enable IS TRUE";
     
 	if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score $query");
 
