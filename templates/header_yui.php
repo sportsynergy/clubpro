@@ -34,33 +34,9 @@
 <link rel="stylesheet" type="text/css"
 	href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/menu/assets/skins/sam/menu.css">
 
-<!-- JS for Menu -->
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/animation/animation.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/container_core.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/container-min.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/dragdrop/dragdrop-min.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/calendar-min.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/json/json-min.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/connection/connection-min.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/button-min.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/tabview/tabview-min.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/menu/menu.js"></script>
-<script type="text/javascript"
-	src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/navigation.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+
 
 <?php if (!defined("_JQUERY_")){ ?>
 <!-- Page-specific styles -->
@@ -185,22 +161,20 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 			<!-- start: primary column from outer template -->
 			<div id="yui-main">
 				<div class="yui-b">
-					
-					
+						
 				<?php
 		 	    //Only show when logged in
 				if( is_logged_in() ){
 					if( isSystemAdministrationConsole() ){
-						include($_SESSION["CFG"]["includedir"]."/include_yui_admin_navigation.php");
+						include($_SESSION["CFG"]["includedir"]."/include_bootstrapyui_admin_navigation.php");
 					}else{
-						include($_SESSION["CFG"]["includedir"]."/include_yui_navigation.php");
+						include($_SESSION["CFG"]["includedir"]."/include_bootstrap_navigation.php");
 							
 					}
 				}
 				?>
-					<div id="scrolling" style="height: 20px; margin-top: 10px">
-
-					<?php include($_SESSION["CFG"]["includedir"]."/include_scrollingmessage.php"); ?>
+					<div id="scrolling" style="height: 20px; margin-top: 10px;">
+						<?php include($_SESSION["CFG"]["includedir"]."/include_scrollingmessage.php"); ?>
 					</div>
 				</div>
 			</div>
