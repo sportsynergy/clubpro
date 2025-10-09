@@ -36,32 +36,72 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <a class="navbar-brand" href="#">
+        <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/logo.png" alt="" width="30" height="30" class="d-inline-block align-text-top">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">hello</span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">Directory</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/">Bookings</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown link
+        <? if(isLadderRankingScheme() || isJumpLadderRankingScheme() ) {?>
+
+           <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Club Rankings
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+           <? for ($i=0; $i < count($_SESSION["ladders"]); ++$i) {?>
+               <li>
+                  <a class="dropdown-item" href="javascript:submitLadderForm('<?=$_SESSION["ladders"][$i]['courttypeid']?>','<?=$_SESSION["ladders"][$i]['id']?>')">
+                    <?=$_SESSION["ladders"][$i]['name']?>
+                  </a>
+                </li>
+            <? } ?>
+
+            
           </ul>
         </li>
+
+          <? } if(isPointRankingScheme()  )  { ?>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Rankings</a>
+            </li>
+          <? }?>
+          <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/players_wanted.php">Players Wanted</a>
+            </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            My Account
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/change_settings.php">Edit Account</a></li>
+            <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/change_password.php">Change Password</a></li>
+            <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/my_buddylist.php">My Buddies</a></li>
+            <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/my_reservations.php">My Reservations</a></li>
+            
+          </ul>
+        </li>
+        
       </ul>
+    <? if( !is_logged_in() ){ ?>
+      <span class="navbar-text">
+        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/login.php">Login</a>
+      </span>
+     <? } else { ?>
+      <span class="navbar-text">
+        You are logged in as: <? p($_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"]) ?> | <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/logout.php">Logout</a>
+      </span>
+     <? } ?>
     </div>
   </div>
 </nav>

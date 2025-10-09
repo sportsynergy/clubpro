@@ -63,9 +63,9 @@ if (match_referer() && isset($_POST)) {
 
 if (isDebugEnabled(1)) logMessage("my_buddylist");
 $DOC_TITLE = "My Buddy List";
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/my_buddylist_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

@@ -50,9 +50,9 @@ if($userRelation->isUserLoggedin()){
 }
 
 $DOC_TITLE = "Players Wanted";
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 get_playerswanted();
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

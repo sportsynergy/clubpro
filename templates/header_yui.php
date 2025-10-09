@@ -166,7 +166,7 @@ if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 		 	    //Only show when logged in
 				if( is_logged_in() ){
 					if( isSystemAdministrationConsole() ){
-						include($_SESSION["CFG"]["includedir"]."/include_bootstrapyui_admin_navigation.php");
+						include($_SESSION["CFG"]["includedir"]."/include_bootstrap_admin_navigation.php");
 					}else{
 						include($_SESSION["CFG"]["includedir"]."/include_bootstrap_navigation.php");
 							

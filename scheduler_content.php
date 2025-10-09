@@ -106,7 +106,7 @@ if (isset($username) && isset($password) && !is_logged_in()) {
     }
 }
 $DOC_TITLE = "Sportsynergy Clubpro";
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 
 // When a site has a court group configured set a session variable.  The first court group id will be the default.
 // If a court group isn't found, just display the courts by displayorder (using the navigation arrows if necessary)
@@ -1046,8 +1046,6 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
     <?php
 }
 include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
-
-if( isDebugEnabled(1) ) logMessage("scheduler main: Current hour is: $currHour disabling links because last day out and before 6am");
 	
 
 // can't make reservattions before 6 for normal users on the last day out
