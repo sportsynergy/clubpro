@@ -3,6 +3,20 @@
 /**********General***************************************************/
 
 
+li {
+    list-style: none;
+}
+
+@media (min-width: 576px) {
+    .bd-example {
+        padding:1.5rem;
+        margin-right: 0;
+        margin-left: 0;
+        border-width: 1px;
+        border-top-left-radius: .25rem;
+        border-top-right-radius: .25rem;
+    }
+}
 
 .isDisabled {
 	color: currentColor;

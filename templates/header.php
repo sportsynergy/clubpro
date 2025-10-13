@@ -52,16 +52,20 @@
     <div class="container">
       <div class="row">
         <div class="col">
+           <? if( is_logged_in() ){ ?>
           <? include($_SESSION["CFG"]["includedir"]."/include_bootstrap_navigation.php"); ?>
+          <? } else { ?>
+          <? include($_SESSION["CFG"]["includedir"]."/include_bootstrap_loginbar.php"); ?>
+          <? } ?> 
         </div>
-        <div id="scrolling" style="height: 20px; margin-top: 10px;">
-						<?php include($_SESSION["CFG"]["includedir"]."/include_scrollingmessage.php"); ?>
-					</div>
+        
       </div>
 
       <div class="row">
         <div class="col-3">
-       <div style="padding-left: 15px">				
+       <div style="padding-left: 15px">		
+        
+
         <?php if( isSystemAdministrationConsole() ){ ?>
         <p>
           <?php include($_SESSION["CFG"]["includedir"]."/include_admin_activity.php"); ?>
