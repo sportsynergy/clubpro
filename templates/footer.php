@@ -7,8 +7,8 @@
      <div style="height: 35px"></div>
 
         <div id="ft">
-        <div align="center">
-            <hr/>
+        <div style="text-align: center;"> 
+            
             <span>
             <?php if( ! empty($_SESSION["footermessage"]) ){ ?>
             <?php echo $_SESSION["footermessage"]; ?>
@@ -21,12 +21,12 @@
                 Got a question? Let us <a href="mailto:support@sportsynergy.net">know</a>.
             </span> 
         </div>
-        <div style="text-align: center;"> 
-            <span class="lighttext">
-                &copy;2025<a href="https://www.sportsynergy.net" target="_blank">Sportsynergy</a> 
+        <div style="text-align: center; padding-bottom: 15px"> 
+            <span>
+                &copy;2025 <a href="https://www.sportsynergy.net" target="_blank">Sportsynergy</a> 
             </span> 
         </div>
-        
+
         </div>
 
 

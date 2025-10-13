@@ -41,10 +41,10 @@
     // but not for the system administration console.
     if( ! isSiteEnabled() && ! isSystemAdministrationConsole()){
 
-      if( isDebugEnabled(1) ) logMessage("header_yui: This site is not enabled");
+
 
       include($_SESSION["CFG"]["includedir"]."/include_gonefishin.php");
-      include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+      include($_SESSION["CFG"]["templatedir"]."/footer.php");
       die;
     } 
     ?>
@@ -63,7 +63,7 @@
 
       <div class="row">
         <div class="col-3">
-       <div style="padding-left: 15px">		
+       <div>		
         
 
         <?php if( isSystemAdministrationConsole() ){ ?>
@@ -87,7 +87,7 @@
 	  </div>
 
     </div>
-    <div class="col">
+    <div class="col" style="padding-left: 25px">		
       <? include($_SESSION["CFG"]["templatedir"]."/form_header.php"); ?>
 
 

@@ -50,15 +50,15 @@ if (match_referer() && isset($_POST['username']) || isset($_POST['memberid']) ) 
     
     if (empty($errormsg)) {
         insert_user($frm, $availbleSportsResult, $availableSitesResult, $extraParametersResult);
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
         include ($_SESSION["CFG"]["includedir"] . "/include_userregsuc.php");
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/user_registration_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

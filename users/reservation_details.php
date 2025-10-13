@@ -91,9 +91,9 @@ if (match_referer() && isset($_POST)) {
         header("Location: $wwwroot/clubs/" . get_sitecode() . "/index.php?daysahead=" . gmmktime(0, 0, 0, gmdate("n", $time + get_tzdelta()) , gmdate("j", $time + get_tzdelta()) , gmdate("Y", $time + get_tzdelta())) . "");
     }
 }
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/reservation_details_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

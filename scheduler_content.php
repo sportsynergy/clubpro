@@ -355,7 +355,7 @@ if ($clubid) {
 <?
 						
 						print "</table>";
-						include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+						include($_SESSION["CFG"]["templatedir"]."/footer.php");
 						die;
 					}
 				
@@ -1045,7 +1045,7 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
 
     <?php
 }
-include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+include($_SESSION["CFG"]["templatedir"]."/footer.php");
 	
 
 // can't make reservattions before 6 for normal users on the last day out

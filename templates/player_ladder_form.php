@@ -75,25 +75,24 @@ to add your name now.
 <div id="ladderControlPanel" style="padding-bottom: 5px;">
 
 	<?  if(get_roleid()==2 || get_roleid()==4){ ?>
-		<span class="normal" id="show"><a
+		<span  id="show"><a
 			style="text-decoration: underline; cursor: pointer"> Add Player</a> </span>
-			| <span class="normal" id="showreportscores"><a
+			| <span id="showreportscores"><a
 			style="text-decoration: underline; cursor: pointer"> Report Score</a></span>
 	<? } ?>		
 	<?  if(get_roleid()==1 && $playingInLadder){ ?>
-			 <span class="normal" id="showreportscoresplayer"><a
+			 <span id="showreportscoresplayer"><a
 			style="text-decoration: underline; cursor: pointer"> Report Score</a></span>
 	<? } ?>
 
 </div>
 
 
-<table width="650">
+<table>
 	<tr>
 		<td valign="top">
 
-			<table cellspacing="0" cellpadding="20" width="300"
-				class="generictable" id="formtable">
+			<table cellspacing="0" cellpadding="20" class="generictable" id="formtable">
 				<tr>
 					<td class="clubid<?=get_clubid()?>th">
 						<span class="whiteh1">
@@ -107,7 +106,7 @@ to add your name now.
 				<tr>
 					<td>
 
-						<table cellspacing="1" cellpadding="5" width="350" class="sortable" >
+						<table cellspacing="1" cellpadding="5" class="sortable" >
 							<tr>
 								<th width="25%">
 									<span class="bold">Place</span>

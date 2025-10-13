@@ -1,16 +1,17 @@
 
 
 
-<div class="bd-example" style="margin-top: 50px; margin-bottom: 20px;">
+
+<div style="margin-top: 20px; margin-bottom: 20px;">
 
 
-
+<p class="h3"><? pv($DOC_TITLE) ?></p>
 
 <form name="entryform">
 
 
  <div class="mb-3" style="width: 50%">
-    <input type="text" name="searchname" class="form-control" placeholder="First name" aria-label="Member name">
+    <input type="text" name="searchname" class="form-control" aria-label="Member name">
   </div>
   
   <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Search</button>

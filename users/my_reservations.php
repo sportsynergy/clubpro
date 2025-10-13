@@ -43,9 +43,9 @@ if($userRelation->isUserLoggedin()){
 }
 
 $DOC_TITLE = "My Reservations";
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 get_myreservations();
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
@@ -293,7 +293,7 @@ asort($upcomingReservationsArray);
 else{
 	
 	if($noupcomingreservations ){
-		echo "<tr><td class=normal><br><br>\n";
+		echo "<tr><td><br><br>\n";
 		
 		print "You have no upcoming reservations or any reservations made within the last two weeks. ";
 		 echo "</td>\n";

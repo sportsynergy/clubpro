@@ -18,6 +18,14 @@ li {
     }
 }
 
+.bd-example {
+    position: relative;
+    padding: 1rem;
+    margin: 1rem -.75rem 0;
+    border: solid #dee2e6;
+    border-width: 1px 0 0
+}
+
 .isDisabled {
 	color: currentColor;
 	cursor: not-allowed;
@@ -103,18 +111,17 @@ h2{
 
 th{ 
 
-	font-size: 10pt; 
 	font-weight: bold; 
 	text-align: center;
 }
 .h1{ 
 	font-size: 14pt; 
-	font-weight: bold; 
+	
 }
 
 .h2{ 
 	font-size: 12pt; 
-	font-weight: bold; 
+	
 }
 
 .label  { 
@@ -128,7 +135,6 @@ th{
 	text-decoration: underline;
 }
 .lighttext  {
-	font-size: 8pt;
 	color : gray;
 }
 

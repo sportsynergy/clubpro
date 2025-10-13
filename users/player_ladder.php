@@ -254,9 +254,9 @@ $ladderplayers = getLadder($ladderid);
 $ladderdetails = getLadderDetails($ladderid);
 
 $playingInLadder = isIndividualPlayingInLadder(get_userid() , $ladderid);
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/player_ladder_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 
 /******************************************************************************

@@ -44,7 +44,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">Directory</a>
+          <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">Directory</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/">Bookings</a>
@@ -71,11 +71,11 @@
 
           <? } if(isPointRankingScheme()  )  { ?>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Rankings</a>
+              <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Rankings</a>
             </li>
           <? }?>
           <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/players_wanted.php">Players Wanted</a>
+              <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/players_wanted.php">Players Wanted</a>
             </li>
 
         <li class="nav-item dropdown">
@@ -90,6 +90,22 @@
             
           </ul>
         </li>
+
+        <?php if( get_roleid() == 2 ) { ?>
+
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Tools
+          </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/user_registration.php">Add Player</a></li>
+                <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_admin.php">Account Maintenance</a></li>
+                <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_mailer.php">Email Players</a></li>
+                <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_registration.php">Box League Setup</a></li>
+                
+            </ul>
+          <? } ?>
         
       </ul>
     <? if( !is_logged_in() ){ ?>
