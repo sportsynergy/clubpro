@@ -104,43 +104,40 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
 
 <div style="text-align: right;  padding-bottom: 2px;display:inline-block;float: right;"> <a href="javascript:submitForm('exportDataForm')">Export this list</a> </div>
 
-<table cellpadding="20" width="100%" class="bordertable">
-  <tr class="loginth">
-    <th height="25"><span class="whitenorm">First Name</span></th>
-    <th height="25"><span class="whitenorm">Last Name</span></th>
-    <th height="25"><span class="whitenorm">Email</span></th>
-    <th height="25"><span class="whitenorm">Mobile Phone</span></th>
+<table class="table table-striped">
+  <tr>
+    <th height="25"><span>First Name</span></th>
+    <th height="25"><span>Last Name</span></th>
+    <th height="25"><span>Email</span></th>
+    <th height="25"><span>Mobile Phone</span></th>
     <th colspan="2"></th>
   </tr>
   <?php
         $rownum = mysqli_num_rows($playerresult);
         while ($row = mysqli_fetch_array($playerresult)) {
-            $rc = (($rownum / 2 - intval($rownum / 2)) > .1) ? "lightrow" : "darkrow";
+          
 ?>
-  <tr class="<?=$rc?>">
+  <tr >
     <form name="playerform<?=$rownum?>" method="get">
-      <td><div align="center">
+      <td><div>
           <?=$row['firstname']?>
         </div></td>
-      <td><div align="center">
+      <td><div>
           <?=$row['lastname']?>
         </div></td>
-      <td><div align="center"><a href="mailto:<?=$row['email']?>">
+      <td><div><a href="mailto:<?=$row['email']?>">
           <?=$row['email']?>
           </a></div></td>
-      <td><div align="center">
+      <td><div>
           <?=$row['cellphone']?>
         </div></td>
-      <td colspan="2"><div align="center"> <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/change_settings.php')">Edit</a> | <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_delete.php')">Delete</a> </div></td>
+      <td colspan="2"><div> <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/change_settings.php')">Edit</a> | <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_delete.php')">Delete</a> </div></td>
       <input type="hidden" name="userid" value="<?=$row['userid']?>">
       <input type="hidden" name="searchname" value="<?=$searchname?>">
 
     </form>
   </tr>
-  <?
-			$rownum = $rownum -1;
-		}
-?>
+  <? } ?>
 </table>
 <?
 

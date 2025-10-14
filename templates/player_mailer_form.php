@@ -46,59 +46,27 @@ function disableSportAndRankingDropDown()
 
 }
 
-YAHOO.example.init = function () {
 
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        YAHOO.util.Event.addListener("sportselect", "change", disableRankingDropDown); 
-
-        YAHOO.util.Event.addListener("whoselect", "change", disableSportAndRankingDropDown); 
-
-        
-
-    });
-
-} ();
 
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
 
-
-
-
 </script>
 
-<table cellspacing="0" cellpadding="0" border="0" width="710" align="center">
-<tr>
-<td>
+<div style="margin-top: 20px; margin-bottom: 20px;">
+
+
+<p class="h3"><? pv($DOC_TITLE) ?></p>
+
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
-  
-  <tr class="borderow">
-    <td class=clubid<?=get_clubid()?>th>
-    	<span class="whiteh1">
-    			<div align="center"><? pv($DOC_TITLE) ?></div>
-    	</span>
-    </td>
- </tr>
-
- <tr>
-    <td >
-
-     <table width="400">
-		
-		<tr>
-        <td class="label">To:</td>
-        <td colspan="3">
-         <select name="who" id="whoselect">
+ <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">To:</label>
+    <select name="who" id="whoselect" class="form-select" aria-label="Default select example">
             <option value="allplayers">All Players</option>
             <option value="allWomen">All Women</option>
             <option value="allMen">All Men</option>
@@ -109,25 +77,26 @@ function onSubmitButtonClicked(){
             <? if(isLadderRankingScheme() ){?>
             <option value="ladderPlayers">Ladder Players</option>
             <? } ?>
-          </select>
-        
-        </td>
-        
-       </tr> 
-       <tr>
-       		<td class=label align="left">Sport:</td>
-	        <td align="left">
-	        	 <select name="sport" id="sportselect">
+    </select>
+  </div>
+
+   <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Sport:</label>
+     <select name="sport" id="sportselect" class="form-select" aria-label="Default select example">
+              
 	        	    <option value="all">All</option>
 	        	  	<?  while ( $sportarray = db_fetch_array($availbleSports)){ ?>
              			<option value="<? pv($sportarray['courttypeid'] ) ?>"><? pv($sportarray['courttypename'] ) ?>   </option>
         			 <?} ?>
-	        	 </select>
-	        </td>
-       		<td class=label align="left">Ranking:</td>
-	        <td align="left">
-				 <select name="ranking" disabled>
-				 		<option value="all">All</option>
+	    </select>
+  </div>
+		
+
+   <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Ranking:</label>
+     <select name="ranking" id="rankingselect" class="form-select" aria-label="Default select example">
+              
+	        	    <option value="all">All</option>
             			<option value="2.5">2.5</option>
             			<option value="3.0">3.0</option>
             			<option value="3.5">3.5</option>
@@ -135,35 +104,27 @@ function onSubmitButtonClicked(){
             			<option value="4.5">4.5</option>
             			<option value="5.0">5.0</option>
             			<option value="5.5">5.5</option>
-          		</select>
-              <? is_object($errors) ? err($errors->ranking) : ""?>
-	        </td>
-       </tr> 
-       <tr>
-        	<td class=label >Subject:</td>
-	        <td colspan="3"><input type="text" name="subject" size=67 value="<? pv($frm["subject"]) ?>">
-	                <? is_object($errors) ? err($errors->subject) : ""?>
-	        </td>
-       </tr>
-       <tr>
-           <td class=label valign="top">Message:</td>
-                 <td colspan="3"><textarea name="message" cols="80" rows="15"><? pv($frm["message"]) ?></textarea>
-                      <? is_object($errors) ? err($errors->useraddress) : ""?>
-                </td>
-        </tr>
-       <tr>
-           <td></td>
-           <td><input type="button" name="submit" value="Send Email" id="submitbutton"></td>
-            <td></td>
-    </tr>
- </table>
+	    </select>
+      <? is_object($errors) ? err($errors->ranking) : ""?>
+  </div>
+       
+	 <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Subject:</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="<? pv($frm["subject"]) ?>">
+    <? is_object($errors) ? err($errors->subject) : ""?>
+  </div>    
+  
+  <div class="mb-3">
+    <textarea name="message" cols="80" rows="15"><? pv($frm["message"]) ?></textarea>
+    <? is_object($errors) ? err($errors->useraddress) : ""?>
+  </div>   
+      
+    <button type="submit" class="btn btn-primary">Submit</button>
+
 
 <input type="hidden" name="submitme" value="submitme">
 
-</table>
+
+
 </form>
-
-
-</td>
-</tr>
-</table>
+</div>
