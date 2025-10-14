@@ -74,9 +74,9 @@ if (match_referer() && isset($_POST['submitme'])) {
 
         $message = record_scores($frm);
 
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
         include ($_SESSION["CFG"]["includedir"] . "/include_message.php");
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }

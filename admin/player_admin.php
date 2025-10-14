@@ -46,15 +46,15 @@ if (isset($searchname)) {
 
     if (empty($errormsg)) {
         $playerResults = get_admin_player_search($searchname);
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
         print_players($searchname, $backtopage, $playerResults, $DOC_TITLE, $ME);
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/player_admin_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

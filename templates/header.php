@@ -63,7 +63,7 @@
 
       <div class="row">
         <div class="col-3">
-       <div>		
+       <div class="d-none d-lg-block">		
         
 
         <?php if( isSystemAdministrationConsole() ){ ?>
