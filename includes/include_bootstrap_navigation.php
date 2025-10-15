@@ -34,10 +34,10 @@
 ?>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+<nav class="navbar navbar-expand-lg navbar-light bg-white" >
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-        <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/logo.png" alt="" width="30" height="30" class="d-inline-block align-text-top">
+        <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/logo.png" alt="" width="80" height="80" class="d-inline-block align-text-top">
     </a>
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
