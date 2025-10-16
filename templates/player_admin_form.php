@@ -1,7 +1,6 @@
-<div style="margin-top: 20px; margin-bottom: 20px;">
 
 
-<p class="h3"><? pv($DOC_TITLE) ?></p>
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
 
 
 
@@ -14,7 +13,7 @@
     <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Search</button>
 
   </form>
-</div>
+
     
         
 <script type="text/javascript">

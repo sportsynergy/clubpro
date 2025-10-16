@@ -5,7 +5,7 @@
 <div style="margin-top: 20px; margin-bottom: 20px;">
 
 
-<p class="h3"><? pv($DOC_TITLE) ?></p>
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
 
 <form name="entryform">
 

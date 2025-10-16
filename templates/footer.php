@@ -22,7 +22,7 @@
             </span> 
         </div>
         <div style="text-align: center; padding-bottom: 15px"> 
-            <span>
+            <span class="lighttext">
                 &copy;2025 <a href="https://www.sportsynergy.net" target="_blank">Sportsynergy</a> 
             </span> 
         </div>
