@@ -30,38 +30,14 @@
 * Classes list:
 */
 ?>
-<script type="text/javascript">
 
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-    });
-
-} ();
-
-
-function onSubmitButtonClicked(){
-	submitForm('entryform');
-}
-
-
-
-</script>
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
 
 <form name="entryform" method="post" action="<?=$ME?>">
-<table cellspacing="0" cellpadding="5" width="700" id="formtable">
 
-       <tr>
-           <td><font class="reportSubTitle">
-           <?pv($reportName)?>
-           </font>
-           </td>
-           <td><select name="report">
+      <div class="mb-3">
+           <select name="report" class="form-select" aria-label="Report Selection">
                 <option value="">Select Report</option>
 
                 <? if ($frm["report"]== "memberactivity") {
@@ -93,10 +69,20 @@ function onSubmitButtonClicked(){
                
                 <? }  ?>
                </select>
-          <input type="hidden" name="submitme" value="submitme">
-          <input type="button" name="submit" value="Run Report" id="submitbutton">
-          </td>
 
-       </tr>
- </table>
+        </div>
+
+          <input type="hidden" name="submitme" value="submitme">
+          <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Run Report</button>
+          
+          
 </form>
+
+<script type="text/javascript">
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+
+</script>                 
