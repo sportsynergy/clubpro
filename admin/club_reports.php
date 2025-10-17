@@ -80,9 +80,9 @@ if (match_referer() && isset($_POST['submitme'])) {
         die;
     }
 }
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/club_reports_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footerphp");
 
 /******************************************************************************
  * FUNCTIONS

@@ -87,9 +87,9 @@ $singlesMatchScores = get_singlesMatchscoresForSite(get_siteid());
 $doublesMatchScores = get_doublesMatchscoresForSite(get_siteid());
 $allmatchscores = getAllMatchScores();
 
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/report_scores_admin_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

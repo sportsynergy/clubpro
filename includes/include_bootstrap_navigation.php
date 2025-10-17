@@ -103,6 +103,16 @@
                 <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_admin.php">Account Maintenance</a></li>
                 <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_mailer.php">Email Players</a></li>
                 <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_registration.php">Box League Setup</a></li>
+
+                 <? if( isJumpLadderRankingScheme() ) { ?>
+                <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_teams.php">Club Teams</a></li>
+                <? } ?>
+
+                <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/policy_preferences.php">Club Preferences</a></li>
+                <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/report_scores.php">Report Scores</a></li>
+             
+                <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_events.php">Club Events</a></li>
+                <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_reports.php">Club Reports</a></li>
                 
             </ul>
           <? } ?>

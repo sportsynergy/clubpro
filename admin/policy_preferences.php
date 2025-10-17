@@ -105,9 +105,9 @@ $scrollingMessages = load_scrolling_messages(get_siteid());
 $generalPreferences = load_general_preferences(get_siteid());
 $courtEvents = load_court_events(get_siteid());
 
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/policy_preferences_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
