@@ -506,11 +506,9 @@ if ($clubid) {
                    	 */
                    	 
                    	if( isset($specDate)){
-                   	 	logMessage("spec date: ".$specDate);
                    	 	$eventStartTime = $specDate;
                    	 }
                    	 else if( !empty($daysahead)  ){
-                   	 	logMessage("daysahead: ".$specDate);
                    	 	$eventStartTime = $daysahead;
                    	 }
                    	 else{

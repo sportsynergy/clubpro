@@ -29,6 +29,8 @@
 
 ?>
 
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item" role="presentation">
     <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#singles" type="button" role="tab" aria-controls="singles" aria-selected="true">Singles</button>
