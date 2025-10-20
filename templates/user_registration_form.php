@@ -2,6 +2,8 @@
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
+<div class="mainpanel">
+
  <div class="mb-3">
     <label for="username" class="form-label">Username:</label>
     <input class="form-control" id="username" type="text" aria-label="Username">
@@ -160,6 +162,7 @@
   </form>
   
 
+  </div>
 
 <script type="text/javascript">
 

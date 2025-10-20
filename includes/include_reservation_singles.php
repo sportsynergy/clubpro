@@ -32,12 +32,12 @@
 ?>
 
 <form name="singlesform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
-  <table cellspacing="10" cellpadding="0" width="440" class="tabtable" id="singles-formtable">
-    <tr>
-      <td class="label">Player&nbsp;One:</td>
-      <td><input id="name1" name="playeronename" type="text" size="35" class="form-autocomplete" />
-        <input id="id1" name="playeroneid" type="hidden" />
-        <script>
+ 
+	<div class="mb-3">
+		<label for="name1" class="form-label">Player One</label>
+    	<input type="text" size="35" id="name1" name="playeronename" class="form-control form-autocomplete" aria-label="Player One">
+		<input id="id1" name="playeroneid" type="hidden" />
+		<script>
                 <?
                 $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
                  pat_autocomplete( array(
@@ -52,32 +52,35 @@
            
                  ?>
 
-                </script></td>
-    </tr>
-    <tr>
-      <td class="label">Player&nbsp;Two:</td>
-      <td><input id="name2" name="playertwoname" type="text" size="35" class="form-autocomplete" autocomplete="off"/>
-        <input id="id2" name="playertwoid" type="hidden" />
-        <script>
-                <?php
-$wwwroot = $_SESSION["CFG"]["wwwroot"];
-pat_autocomplete(array(
-    'baseUrl' => "$wwwroot/users/ajaxServer.php",
-    'source' => 'name2',
-    'target' => 'id2',
-    'className' => 'autocomplete',
-    'parameters' => "action=autocomplete&name={name2}&userid=" . get_userid() . "&courtid=$courtid&siteid=" . get_siteid() . "&clubid=" . get_clubid() . "",
-    'progressStyle' => 'throbbing',
-    'minimumCharacters' => 3,
-));
-?>
+                </script>
+	</div>
 
-                </script></td>
-    </tr>
-	<tr>
-      <td class="label">Match Type:</td>
-      <td><select name="matchtype" onchange="disablePlayerDropDownWithSoloSelection(this);onlyAllowLessonReoccuring(this)">
-          <? if( isSiteBoxLeageEnabled() && isLadderRankingScheme()){ ?>
+      
+	<div class="mb-3">
+		<label for="name2" class="form-label">Player Two</label>
+    	<input type="text" size="35" id="name2" name="playertwoname" class="form-control form-autocomplete" aria-label="Player Two">
+		<input id="id2" name="playertwoid" type="hidden" />
+		<script>
+                <?php
+					$wwwroot = $_SESSION["CFG"]["wwwroot"];
+					pat_autocomplete(array(
+						'baseUrl' => "$wwwroot/users/ajaxServer.php",
+						'source' => 'name2',
+						'target' => 'id2',
+						'className' => 'autocomplete',
+						'parameters' => "action=autocomplete&name={name2}&userid=" . get_userid() . "&courtid=$courtid&siteid=" . get_siteid() . "&clubid=" . get_clubid() . "",
+						'progressStyle' => 'throbbing',
+						'minimumCharacters' => 3,
+					));
+					?>
+
+        </script>
+	</div>
+
+    <div class="mb-3">
+		<label for="matchtype" class="form-label">Match Type</label>
+		<select class="form-select" aria-label="Match Type" name="matchtype" id="matchtype" onchange="disablePlayerDropDownWithSoloSelection(this);onlyAllowLessonReoccuring(this)">
+			 <? if( isSiteBoxLeageEnabled() && isLadderRankingScheme()){ ?>
           <option value="1">Box League</option>
           <? } ?>
           <? if ( isPointRankingScheme() ) {?>
@@ -88,39 +91,57 @@ pat_autocomplete(array(
           <? } ?>
           <option value="0" selected>Practice</option>
           <option value="5">Solo</option>
-        </select></td>
-      <td></td>
-    </tr>
+        </select>
+
+	 <div class="form-text"> 
+		 <? if( get_roleid() == 2){ ?>
+        If you want to put yourself down as available for a lesson, leave your name in as Player One, leave Player Two blank and set
+        the matchtype as Lesson.
+        <? } ?>
+	 	For more infomation on match types, click 
+        <a href="javascript:newWindow('../help/squash-matchtypes.html')">here</a>.
+		
+	</div>
+
+	</div>
+	  
 	<? if( get_roleid()==2 || get_roleid()==4) {?>
-		<tr>
-	      <td class="label">Repeat:</td>
-	      <td><select name="repeat" onchange="disableSinglesOptions(this)" disabled="true">
-	          <option value="norepeat">None</option>
-	          <option value="daily">Daily</option>
-	          <option value="weekly">Weekly</option>
-	          <option value="biweekly">Bi-Weekly</option>
-	          <option value="monthly">Monthly</option>
-			<? is_object($errors) ? err($errors->repeat) : ""?>
-	        </select></td>
-	    </tr>
-		<tr>
-	      <td class="label">Frequency:</td>
-	      <td><select name="frequency" disabled="true">
-	          <option value="">Select Option</option>
-	          <option value="">----------------------------</option>
-	          <option value="week">For a Week</option>
-	          <option value="month">For a Month</option>
-	          <option value="year">For a Year</option>
+	<div class="mb-3">
+			<label for="matchtype" class="form-label">Repeat</label>
+			<select class="form-select" aria-label="Match Type" name="matchtype" id="repeat" onchange="disableSinglesOptions(this)" disabled="true">
+				<option value="norepeat">None</option>
+				<option value="daily">Daily</option>
+				<option value="weekly">Weekly</option>
+				<option value="biweekly">Bi-Weekly</option>
+				<option value="monthly">Monthly</option>
+			
+			    </select>
+	<? is_object($errors) ? err($errors->repeat) : ""?>
+	</div>
+
+	<div class="mb-3">
+			<label for="matchtype" class="form-label">Frequency</label>
+			<select class="form-select" aria-label="Match Type" name="frequency" id="frequency" disabled="true">
+				<option value="">Select Option</option>
+				<option value="">----------------------------</option>
+				<option value="week">For a Week</option>
+				<option value="month">For a Month</option>
+				<option value="year">For a Year</option>
 			  <? is_object($errors) ? err($errors->duration) : ""?>
-	        </select></td>
-	    </tr>
+			</select>	
+
+	<? is_object($errors) ? err($errors->repeat) : ""?>
+	</div>
+
 	<? } ?>
 
+	
+
 	<? if($variableDuration == 'y' || ($variableDuration_admin == 'y' && get_roleid() == 2)){ ?>
-	<tr> 
-		 <td class="label">Duration:</td>
-		 <td>
-			<select name="duration">
+	
+	<div class="mb-3">
+		<label for="duration" class="form-label">Duration</label>
+		<select class="form-select" aria-label="Duration" name="duration">
 				<?
 				$timetonext = $nexttime - $time; 
 				
@@ -149,45 +170,38 @@ pat_autocomplete(array(
 				<? } ?>
 					
 			</select>
-			</td>
-	</tr>
+	
+	
 	<? }  else { ?>
-		<tr>
-		<td>
+		<div>
 			<input type="hidden" name="duration" value="<?=$reservation_duration  ?>">
-		</td>
-		<td></td>
-		</tr>
+		</div>
 		
 	<? }  ?>
     
-    <tr>
-      <td colspan="2">
-      	<span class="normal"> To book a reservation, type in the name of the each player then select from the list.
-        For more infomation on match types, click 
-        <a href="javascript:newWindow('../help/squash-matchtypes.html')">here</a>.
-        <? if( get_roleid() == 2){ ?>
-        If you want to put yourself down as available for a lesson, leave your name in as Player One, leave Player Two blank and set
-        the matchtype as Lesson.
-        <? } ?>
-        </span></td>
-    </tr>
+	
+		
+	</div>
+
+    
 
 
     <? if( get_roleid()==2 || get_roleid() ==4){ ?>
-    <tr>
-      <td colspan="2"><input type="checkbox" name="lock" />
-        <span class="normal">Lock reservation</span></td>
-    </tr>
+   
+	<div class="form-check">
+	  <input class="form-check-input" type="checkbox" name="lock" />
+	  <label for="lock" class="form-label">Lock Reservation</label>
+	</div>
+
+	
+	
     <?}?>
-    <tr>
-      <td></td>
-      <td><input type="button" name="submit" value="Make Reservation" id="singles-submitbutton"  >
-        <input type="button" value="Cancel" id="singles-cancelbutton" ></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
+
+	<div class="mb-3">
+		<button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Make Reservation</button>
+	</div>
+
+    
   <input type="hidden" name="courttype" value="singles">
   <input type="hidden" name="eventid" value="0">
   <input type="hidden" name="time" value="<?=$_REQUEST["time"]?>">
@@ -196,38 +210,8 @@ pat_autocomplete(array(
 </form>
 <script>
 
- YAHOO.example.init = function () {
-
-	    YAHOO.util.Event.onContentReady("singles-formtable", function () {
-
-
-	    	document.getElementById('name1').setAttribute("autocomplete", "off");
-	    	document.getElementById('name2').setAttribute("autocomplete", "off");
-
-	        var sinSubmitButton1 = new YAHOO.widget.Button("singles-submitbutton", { value: "submitbuttonvalue" });
-	        sinSubmitButton1.on("click", onSinglesSubmitButtonClicked);
-			
-				
-	        var sinCancelButton = new YAHOO.widget.Button("singles-cancelbutton", { value: "cancelbuttonvalue" });   
-	        sinCancelButton.on("click", onSinglesCancelButtonClicked);
-	
-	    });
-
-	} ();
-
-
-	function onSinglesSubmitButtonClicked(){
-
-		var myButton = YAHOO.widget.Button.getButton('singles-submitbutton'); 		
-		myButton.set('disabled', true); 
-		submitForm('singlesform');
-	}
-
-	 function onSinglesCancelButtonClicked(){
-
-		parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
-	 }
- 
+	document.getElementById('name1').setAttribute("autocomplete", "off");
+	document.getElementById('name2').setAttribute("autocomplete", "off");
 
 
 function cancelCourt(){

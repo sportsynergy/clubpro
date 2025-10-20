@@ -3,7 +3,18 @@
 /**********General***************************************************/
 
 
+/**
+.mainpanel {
+	border: solid #dee2e6;
+	padding: 10px;
+	margin-bottom: 10px;
+	border-width: 1px;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+	width: 80%;
+}
 
+**/
 
 li {
     list-style: none;

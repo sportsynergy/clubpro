@@ -249,8 +249,8 @@ if (get_roleid() == 1) {
         )
     ) {
         $errormsg = "Sorry, you are not authorized to reserve this court.";
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }
@@ -265,7 +265,7 @@ if (get_roleid() == 5) {
 /******************************************************************************
  * Load Forms
  ******************************************************************************/
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 /**
  * Determine what form to display
  */

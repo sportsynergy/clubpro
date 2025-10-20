@@ -29,94 +29,51 @@
 
 ?>
 
-<div id="reservations" class="yui-navset">
-  <ul class="yui-nav">
-    <? if($reservationType==0 || $reservationType==1) { ?>
-    <li class="selected"><a href="#singles"><em>Singles</em></a></li>
-    <? } ?>
-    <? if($reservationType==2 || $reservationType==1) { ?>
-    <li <?=$reservationType=="2"?"class=\"selected\"":""?>><a href="#doubles"><em>Doubles</em></a></li>
-    <? } ?>
-    <? if($reservationType==3 ) { ?>
-    <li class="selected"><a href="#"><em>Resource</em></a></li>
-    <? } ?>
-    <? if(get_roleid()==2 && ($reservationType==0 || $reservationType==1 || $reservationType==2 || $reservationType==3) ) { ?>
-    <li><a href="#events"><em>Events</em></a></li>
-    <? } ?>
-  </ul>
-  <div class="yui-content">
-    <? if($reservationType==1 || $reservationType==0) { ?>
-    <div id="singles">
-      <? include($_SESSION["CFG"]["includedir"]."/include_reservation_singles.php");?>
-    </div>
-    <? } ?>
-    <? if($reservationType==2 || $reservationType==1) { ?>
-    <div id="doubles">
-      <? include($_SESSION["CFG"]["includedir"]."/include_reservation_doubles.php");?>
-    </div>
-    <? } ?>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#singles" type="button" role="tab" aria-controls="singles" aria-selected="true">Singles</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="doubles-tab" data-bs-toggle="tab" data-bs-target="#doubles" type="button" role="tab" aria-controls="doubles" aria-selected="false">Doubles</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab" aria-controls="resources" aria-selected="false">Resources</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="events" aria-selected="false">Events</button>
+  </li>
+</ul>
 
-    <? if($reservationType==3 ) {  ?>
-    
-     <div id="resources">
-    <?  include($_SESSION["CFG"]["includedir"]."/include_reservation_resource.php");?>
-   </div>
-    <? } ?>
-    
 
-    <? if(get_roleid()==2 && ($reservationType==0 || $reservationType==1 || $reservationType==2 || $reservationType==3)) { ?>
-    <div id="events">
-      <? include($_SESSION["CFG"]["includedir"]."/include_reservation_event.php");?>
-    </div>
-    <? } ?>
-    
-    
+
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="singles" role="tabpanel" aria-labelledby="singles-tab">
+    <? include($_SESSION["CFG"]["includedir"]."/include_reservation_singles.php");?>
+  </div>
+  <div class="tab-pane fade" id="doubles" role="tabpanel" aria-labelledby="doubles-tab">
+    <? include($_SESSION["CFG"]["includedir"]."/include_reservation_doubles.php");?>
+  </div>
+  <div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
+     <?  include($_SESSION["CFG"]["includedir"]."/include_reservation_resource.php");?>
+  </div>
+  <div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="events-tab">
+     <? include($_SESSION["CFG"]["includedir"]."/include_reservation_event.php");?>
   </div>
 </div>
-<?
 
-// Calculate current tab index
-if($_REQUEST["courttype"]=="event" && $reservationType=="1"){
-	$currentTabIndex = 2;
-}
-else if($_REQUEST["courttype"]=="event" 
-		&& ($reservationType=="0" || $reservationType=="2")  ) {
-	$currentTabIndex = 1;
-}
-else if($_REQUEST["courttype"]=="doubles" && $reservationType=="1") {
-	$currentTabIndex = 1;
-} 
 
-?>
-<form name="tabIndexForm">
-  <input type="hidden" name="tabIndex" value="<?=$currentTabIndex?>">
-  </input>
-</form>
+
+
+
+
+
+
+  
+
+
+
 <script language="Javascript">
 
-
-(function() {
-    var myTabs = new YAHOO.widget.TabView("reservations");
-
-    var url = location.href.split('#');
-    if (url[1]) {
-        //We have a hash
-        var tabHash = url[1];
-        var tabs = myTabs.get('tabs');
-        for (var i = 0; i < tabs.length; i++) {
-            if (tabs[i].get('href') == '#' + tabHash) {
-                myTabs.set('activeIndex', i);
-                break;
-            }
-        }
-    }
-    else{
-		if(document.tabIndexForm.tabIndex.value != ""){
-			myTabs.set('activeIndex', document.tabIndexForm.tabIndex.value );
-		}
-    }
-    
-})();
 
 
 //please keep these lines on when you copy the source

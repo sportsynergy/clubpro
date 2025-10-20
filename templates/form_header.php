@@ -4,14 +4,16 @@ $msg = "";
 $class = "none";
 
 if (!empty($errormsg)) {
-	$class = "problem";
+	$class = "alert alert-danger";
 	$msg = $errormsg;
 } else if (!empty($noticemsg)) {
- 	$class = "notice";
+ 	$class = "alert alert-success";
  	$msg = $noticemsg;
 }
 
 ?>
-<div class="<?php echo $class; ?>" style="padding:10px" id="message_div">
-	<?php echo $msg; ?>
+<div class="<?php echo $class; ?>"  id="message_div" role="alert">
+  <?php echo $msg; ?>
+	
 </div>
+
