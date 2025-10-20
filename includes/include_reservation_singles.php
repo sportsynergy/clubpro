@@ -77,6 +77,15 @@
         </script>
 	</div>
 
+	 <div class="mb-3">
+           <div id="emailHelp" class="form-text">
+            To book a reservation, type in the name of the each player and select from the list of club members.  If you don't
+        know who will be playing yet, don't worry, just fill in what you know now.  We will ask you about how to advertise for any open spots on the 
+        next screen.
+            </div>
+        </div>
+
+
     <div class="mb-3">
 		<label for="matchtype" class="form-label">Match Type</label>
 		<select class="form-select" aria-label="Match Type" name="matchtype" id="matchtype" onchange="disablePlayerDropDownWithSoloSelection(this);onlyAllowLessonReoccuring(this)">

@@ -1,39 +1,13 @@
-<?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* Classes list:
-*/
-?>
+
 <form name="doubles_reservation_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
-  <table cellspacing="5" cellpadding="0" width="540" class="tabtable" id="doubles-formtable">
-    <tr>
-      <td><input id="dname1" name="playeronename" type="text" size="30" class="form-autocomplete"  
+  
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <label for="dname1" class="form-label">Player One</label>
+        <input id="dname1" name="playeronename" type="text" size="30" class="form-autocomplete form-control" 
              <?
              // If regular player default the first player as them selves, don't allow them to edit this either
              if( get_roleid() == 1){ ?>
@@ -65,8 +39,14 @@
 						'minimumCharacters'=>3,
 						));
                  ?>
-                </script></td>
-      <td><input id="dname2" name="playertwoname" type="text" size="30" class="form-autocomplete" onchange="javascript:unsetplayertwo();" value="<? pv($frm["playertwoname"]) ?>"/>
+                </script>
+        </div>
+    </div>
+
+    <div class="col">
+            <div class="mb-3">
+              <label for="dname2" class="form-label">Player Two</label>
+              <input id="dname2" name="playertwoname" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayertwo();" value="<? pv($frm["playertwoname"]) ?>"/>
         <? is_object($errors) ? err($errors->playertwoname) : ""?>
         
         <input id="did2" name="playertwoid" type="hidden" value="<? pv($frm["playertwoid"]) ?>" />
@@ -84,14 +64,20 @@
 							));
 	           
 	                 ?>
-	                </script></td>
-    </tr>
-    <tr>
-      <td><input id="name3" name="playerthreename" type="text" size="30" class="form-autocomplete" onchange="javascript:unsetplayerthree();" value="<? pv($frm["playerthreename"]) ?>"/>
-        <? is_object($errors) ? err($errors->playerthreename) : ""?>
+	                </script>
+          </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+        <div class="mb-3">
+        <label for="name3" class="form-label">Player Three</label>
+         <input id="name3" name="playerthreename" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayerthree();" value="<? pv($frm["playerthreename"]) ?>"/>
+          <? is_object($errors) ? err($errors->playerthreename) : ""?>
         
-        <input id="id3" name="playerthreeid" type="hidden" value="<? pv($frm["playerthreeid"]) ?>"/>
-        <script>
+          <input id="id3" name="playerthreeid" type="hidden" value="<? pv($frm["playerthreeid"]) ?>"/>
+          <script>
 	                <?
 	                 $wwwroot = $_SESSION["CFG"]["wwwroot"];
 	                 pat_autocomplete( array(
@@ -105,42 +91,56 @@
 							));
 	           
 	                 ?>
-	                </script></td>
-      <td><input id="name4" name="playerfourname" type="text" size="30" class="form-autocomplete" onchange="javascript:unsetplayerfour();" value="<? pv($frm["playerfourname"]) ?>"/>
+	          </script>
+        </div> <!-- mb-3  -->
+    </div> <!-- col  -->
+
+    <div class="col">
+        <div class="mb-3">
+          <label for="name4" class="form-label">Player Four </label>
+        <input id="name4" name="playerfourname" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayerfour();" value="<? pv($frm["playerfourname"]) ?>"/>
         <? is_object($errors) ? err($errors->playerfourname) : ""?>
         <input id="id4" name="playerfourid" type="hidden" value="<? pv($frm["playerfourid"]) ?>"/>
         <script>
-	                <?
-	                 $wwwroot = $_SESSION["CFG"]["wwwroot"];
-	                 pat_autocomplete( array(
-							'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-							'source'=>'name4',
-							'target'=>'id4',
-							'className'=>'autocomplete',
-							'parameters'=> "action=autocomplete&name={name4}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
-							'progressStyle'=>'throbbing',
-							'minimumCharacters'=>3,
-							));
-	           
-	                 ?>
-	                </script></td>
-    </tr>
-    <tr>
-      <td colspan="2"><span class="normal">To book a reservation, type in the name of the each player and select from the list of club members.  If you don't
-        know who all four players will be yet, don't worry, just fill in what you know now.  We will ask you about how to advertise for any open spots on the 
-        next screen. </span></td>
-    </tr>
-    <tr>
-      <td height="3" colspan="2"><hr></td>
-    </tr>
+            <?
+              $wwwroot = $_SESSION["CFG"]["wwwroot"];
+              pat_autocomplete( array(
+              'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+              'source'=>'name4',
+              'target'=>'id4',
+              'className'=>'autocomplete',
+              'parameters'=> "action=autocomplete&name={name4}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
+              'progressStyle'=>'throbbing',
+              'minimumCharacters'=>3,
+              ));
+            
+              ?>
+            </script>
+        </div> <!-- mb-3  -->
+    </div> <!-- col  -->
+  </div>  <!-- row  -->
+  </div> <!-- container  -->
+
+
+
+        
+    <div class="mb-3">
+        <div id="emailHelp" class="form-text">
+        To book a reservation, type in the name of the each player and select from the list of club members.  If you don't
+    know who all four players will be yet, don't worry, just fill in what you know now.  We will ask you about how to advertise for any open spots on the 
+    next screen.
+        </div>
+    </div>
+            
+                  
+                  
 	
 	<? if($variableDuration == 'y' || ($variableDuration_admin == 'y' && get_roleid() == 2)){ ?>
-	<tr> 
-		 <td class="biglabel">Duration:</td>
-		 <td>
-			<select name="duration">
-				<? 
-				$timetonext = $nexttime - $time;
+    <div class="mb-3">
+      <label for="duration" class="form-label">Duration</label>
+      <select name="duration" class="form-select" aria-label="Duration">
+        <? 
+        $timetonext = $nexttime - $time;
 
 				if($timetonext == 900 ){ ?>
 					<option value=".25">15 Minutes</option>
@@ -169,24 +169,19 @@
         if($timetonext >= 10800 || $nexttime == null ){ ?>
           <option value="3">3 Hours</option>
         <? } ?>
-			
-					
+				
 			</select>
-			</td>
-	</tr>
-	<? }  else { ?>
-
-    <tr>
-    <td>
+        </div>
+  <? }  else { ?>
+    <div>
       <input type="hidden" name="duration" value="<?=$reservation_duration  ?>">
-    </td>
-    <td></td>
-    </tr>
-    <? } ?>
+    </div>
+	<? }  ?>
 
-    <tr>
-      <td ><span  class="biglabel">Match Type:</span></td>
-      <td class="normal" ><select name="matchtype" >
+
+  <div class="mb-3">
+    <label for="matchtype" class="form-label">Match Type</label>
+    <select name="matchtype" class="form-select" aria-label="Match Type">
           <option value="0" selected>Practice</option>
           <option value="0">Tournament</option>
           <? if ( isPointRankingScheme() ) {?>
@@ -195,30 +190,27 @@
           <? if( get_roleid() ==2 || get_roleid()==4) {?>
           <option value="4">Lesson</option>
           <? } ?>
-        </select></td>
-    </tr>
-    <tr>
-      <td colspan="2"><span class="normal" >
-        For more infomation on match types, click 
-        <a href="javascript:newWindow('../help/squash-matchtypes.html')">here</a>. 
-        </span></td>
-    </tr>
-    <? if( get_roleid()==2 || get_roleid() ==4){ ?>
-    <tr>
-      <td colspan="2"><input type="checkbox" name="lock" />
-        <span class="normal">Lock reservation</span></td>
-    </tr>
-    <?}?>
-    <tr>
-      <td colspan="2"><br/>
-        <br/>
-        <input type="button" name="submit" value="Make Reservation" id="doubles-submitbutton">
-        <input type="button" value="Cancel" id="doubles-cancelbutton"></td>
-    </tr>
-  </table>
-  </td>
-  </tr>
-  </table>
+        </select>
+
+         <div id="matchtypehelp" class="form-text"> 
+          For more infomation on match types, click 
+          <a href="javascript:newWindow('../help/squash-matchtypes.html')">here</a>
+        </div>
+  </div>
+
+ <? if( get_roleid()==2 || get_roleid() ==4){ ?>
+  <div class="form-check">
+    <label for="lock" class="form-label">Lock Reservation</label>
+	  <input class="form-check-input" type="checkbox" name="lock" />
+	  
+	</div>
+  <? }?>
+
+   <div class="mb-3">
+    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Make Reservation</button>
+    <button type="submit" class="btn btn-secondary" onclick="onEventCancelButtonClicked()">Cancel</button>
+  </div> 
+
   <input type="hidden" name="time" value="<?=$_REQUEST["time"]?>">
   <input type="hidden" name="courtid" value="<?=$_REQUEST["courtid"]?>">
   <input type="hidden" name="courttype" value="doubles">
@@ -226,46 +218,15 @@
   <input type="hidden" name="team" value="needtwo">
   <input type="hidden" name="action" value="create">
 </form>
+
+
+
 <script language="Javascript">
 
 
 
-
-document.onkeypress = function (aEvent)
-{
- if(!aEvent) aEvent=window.event;
-	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
- if( key == 13 ) // enter key
- {
-     return false; // this will prevent bubbling ( sending it to children ) the event!
- }
-	
-}
-
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("doubles-formtable", function () {
-
-
-        document.getElementById('dname1').setAttribute("autocomplete", "off");
-        document.getElementById('dname2').setAttribute("autocomplete", "off");
-        document.getElementById('name3').setAttribute("autocomplete", "off");
-        document.getElementById('name4').setAttribute("autocomplete", "off");
-
-
-        var dblSubmitButton = new YAHOO.widget.Button("doubles-submitbutton", { value: "doubles-submitvalue" });
-        dblSubmitButton.on("click", onDoublesSubmitButtonClicked);
-
-        var dblCancelButton = new YAHOO.widget.Button("doubles-cancelbutton", { value: "doubles-cancelbuttonvalue" });   
-        dblCancelButton.on("click", onDoublesCancelButtonClicked);
-    });
-
-} ();
-
-
 function onDoublesSubmitButtonClicked(){
-	var myButton = YAHOO.widget.Button.getButton('doubles-submitbutton'); 		
-	myButton.set('disabled', true);
+
 	submitForm('doubles_reservation_form');
 }
 
