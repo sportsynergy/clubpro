@@ -194,7 +194,6 @@
 
     
 
-
     <? if( get_roleid()==2 || get_roleid() ==4){ ?>
    
 	<div class="form-check">
@@ -206,7 +205,7 @@
 	
     <?}?>
 
-	<div class="mb-3">
+	<div class="mt-5">
 		<button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Make Reservation</button>
 	</div>
 

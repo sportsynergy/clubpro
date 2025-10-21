@@ -109,11 +109,11 @@ function getCourtTableWidth($totalCurrentCourts) {
     if ($totalCurrentCourts == 1) {
         $width = 450;
     } elseif ($totalCurrentCourts == 2) {
-        $width = 300;
+        $width = 450;
     } elseif ($totalCurrentCourts == 3 || $totalCurrentCourts == 4) {
         $width = 150;
     } else {
-        $width = 100;
+        $width = 150;
     }
     return $width;
 }

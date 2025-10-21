@@ -1,4 +1,6 @@
+<div class="mb-5">
 <p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
@@ -42,7 +44,7 @@
 
   <div class="mb-3">
     <label for="email" class="form-label">Email:</label>
-    <input class="form-control" id="workphone" type="email"  aria-label="Email">
+    <input class="form-control" id="email" type="email"  aria-label="Email">
     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     <? is_object($errors) ? err($errors->workphone) : ""?>
   </div>
@@ -156,9 +158,9 @@
         <div id="usertypeHelp" class="form-text"> A Desk User can book courts and see player details. A Club Admin can also add/edit players and change site settings.</div>
       </div>
 
-
+  <div class="mt-5">
   <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add New User</button>
-
+      </div>
   </form>
   
 

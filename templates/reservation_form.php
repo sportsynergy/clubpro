@@ -32,18 +32,26 @@
 <p class="bigbanner"><? pv($DOC_TITLE) ?></p>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
+   <? if($reservationType==0 || $reservationType==1) { ?>
   <li class="nav-item" role="presentation">
     <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#singles" type="button" role="tab" aria-controls="singles" aria-selected="true">Singles</button>
   </li>
+  <? } ?>
+  <? if($reservationType==2 || $reservationType==1) { ?>
   <li class="nav-item" role="presentation">
     <button class="nav-link" id="doubles-tab" data-bs-toggle="tab" data-bs-target="#doubles" type="button" role="tab" aria-controls="doubles" aria-selected="false">Doubles</button>
   </li>
+  <? } ?>
+   <? if($reservationType==3 ) { ?>
   <li class="nav-item" role="presentation">
     <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab" aria-controls="resources" aria-selected="false">Resources</button>
   </li>
+  <? } ?>
+  <? if(get_roleid()==2 && ($reservationType==0 || $reservationType==1 || $reservationType==2 || $reservationType==3) ) { ?>
   <li class="nav-item" role="presentation">
     <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="events" aria-selected="false">Events</button>
   </li>
+  <? } ?>
 </ul>
 
 

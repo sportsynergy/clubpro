@@ -1,64 +1,7 @@
 
-
-
-<script language="Javascript">
-
-// please keep these lines on when you copy the source
-// made by: Nicolas - http://www.javascript-page.com
-
-function SubDisable(dform) {
-  if (document.getElementById) {
-   for (var sch = 0; sch < dform.length; sch++) {
-    if (dform.elements[sch].type.toLowerCase() == "submit") dform.elements[sch].disabled = true;
-   }
-  }
-return true;
-}
-
-function disableRankingDropDown()
-{
-        
-        var listselection = document.getElementById('sportselect');
-        if(listselection.value == "all" ){
-             document.entryform.ranking.disabled = true;
-        }
-        else{
-        	document.entryform.ranking.disabled = "";
-        }
-        
-
-}
-
-function disableSportAndRankingDropDown()
-{
-
-        var listselection = document.getElementById('whoselect');
-
-        if(listselection.value == "ladderPlayers" ){
-             document.entryform.ranking.disabled = true;
-             document.entryform.sport.disabled = true;
-        }
-        else{
-        	document.entryform.ranking.disabled = "";
-        	document.entryform.sport.disabled = "";
-        }
-        
-
-}
-
-
-
-
-function onSubmitButtonClicked(){
-	submitForm('entryform');
-}
-
-</script>
-
-<div style="margin-top: 20px; margin-bottom: 20px;">
-
-
+<div class="mb-5">
 <p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
@@ -128,3 +71,58 @@ function onSubmitButtonClicked(){
 
 </form>
 </div>
+
+
+<script language="Javascript">
+
+// please keep these lines on when you copy the source
+// made by: Nicolas - http://www.javascript-page.com
+
+function SubDisable(dform) {
+  if (document.getElementById) {
+   for (var sch = 0; sch < dform.length; sch++) {
+    if (dform.elements[sch].type.toLowerCase() == "submit") dform.elements[sch].disabled = true;
+   }
+  }
+return true;
+}
+
+function disableRankingDropDown()
+{
+        
+        var listselection = document.getElementById('sportselect');
+        if(listselection.value == "all" ){
+             document.entryform.ranking.disabled = true;
+        }
+        else{
+        	document.entryform.ranking.disabled = "";
+        }
+        
+
+}
+
+function disableSportAndRankingDropDown()
+{
+
+        var listselection = document.getElementById('whoselect');
+
+        if(listselection.value == "ladderPlayers" ){
+             document.entryform.ranking.disabled = true;
+             document.entryform.sport.disabled = true;
+        }
+        else{
+        	document.entryform.ranking.disabled = "";
+        	document.entryform.sport.disabled = "";
+        }
+        
+
+}
+
+
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+</script>

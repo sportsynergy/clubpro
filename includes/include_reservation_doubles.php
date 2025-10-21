@@ -206,7 +206,7 @@
 	</div>
   <? }?>
 
-   <div class="mb-3">
+   <div class="mt-5">
     <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Make Reservation</button>
     <button type="submit" class="btn btn-secondary" onclick="onEventCancelButtonClicked()">Cancel</button>
   </div> 
