@@ -39,9 +39,11 @@ if(isset($action) && $action=="remove"){
 		?>
 	</script>
 
-	<div class="mt-5">
+	<div class="my-5">
 		<button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add Buddy</button>
 	</div>
+
+</form>
 					
 		<?php
        //List out all of the players Buddies
@@ -57,76 +59,56 @@ if(isset($action) && $action=="remove"){
        // run the query on the database
        $result = db_query($query); 
        
-        if( isDebugEnabled(1) ) logMessage("my_buddylist_form: found ". mysqli_num_rows($result). "buddies");
+        if( isDebugEnabled(1) ) logMessage("my_buddylist_form: found ". mysqli_num_rows($result). " buddies");
         
-        
+    
         if( mysqli_num_rows($result) == 0 ){ ?>
          <div class="mb-3">
             
 		</div>
         
-          <?php } else { ?>
+          <?php } else {  ?>
           
 			<table class="table table-striped">
-                <tr>
-                  <td></td>
-                  <?php
-				              $sportsResult = load_registered_sports(get_userid());
-				               while($sportRow = mysqli_fetch_array($sportsResult)){  ?>
-									<?php if($sportRow['reservationtype']<2){ ?>
-										<?=$sportRow['courttypename']?>
-									<?php } ?>
-                  			<?php } ?>
-                  <td></td>
-                </tr>
                
 				 <? while($row = mysqli_fetch_row($result)) {  ?>
 
                 <tr>
-                  <td ><span class="normal">
+                  <td >
                     	<?=$row[1]?> &nbsp; <?=$row[2]?>
                   </td>
-                  <?
-						mysqli_data_seek($sportsResult,0);
-						while($sportRow = mysqli_fetch_array($sportsResult)){
-								$historyArray = get_record_history(get_userid(),$row[3], $sportRow['courttypeid']);
-								if($sportRow['reservationtype']<2){ ?>
-                  					<td> 
-										<? print "$historyArray[0] - $historyArray[1] ($historyArray[2]%)";?> 
-									</td>
-                  					<?  } ?>
-                 		 <? } ?>
-                  <td ><a href="my_buddylist.php?action=remove&bid=<?=$row[0]?>"> Remove </a></td>
+                 
+                  	<td>
+						<a href="my_buddylist.php?action=remove&bid=<?=$row[0]?>"> Remove </a>
+					</td>
                 </tr>
-                <?
-					$rownum = $rownum - 1;
-				 } ?>
-              </table></td>
+                
+				<? } ?>
+             
+				
+			</td>
           </tr>
-          <tr>
-            <td colspan="3"><span style="color: red;">*</span><span class=normalsm> <span style="font-weight: bold;">Key:</span> Matches I Have Won - Matches My Buddy Has Won (My Winning Percentage)</span></td>
-          </tr>
+		</table>
           <? } ?>
-        </table>
-	</td>
-		</tr>
-	</table>
-</form>
+    
 
-<?php   if( mysqli_num_rows($result) > 0 ){  ?>
-<div style="height: 2em;"></div>
-<div>
-<?php
-//Get the email addresses of the players to put into the mailto
-$emailArray = getBuddyEmailAddresses(get_userid());
-$emailString = implode(",", $emailArray);
 
-?>
-	<span> 
-		<a href="mailto:<?=$emailString?>">Send an email to these guys</a>
-	</span>
-</div>
-<?php } ?>
+		<?php   if( mysqli_num_rows($result) > 0 ){  ?>
+		<div style="height: 2em;"></div>
+		<div>
+		<?php
+		//Get the email addresses of the players to put into the mailto
+		$emailArray = getBuddyEmailAddresses(get_userid());
+		$emailString = implode(",", $emailArray);
+
+		?>
+			<span> 
+				<a href="mailto:<?=$emailString?>">Send an email to these guys</a>
+			</span>
+		</div>
+		<?php } ?>
+
+
 
 
 <script language="Javascript">

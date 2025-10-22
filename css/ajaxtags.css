@@ -145,12 +145,12 @@ input [type="button"] {
 /* Animated throbber */
 
 input.form-autocomplete {
-  background: url('../images/throbber.gif') no-repeat 100% 2px;
+  background: url('../images/throbber.gif') no-repeat 100% 6px;
   background-color: white;
 }
 
 input.throbbing {
-  background-position: 100% -18px;
+  background-position: 100% -28px;
 }
 
 

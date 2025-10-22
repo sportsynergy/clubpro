@@ -12,8 +12,9 @@
       <input type="text" name="searchname" class="form-control" aria-label="Member name">
     </div>
 
-    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Search</button>
-
+    <div class="mb-5">
+     <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Search</button>
+    </div>
   </form>
 
     
