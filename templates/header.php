@@ -13,11 +13,11 @@
     <meta http-equiv="refresh" content="1830">
     <meta name="referrer" content="always">
 
+
+    
     <!-- Misc -->
-    <link rel="icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/favicon.ico"
-        type="image/x-icon" />
-    <link rel="apple-touch-icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/twitter1.png"
-        type="image/x-icon" />
+    <link rel="icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/twitter1.png" type="image/x-icon" />
 
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel="stylesheet" type="text/css" />
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/ajaxtags.css" rel="stylesheet" type="text/css" />
@@ -27,6 +27,11 @@
     <?php if(isset( $_SESSION["siteprefs"]["siteid"]) ){ ?>
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?php echo get_sitecode(); ?>/main.css" rel="stylesheet" type="text/css" />
     <?php } ?>
+
+
+    <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/prototype-1.3.1.js" type="text/javascript"></script>
+    <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/ajaxtags-1.1.5.js" type="text/javascript"></script>
+
   </head>
   
   <body>

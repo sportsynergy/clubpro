@@ -40,10 +40,10 @@ if(isset($action) && $action=="remove"){
 	</script>
 
 	<div class="mt-5">
-		<button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Make Reservation</button>
+		<button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add Buddy</button>
 	</div>
 					
-					<?php
+		<?php
        //List out all of the players Buddies
        $query = "SELECT buddies.bid, users.firstname, users.lastname, users.userid
                  FROM tblUsers users, tblClubUser clubuser, tblBuddies buddies
@@ -62,7 +62,7 @@ if(isset($action) && $action=="remove"){
         
         if( mysqli_num_rows($result) == 0 ){ ?>
          <div class="mb-3">
-            You don't have any buddies. Why don't you add one now. 
+            
 		</div>
         
           <?php } else { ?>

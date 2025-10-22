@@ -23,7 +23,6 @@
 document.entryform.searchname.focus();
 
 
-
 function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
