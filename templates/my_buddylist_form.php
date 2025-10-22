@@ -1,35 +1,4 @@
-<script language="Javascript">
 
-document.onkeypress = function(aEvent)
-{
-    
-    if(!aEvent) aEvent=window.event;
-  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
-    if( key == 13 ) // enter key
-    {
-        return false; // this will prevent bubbling ( sending it to children ) the event!
-    }
-}
-
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-    });
-
-} ();
-
-
-function onSubmitButtonClicked(){
-	submitForm('entryform');
-}
-
-
- 
-</script>
 <?php
 //Set the http variables
 $action = $_REQUEST["action"];
@@ -43,47 +12,36 @@ if(isset($action) && $action=="remove"){
 }
 ?>
 
-<form name="entryform" method="post" action="<?=$ME?>"
-	onSubmit="SubDisable(this)" autocomplete="off">
-	<table width="550" cellpadding="20" cellspacing="0"
-		class="generictable" id="formtable">
-		<tr class="borderow">
-			<td class=clubid<?=get_clubid()?>th><span class="whiteh1">
-					<div align="center">
-					<? pv($DOC_TITLE) ?>
-					</div>
-			</span></td>
-		</tr>
-		<tr>
-			<td><table width="550" cellspacing="5" cellpadding="0"
-					class="borderless">
-					<tr>
-						<td class="label">Add A Buddy:</td>
-						<td><input id="name" name="name" type="text" size="30"
-							class="form-autocomplete" /> <input id="id" name="buddy"
-							type="hidden" size="30" /> <script>
-			                <?php
-			                 $wwwroot = $_SESSION["CFG"]["wwwroot"];
-			                 pat_autocomplete( array(
-									'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-									'source'=>'name',
-									'target'=>'id',
-									'className'=>'autocomplete',
-									'parameters'=> "action=autocomplete&name={name}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
-									'progressStyle'=>'throbbing',
-									'minimumCharacters'=>3,
-									));
-			           
-			                 ?>
-			
-			                </script></td>
-						<td><input type="button" name="submit" value="Submit"
-							id="submitbutton"></td>
-					</tr>
-					<tr>
-						<td colspan="3"><hr></td>
-					</tr>
-					
+
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
+
+<form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this)" autocomplete="off">
+	
+<label for="name1" class="form-label">Add A Buddy</label>
+<input id="name" name="name" type="text" size="30" class="form-control form-autocomplete"/> 
+<input id="id" name="buddy" type="hidden" size="30" /> 
+<script>
+	<?php
+		$wwwroot = $_SESSION["CFG"]["wwwroot"];
+		pat_autocomplete( array(
+			'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+			'source'=>'name',
+			'target'=>'id',
+			'className'=>'autocomplete',
+			'parameters'=> "action=autocomplete&name={name}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+			'progressStyle'=>'throbbing',
+			'minimumCharacters'=>3,
+			));
+
+		?>
+	</script>
+
+	<div class="mt-5">
+		<button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Make Reservation</button>
+	</div>
 					
 					<?php
        //List out all of the players Buddies
@@ -103,60 +61,58 @@ if(isset($action) && $action=="remove"){
         
         
         if( mysqli_num_rows($result) == 0 ){ ?>
-          <tr>
-            <td colspan="2"> You don't have any buddies. Why don't you add one now. </td>
-          </tr>
+         <div class="mb-3">
+            You don't have any buddies. Why don't you add one now. 
+		</div>
+        
           <?php } else { ?>
-          <tr>
-            <td colspan="3"><table width="450" cellpadding="0" cellspacing="0">
+          
+			<table class="table table-striped">
                 <tr>
                   <td></td>
                   <?php
 				              $sportsResult = load_registered_sports(get_userid());
 				               while($sportRow = mysqli_fetch_array($sportsResult)){  ?>
-                  <?php if($sportRow['reservationtype']<2){ ?>
-                  <td align="center"><span class="medbold">
-                    <?=$sportRow['courttypename']?>
-                    </span></td>
-                  <?php } ?>
-                  <?php } ?>
+									<?php if($sportRow['reservationtype']<2){ ?>
+										<?=$sportRow['courttypename']?>
+									<?php } ?>
+                  			<?php } ?>
                   <td></td>
                 </tr>
-                <?
-				       $rownum = mysqli_num_rows($result);
-				       while($row = mysqli_fetch_row($result)) { 
-				        $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "lightrow" : "darkrow";
-				       	?>
-                <tr class="<?=$rc?>">
-                  <td width="100"><span class="normal">
-                    <?=$row[1]?>
-                    &nbsp;
-                    <?=$row[2]?>
-                    </span></td>
+               
+				 <? while($row = mysqli_fetch_row($result)) {  ?>
+
+                <tr>
+                  <td ><span class="normal">
+                    	<?=$row[1]?> &nbsp; <?=$row[2]?>
+                  </td>
                   <?
-					                mysqli_data_seek($sportsResult,0);
-					                while($sportRow = mysqli_fetch_array($sportsResult)){
-					                        $historyArray = get_record_history(get_userid(),$row[3], $sportRow['courttypeid']);
-					                        if($sportRow['reservationtype']<2){
-					                        ?>
-                  <td align="center"><span class="normal"> <? print "$historyArray[0] - $historyArray[1] ($historyArray[2]%)";?> </span></td>
-                  <?  } ?>
-                  <? } ?>
-                  <td width="70" ><a href="my_buddylist.php?action=remove&bid=<?=$row[0]?>"> Remove </a></td>
+						mysqli_data_seek($sportsResult,0);
+						while($sportRow = mysqli_fetch_array($sportsResult)){
+								$historyArray = get_record_history(get_userid(),$row[3], $sportRow['courttypeid']);
+								if($sportRow['reservationtype']<2){ ?>
+                  					<td> 
+										<? print "$historyArray[0] - $historyArray[1] ($historyArray[2]%)";?> 
+									</td>
+                  					<?  } ?>
+                 		 <? } ?>
+                  <td ><a href="my_buddylist.php?action=remove&bid=<?=$row[0]?>"> Remove </a></td>
                 </tr>
                 <?
-							$rownum = $rownum - 1;
-				       } ?>
+					$rownum = $rownum - 1;
+				 } ?>
               </table></td>
           </tr>
           <tr>
             <td colspan="3"><span style="color: red;">*</span><span class=normalsm> <span style="font-weight: bold;">Key:</span> Matches I Have Won - Matches My Buddy Has Won (My Winning Percentage)</span></td>
           </tr>
           <? } ?>
-        </table></td>
+        </table>
+	</td>
 		</tr>
 	</table>
 </form>
+
 <?php   if( mysqli_num_rows($result) > 0 ){  ?>
 <div style="height: 2em;"></div>
 <div>
@@ -166,8 +122,31 @@ $emailArray = getBuddyEmailAddresses(get_userid());
 $emailString = implode(",", $emailArray);
 
 ?>
-	<span> <a href="mailto:<?=$emailString?>">Send an email to these
-			schmucks</a>
+	<span> 
+		<a href="mailto:<?=$emailString?>">Send an email to these guys</a>
 	</span>
 </div>
 <?php } ?>
+
+
+<script language="Javascript">
+
+document.onkeypress = function(aEvent)
+{
+    
+    if(!aEvent) aEvent=window.event;
+  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+    if( key == 13 ) // enter key
+    {
+        return false; // this will prevent bubbling ( sending it to children ) the event!
+    }
+}
+
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+
+ 
+</script>
