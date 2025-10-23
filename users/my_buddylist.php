@@ -47,7 +47,7 @@ if($userRelation->isUserLoggedin()){
 
 /* form has been submitted, check if it the user login information is correct */
 
-if (match_referer() && isset($_POST)) {
+if (match_referer() && isset($_POST['name']) ) {
     $frm = $_POST;
     $errormsg = validate_form($frm, $errors);
     

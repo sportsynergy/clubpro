@@ -20,7 +20,7 @@ if(isset($action) && $action=="remove"){
 
 <form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this)" autocomplete="off">
 	
-<label for="name1" class="form-label">Add A Buddy</label>
+<label for="name" class="form-label">Add A Buddy</label>
 <input id="name" name="name" type="text" size="30" class="form-control form-autocomplete"/> 
 <input id="id" name="buddy" type="hidden" size="30" /> 
 <script>
@@ -39,7 +39,7 @@ if(isset($action) && $action=="remove"){
 		?>
 	</script>
 
-	<div class="my-5">
+	<div class="mt-2 mb-5">
 		<button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add Buddy</button>
 	</div>
 

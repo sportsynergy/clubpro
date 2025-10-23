@@ -892,6 +892,8 @@ AjaxJspTag.Autocomplete.prototype = (new AjaxJspTag.Base()).extend({
       $(this.popupElem).style.minWidth = this.options.sourceElem.offsetWidth + "px";
     }
     $(this.popupElem).style.overflow = "visible";
+    $(this.popupElem).style.height = "auto";
+  
 
     // do iframe
     $('layerCover').style.top = (getElementY(this.options.sourceElem)+this.options.sourceElem.offsetHeight+2) + "px";

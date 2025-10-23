@@ -17,9 +17,7 @@
 						'progressStyle'=>'throbbing',
 						'minimumCharacters'=>3,
 						));
-           
                  ?>
-
                 </script>
 	</div>
 
