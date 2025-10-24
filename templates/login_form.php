@@ -15,17 +15,19 @@ if(isset($clubName) && strlen($clubName) <> 0){
 <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
 <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" /> -->
 <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=$sitecode?>/main.css" rel=stylesheet type=text/css>
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
 <script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/button-min.js"></script>
+
 <style type="text/css">
 body {
 	margin:0;
 	padding:0;
 	/* TODO: Replace with club logo - So users are not confused */
-	background-image: url(images/squash-scotstoun.jpg);
+  background-image: url(images/squash-scotstoun.jpg);
 	background-repeat: no-repeat;
-	background-position: -650px -670px;
+	background-size: cover;
 }
 #overlayHld {
 	height:100%;
@@ -46,7 +48,7 @@ a {
 	color:#FFF;
 }
 </style>
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=$sitecode?>/main.css" rel=stylesheet type=text/css>
+
 
 </head>
 <?php

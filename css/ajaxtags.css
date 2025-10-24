@@ -50,12 +50,14 @@ h1 { font-size: 1.2em }
 h2 { font-size: 1.1em }
 h3 { font-size: 1.0em }
 
+/*
 label {
   font: bold 1em Verdana;
   display: block;
   margin-top: 1em;
   margin-bottom: 0.25em;
 }
+  */
 
 fieldset {
   width: 500px;
@@ -71,7 +73,10 @@ legend {
   background: #eee;
 }
 
+/* Form elements 
 label { font-size: 0.8em; }
+
+*/
 
 input [type="text"] {
   background-color: #ffd;

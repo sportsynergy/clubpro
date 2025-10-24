@@ -230,7 +230,7 @@ function read_template($filename, &$var) {
      * object (whatever you decide to use).
      *
      * WARNING: do not use this on big files!! */
-    $temp = str_replace("\\", "\\\\", implode(file($filename) , ""));
+    $temp = str_replace("\\", "\\\\", implode(file($filename) ));
     $temp = str_replace('"', '\"', $temp);
     eval("\$template = \"$temp\";");
     return $template;

@@ -75,7 +75,7 @@ if(isset($action) && $action=="remove"){
 
                 <tr>
                   <td >
-                    	<?=$row[1]?> &nbsp; <?=$row[2]?>
+                    	<?=$row[1]?>  <?=$row[2]?>
                   </td>
                  
                   	<td>
@@ -112,6 +112,9 @@ if(isset($action) && $action=="remove"){
 
 
 <script language="Javascript">
+
+
+document.getElementById('name').setAttribute("autocomplete", "off");
 
 document.onkeypress = function(aEvent)
 {
