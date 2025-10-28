@@ -1,5 +1,5 @@
 
-<table width="710" cellspacing="0" cellpadding="0" align="center" class="borderless">
+<table class="table table-striped">
 
 <?
 
@@ -19,7 +19,7 @@ while ($clubteam = db_fetch_array( $result )) {
         <tr valign="top" id="newrow">
     <?  } ?>
 
-    <td width="350" nowrap id="tablecontainer">
+   
            
            <table width="350" cellpadding="0" cellspacing="0" class="bordertablethick">
                <tr valign="top">

@@ -12,79 +12,56 @@
 
 <script language="JavaScript">
 
-     YAHOO.example.init = function () {
-    	    YAHOO.util.Event.onContentReady("formtable", function () {
-    	        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-    	        oSubmitButton1.on("click", onSubmitButtonClicked);
-    	    });
-
-    	} ();
-
 
     	function onSubmitButtonClicked(){
     		submitForm('entryform');
     	}
 </script>
 
+
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-6"> 
+
 <form name="entryform" method="post" action="<?=$ME?>">
 
-<table width="600" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
-     <tr>
-         <td class="clubid<?=get_clubid()?>th">
-         	<span class="whiteh1">
-         		<div align="center"><? pv($DOC_TITLE) ?></div>
-         	</span>
-         </td>
-    </tr>
 
- <tr>
-    <td >
+     <div class="mb-3">
+            <label for="clubteam" class="form-label">Club Team Name</label>
+            <input type="text" name="clubteam" id="clubteam" class="form-control" aria-label="Box name">
+            <? is_object($errors) ? err($errors->clubteam) : ""?>
+        </div>
 
-      <table width="550" cellspacing="5" cellpadding="0"  >
-     
-      <tr>
-
-       <td class="label">Club Team Name:</td>
-        <td><input type="text" name="clubteam" size=25>
-                <? is_object($errors) ? err($errors->clubteam) : ""?>
-        </td>
-       </tr>
-
-       <tr>
-        <td class="label">Ladder:</td>
-        <td>
-            <select name="ladder">
-                <option value="0"></option>
+      
+     <div class="mb-3">
+        <label for="courttypeid" class="form-label">Court Type</label>
+        <select class="form-select" name="ladder" id="ladder" aria-label="Ladder">
+            <option value="0"></option>
             <? 
              $ladders = getClubSiteLadders( get_siteid() );
              for ($i=0; $i < count($ladders); ++$i) { ?>
                 <option value="<?=$ladders[$i]['id'] ?>"><?=$ladders[$i]['name'] ?></option>
             <?  } ?>
              </select>
-            <? is_object($errors) ? err($errors->ladder) : ""?>
-        </td>
-    </tr>
+        <? is_object($errors) ? err($errors->ladder) : ""?>
+    </div>
 
-        <tr>
-
-     <tr>
-      <td colspan="2">
-      <input type="button" name ="submit" value="Submit" id="submitbutton">
+      
+    
+      <button type="submit" class="btn btn-primary" id="submitbutton">Submit</button>
       <input type="hidden" name ="submitme" value="submitme" >
       </form>
 
-
-      </td>
-
-     </tr>
-     <tr>
-      <td colspan="2">
-          <hr>
-      </td>
-
-     </tr>
+             </div> <!-- col-6 -->
+            <div class="col-6">
      
-        <table width="350" class="borderless">
+    <div class="mb-5"> 
+        <table class="table table-striped">
             <tr>
                 <th>Team Name</th>
                 <th>Ladder Name</th>
@@ -101,50 +78,42 @@
 
         // run the query on the database
         $result = db_query($query);
-
-       $numrows = mysqli_num_rows($result);
-       $rowcount =  $numrows;
-       $i=1;
        while($row = mysqli_fetch_array($result)) { 
 		
-       	 $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
        	 
        	?>
-            <form name="removeteam<?=$rowcount?>" method="post" 
-            action="<?=$ME?>">
-            <input type="hidden" name="teamid" value="<?=$row['teamid']?>">
-            <input type="hidden" name ="submitme" value="submitme" >
-            <input type="hidden" name="action" value="remove">
+            <form name="removeteam<?=$rowcount?>" method="post" action="<?=$ME?>">
+                <input type="hidden" name="teamid" value="<?=$row['teamid']?>">
+                <input type="hidden" name ="submitme" value="submitme" >
+                <input type="hidden" name="action" value="remove">
             </form>
 
-            <form name="manageteam<?=$rowcount?>" method="post" 
-            action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_team_manage.php">
-            <input type="hidden" name="teamid" value="<?=$row['teamid']?>">
+            <form name="manageteam<?=$rowcount?>" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_team_manage.php">
+                <input type="hidden" name="teamid" value="<?=$row['teamid']?>">
             </form>
       
-            <tr class="<?=$rc?>">
-            <td class="normal"><?=$row['teamname']?></td>
-            <td class="normal"><?=$row['laddername']?></td>
-            <td class="normal">
+            <tr>
+                <td><?=$row['teamname']?></td>
+                <td><?=$row['laddername']?></td>
+            <td>
             
             <a href="javascript:submitForm('manageteam<?=$rowcount?>')">Manage</a>
             | <a href="javascript:submitForm('removeteam<?=$rowcount?>')">Delete</a></td>
 
             </tr>
 
-            <? $rowcount = $rowcount - 1; 
-                $i++;
-            ?>
+            
         <? }
 
         if ($numrows==0){ ?>
            <tr>
-            <td colspan="2"><font class="normalsm">There are currently no club teams configured.</font></td>
+            <td colspan="2">There are currently no club teams configured.</td>
            </tr>
         <?  }  ?>
      </table>
 
-   </td>
- </tr>
-</table>
+    </div> <!-- mb-5 -->
+    </div> <!-- col-6 -->
+   </div> <!-- row -->
+</div> <!-- container -->
 

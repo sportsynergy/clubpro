@@ -125,7 +125,6 @@ $boxid = $_REQUEST["boxid"];
   ?>
 
 
-
 <script language="JavaScript">
 
 <?
@@ -189,20 +188,6 @@ print "var thisyear = new Array(13);
      }
 
 
-     YAHOO.example.init = function () {
-
-    	    YAHOO.util.Event.onContentReady("formtable", function () {
-
-                document.getElementById('boxname').setAttribute("autocomplete", "off");
-
-    	        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-    	        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-    	    });
-
-    	} ();
-
-
     	function onSubmitButtonClicked(){
     		submitForm('entryform');
     	}
@@ -221,8 +206,8 @@ print "var thisyear = new Array(13);
       <form name="entryform" method="post" action="<?=$ME?>">
 
       <div class="mb-3">
-            <label  class="form-label">Box Name</label>
-            <input type="text" name="searchname" id="boxname" class="form-control" aria-label="Box name">
+            <label for="boxname" class="form-label">Box Name</label>
+            <input type="text" name="boxname" id="boxname" class="form-control" aria-label="Box name">
             <? is_object($errors) ? err($errors->boxname) : ""?>
         </div>
 
