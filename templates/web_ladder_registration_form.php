@@ -21,9 +21,6 @@ $boxid = $_REQUEST["boxid"];
                      WHERE boxid = $boxid");
 
 
-
-
-
    //Set all current reservations for this box to practice.
 
    $historyQuery = "SELECT reservationid from tblBoxHistory WHERE boxid = $boxid";
@@ -168,8 +165,6 @@ print "var thisyear = new Array(13);
 
 ?>
 
-
-
      function getDaysForMonth() {
 
           if(document.entryform.enddateday.value != null){
@@ -213,105 +208,80 @@ print "var thisyear = new Array(13);
     	}
 </script>
 
-<form name="entryform" method="post" action="<?=$ME?>">
 
-<table width="600" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
-     <tr>
-         <td class="clubid<?=get_clubid()?>th">
-         	<span class="whiteh1">
-         		<div align="center"><? pv($DOC_TITLE) ?></div>
-         	</span>
-         </td>
-    </tr>
-
- <tr>
-    <td >
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
 
+<div class="container">
+    <div class="row">
+      <div class="col-6">
+      
+      <form name="entryform" method="post" action="<?=$ME?>">
 
-      <table width="550" cellspacing="5" cellpadding="0" autocomplete="off" >
-      <tr>
-
-       <td class="label">Box Name:</td>
-        <td><input id="boxname" type="text" name="boxname" size=25>
+      <div class="mb-3">
+            <label  class="form-label">Box Name</label>
+            <input type="text" name="searchname" id="boxname" class="form-control" aria-label="Box name">
             <? is_object($errors) ? err($errors->boxname) : ""?>
-        </td>
-       </tr>
-        <tr>
+        </div>
 
-        <td class="label">Court Type:</td>
-            <td>
-            <select name="courttypeid">
-                <?  //Get all registered Court Types
-                $query = "SELECT courttypeid,courttypename FROM tblCourtType";
+      <div class="mb-3">
+        <label for="courttypeid" class="form-label">Court Type</label>
+        <select class="form-select" name="courttypeid" id="courttypeid" aria-label="Court Type">
+                <?  
+                    $query = "SELECT courttypeid,courttypename FROM tblCourtType";
+                    $result = get_singlesCourtTypesForSite( get_siteid() );
 
-                // run the query on the database
-                $result = get_singlesCourtTypesForSite( get_siteid() );
-
-
-                 while($row = mysqli_fetch_row($result)) {
-                  echo "<option value=\"$row[0]\">$row[1]</option>";
-                 }
+                    while($row = mysqli_fetch_row($result)) {
+                    echo "<option value=\"$row[0]\">$row[1]</option>";
+                    }
                  ?>
-                <? is_object($errors) ? err($errors->courtypeid) : ""?>
-                </select>
+            </select>
+            <? is_object($errors) ? err($errors->courtypeid) : ""?>
+      </div>
 
-                </td>
-
-      </tr>
-      <tr>
-          <td class="label">End Date:</td>
-          <td>
-          <select name="enddatemonth" onChange="getDaysForMonth();">
-               <?
+      <div class="mb-3">
+        <label for="courttypeid" class="form-label">End Date</label>
+        <select class="form-select" name="enddatemonth" id="enddatemonth" aria-label="End Date Month">
+                <?
                  $currentMonth =  gmdate("n", $curtime);
                  $months = get_months();
 
-
                  for($i=0; $i<count($months); ++$i){
 
-                             if($currentMonth==($i+1)){
-                                  $selected = "selected";
-                             }
-                             else{
-                                 $selected = " ";
-                             }
+                    if($currentMonth==($i+1)){
+                        $selected = "selected";
+                    }
+                    else{
+                        $selected = " ";
+                    }
                  ?>
                     <option value="<?=$i+1?>" <?=$selected?>> <?=$months[$i]?></option>
-
                      <? unset($selected)?>
                 <? } ?>
           </select>
-          <?
 
-             //$todaystart = gmmktime (0,0,0,$currMonth,0,$currYear);
-          ?>
-          <select name="enddateday">
-
+          <select name="enddateday" class="form-select" aria-label="End Date Day">
+                    <!-- Days will be populated by javascript function -->
           </select>
 
-          <select name="enddateyear" onChange="getDaysForMonth();">
+           <select name="enddateyear" class="form-select" onChange="getDaysForMonth();">
                <?
-
                $currYear = gmdate("Y", $curtime);
 
                for($i=0; $i<2; ++$i){
                    $year = $currYear + $i;
                ?>
                    <option value="<?=$year ?>"><?=$year ?></option>
-              <? }
-
-               ?>
-
+              <? }  ?>
           </select>
-          </td>
-      </tr>
+      </div>   
     
-  <? if( isJumpLadderRankingScheme() ){ # only available for jump ladders ?>
-    <tr>
-        <td class="label">Ladder:</td>
-        <td>
-            <select name="ladder">
+  <? if( isJumpLadderRankingScheme() ){ // only available for jump ladders ?>
+    <div class="mb-3">
+        <label for="courttypeid" class="form-label">Ladder</label>
+            <select name="ladder" class="form-select" aria-label="Ladder">
                 <option value="0"></option>
             <? 
              $ladders = getClubSiteLadders( get_siteid() );
@@ -320,53 +290,46 @@ print "var thisyear = new Array(13);
             <?  } ?>
              </select>
             <? is_object($errors) ? err($errors->ladder) : ""?>
-        </td>
-    </tr>
-    <tr>
-        <td class="label">Auto Schedule: </td>
-        <td>
-            <select name="autoschedule">
+    </div>
+
+    <div class="mb-3">
+        <label for="autoschedule" class="form-label">Auto Schedule</label>
+            <select name="autoschedule" id="autoschedule" class="form-select" aria-label="Auto Schedule">
                 <option value="no">No</option>
                 <option value="yes">Yes</option>
              </select>
-        </td>
-    </tr>
+    </div>
 
-    <tr>
-        <td class="label">Rollover Scores: </td>
-        <td>
-            <select name="ladder_type">
+     <div class="mb-3">
+        <label for="ladder_type" class="form-label">Rollover Scores</label>
+            <select name="ladder_type" id="ladder_type" class="form-select" aria-label="Rollover Scores">
                 <option value="basic">No</option>
                 <option value="extended">Yes</option>
              </select>
-        </td>
-    </tr>
+    </div>
+
 
     <? }  else {  # default to this for non jumpladder situations?>
     <input type="hidden" name ="laddertype" value="manual" >
 
     <? }   ?>
-     <tr>
-      <td colspan="2">
-      <input type="button" name ="submit" value="Submit" id="submitbutton">
-      <input type="hidden" name ="submitme" value="submitme" >
+
+        <button type="submit" class="btn btn-primary" id="submitbutton">Submit</button>
+        <input type="hidden" name ="submitme" value="submitme" >
+
       </form>
 
        <script language="JavaScript">
               getDaysForMonth();
        </script>
 
-      </td>
 
-     </tr>
-     <tr>
-      <td colspan="2">
-          <hr>
-      </td>
+    
+    </div> <!-- col -->
 
-     </tr>
-     <?
+    <div class="col">
 
+      <?
 
        $query = "SELECT tblBoxLeagues.boxname, tblBoxLeagues.boxid, tblBoxLeagues.enable, tblBoxLeagues.boxrank
                 FROM tblBoxLeagues
@@ -378,12 +341,11 @@ print "var thisyear = new Array(13);
        $result = db_query($query);
        
        ?>
-        <table width="550" class="borderless">
+        <table class="table table-striped">
        <tr>
-        <td colspan="5">
-        	<h2>Box League Name</h2>
-        </td>
-
+            <th colspan="5">
+                Name
+            </th>
         </tr>
         
         <?
@@ -392,19 +354,16 @@ print "var thisyear = new Array(13);
        $i=1;
        while($row = mysqli_fetch_row($result)) { 
 		
-       	 $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
-       	 
        	?>
-
             <tr >
-            <td class="normal"><?=$row[3]?></td>
-            <td class="normal"><?=$row[0]?></td>
+            <td ></td>
+            <td ><?=$row[0]?></td>
 
-            <td align="right">
-            <form name="removeWebLadder<?=$rowcount?>" method="post" action="<?=$ME?>">
-                 <input type="hidden" name="action" value="remove">
-                 <input type="hidden" name="boxid" value="<?=$row[1]?>">
-                  </form>
+            <td>
+                <form name="removeWebLadder<?=$rowcount?>" method="post" action="<?=$ME?>">
+                    <input type="hidden" name="action" value="remove">
+                    <input type="hidden" name="boxid" value="<?=$row[1]?>">
+                </form>
 
                  <form name="manageWebLadder<?=$rowcount?>" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_manage.php">
                   <input type="hidden" name="boxid" value="<?=$row[1]?>">
@@ -423,23 +382,31 @@ print "var thisyear = new Array(13);
 				</td>
             </tr>
 
-            <? $rowcount = $rowcount - 1; 
-                $i++;
-            ?>
-        <? }
-
-        if ($numrows==0){ ?>
+            
+        <? }  if ($numrows==0){ ?>
            <tr>
-           <td colspan="6"><font class="normalsm">There are currently no box leagues configured.</font></td>
+           <td colspan="6">
+                <span class="normalsm">
+                    There are currently no box leagues configured.
+                </span>
+            </td>
            </tr>
       
         <?  }  ?>
       
-      
      </table>
 
+     </div> <!-- col -->
+    </div> <!-- row -->
+</div> <!-- container -->
+        
+    
 
-   </td>
- </tr>
-</table>
+        
+       
+
+       
+     
+
+
 

@@ -58,7 +58,7 @@
   </div>    
   
   <div class="mb-3">
-    <textarea name="message" cols="80" rows="15"><? pv($frm["message"]) ?></textarea>
+    <textarea name="message" class="form-control" cols="80" rows="15"><? pv($frm["message"]) ?></textarea>
     <? is_object($errors) ? err($errors->useraddress) : ""?>
   </div>   
       
