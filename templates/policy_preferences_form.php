@@ -1,26 +1,42 @@
 
- <div id="policy" class="yui-navset" style="width: 680px">
-    <ul class="yui-nav">
-    	<li class="selected"><a href="#general" onclick="clearMessage()"><em>General Preferences</em></a></li>
-        <li ><a href="#skill" onclick="clearMessage()"><em>Skill Range Policies</em></a></li>
-        <li><a href="#schedule" onclick="clearMessage()"><em>Scheduling Policies</em></a></li>
-        <li><a href="#message" onclick="clearMessage()"><em>Messages</em></a></li>
-       <li><a href="#court_events" onclick="clearMessage()"><em>Court Events</em></a></li>
-    </ul>            
-    <div class="yui-content">
-        <div id="general">
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
+<ul class="nav nav-tabs" id="policy" role="tablist">
+
+    	<li class="nav-item selected" role="presentation" >
+            <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true" onclick="clearMessage()">General Preferences</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="skill-tab" data-bs-toggle="tab" data-bs-target="#skill" type="button" role="tab" aria-controls="skill" aria-selected="true" onclick="clearMessage()">Skill Range Policies</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule" type="button" role="tab" aria-controls="schedule" aria-selected="true" onclick="clearMessage()">Scheduling Policies</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="message-tab" data-bs-toggle="tab" data-bs-target="#message" type="button" role="tab" aria-controls="message" aria-selected="true" onclick="clearMessage()">Messages</button>
+        </li>
+       <li class="nav-item" role="presentation">
+            <button class="nav-link" id="court-events-tab" data-bs-toggle="tab" data-bs-target="#court_events" type="button" role="tab" aria-controls="court events" aria-selected="true" onclick="clearMessage()">Court Events</button>
+        </li>
+    </ul>  
+    
+    
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
 			 <? include($_SESSION["CFG"]["includedir"]."/include_general_preferences.php");?>
 		</div>
-        <div id="skill"> 
+        <div class="tab-pane fade show" id="skill" role="tabpanel" aria-labelledby="skill-tab"> 
         	 <? include($_SESSION["CFG"]["includedir"]."/include_skillrange_policies.php");?>
         </div>
-        <div id="schedule">
+        <div class="tab-pane fade show" id="schedule" role="tabpanel" aria-labelledby="schedule-tab"> 
 			 <? include($_SESSION["CFG"]["includedir"]."/include_scheduling_policies.php");?>
 		</div>
-        <div id="message">
+        <div class="tab-pane fade show" id="message" role="tabpanel" aria-labelledby="message-tab"> 
 			 <? include($_SESSION["CFG"]["includedir"]."/include_messages_policies.php");?>
 		</div>
-		 <div id="court_events">
+        <div class="tab-pane fade show" id="court_events" role="tabpanel" aria-labelledby="mcourt-events-tab"> 
 			 <? include($_SESSION["CFG"]["includedir"]."/include_court_events.php");?>
 		</div>
     </div>

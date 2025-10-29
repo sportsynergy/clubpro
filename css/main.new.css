@@ -1,7 +1,9 @@
 
 
 /**********General***************************************************/
-
+.dropdown-item {
+  color: rgba(0, 0, 0, .55)/* Example: dark gray */
+}
 
 label {
   font: bold 1em Arial, sans-serif;

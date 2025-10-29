@@ -37,16 +37,16 @@ function get_playerswanted() {
 
     //First we need to get all resvations that have a userid with 0 in the future
     $singlespwquery = "SELECT DISTINCTROW tblReservations.reservationid,tblReservations.time
-                   FROM (tblCourts INNER JOIN tblReservations
-                   ON tblCourts.courtid = tblReservations.courtid)
-                   INNER JOIN tblkpUserReservations
-                   ON tblReservations.reservationid = tblkpUserReservations.reservationid
-                   WHERE (((tblReservations.time)>$curtime)
-                   AND ((tblkpUserReservations.userid)=0)
-                   AND ((tblCourts.siteid)=" . get_siteid() . ")
-                   AND ((tblReservations.usertype)=0))
-                   AND (tblReservations.matchtype != 4)
+                   FROM tblCourts 
+                   INNER JOIN tblReservations ON tblCourts.courtid = tblReservations.courtid
+                   INNER JOIN tblkpUserReservations ON tblReservations.reservationid = tblkpUserReservations.reservationid
+                   WHERE tblReservations.time>$curtime
+                   AND tblkpUserReservations.userid=0
+                   AND tblCourts.siteid=" . get_siteid() . "
+                   AND tblReservations.usertype=0
+                   AND tblReservations.matchtype != 4
 				   AND tblReservations.enddate IS NULL
+                   AND tblReservations.eventid =0
                    ORDER BY tblReservations.time";
 
     $doublesspwquery = "SELECT DISTINCTROW tblReservations.reservationid, tblReservations.time
@@ -143,7 +143,7 @@ if(mysqli_num_rows($singlespwresult)==0
      ?>
        
        <div class="mb-3">
-        <span class="smallbanner">Players looking for a Singles Match</span>
+        <h2>Players looking for a Singles Match</h2>
        </div>
  
      <?
@@ -183,7 +183,7 @@ if(mysqli_num_rows($singlespwresult)==0
 <? } ?>
 <? if(count($doublesArray)>0){ ?>
        <div class="mb-3">
-        <span class="smallbanner">Players looking for a Doubles Match</span>
+        <h2>Players looking for a Doubles Match</h2>
     </div>
  
  

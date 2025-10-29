@@ -35,6 +35,10 @@ function manageClubEvent(eventid)
    <input type="hidden" name="cmd" value="manage">
 </form>	
 	
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
 		
 <? 
 if(  mysqli_num_rows($clubEvents) == 0 ){ ?>
@@ -46,22 +50,21 @@ if(  mysqli_num_rows($clubEvents) == 0 ){ ?>
 
 <div style="padding-bottom: 10px"><a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_club_event.php">Add another Club Event</a></div>
 
-<table cellpadding="20" width="550" class="generictable">
-<tr class="clubid<?=get_clubid()?>th">
- <th height="25"><span class="whitenorm">Name </span></th>
-<th height="25"><span class="whitenorm">Date</span></th>
+<table  class="table table-striped">
+<tr>
+ <th>Name</th>
+<th>Date</th>
 <th></th>
 </tr>
 
 <? 
 	  $rownum = mysqli_num_rows($clubEvents);
-      while ($clubEventsArray = mysqli_fetch_array($clubEvents)) {
-			$rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow"; ?>
+      while ($clubEventsArray = mysqli_fetch_array($clubEvents)) {  ?>
  		
- 		<tr class="<?=$rc?>" >
- 			<td width="55%"><?=$clubEventsArray['name']?></td>
- 			<td width="30%"><?=formatDateString($clubEventsArray['eventdate'])?></td>
- 			<td class="normal" align="left" style="vertical-align: top;" width="75px">
+ 		<tr>
+ 			<td ><?=$clubEventsArray['name']?></td>
+ 			<td ><?=formatDateString($clubEventsArray['eventdate'])?></td>
+ 			<td>
                      <a href="javascript:manageClubEvent(<?=$clubEventsArray['id']?>)">Edit</a>
                       | <a href="javascript:removeClubEvent(<?=$clubEventsArray['id'] ?>);">Delete</a>
                       
