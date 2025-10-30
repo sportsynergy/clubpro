@@ -18,17 +18,6 @@ function toggle()
         }
 }
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-    });
-
-} ();
-
 
 function onSubmitButtonClicked(){
 	document.addschedulepolicyform.submit();
@@ -36,50 +25,47 @@ function onSubmitButtonClicked(){
 
 </script>
 
-<div align="center">
-  <div style="text-align:left">
-    <form name="addschedulepolicyform" method="post" action="<?=$ME?>" autocomplete="off">
-      <div style="padding-bottom: 20px"> 
-      <a href="javascript:newWindow('../help/scheduling_policies_explained.html')">Help with Scheduling Policies</a>
-      </div>
-      
-      
-      <table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
-        <tr class="borderow">
-          <td class=clubid<?=get_clubid()?>th><span class="whiteh1">
-            <div align="center">
-              <? pv($DOC_TITLE) ?>
-            </div>
-            </span></td>
-        </tr>
-        <tr>
-          <td ><table width="550" cellpadding="5" cellspacing="2">
-              <tr>
-                <td class="label">Name:</td>
-                <td><input type="text" name="name" maxlength="30" size="30" value="<?=$schedulePolicy['policyname']?>">
-                  <? is_object($errors) ? err($errors->name) : ""?>
-                </td>
-              </tr>
-              <tr>
-                <td class="label">Description:</td>
-                <td><textarea cols="25" rows="4" name="description"><?=$schedulePolicy['description']?>
-</textarea></td>
-              </tr>
-              <tr>
-                <td class="label">Reservation Limit:</td>
-                <td><select name="limit">
+
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
+ <div class> 
+    <a href="javascript:newWindow('../help/scheduling_policies_explained.html')">Help with Scheduling Policies</a>
+</div>
+
+<form name="addschedulepolicyform" method="post" action="<?=$ME?>" autocomplete="off">
+     
+  <div class="mb-3">
+    <label for="name" class="form-label">Name:</label>
+    <input class="form-control" type="text" name="name" id="name" maxlength="30" size="30" aria-label="Scheduling Policy Name" value="<?=$schedulePolicy['policyname']?>">
+    <? is_object($errors) ? err($errors->name) : ""?>
+  </div>     
+
+   <div class="mb-3">
+    <label for="description" class="form-label">Description:</label>
+    <textarea cols="25" rows="4" class="form-control" id="description" name="description" ><?=$schedulePolicy['description']?></textarea>
+    <? is_object($errors) ? err($errors->description) : ""?>
+  </div>    
+
+  <div class="mb-3">
+      <label for="limit" class="form-label">Reservation Limit</label>
+      <select name="limit" class="form-select" id="limit">
                     <?
             		for($i = 0; $i < 10 ; ++$i){ ?>
                     <option value="<?=$i?>" <?=$i == $schedulePolicy['schedulelimit']? "selected" : "" ?>>
                     <?=$i?>
                     </option>
                     <? } ?>
-                  </select></td>
-              </tr>
-              <tr>
-                <td class="label">Court:</td>
-                <td><select name="courtid">
-                    <? is_object($errors) ? err($errors->courtid) : ""?>
+                  </select>
+      <? is_object($errors) ? err($errors->limit) : ""?>
+    </div>
+
+
+    <div class="mb-3">
+      <label for="courtid" class="form-label">Court</label>
+      <select name="courtid" class="form-select" id="courtid">
+                   
                     <option value="">Select Court</option>
                     <?
             if($schedulePolicy['courtid'] == null){
@@ -98,12 +84,14 @@ function onSubmitButtonClicked(){
                     <?=$row['courtname']?>
                     </option>
                     <? } ?>
-                  </select></td>
-              </tr>
-              <tr>
-                <td class="label">Day of Week:</td>
-                <td><select name="dow">
-                    <? is_object($errors) ? err($errors->dow) : ""?>
+                  </select>
+       <? is_object($errors) ? err($errors->courtid) : ""?>
+    </div>
+              
+     <div class="mb-3">
+      <label for="limit" class="form-label">Day of Week</label>
+      <select name="dow">
+                    
                     <option value="">Select Day</option>
                     <?
             if($schedulePolicy['dayid'] == null){
@@ -122,29 +110,39 @@ function onSubmitButtonClicked(){
                     <?=$row['name']?>
                     </option>
                     <? } ?>
-                  </select></td>
-              </tr>
-              <tr>
-                <td class="label">Allow Looking for Match:</td>
-                <td><select name="allowlooking">
+                  </select>
+      <? is_object($errors) ? err($errors->dow) : ""?>
+    </div>    
+    
+    
+    <div class="mb-3">
+      <label for="allowlooking" class="form-label">Allow Looking for Match</label>
+      <select name="allowlooking" class="form-select" id="allowlooking">
                     <option value="yes" >Yes</option>
                     <option value="no" <?=$schedulePolicy['allowlooking']=='n' ? "selected" : ""?>>Nope</option>
-                  </select></td>
-              </tr>
-              <tr>
-                <td class="label">Allow Back to Back Reservations:</td>
-                <td><select name="allowback2back">
+                  </select>
+      <? is_object($errors) ? err($errors->allowlooking) : ""?>
+    </div>
+
+    <div class="mb-3">
+      <label for="allowback2back" class="form-label">Allow Back to Back Reservations</label>
+      <select name="allowback2back" class="form-select" id="allowback2back">
                     <option value="yes" >Yes</option>
                     <option value="no" <?=$schedulePolicy['allowback2back']=='n' ? "selected" : ""?>>Nope</option>
-                  </select></td>
-              </tr>
-              <tr>
-                <td class="label">Specifiy Window: </td>
-                <td><input type="checkbox" name="reservationwindow" value="yes" onclick="toggle(this.checked)" <?=$schedulePolicy['starttime']!=null ? "checked" : ""?>></td>
-              </tr>
-              <tr>
-                <td class=label>Start Time:</td>
-                <td><select name="starttime" <?= $schedulePolicy['starttime']==null ? "disabled" : "" ?>>
+                  </select>
+      <? is_object($errors) ? err($errors->allowback2back) : ""?>
+    </div>
+               
+              
+     <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="yes" id="reservationwindow" onclick="toggle(this.checked)" <?=$schedulePolicy['starttime']!=null ? "checked" : ""?> name="reservationwindow">
+      <label class="form-check-label" for="reservationwindow">Specifiy Window</label>
+      <? is_object($errors) ? err($errors->window) : ""?>
+</div>      
+             
+   <div class="mb-3">
+      <label for="starttime" class="form-label">Start Time</label>
+      <select name="starttime" <?= $schedulePolicy['starttime']==null ? "disabled" : "" ?> class="form-select" id="starttime">
                     <? is_object($errors) ? err($errors->starttime) : ""?>
                     <option value="">Select Start Time</option>
                     <option value="">--------------------</option>
@@ -156,12 +154,14 @@ function onSubmitButtonClicked(){
                     <?=$hourtime?>
                     </option>
                     <? } ?>
-                  </select></td>
-              </tr>
-              <tr>
-                <td class="label" >End Time:</td>
-                <td><select name="endtime" <?= $schedulePolicy['endtime']==null ? "disabled" : "" ?>>
-                    <? is_object($errors) ? err($errors->endtime) : ""?>
+                  </select>
+      <? is_object($errors) ? err($errors->starttime) : ""?>
+    </div>           
+                
+<div class="mb-3">
+      <label for="endtime" class="form-label">End Time</label>
+      <select name="endtime" <?= $schedulePolicy['endtime']==null ? "disabled" : "" ?> class="form-select" id="endtime">
+                    
                     <option value="">Select End Time</option>
                     <option value="">--------------------</option>
                     <?
@@ -173,19 +173,20 @@ function onSubmitButtonClicked(){
                     </option>
                     <? } ?>
                   </select>
-                  <input type="hidden" name="policyid" value="<?=$schedulePolicy['policyid']?>">
-                  <input type="hidden" name="submitme" value="submitme"></td>
-              </tr>
-              <tr>
-                <td>
-					<input type="button" name="submit" value="<?=$buttonLabel?>" id="submitbutton">
-				</td>
-              </tr>
-            </table></td>
-        </tr>
-      </table>
-    </form>
-    <div style="height: 2em;"></div>
-    <div> <span class="normal"> <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/policy_preferences.php#schedule"> &lt;&lt; Back to Reservation Policies </a> </span> </div>
+      <? is_object($errors) ? err($errors->endtime) : ""?>
+    </div>  
+
+   <div class="mt-5">
+    <input type="hidden" name="policyid" value="<?=$schedulePolicy['policyid']?>">
+    <input type="hidden" name="submitme" value="submitme">
+    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()" name="submit"  id="submitbutton">
+        <?=$buttonLabel?>
+     </button>      
   </div>
-</div>
+                  
+  </form>
+    
+  <div class="mt-3"> 
+    <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/policy_preferences.php#schedule"> &lt;&lt; Back to Reservation Policies </a>
+  </div>
+
