@@ -20,69 +20,41 @@ function onSubmitButtonClicked(){
 
 </script>
 
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
 
+ <div class="mb-3">
+    <label for="username" class="form-label">Name:</label>
+    <input class="form-control" id="username" type="text" aria-label="Name" value="<?=$courtEventName?>">
+    <? is_object($errors) ? err($errors->name) : ""?>
+  </div>
 
-<table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
-  <tr class="borderow">
-    <td class=clubid<?=get_clubid()?>th>
-    	<span class="whiteh1">
-    		<div align="center"><? pv($DOC_TITLE) ?></div>
-    	</span>
-    </td>
- </tr>
- <tr>
+ <div class="mb-3">
+      <label for="playerlimit" class="form-label">Player Limit:</label>
+      <select name="playerlimit" id="playerlimit" class="form-select">
+        <?
+        for($i = 0; $i < 11; ++$i){ ?>
+            <option value="<?=$i?>" <?=$i == $courtEvent['playerlimit']? "selected" : "" ?>><?=$i?></option>  
+        <? } ?>         
+        </select>
+    
+    </div>
 
-    <td >
-
-     <table width="550" cellpadding="5" cellspacing="2">
-        
-        <tr>
-            <td class="label">Name:</td>
-            <td>
-            	<input type="text" name="name" maxlength="30" size="30" value="<?=$courtEventName?>">
-                <? is_object($errors) ? err($errors->name) : ""?>
-                
-            </td>
-        </tr>
-       
-        <tr>
-            <td class="label">Player Limit:</td>
-            <td><select name="playerlimit">
-            		<?
-            		for($i = 0; $i < 11; ++$i){ ?>
-            			<option value="<?=$i?>" <?=$i == $courtEvent['playerlimit']? "selected" : "" ?>><?=$i?></option>
-            			
-            		<? } ?>
-                        
-                </select>
-            </td>
-        </tr>
-   
-     
-       <tr>
-           <td>
-           		<input type="button" name="submit" value="<?=$DOC_TITLE?>" id="submitbutton"/>
-           		<input type="hidden" name="policyid" value="<?=$courtEvent['eventid']?>"/>
-           		<input type="hidden" name="submitme" value="submitme"/>
-          </td>
-       </tr>
-       	
- </table>
-</td>
-
-</tr>
-
-</table>
+    <div class="mb-3">
+            <button type="submit"  name="submit" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()"><?=$DOC_TITLE?></button>
+           	<input type="hidden" name="policyid" value="<?=$courtEvent['eventid']?>"/>
+           	<input type="hidden" name="submitme" value="submitme"/>
+    </div>
+         
 </form>
 
 
-<div style="height: 2em;"></div>
-<div>
-	<span class="normal"> 
-		<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/policy_preferences.php#court_events" > << Back to Court Events </a> 
-	</span>
+
+<div class="mb-3">
+	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/policy_preferences.php#court_events" > << Back to Court Events </a> 
 </div>

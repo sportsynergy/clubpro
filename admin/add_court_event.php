@@ -61,9 +61,9 @@ if (match_referer() && isset($_POST['submitme'])) {
     $wwwroot = $_SESSION["CFG"]["wwwroot"];
     header("Location: $wwwroot/admin/policy_preferences.php");
 }
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/add_court_event_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
