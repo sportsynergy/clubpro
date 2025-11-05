@@ -7,147 +7,68 @@
 	$disabled = $frm["id"] ? 'disabled' : '';
 ?>
 
+
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
+
+
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
-<table cellspacing="0" cellpadding="20" width="600" class="generictable" id="formtable">
- <tr class="borderow">
-    <td class=clubid<?=get_clubid()?>th>
-    	<span class="whiteh1">
-    		<div align="center"><?=$DOC_TITLE?></div>
-    	</span>
-    </td>
- </tr>
 
-	<tr>
-		<td>
+ <div class="mb-3">
+    <label for="name" class="form-label">Event Name:</label>
+	<input type="text" name="name" id="name" size="35" value="<?=$frm["name"] ?>" maxlength="30" class="form-control" aria-label="Username"> 
+    <? is_object($errors) ? err($errors->subject) : ""?>
+  </div>
 
+  <div class="mb-3">
+	<label for="eventdate" class="form-label">Event Date:</label>
+	<input type="text" name="eventdate" id="eventdate" value="<?=convertToDateSlashes($frm["eventdate"])?>" class="form-control">
+	<img id="calico" src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png" alt="Open the Calendar control">
+	 <? is_object($errors) ? err($errors->eventdate) : ""?>
+	<div id="mycal" style="position:absolute;z-index:10;"></div>
+  </div>
 
-		<table width="550" >
-			<tr>
-				<td class="label">Name: <td>
-					<input type="text" name="name" size="35" value="<?=$frm["name"] ?>" maxlength="30"> 
-					<? is_object($errors) ? err($errors->subject) : ""?>
-				</td>
-			</tr>
-			<tr>
-				<td class="label">Date:<td>
-					<input type="text" name="eventdate" id="eventdate" value="<?=convertToDateSlashes($frm["eventdate"])?>">
-					<img id="calico" src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png" alt="Open the Calendar control">
-					 <? is_object($errors) ? err($errors->eventdate) : ""?>
-					<div id="mycal" style="position:absolute;z-index:10;"></div>
-				</td>
-			</tr>
-			<tr>
-				<td class="label"><span title="People registering for this event will have to register with a partner.">Register as Team:</span></td>
-				<td>
-					<input type="checkbox" id="registerteam" name="registerteam" <?=$teamchecked?> <?=$disabled?>  onclick="handleClick(this);" > 
-				</td>
-			</tr>
-			<tr>
-				<td class="label"><span title="People registering for this event will have the option to register for a division">Register Division</span></td>
-				<td>
-					<input type="checkbox" id="registerdivision" name="registerdivision" <?=$divisionchecked?> <?=$disabled?> > 
-				</td>
-			</tr>
-			<tr>
-				<td class="label">
-					Description:
-				<td>
-					<textarea rows="5" cols="50" name="description" ><?=$frm["description"] ?></textarea>
-					 <? is_object($errors) ? err($errors->description) : ""?>
-				</td>
-			</tr>
-			
-			<tr>
-				<td> </td>
-				<td>
-				<? if(isset($clubEventArray["id"])){ ?>
-					<input type="button" name="submit" value="Update Club Event" id="submitbutton">
+  <div class="mb-3">
+	<div class="form-check">
+	  <input class="form-check-input" type="checkbox" name="registerteam"  id="registerteam"  <?=$teamchecked?> <?=$disabled?>  onclick="handleClick(this);"/>
+	  <label for="lock" class="form-label">Register as Team</label>
+	  <div class="form-text">People registering for this event will have to register with a partner.</div>
+	</div>
+</div>
+
+<div class="mb-3">
+	<div class="form-check">
+	  <input class="form-check-input" type="checkbox" name="registerdivision" id="registerdivision" <?=$divisionchecked?> <?=$disabled?> />
+	  <label for="lock" class="form-label">Register Division</label>
+	  <div class="form-text">People registering for this event will have the option to register for a division.</div>
+	</div>
+</div>
+
+<div class="mb-3">
+<label for="description" class="form-label">Description</label>
+	<div>
+		<textarea rows="5" cols="50" name="description" id="description" class="form-control" aria-label="Description"><?=$frm["description"] ?></textarea>
+		 <? is_object($errors) ? err($errors->description) : ""?>		
+</div>
+  </div>
+
+  <div class="mb-3">
+			<? if(isset($clubEventArray["id"])){ ?>
+					<button type="submit" name="submit" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()">Update Club Event</button>
 				<? } else {?>
-					<input type="button" name="submit" value="Add Club Event" id="submitbutton">
+					<button type="submit" name="submit" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add Club Event</button>
 				<? } ?>
-					<input type="button" value="Cancel" id="cancelbutton">
+		
 					<input type="hidden" name="submitme" value="submitme" >
 					<input type="hidden" name="id" value="<?=$frm["id"]?>" >
-				</td>
-			</tr>
-		</table>
-		
-		</td>
-	
-	</tr>
-
-	</table>
-	
+	</div>
 	
 </form>
 
 <script type="text/javascript">
-//create the namespace object for this example
-YAHOO.namespace("yuibook.calendar");
-//define the lauchCal function which creates the calendar
-YAHOO.yuibook.calendar.launchCal = function() {
-	//create the calendar object, specifying the container
-	var myCal = new YAHOO.widget.Calendar("mycal");
-	//draw the calendar on screen
-	myCal.render();
-	//hide it again straight away
-	myCal.hide();
-	
-	//define the showCal function which shows the calendar
-	var showCal = function() {
-	//show the calendar
-	myCal.show();
-	}
-	//attach listener for click event on calendar icon
-	YAHOO.util.Event.addListener("calico", "click", showCal);
-
-	//define the ripDate function which gets the selected date
-	var ripDate = function(type, args) {
-		//get the date components
-		var dates = args[0];
-		var date = dates[0];
-		var theYear = date[0];
-		var theMonth = date[1];
-		var theDay = date[2];
-		var theDate = theMonth + "/" + theDay + "/" + theYear;
-
-		//get a reference to the text field
-		var field = YAHOO.util.Dom.get("eventdate");
-		//insert the formatted date into the text field
-		field.value = theDate;
-		//hide the calendar once more
-		myCal.hide();
-				
-	}
-	//subscribe to the select event on Calendar cells
-	myCal.selectEvent.subscribe(ripDate);
-	
-}
-
-//create calendar on page load
-YAHOO.util.Event.onDOMReady(YAHOO.yuibook.calendar.launchCal);
-
-
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbutton1value" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-	});
-	
-	//diable add division if team is not checked
-	//document.getElementById("registerdivision").disabled = true;
-	
-
-} ();
-
-
-
 
 
 function onSubmitButtonClicked(){

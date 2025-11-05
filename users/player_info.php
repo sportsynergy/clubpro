@@ -36,9 +36,9 @@ if (isset($userid)) {
     header(sprintf("Location:  %s/users/player_lookup.php", $wwwroot));
 }
 $DOC_TITLE = "Player Info";
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/player_info_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

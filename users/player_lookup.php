@@ -84,7 +84,8 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
     <th></th>
   </tr>
   <?php
-        while ($playerarray = mysqli_fetch_array($playerResults)) {      
+       $rownum = mysqli_num_rows($playerResults);
+       while ($playerarray = mysqli_fetch_array($playerResults)) {      
   ?>
   <tr >
     <form name="playerform<?=$rownum?>" method="get" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php" >
@@ -107,7 +108,11 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
         <a href="javascript:submitForm('playerform<?=$rownum?>')">Info</a></td>
     </form>
   </tr>
-  				<?php  } ?>
+  				<?php 
+          
+        $rownum = $rownum - 1;} 
+          
+          ?>
 </table>
 
 
