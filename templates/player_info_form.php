@@ -10,29 +10,29 @@
 
     <div class="mb-3">
       <label for="username" class="form-label">First Name:</label>
-      <input class="form-control" id="username" type="text" aria-label="Username" value="<?=$frm["firstname"] ?>" readonly>  
+      <input class="form-control-plaintext" id="username" type="text" aria-label="Username" value="<?=$frm["firstname"] ?>" readonly>  
   </div>
   <div class="mb-3">
       <label for="lastname" class="form-label">Last Name:</label>
-      <input class="form-control" id="lastname" type="text" aria-label="Lastname" value="<?=$frm["lastname"] ?>" readonly>  
+      <input class="form-control-plaintext" id="lastname" type="text" aria-label="Lastname" value="<?=$frm["lastname"] ?>" readonly>  
   </div>
   <div class="mb-3">
       <label for="email" class="form-label">Email:</label>
-      <input class="form-control" id="email" type="email"  aria-label="Email" value="<?=$frm["email"] ?>" readonly>  
+      <input class="form-control-plaintext" id="email" type="email"  aria-label="Email" value="<?=$frm["email"] ?>" readonly>  
   </div>
 
   <? if(!empty($frm["cellphone"])){?>
 
     <div class="mb-3">
       <label for="mobilephone" class="form-label">Mobile Phone:</label>
-      <input class="form-control" id="mobilephone" type="text"  aria-label="Mobile Phone" value="<?=$frm["cellphone"] ?>" readonly>  
+      <input class="form-control-plaintext" id="mobilephone" type="text"  aria-label="Mobile Phone" value="<?=$frm["cellphone"] ?>" readonly>  
   </div>
 
   <? } ?>
 
   <? if(!empty($frm["msince"])){?>
       <label for="membersince" class="form-label">Member Since:</label>
-      <input class="form-control" id="membersince" type="text"  aria-label="Member Since" value="<?=$frm["msince"] ?>" readonly>  
+      <input class="form-control-plaintext" id="membersince" type="text"  aria-label="Member Since" value="<?=$frm["msince"] ?>" readonly>  
     <? } ?>
 
      <?
@@ -44,13 +44,13 @@
 			if($parameterArray['parametertypename'] == "text" && !empty($parameterValue) ){ ?>
           <div class="mb-3">
           <label for="<? pv($parameterArray['parameterlabel'])?>" class="form-label"><? pv($parameterArray['parameterlabel'])?></label>
-           <input class="form-control" id="<? pv($parameterArray['parameterlabel'])?>" type="text" aria-label="<? pv($parameterArray['parameterlabel'])?>" value="<? pv($parameterValue) ?>" readonly>   
+           <input class="form-control-plaintext" id="<? pv($parameterArray['parameterlabel'])?>" type="text" aria-label="<? pv($parameterArray['parameterlabel'])?>" value="<? pv($parameterValue) ?>" readonly>   
       </div>  
                
       <? } elseif($parameterArray['parametertypename'] == "select" && !empty($parameterValue) ) { ?>
         <div class="mb-3">
         <label for="<? pv($parameterArray['parameterlabel'])?>" class="form-label"><? pv($parameterArray['parameterlabel'])?></label>
-        <input class="form-control" id="<? pv($parameterArray['parameterlabel'])?>" type="text" aria-label="<? pv($parameterArray['parameterlabel'])?>" value="<? pv( load_parameter_option_name($parameterArray['parameterid'], $parameterValue)  ) ?>" readonly>
+        <input class="form-control-plaintext" id="<? pv($parameterArray['parameterlabel'])?>" type="text" aria-label="<? pv($parameterArray['parameterlabel'])?>" value="<? pv( load_parameter_option_name($parameterArray['parameterid'], $parameterValue)  ) ?>" readonly>
         </div>
       <? }  ?>
       <? } ?>
@@ -61,7 +61,7 @@
         
         <?  while ($registeredArray = db_fetch_array($registeredSports)){ ?>
           <label for="<?=$registeredArray['courttypename']?>" class="form-label"><?=$registeredArray['courttypename']?> Ranking</label>
-          <input class="form-control" id="<?=$registeredArray['courttypename']?>" type="text"  aria-label="Member Since" value="<?=$registeredArray['ranking']?>" readonly>  
+          <input class="form-control-plaintext" id="<?=$registeredArray['courttypename']?>" type="text"  aria-label="Member Since" value="<?=$registeredArray['ranking']?>" readonly>  
         <?  } ?>
          </div>    
         <? } ?>  

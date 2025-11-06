@@ -23,19 +23,24 @@
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/ajaxtags.css" rel="stylesheet" type="text/css" />
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/displaytag.css" rel="stylesheet" type="text/css" />
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/calendar.css" rel="stylesheet" type="text/css" />
+    <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/assets/skins/sam/calendar.css" rel="stylesheet" type="text/css"  />
     
     <?php if(isset( $_SESSION["siteprefs"]["siteid"]) ){ ?>
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?php echo get_sitecode(); ?>/main.css" rel="stylesheet" type="text/css" />
     <?php } ?>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" type="text/javascript"></script>
+    <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript" ></script>
+    <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/calendar/calendar-min.js" type="text/javascript"></script>
+    
     <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/prototype-1.3.1.js" type="text/javascript"></script>
     <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/ajaxtags-1.1.5.js" type="text/javascript"></script>
     <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
+    
 
   </head>
   
-  <body>
+ <body class="yui-skin-sam" id="main-com">
    
 
   <?php

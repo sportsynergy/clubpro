@@ -25,10 +25,10 @@
 
   <div class="mb-3">
 	<label for="eventdate" class="form-label">Event Date:</label>
-	<input type="text" name="eventdate" id="eventdate" value="<?=convertToDateSlashes($frm["eventdate"])?>" class="form-control">
+	<input type="text" name="eventdate" id="eventdate" value="<?=convertToDateSlashes($frm["eventdate"])?>" class="form-control" aria-label="Event Date" style="width:50%; display: inline" readonly>
 	<img id="calico" src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png" alt="Open the Calendar control">
-	 <? is_object($errors) ? err($errors->eventdate) : ""?>
 	<div id="mycal" style="position:absolute;z-index:10;"></div>
+	<? is_object($errors) ? err($errors->eventdate) : ""?>
   </div>
 
   <div class="mb-3">
@@ -69,6 +69,51 @@
 </form>
 
 <script type="text/javascript">
+
+//create the namespace object for this example
+YAHOO.namespace("yuibook.calendar");
+//define the lauchCal function which creates the calendar
+YAHOO.yuibook.calendar.launchCal = function() {
+	//create the calendar object, specifying the container
+	var myCal = new YAHOO.widget.Calendar("mycal");
+	//draw the calendar on screen
+	myCal.render();
+	//hide it again straight away
+	myCal.hide();
+	
+	//define the showCal function which shows the calendar
+	var showCal = function() {
+	//show the calendar
+	myCal.show();
+	}
+	//attach listener for click event on calendar icon
+	YAHOO.util.Event.addListener("calico", "click", showCal);
+
+	//define the ripDate function which gets the selected date
+	var ripDate = function(type, args) {
+		//get the date components
+		var dates = args[0];
+		var date = dates[0];
+		var theYear = date[0];
+		var theMonth = date[1];
+		var theDay = date[2];
+		var theDate = theMonth + "/" + theDay + "/" + theYear;
+
+		//get a reference to the text field
+		var field = YAHOO.util.Dom.get("eventdate");
+		//insert the formatted date into the text field
+		field.value = theDate;
+		//hide the calendar once more
+		myCal.hide();
+				
+	}
+	//subscribe to the select event on Calendar cells
+	myCal.selectEvent.subscribe(ripDate);
+	
+}
+
+//create calendar on page load
+YAHOO.util.Event.onDOMReady(YAHOO.yuibook.calendar.launchCal);
 
 
 function onSubmitButtonClicked(){
