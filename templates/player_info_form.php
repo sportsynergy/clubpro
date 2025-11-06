@@ -53,29 +53,160 @@
         <input class="form-control" id="<? pv($parameterArray['parameterlabel'])?>" type="text" aria-label="<? pv($parameterArray['parameterlabel'])?>" value="<? pv( load_parameter_option_name($parameterArray['parameterid'], $parameterValue)  ) ?>" readonly>
         </div>
       <? }  ?>
-          
-
-
       <? } ?>
-          
-  
 
+        <? if( isPointRankingScheme()  ) { ?>
+          
+     <div class="mb-3">
+        
+        <?  while ($registeredArray = db_fetch_array($registeredSports)){ ?>
+          <label for="<?=$registeredArray['courttypename']?>" class="form-label"><?=$registeredArray['courttypename']?> Ranking</label>
+          <input class="form-control" id="<?=$registeredArray['courttypename']?>" type="text"  aria-label="Member Since" value="<?=$registeredArray['ranking']?>" readonly>  
+        <?  } ?>
+         </div>    
+        <? } ?>  
+
+        
+        
       </div> <!-- .col-md-8 -->
       <div class="col">
 
-      <div class="mb-3">
+      <div class="my-3">
 
         <?  if( isset($frm["photo"]) ){ ?>
-                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($frm["photo"]); ?>" width="180" height="180">
-                        <?   } else{  ?>
-						                <img src="<?=get_gravatar($frm["email"],180 )?>" />
-                        <?   }   ?>
-                        </div>
+                <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($frm["photo"]); ?>" width="180" height="180">
+            <?   } else{  ?>
+                <img src="<?=get_gravatar($frm["email"],180 )?>" />
+            <?   }   ?>
+            </div>
         </div>
 </div> <!-- .row justify-content-center -->
 </div> <!-- .container -->
 
-    
+ 
+
+
+          <?php
+              # if player is on the ladder
+              if ( isJumpLadderRankingScheme() ){ 
+                $laddersforuserResult = getLadders($userid);
+               
+                while($ladder = mysqli_fetch_array($laddersforuserResult)){ 
+
+              ?>
+
+              <tr>
+              <td class="label" valign="top" colspan="2"><?=$ladder['name'] ?> Ladder Results</td>
+              </tr>
+              <tr>
+              <td class="label" valign="top" >Position</td>
+              <td> <?=$ladder['ladderposition'] ?> </td>
+              </tr>
+              <tr>
+              <td colspan="2">
+
+                <?
+                $ladderMatchResult = getLadderMatchesForUser($ladder['id'], $userid, 40 );
+                
+                if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
+
+                  <table class="activitytable" width="400">
+                    <tr>
+                      <th>Date</th>
+                      <th>Winner</th>
+                      <th>Loser</th>
+                      <th>Score</th>
+                    </tr>
+                    
+                <?
+                while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
+
+                  $scored = $challengeMatch['score'];
+                  $winner_obj = new clubpro_obj;
+                  $winner_obj->fullname =  $challengeMatch['winner_first']." ". $challengeMatch['winner_last'];
+                  $winner_obj->id = $challengeMatch['winner_id'];
+                  
+                  $loser_obj = new clubpro_obj;
+                  $loser_obj->fullname =  $challengeMatch['loser_first']." ". $challengeMatch['loser_last'];
+                  $loser_obj->id = $challengeMatch['loser_id'];
+                  
+                  //don't include timestamp
+                  $challengeDate = explode(" ",$challengeMatch['match_time']);
+
+                  printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['league']);
+                      
+                } ?>
+                </table>
+                <td>
+              </tr>
+             <? } 
+             
+              }
+              ?>
+
+              </td>
+              </tr>
+              <?  }  ?>  <?php
+              # if player is on the ladder
+              if ( isJumpLadderRankingScheme() ){ 
+                $laddersforuserResult = getLadders($userid);
+               
+                while($ladder = mysqli_fetch_array($laddersforuserResult)){ 
+
+              ?>
+
+              <tr>
+              <td class="label" valign="top" colspan="2"><?=$ladder['name'] ?> Ladder Results</td>
+              </tr>
+              <tr>
+              <td class="label" valign="top" >Position</td>
+              <td> <?=$ladder['ladderposition'] ?> </td>
+              </tr>
+              <tr>
+              <td colspan="2">
+
+                <?
+                $ladderMatchResult = getLadderMatchesForUser($ladder['id'], $userid, 40 );
+                
+                if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
+
+                  <table class="activitytable" width="400">
+                    <tr>
+                      <th>Date</th>
+                      <th>Winner</th>
+                      <th>Loser</th>
+                      <th>Score</th>
+                    </tr>
+                    
+                <?
+                while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
+
+                  $scored = $challengeMatch['score'];
+                  $winner_obj = new clubpro_obj;
+                  $winner_obj->fullname =  $challengeMatch['winner_first']." ". $challengeMatch['winner_last'];
+                  $winner_obj->id = $challengeMatch['winner_id'];
+                  
+                  $loser_obj = new clubpro_obj;
+                  $loser_obj->fullname =  $challengeMatch['loser_first']." ". $challengeMatch['loser_last'];
+                  $loser_obj->id = $challengeMatch['loser_id'];
+                  
+                  //don't include timestamp
+                  $challengeDate = explode(" ",$challengeMatch['match_time']);
+
+                  printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['league']);
+                      
+                } ?>
+                </table>
+                <td>
+              </tr>
+             <? } 
+             
+              }
+              ?>
+
+              </td>
+              </tr>
+              <?  }  ?>
 
           
 <!-- TODO: Put in the jump ladder recent matches -->

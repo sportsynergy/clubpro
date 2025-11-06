@@ -11,7 +11,7 @@
   
 <form name="entryform">
 
- <div class="mb-3">
+ <div class="mb-3" style="width: 50%">
     <input type="text" name="searchname" id="searchname" class="form-control" aria-label="Member name">
   </div>
   
@@ -22,6 +22,8 @@
 </div>
 
 <script type="text/javascript" >
+
+document.entryform.searchname.focus();
 
   document.getElementById('searchname').setAttribute("autocomplete", "off");
 

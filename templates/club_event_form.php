@@ -20,14 +20,12 @@ $clubEvent = mysqli_fetch_array($clubEventResult);
 
 <div>
 
-<span class="club_event_title"><?=$clubEvent['name']?></span><br/>
+<span class="bigbanner"><?=$clubEvent['name']?></span><br/>
 <span class="italicnorm"><?=formatDateString($clubEvent['eventdate'])?></span>
 
 
-<div style="padding-top: 15px; padding-bottom: 40px">
-<span class="club_event_text">
-<?=$clubEvent['description']?>
-</span>
+<div class="my-3">
+	<?=$clubEvent['description']?>
 </div>
 
 
@@ -39,7 +37,6 @@ $clubEvent = mysqli_fetch_array($clubEventResult);
 
 
 // if registerteam is enable pick the partner
-
 if ($clubEvent['registerteam']=='y' ){   
 	// Allow for teams
 
@@ -220,7 +217,7 @@ if (get_roleid()==1){
 
 	// only provide this option for club events with single user reservations.
 	if( $clubEvent['registerteam']!='y'){ ?>
-		<span class="normal" id="show"><a style="text-decoration: underline; cursor: pointer">Add Player</a></span>
+		<span id="show"><a style="text-decoration: underline; cursor: pointer">Add Player</a></span>
 	<? } 
 
 
@@ -249,7 +246,7 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 		
 		<? if ($clubEvent['registerteam']=='y' ){  ?>
 
-		<div class="normal" style="white-space:nowrap;">
+		<div >
 			<?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?> - 
 			<?=chop($participant['partner firstname'])?> <?=rtrim($participant['partner lastname'])?>
 			<? if(!empty($participant['division'])){ ?>
@@ -264,7 +261,7 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 		</div>
 	
 		<? } else{ ?>
-			<div class="normal" style="white-space:nowrap;">
+			<div>
 				<?=chop($participant['firstname'])?> <?=rtrim($participant['lastname'])?>
 				<? if(!empty($participant['division'])){ ?>
 					<span> (<?=$participant['division']?>)</span>
@@ -276,16 +273,10 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 				</a>
 				<? } ?>
 			</div>
-	
 	   <? }?>
-		
-	  		
-	
 	<? } }?>
 
-
 </div>
-
 </div>
 
 

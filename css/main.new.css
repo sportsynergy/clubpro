@@ -176,6 +176,11 @@ th{
 	font-weight: normal;
 }
 
+.italic { 
+	font-style: italic;  
+	font-weight: normal;
+}
+
 .notice { 
 	font-size: 14pt; 
 	color: #006699; 
@@ -404,13 +409,24 @@ background:#DBDDDD none repeat scroll 0 0;
 
 /********* For Unordered Lists *********************************************************/
 
+ul.clubevents {
+	padding-left: 0px;
+}
 
 ul.clubevents li{
 	padding-bottom: 10px;
 }
 
+ul.recentavtivity {
+	padding-left: 0px;
+}
+
 ul.recentavtivity li{
 padding-bottom: 10px;
+}
+
+ul.clubnews {
+	padding-left: 0px;
 }
 
 ul.clubnews li{
