@@ -62,8 +62,9 @@
 					<button type="submit" name="submit" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add Club Event</button>
 				<? } ?>
 		
-					<input type="hidden" name="submitme" value="submitme" >
-					<input type="hidden" name="id" value="<?=$frm["id"]?>" >
+				<button type="button" name="cancel" id="cancelbutton" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
+				<input type="hidden" name="submitme" value="submitme" >
+				<input type="hidden" name="id" value="<?=$frm["id"]?>" >
 	</div>
 	
 </form>

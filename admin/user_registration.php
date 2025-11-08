@@ -117,14 +117,8 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
         $username = $frm['username'];
     }
 
-	if (get_magic_quotes_gpc()) {
-        $firstname = stripslashes($frm['firstname']);
-		$lastname = stripslashes($frm['lastname']);
-    } else {
-        $firstname = addslashes($frm['firstname']);
-        $lastname = addslashes($frm['lastname']);
-    }
-
+	$firstname = addslashes($frm['firstname']);
+    $lastname = addslashes($frm['lastname']);
 	
     $query = "INSERT INTO tblUsers (
 	                username, password, firstname, lastname, email, homephone, workphone, cellphone, pager, useraddress, gender

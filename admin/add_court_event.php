@@ -83,12 +83,7 @@ function validate_form(&$frm, &$errors) {
 function insert_court_event(&$frm) {
 
     // Strip Slashes
-    
-    if (get_magic_quotes_gpc()) {
-        $name = stripslashes($frm['name']);
-    } else {
-        $name = addslashes($frm['name']);
-    }
+    $name = addslashes($frm['name']);
 
     //If this is the case, then we're updating an existing policy
     

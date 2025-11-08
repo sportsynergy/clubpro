@@ -103,10 +103,9 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
       <td colspan="2"><div> <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/change_settings.php')">Edit</a> | <a href="javascript:submitFormWithAction('playerform<?=$rownum?>','<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_delete.php')">Delete</a> </div></td>
       <input type="hidden" name="userid" value="<?=$row['userid']?>">
       <input type="hidden" name="searchname" value="<?=$searchname?>">
-
     </form>
   </tr>
-  <? } ?>
+  <?  $rownum = $rownum -1; } ?>
 </table>
 <?
 
@@ -115,5 +114,5 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
 	}
 
 }
-	//return $result;
+	
 ?>

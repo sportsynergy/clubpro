@@ -21,13 +21,13 @@
 <div class="mb-3">
     <label for="firstname" class="form-label">First Name:</label>
     <input class="form-control" id="firstname" type="text" aria-label="Firstname">
-    <? is_object($errors) ? err($errors->username) : ""?>
+    <? is_object($errors) ? err($errors->firstname) : ""?>
   </div>
 
   <div class="mb-3">
     <label for="lastname" class="form-label">Last Name:</label>
     <input class="form-control" id="lastname" type="text" aria-label="Lastname">
-    <? is_object($errors) ? err($errors->username) : ""?>
+    <? is_object($errors) ? err($errors->lastname) : ""?>
   </div>
 
    <div class="mb-3">
@@ -46,7 +46,7 @@
     <label for="email" class="form-label">Email:</label>
     <input class="form-control" id="email" type="email"  aria-label="Email">
     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    <? is_object($errors) ? err($errors->workphone) : ""?>
+    <? is_object($errors) ? err($errors->email) : ""?>
   </div>
 
   <div class="mb-3">

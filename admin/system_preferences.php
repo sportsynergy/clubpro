@@ -83,10 +83,8 @@ function update_clubprefs($message) {
     unset($_SESSION["footermessage"]);
 
     // Strip Slashes
+    $message = stripslashes($message);
     
-    if (get_magic_quotes_gpc()) {
-        $message = stripslashes($message);
-    }
     $_SESSION["footermessage"] = $message;
 }
 ?>

@@ -83,10 +83,6 @@ function validate_form(&$frm, &$errors) {
 function send_message($subject, $message, $siteid, $category, $sport, $ranking) {
 
     // Strip Slashes
-    if (get_magic_quotes_gpc()) {
-        $message = stripslashes($message);
-        $subject = stripslashes($subject);
-    }
     $message = nl2br($message);
     
     if (isDebugEnabled(1)) logMessage("playerMailer.send_message(): \n subject: $subject\n message: $message\n siteid: $siteid\n category: $category\n sport: $sport\n ranking: $ranking\n");

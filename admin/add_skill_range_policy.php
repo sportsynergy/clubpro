@@ -104,12 +104,7 @@ function get_dow_dropdown() {
 function insert_skill_range_policy(&$frm) {
 
     // Strip Slashes
-    
-    if (get_magic_quotes_gpc()) {
-        $description = stripslashes($frm['description']);
-    } else {
-        $description = addslashes($frm['description']);
-    }
+    $description = addslashes($frm['description']);
     
     if ($frm['courtid'] == "all") {
         $courtid = "NULL";

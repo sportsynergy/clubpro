@@ -23,89 +23,65 @@ $clubEvent = mysqli_fetch_array($clubEventResult);
 <span class="bigbanner"><?=$clubEvent['name']?></span><br/>
 <span class="italicnorm"><?=formatDateString($clubEvent['eventdate'])?></span>
 
-
-<div class="my-3">
+<div class="mt-3 mb-5">
 	<?=$clubEvent['description']?>
 </div>
 
-
 </div>
-
-
 
 <? if( is_logged_in() ){
 
 
 // if registerteam is enable pick the partner
-if ($clubEvent['registerteam']=='y' ){   
-	// Allow for teams
-
-	?>
+if ($clubEvent['registerteam']=='y' ){   ?>
 
 	<form method="POST" action="<?=$ME?>" name="registerteam" id="registerteam" autocomplete="off">
-	<table width="400" class="generictable">
-	<tr class="borderow" >
-		<td class=clubid<?=get_clubid()?>th colspan="2">
-		<span class="whiteh1">
-          <div align="center">
-            Sign Up
-          </div>
-		  </span>
-		</td>
-      </tr>
+	
 	<? if ( get_roleid()==2 || get_roleid()==4){ ?>
-	  <tr>
-			<td class="label">User</td>
-			<td>
-				<input id="name1" name="playeronename" type="text" size="30" class="form-autocomplete" />
-				<input id="id1" name="userid" type="hidden" />
-					<script>
-					<?
-					$wwwroot =$_SESSION["CFG"]["wwwroot"] ;
-					pat_autocomplete( array(
-							'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-							'source'=>'name1',
-							'target'=>'id1',
-							'className'=>'autocomplete',
-							'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
-							'progressStyle'=>'throbbing',
-							'minimumCharacters'=>3,
-							));
-					?>
+	 
+		<label for="name1" class="form-label">User</label>
+		<input id="name1" name="playeronename" type="text" size="30" class="form-control form-autocomplete" style="width:50%;"/>
+		<input id="id1" name="userid" type="hidden" />
+			<script>
+			<?
+			$wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+			pat_autocomplete( array(
+					'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+					'source'=>'name1',
+					'target'=>'id1',
+					'className'=>'autocomplete',
+					'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+					'progressStyle'=>'throbbing',
+					'minimumCharacters'=>3,
+					));
+			?>
 
-					</script>
-			</td>
-		</tr>
+			</script>
+			
 		<? } else { ?>
 			<input  name="userid" type="hidden" value="<?=get_userid()?>"/>
 		<? } ?>
-		<tr>
-			<td class="label">Partner</td>
-			<td>
-				<input id="name2" name="playeronename" type="text" size="30" class="form-autocomplete" />
-				<input id="id2" name="partnerid" type="hidden" />
-					<script>
-					<?
-					$wwwroot =$_SESSION["CFG"]["wwwroot"] ;
-					pat_autocomplete( array(
-							'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-							'source'=>'name2',
-							'target'=>'id2',
-							'className'=>'autocomplete',
-							'parameters'=> "action=autocomplete&name={name2}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
-							'progressStyle'=>'throbbing',
-							'minimumCharacters'=>3,
-							));
-					?>
-
-					</script>
-			</td>
-		</tr>
+		<label for="name2" class="form-label">Partner</label>
+		<input id="name2" name="playeronename" type="text" size="30" class="form-control form-autocomplete" style="width:50%;"/>
+		<input id="id2" name="partnerid" type="hidden" />
+		<script>
+			<?
+			$wwwroot =$_SESSION["CFG"]["wwwroot"] ;
+			pat_autocomplete( array(
+					'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+					'source'=>'name2',
+					'target'=>'id2',
+					'className'=>'autocomplete',
+					'parameters'=> "action=autocomplete&name={name2}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+					'progressStyle'=>'throbbing',
+					'minimumCharacters'=>3,
+					));
+			?>
+		</script>
+			
 		<? if ($clubEvent['registerdivision']=='y' ){ ?>
-		<tr>
-			<td class="label">Division</td>
-			<td>
-				<select name="division">
+			<label for="name2" class="form-label">Division</label>
+			<select name="division" class="form-select" style="width:50%;">
 					<option value="--">--</option>
 					<option value="A">A</option>
 					<option value="B">B</option>
@@ -116,21 +92,15 @@ if ($clubEvent['registerteam']=='y' ){
 					<option value="Father & Son - Open">Father & Son (Open)</option>
 					<option value="Father & Son - U19">Father & Son (Junior U19)</option>
 				</select>
-			</td>
-		</tr>
+			
 		<? } ?>
-		<tr>
-			<td>
-			<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
-			<input type="hidden" name="cmd" value="addtoeventasteam">
-			</td>
-			<td><input type="button" name="submit" value="Sign up" id="submitbutton"> </td>
-		</tr>
-	</table>
 		
+		<input type="hidden" name="clubeventid" value="<?=$clubEvent['id']?>">
+		<input type="hidden" name="cmd" value="addtoeventasteam">
+		<div class="mt-2 mb-3">
+  			<button type="submit" class="btn btn-primary" id="submitbutton" onclick="onSubmitButtonClicked()">Sign up</button>
+      	</div>	
 	</form>
-
-	
 <? }?>	
 <? } ?>
 
@@ -140,9 +110,8 @@ if ($clubEvent['registerteam']=='y' ){
 <div>
 <span class="biglabel">Who is coming </span>  
 
-<?  
-	if( $alreadySignedUp   ){ ?>
-		<span><a href="javascript:submitForm('removemefromeventform');">Take me out</a></span>
+<?  if( $alreadySignedUp   ){ ?>
+		<a href="javascript:submitForm('removemefromeventform');">Take me out</a>
 	<? } else if ($clubEvent['registerteam']!='y') { // team registration have a seperate signup form ?>
 		
 		<? if ($clubEvent['registerdivision']=='y' ){ ?>
@@ -231,21 +200,18 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 
 <script>
 
-//document.getElementById('name1').setAttribute("autocomplete", "off");
+document.getElementById('name1').setAttribute("autocomplete", "off");
+document.getElementById('name2').setAttribute("autocomplete", "off");
 
 function submitAddToEventForm()
 { 
 	var form = eval("document." + theForm);
-	
 	form.submit();
-
 }
-
 
 function removeFromEvent(userid){
 	document.removemefromeventform.userid.value = userid;
 	document.removemefromeventform.submit();
-	
 }
 
 document.onkeypress = function (aEvent)

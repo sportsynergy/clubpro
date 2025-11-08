@@ -6493,6 +6493,7 @@ function getClubEvents($clubid){
 			   FROM tblClubEvents events 
 				WHERE clubid = $clubid 
 				AND enddate is NULL
+				AND events.eventdate >= CURDATE()
 				ORDER BY events.eventdate LIMIT 6";
 
 	return db_query($query);

@@ -145,13 +145,8 @@ function update_settings(&$frm, $extraParametersResult) {
         $userid = $frm['userid'];
     }
     
-    if (get_magic_quotes_gpc()) {
-        $firstName = $frm['firstname'];
-        $lastName = $frm['lastname'];
-    } else {
-        $firstName = addslashes($frm['firstname']);
-        $lastName = addslashes($frm['lastname']);
-    }
+    $firstName = addslashes($frm['firstname']);
+    $lastName = addslashes($frm['lastname']);
 
     $available_5pm = 'false';
     $available_6pm = 'false';

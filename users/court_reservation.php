@@ -1691,12 +1691,7 @@ function makeSinglesReservation($frm, $guesttype, $reservationid) {
         } else {
 
             // Strip Slashes
-            
-            if (get_magic_quotes_gpc()) {
-                $playerOneName = stripslashes($frm['playeronename']);
-            } else {
-                $playerOneName = addslashes($frm['playeronename']);
-            }
+            $playerOneName = addslashes($frm['playeronename']);
         }
 
         //We don't have both of the playerids so we are going to book a guest reservation.
@@ -1714,12 +1709,8 @@ function makeSinglesReservation($frm, $guesttype, $reservationid) {
         if ($frm['matchtype'] != 5) {
 
             // Strip Slashes
+            $playerTwoName = addslashes($frm['playertwoname']);
             
-            if (get_magic_quotes_gpc()) {
-                $playerTwoName = stripslashes($frm['playertwoname']);
-            } else {
-                $playerTwoName = addslashes($frm['playertwoname']);
-            }
             $query = "INSERT INTO tblkpGuestReservations (
                                             reservationid, name
                                             ) VALUES (

@@ -1,133 +1,6 @@
 
 <script type="text/javascript">
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-    });
-
-} ();
-
-
-YAHOO.util.Event.onDOMReady(function(){
-
-        var Event = YAHOO.util.Event,
-            Dom = YAHOO.util.Dom,
-            dialog,
-            calendar;
-
-        var showBtn = Dom.get("show");
-
-        Event.on(showBtn, "click", function() {
-
-            // Lazy Dialog Creation - Wait to create the Dialog, and setup document click listeners, until the first time the button is clicked.
-            if (!dialog) {
-
-                // Hide Calendar if we click anywhere in the document other than the calendar
-                Event.on(document, "click", function(e) {
-                    var el = Event.getTarget(e);
-                    var dialogEl = dialog.element;
-                    if (el != dialogEl && !Dom.isAncestor(dialogEl, el) && el != showBtn && !Dom.isAncestor(showBtn, el)) {
-                        dialog.hide();
-                    }
-                });
-
-                function resetHandler() {
-                    // Reset the current calendar page to the select date, or 
-                    // to today if nothing is selected.
-                    var selDates = calendar.getSelectedDates();
-                    var resetDate;
-        
-                    if (selDates.length > 0) {
-                        resetDate = selDates[0];
-                    } else {
-                        resetDate = calendar.today;
-                    }
-        
-                    calendar.cfg.setProperty("pagedate", resetDate);
-                    calendar.render();
-                }
-        
-                function closeHandler() {
-                    dialog.hide();
-                }
-
-                dialog = new YAHOO.widget.Dialog("container", {
-                    visible:false,
-                    context:["show", "tl", "bl"],
-                    draggable:false,
-                    close:false
-                });
-                
-                dialog.setBody('<div id="cal"></div>');
-                dialog.render(document.body);
-
-                dialog.showEvent.subscribe(function() {
-                    if (YAHOO.env.ua.ie) {
-                        // Since we're hiding the table using yui-overlay-hidden, we 
-                        // want to let the dialog know that the content size has changed, when
-                        // shown
-                        dialog.fireEvent("changeContent");
-                    }
-                });
-            }
-
-            // Lazy Calendar Creation - Wait to create the Calendar until the first time the button is clicked.
-            if (!calendar) {
-
-                calendar = new YAHOO.widget.Calendar("cal", {
-        
-                    iframe:false,          // Turn iframe off, since container has iframe support.
-                    hide_blank_weeks:true  // Enable, to demonstrate how we handle changing height, using changeContent
-                    
-                });
-                calendar.render();
-
-                calendar.selectEvent.subscribe(function() {
-                    if (calendar.getSelectedDates().length > 0) {
-
-                        var selDate = calendar.getSelectedDates()[0];
-
-                        // Pretty Date Output, using Calendar's Locale values: Friday, 8 February 2008
-                        var wStr = calendar.cfg.getProperty("WEEKDAYS_LONG")[selDate.getDay()];
-                        var dStr = selDate.getDate();
-                        var monStr = selDate.getMonth() + 1;
-                        var mStr = calendar.cfg.getProperty("MONTHS_LONG")[selDate.getMonth()];
-                        var yStr = selDate.getFullYear();
-
-                        document.getElementById("date-param").value = pad(monStr,2) + "/" + pad(dStr,2) + "/" + yStr;
-                        
-                       
-                    } else {
-                        //Dom.get("date").value = "";
-                    }
-                    dialog.hide();
-                });
-
-                calendar.renderEvent.subscribe(function() {
-                    // Tell Dialog it's contents have changed, which allows 
-                    // container to redraw the underlay (for IE6/Safari2)
-                    dialog.fireEvent("changeContent");
-                });
-            }
-
-            var seldate = calendar.getSelectedDates();
-
-            if (seldate.length > 0) {
-                // Set the pagedate to show the selected date if it exists
-                calendar.cfg.setProperty("pagedate", seldate[0]);
-                calendar.render();
-            }
-
-            dialog.show();
-        });
-    });
 
 function pad(num, size) {
     var s = num+"";
@@ -147,111 +20,103 @@ function onSubmitButtonClicked(){
 
 
 
-<table width="650" cellpadding="40" cellspacing="0" class="generictable" id="formtable">
-    <tr>
-    <td class=clubid<?=get_clubid()?>th>
-    	<span class="whiteh1">
-    		<div align="center"><? pv($DOC_TITLE) ?></div>
-    	</span>
-    </td>
- </tr>
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
- <tr>
-    <td>
-        <form name="photoform" action="<?=$ME?>" method="post" enctype="multipart/form-data">
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form name="photoform" action="<?=$ME?>" method="post" enctype="multipart/form-data">
             <input type="file" name="image">
             <input type="hidden" name="formname" value="photoform">
             <input type="hidden" name="userid" value="<?pv($userid) ?>">
             <input type="submit" value="Upload photo" id="submitbutton1" >
         </form>
-    </td>
-</tr>
 
- <tr>
-    <td>
+         <form name="entryform" method="post" action="<?=$ME?>">
 
-       <form name="entryform" method="post" action="<?=$ME?>">
-       <table cellspacing="5" cellpadding="1" width="650" >
-       
-       <tr>
-			<td class="label medwidth">Sportsynergy Id:</td>
-			<td class="normal"><? pv($frm["userid"]) ?></td>
-			 <td rowspan="9" valign="top" >
-					<div align="center">
-                        <?  if( isset($frm["photo"]) ){ ?>
-                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($frm["photo"]); ?>" width="180" height="180">
-                        <?   } else{  ?>
-						<img src="<?=get_gravatar($frm["email"],180 )?>" />
-                        <?   }   ?>
-					</div>
-	
-				</td>
-		</tr>
-		
-		
-  <?if(!isSiteAutoLogin()){ ?>
+         <div class="mb-3">
+            <label for="username" class="form-label">Sportsynergy Id</label>
+            <input class="form-control" id="username" type="text" aria-label="Username" value="<?=$frm["userid"] ?>" readonly>
+        </div>
+        <?if(!isSiteAutoLogin()){ ?>
 
-        <tr>
- 			<td class=label><font color="Red" class=normalsm>* </font>Username:</td>
-            <td><input type="text" name="username" size="35" value="<? pv($frm["username"]) ?>">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username:</label>
+                <input class="form-control" name="username" size="35" id="username" type="text" aria-label="Username" value="<? pv($frm["username"]) ?>">
                 <? is_object($errors) ? err($errors->username) : ""?>
-            </td>
-        </tr>
-     
-       <tr>
- 			<td class=label>Password:</td>
-            <td><input type="text" name="password" size="35" value="">
-            <br>
-            <span class="normalsm" > By leaving this field blank, the password will not be updated.</span>
-            </td>
-        </tr>
-         <? } ?>
-        <tr>
-            <td class=label><font color="Red" class="normalsm">* </font>First Name:</td>
-            <td><input type="text" name="firstname" size="35" value="<? pv($frm["firstname"]) ?>">
-                <? is_object($errors) ? err($errors->firstname) : ""?>   
-            </td>
-        </tr>
-        
-        <tr>
-            <td class=label><font color="Red" class=normalsm>* </font>Last Name:</td>
-            <td><input type="text" name="lastname" size="35" value="<? pv($frm["lastname"]) ?>">
-                <? is_object($errors) ? err($errors->lastname) : ""?> 
-                </td>
-        </tr>
+            </div>
 
-        <tr>
-            <td class=label></font>Email:</td>
-            <td><input type="text" name="email" size="35" value="<? pv($frm["email"]) ?>">
-                <? is_object($errors) ? err($errors->email) : ""?>
-                </td>
-        </tr>
+             <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password">
+                <div id="passwordHelp" class="form-text">By leaving this field blank, the password will not be updated.</div>
+                <? is_object($errors) ? err($errors->password) : ""?>
+            </div>  
+         <? } ?> <!-- End of isSiteAutoLogin() check -->
 
-        <tr>
-            <td class=label></font> Home Phone:</td>
-            <td><input type="text" name="homephone" size="35" value="<? pv($frm["homephone"]) ?>">
-                <? is_object($errors) ? err($errors->homephone) : ""?>
-                </td>
-        </tr>
+         <div class="mb-3">
+            <label for="firstname" class="form-label">First Name:</label>
+            <input class="form-control" id="firstname" type="text" aria-label="Firstname">
+            <? is_object($errors) ? err($errors->firstname) : ""?>
+        </div>
 
-        <tr>
-            <td class=label></font> Work Phone:</td>
-            <td><input type="text" name="workphone" size="35" value="<? pv($frm["workphone"]) ?>">
-                <? is_object($errors) ? err($errors->workphone) : ""?>
-            </td>
-        </tr>
-         <tr>
-            <td class=label>Mobile Phone:</td>
-            <td><input type="text" name="cellphone" size="35" value="<? pv($frm["cellphone"]) ?>">
-                <? is_object($errors) ? err($errors->cellphone) : ""?>
-            </td>
-        </tr>
- 		<tr>
-            <td class=label>Date Joined:</td>
-            <td><input type="text" name="msince" size="35" value="<? pv($frm["msince"]) ?>">
-                <? is_object($errors) ? err($errors->msince) : ""?>
-            </td>
-        </tr>
+        <div class="mb-3">
+            <label for="lastname" class="form-label">Last Name:</label>
+            <input class="form-control" id="lastname" type="text" aria-label="Lastname">
+            <? is_object($errors) ? err($errors->lastname) : ""?>
+        </div>
+
+        <div class="mb-3">
+            <label for="homephone" class="form-label">Home Phone:</label>
+            <input class="form-control" id="homephone" type="text" aria-label="Home Phone">
+            <? is_object($errors) ? err($errors->homephone) : ""?>
+        </div>
+
+        <div class="mb-3">
+            <label for="workphone" class="form-label">Work Phone:</label>
+            <input class="form-control" id="workphone" type="text"  aria-label="Work Phone">
+            <? is_object($errors) ? err($errors->workphone) : ""?>
+        </div>
+
+         <div class="mb-3">
+            <label for="mobilephone" class="form-label">Mobile Phone:</label>
+            <input class="form-control" id="mobilephone" type="text"  aria-label="Mobile Phone">
+            <? is_object($errors) ? err($errors->mobilephone) : ""?>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input class="form-control" id="email" type="email"  aria-label="Email">
+            <? is_object($errors) ? err($errors->email) : ""?>
+        </div>
+
+         <div class="mb-3">
+            <label for="msince" class="form-label">Date Joined:</label>
+            <input class="form-control" name="msince" id="msince"  size="35" value="<? pv($frm["msince"]) ?>" type="text"  aria-label="Member Since">
+            <? is_object($errors) ? err($errors->mobilephone) : ""?>
+        </div>
+
+
+        </div> <!-- .col -->
+
+
+
+
+        <div class="col">
+         <?  if( isset($frm["photo"]) ){ ?>
+            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($frm["photo"]); ?>" width="180" height="180">
+        <?   } else{  ?>
+        <img src="<?=get_gravatar($frm["email"],180 )?>" />
+        <?   }   ?>
+
+        </div> <!-- .col -->
+</div> <!-- .row -->
+</div> <!-- .container -->  
+
+ 
+
 
         <tr>
             <td class=label>Address:</td>

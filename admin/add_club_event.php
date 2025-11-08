@@ -126,21 +126,15 @@ function saveClubEvent(&$frm) {
     $registerdivision = $frm['registerdivision'] ? 'y' : 'n';   
 
     // Strip Slashes
-    
-    if (get_magic_quotes_gpc()) {
-        $subject = stripslashes($frm['name']);
-        $description = stripslashes($frm['description']);
-    } else {
-        $subject = addslashes($frm['name']);
-        $description = addslashes($frm['description']);
-    }
+    $subject = addslashes($frm['name']);
+    $description = addslashes($frm['description']);
 
-    logMessage("add_club_event.saveClubEvent: this is the date $description");
+   if (isDebugEnabled(1)) logMessage("add_club_event.saveClubEvent: this is the date $description");
 
     //Insert the Club Event
     
     if (!empty($eventid)) {
-        logMessage("add_club_event.saveClubEvent: updating club event $eventid ");
+        if (isDebugEnabled(1)) logMessage("add_club_event.saveClubEvent: updating club event $eventid ");
         $query = "
 		        UPDATE tblClubEvents SET
 						name = '$subject'
@@ -149,7 +143,7 @@ function saveClubEvent(&$frm) {
                         ,lastmodifier = " . get_userid() . "
 		        WHERE id = '$eventid'";
     } else {
-        logMessage("add_club_event.saveClubEvent: adding new club event ");
+        if (isDebugEnabled(1)) logMessage("add_club_event.saveClubEvent: adding new club event ");
         
         $query = "INSERT INTO tblClubEvents (
                 name, clubid, eventdate, description, creator, lastmodifier, eventenddate, registerdivision, registerteam 

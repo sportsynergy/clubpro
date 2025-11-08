@@ -136,12 +136,7 @@ function insert_hours_policy(&$frm) {
     /* add the new user into the database */
 
     // Strip Slashes
-    
-    if (get_magic_quotes_gpc()) {
-        $description = stripslashes($frm['description']);
-    } else {
-        $description = addslashes($frm['description']);
-    }
+    $description = addslashes($frm['description']);
     
     if ($frm['courtid'] == "all") {
         $courtid = "NULL";
