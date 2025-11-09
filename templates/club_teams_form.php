@@ -81,7 +81,7 @@ if (isDebugEnabled(1)) logMessage("club_team_manage: lastUpdated is is $lastUpda
             $lastupdated_label = $lastUpdated;
           }
           ?>
-          <span class="smallreg"> <?=$lastupdated_label?> </span>
+          <?=$lastupdated_label?> 
     </td>
 </tr>
 </table>

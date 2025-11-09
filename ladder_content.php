@@ -477,9 +477,9 @@ if( isJumpLadderRankingScheme()  ){
         $lastupdated = $lastupdatestring;
         } ?>
 
-    <span class="smallreg">
+    
     <?=$lastupdated?>
-    </span>
+    
     </div>
     <? } ?>
 
