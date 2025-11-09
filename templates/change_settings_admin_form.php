@@ -18,6 +18,16 @@ function onSubmitButtonClicked(){
 
 </script>
 
+<form name="photoform" action="<?=$ME?>" method="post" enctype="multipart/form-data">
+    <input type="file" name="image">
+    <input type="hidden" name="formname" value="photoform">
+    <input type="hidden" name="userid" value="<?pv($userid) ?>">
+    <input type="submit" value="Upload photo" id="submitbutton1" >
+</form>
+
+<form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_admin.php">
+    <input type="hidden" name="searchname" value="<? pv($searchname)?>">
+</form>
 
 
 <div class="mb-5">
@@ -27,12 +37,6 @@ function onSubmitButtonClicked(){
 <div class="container">
     <div class="row">
         <div class="col">
-            <form name="photoform" action="<?=$ME?>" method="post" enctype="multipart/form-data">
-            <input type="file" name="image">
-            <input type="hidden" name="formname" value="photoform">
-            <input type="hidden" name="userid" value="<?pv($userid) ?>">
-            <input type="submit" value="Upload photo" id="submitbutton1" >
-        </form>
 
          <form name="entryform" method="post" action="<?=$ME?>">
 
@@ -40,8 +44,8 @@ function onSubmitButtonClicked(){
             <label for="username" class="form-label">Sportsynergy Id</label>
             <input class="form-control" id="username" type="text" aria-label="Username" value="<?=$frm["userid"] ?>" readonly>
         </div>
-        <?if(!isSiteAutoLogin()){ ?>
 
+        <?if(!isSiteAutoLogin()){ ?>
             <div class="mb-3">
                 <label for="username" class="form-label">Username:</label>
                 <input class="form-control" name="username" size="35" id="username" type="text" aria-label="Username" value="<? pv($frm["username"]) ?>">
@@ -58,37 +62,37 @@ function onSubmitButtonClicked(){
 
          <div class="mb-3">
             <label for="firstname" class="form-label">First Name:</label>
-            <input class="form-control" id="firstname" type="text" aria-label="Firstname">
+            <input class="form-control" id="firstname" type="text" aria-label="Firstname" value="<? pv($frm["firstname"]) ?>">
             <? is_object($errors) ? err($errors->firstname) : ""?>
         </div>
 
         <div class="mb-3">
             <label for="lastname" class="form-label">Last Name:</label>
-            <input class="form-control" id="lastname" type="text" aria-label="Lastname">
+            <input class="form-control" id="lastname" type="text" aria-label="Last Name" value="<? pv($frm["lastname"]) ?>">
             <? is_object($errors) ? err($errors->lastname) : ""?>
         </div>
 
         <div class="mb-3">
             <label for="homephone" class="form-label">Home Phone:</label>
-            <input class="form-control" id="homephone" type="text" aria-label="Home Phone">
+            <input class="form-control" id="homephone" type="text" aria-label="Home Phone" value="<? pv($frm["homephone"]) ?>">
             <? is_object($errors) ? err($errors->homephone) : ""?>
         </div>
 
         <div class="mb-3">
             <label for="workphone" class="form-label">Work Phone:</label>
-            <input class="form-control" id="workphone" type="text"  aria-label="Work Phone">
+            <input class="form-control" id="workphone" type="text"  aria-label="Work Phone" value="<? pv($frm["workphone"]) ?>">
             <? is_object($errors) ? err($errors->workphone) : ""?>
         </div>
 
          <div class="mb-3">
             <label for="mobilephone" class="form-label">Mobile Phone:</label>
-            <input class="form-control" id="mobilephone" type="text"  aria-label="Mobile Phone">
+            <input class="form-control" id="mobilephone" type="text"  aria-label="Mobile Phone" value="<? pv($frm["mobilephone"]) ?>">
             <? is_object($errors) ? err($errors->mobilephone) : ""?>
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">Email:</label>
-            <input class="form-control" id="email" type="email"  aria-label="Email">
+            <input class="form-control" id="email" type="email"  aria-label="Email" value="<? pv($frm["email"]) ?>">
             <? is_object($errors) ? err($errors->email) : ""?>
         </div>
 
@@ -98,12 +102,157 @@ function onSubmitButtonClicked(){
             <? is_object($errors) ? err($errors->mobilephone) : ""?>
         </div>
 
+        <div class="mb-3">
+            <label for="useraddress" class="form-label">Address:</label>
+            <textarea name="useraddress" class="form-control" id="useraddress" rows="3" cols="50" rows="5"><? pv($frm["useraddress"]) ?></textarea>
+            <? is_object($errors) ? err($errors->useraddress) : ""?>
+        </div>
 
-        </div> <!-- .col -->
+         <div class="mb-3">
+            <label for="memberid" class="form-label"> Membership ID:</label>
+            <input class="form-control" name="memberid" id="memberid"  size="35" value="<? pv($frm["memberid"]) ?>" type="text"  aria-label="Member Id">
+            <? is_object($errors) ? err($errors->memberid) : ""?>
+        </div>
+
+          <div class="mb-3">
+            <label for="gender" class="form-label">Gender:</label>
+            <select class="form-select" aria-label="Gender" name="gender" id="gender">
+                <option value="0">Female</option>
+                <option value="1"  <? if($frm["gender"]==1) print "selected" ?>>Male</option>
+                <option value="2"  <? if($frm["gender"]==2) print "selected" ?>>Other</option>
+            </select>
+            <? is_object($errors) ? err($errors->gender) : ""?>  
+            </div>
+
+             <?
+		// Get the Custom Parameters
+		while( $parameterArray = db_fetch_array($extraParametersResult)){ 
+			
+			$parameterValue = load_site_parameter($parameterArray['parameterid'], $userid );
+			if($parameterArray['parametertypename'] == "text"){ ?>
+				<div class="mb-3">
+                <label for="<?="parameter-".$parameterArray['parameterid']?>" class="form-label"> <? pv($parameterArray['parameterlabel'])?></label>
+                <input class="form-control" type="text" id="<?="parameter-".$parameterArray['parameterid']?>"  name="<?="parameter-".$parameterArray['parameterid']?>" size="35" value="<? pv($parameterValue) ?>" maxlength="40"> 
+				</div>	
+				<? } elseif($parameterArray['parametertypename'] == "select") { ?>
+                    <div class="mb-3">
+                    <label for="<?="parameter-".$parameterArray['parameterid']?>" class="form-label"> <? pv($parameterArray['parameterlabel'])?></label>
+				    <select name="<?="parameter-".$parameterArray['parameterid']?>" class="form-select" aria-label="<?="parameter-".$parameterArray['parameterlabel']?>">
+                        <option value=""></option>
+                            <?
+                            // Get Parameter Options
+                            $parameterOptionResult = load_parameter_options($parameterArray['parameterid']);
+                            
+                            while($parameterOptionArray = db_fetch_array($parameterOptionResult)){
+                                
+                                if($parameterValue == $parameterOptionArray['optionvalue']){
+                                    $selected = "selected=selected";	
+                                }else{
+                                    $selected = "";
+                                }
+                                ?>
+                                <option value="<? pv($parameterOptionArray['optionvalue']) ?>" <? pv($selected) ?>><? pv($parameterOptionArray['optionname']) ?></option>
+                            <? } ?>
+							</select>
+						</div>
+				
+                    <? } ?>
+			<? } ?>
+
+             <div class="mb-3">
+            <label for="recemail" class="form-label">Receive Email Notifications:</label>
+            <select name="recemail" id="recemail" class="form-select" aria-label="Receive Email Notifications"> 
+                 <option value="y">Yes</option>
+                <option value="n" <? if($frm["recemail"]=='n') print "selected" ?> >No</option>
+            </select>
+            <? is_object($errors) ? err($errors->recemail) : ""?>  
+            </div>
+
+            <?  if ( isJumpLadderRankingScheme() ){  
+               
+               if($frm['recleaguematchnotifications']=='y'){
+                $leaguematchselected = "selected"; 
+
+               } ?>
+             <label for="recleaguematchnotifications" class="form-label">Receive League Reminder Notifications:</label>  
+             <select name="recleaguematchnotifications" id="recleaguematchnotifications" class="form-select" aria-label="Receive League Reminder Notifications">
+                <option value="n">No</option>
+                <option value="y" <?=$leaguematchselected?> >Yes</option>
+            </select>
+
+        <? } ?>
+
+        <div class="mb-3">
+
+            <label for="Role" class="form-label">Role:</label>
+            <select name="roleid" id="roleid" class="form-select" aria-label="Role"> 
+                <option value="1" <? if($frm["roleid"]==1) print "selected" ?> >Player</option>
+                <option value="6" <? if($frm["roleid"]==6) print "selected" ?>>Junior</option>
+                <option value="4" <? if($frm["roleid"]==4) print "selected" ?>>Desk User</option>
+                <option value="2" <? if($frm["roleid"]==2) print "selected" ?> >Club Admin</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+               <label  class="form-label">Authorized Sites:</label>
+               <? //Select only the authorized sites
+
+             $autSitesStack = array();
+            
+             for($i=0; $i<mysqli_num_rows($authSites); ++$i){
+                
+                $authSitesArray = mysqli_fetch_array($authSites);
+                array_push($autSitesStack, $authSitesArray['siteid']);
+
+                if($i==0){
+                    $mysites =  $authSitesArray['siteid'];
+                }
+                else{
+                    $mysites .=  ",$authSitesArray[siteid]";
+                }
+             }
 
 
+            for($j=0; $j<mysqli_num_rows($availableSites); ++$j){
+            
+                $row = mysqli_fetch_array($availableSites);
 
+                if(in_array($row['siteid'],$autSitesStack)){
+                    $selected = "checked";
+                    
+                }
+                else{
+                    $selected = "";
+                } ?>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="clubsite" name="clubsite<? pv($row['siteid'])?>" value="<? pv($row['siteid']) ?>" <?pv($selected)?>   />
+                <label  class="form-check-label" for="clubsite<? pv($row['siteid'])?>"> 
+                    <? pv($row['sitename']) ?> 
+                </label>
+            </div>
+            <? unset($selected); ?>
+            <?  } ?>
+            </div> <!-- .mb-3 -->
 
+            <div class="mb-3">
+                 <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="enable" value="y" name="enable" id="enable" checked>
+                    <label for="enable" class="form-label">Enable</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" name="submit" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()">Update Settings</button>
+                <button type="button" name="cancel" id="cancelbutton" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
+                <input type="hidden" name="userid" value="<?pv($userid) ?>">
+                <input type="hidden" name="mycourttypes" value="<? pv($mycourtTypes) ?>">
+                <input type="hidden" name="mysites" value="<? pv($mysites) ?>">
+                <input type="hidden" name="searchname" value="<? pv($searchname)?>">
+                <input type="hidden" name="formname" value="entryform">
+            </div>
+       </form>
+
+        </div> <!-- .col -->    
         <div class="col">
          <?  if( isset($frm["photo"]) ){ ?>
             <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($frm["photo"]); ?>" width="180" height="180">
@@ -114,283 +263,3 @@ function onSubmitButtonClicked(){
         </div> <!-- .col -->
 </div> <!-- .row -->
 </div> <!-- .container -->  
-
- 
-
-
-        <tr>
-            <td class=label>Address:</td>
-            <td colspan="2"><textarea name="useraddress" cols="50" rows="5"><? pv($frm["useraddress"]) ?></textarea>
-                <? is_object($errors) ? err($errors->address) : ""?>
-            </td>
-        </tr>
-        <tr>
-            <td class=label>
-            <?if(isSiteAutoLogin()){ ?>
-            	<font color="Red" class=normalsm>* 
-             <? } ?>	
-            Membership ID:</td>
-            <td><input type="text" name="memberid" size=35 value="<? pv($frm["memberid"]) ?>">
-                <? is_object($errors) ? err($errors->memberid) : ""?>
-            </td>
-        </tr>
-        <tr>
-            <td class=label>Gender:</td>
-            <td><select name="gender">
-            	<option value="1">Male</option>
-            	<option value="0" <? if($frm["gender"]==0) print "selected" ?> >Female</option>
-            </select>
-                <? is_object($errors) ? err($errors->gender) : ""?>
-            </td>
-        </tr>
-
-       
-        
-        <?
-		// Get the Custom Parameters
-		while( $parameterArray = db_fetch_array($extraParametersResult)){ 
-			
-			$parameterValue = load_site_parameter($parameterArray['parameterid'], $userid );
-			
-			if($parameterArray['parametertypename'] == "text"){ ?>
-				<tr>
-					<td class="label"><? pv($parameterArray['parameterlabel'])?>:</td>
-					<td>
-						<input type="text" name="<?="parameter-".$parameterArray['parameterid']?>" size="35" value="<? pv($parameterValue) ?>" maxlength="40"> 
-					</td>
-				</tr>
-					
-					
-				<? } elseif($parameterArray['parametertypename'] == "select") { ?>
-					
-					<tr>
-						<td class="label"><? pv($parameterArray['parameterlabel'])?>:</td>
-						<td>
-							<select name="<?="parameter-".$parameterArray['parameterid']?>" >
-								<option value=""></option>
-								<?
-								// Get Parameter Options
-								$parameterOptionResult = load_parameter_options($parameterArray['parameterid']);
-								
-								while($parameterOptionArray = db_fetch_array($parameterOptionResult)){
-									
-									if($parameterValue == $parameterOptionArray['optionvalue']){
-										$selected = "selected=selected";	
-									}else{
-										$selected = "";
-									}
-									?>
-									<option value="<? pv($parameterOptionArray['optionvalue']) ?>" <? pv($selected) ?>><? pv($parameterOptionArray['optionname']) ?></option>
-								<? } ?>
-
-							</select>
-						</td>
-					</tr>
-				
-                    <? } elseif($parameterArray['parametertypename'] == "date") { ?>
-                  <td class="label"><? pv($parameterArray['parameterlabel'])?>:
-                  <td>
-                   <span style="padding-left: 10px"> <img src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png"  id="show" title="Click here to change the date"> </span >
-                   
-                   <input type="text" id="date-param" name="<?="parameter-".$parameterArray['parameterid']?>" size="30" value="<? pv($parameterValue) ?>"  readonly>
-                  </td>
-            <? } ?>
-
-			<? } ?>
-				
-			
-        
-        
-       <tr>
-            <td colspan="2" height="20"><hr></td>
-        </tr>
-        <tr>
-            <td class="label">Receive Email Notifications:</td>
-            <td><select name="recemail"> 
-                 <option value="y">Yes</option>
-                <option value="n" <? if($frm["recemail"]=='n') print "selected" ?> >No</option>
-                <? is_object($errors) ? err($errors->recemail) : ""?>
-                
-                </td>
-        </tr>
-        <?  if ( isJumpLadderRankingScheme() ){  
-              
-              if($frm['recleaguematchnotifications']=='y'){
-                $leaguematchselected = "selected"; 
-              } 
-            
-            ?>
-        <tr>
-              <td class="label medwidth">Receive League Reminder Notifications:</td> 
-              <td>
-                  <select name="recleaguematchnotifications">
-                      <option value="n">No</option>
-                      <option value="y" <?=$leaguematchselected?> >Yes</option>
-                </select>
-              </td>
-        </tr>
-        <? } ?>
-		<tr>
-            <td class="label">Role:</td>
-            <td>
-            		<select name="roleid"> 
-                        <option value="1" <? if($frm["roleid"]==1) print "selected" ?> >Player</option>
-                        <option value="6" <? if($frm["roleid"]==6) print "selected" ?>>Junior</option>
-                        <option value="4" <? if($frm["roleid"]==4) print "selected" ?>>Desk User</option>
-                        <option value="2" <? if($frm["roleid"]==2) print "selected" ?> >Club Admin</option>
-                      </select>
-                </td>
-        </tr>
-        <tr>
-            <td colspan="2" height="20"><hr></td>
-        </tr>
-          <tr>
-            <td class=label valign="top">Authorized Sites:</td>
-            <td class="normal">
-
-             <? //Select only the authorized sites
-
-             $autSitesStack = array();
-
-             for($i=0; $i<mysqli_num_rows($authSites); ++$i){
-             $authSitesArray = mysqli_fetch_array($authSites);
-
-                   array_push($autSitesStack, $authSitesArray['siteid']);
-
-                   if($i==0){
-                       $mysites =  $authSitesArray['siteid'];
-                   }
-                  else{
-                       $mysites .=  ",$authSitesArray[siteid]";
-                  }
-
-             }
-
-                 for($j=0; $j<mysqli_num_rows($availableSites); ++$j){
-                 $row = mysqli_fetch_array($availableSites);
-
-
-                        if(in_array($row['siteid'],$autSitesStack)){
-                          $selected = "checked";
-                        }
-                        else{
-                            $selected = "";
-                        }
-
-                        print "<input type=\"checkbox\" name=\"clubsite$row[siteid]\" value=\"$row[siteid]\" $selected> $row[sitename] <br>\n";
-
-                     unset($selected);
-                 }
-
-              //Done with Authorized Sites
-             ?>
-
-            </td>
-          </tr>
-        <tr>
-            <td colspan="2" height="20"></td>
-        </tr>
-
-        <?
-
-
-
-        for ( $i=0; $i<mysqli_num_rows($availbleSports); ++$i){
-
-        	$availbleSportsArray = db_fetch_array($availbleSports);
-
-                  //Match up the users ranking with the availbe court types
-                 for ($j=0; $j<mysqli_num_rows($registeredSports); ++$j){
-
-                   $registeredArray = db_fetch_array($registeredSports);
-                       //Put the results in a nice little string to be passed up in the post vars.
-
-                       if($j==0){
-                           $mycourtTypes =  $registeredArray['courttypeid'];
-                       }
-                       else{
-                           $mycourtTypes .=  ",$registeredArray[courttypeid]";
-                       }
-
-					   if($availbleSportsArray['courttypeid'] == $registeredArray['courttypeid']){
-					   	 $ranking = $registeredArray['ranking'];
-					   }
-                         
-                 }
-
-
-               if(mysqli_num_rows($registeredSports)>0){
-                    mysqli_data_seek($registeredSports,0);
-               }
-
-         ?>
-         <tr valign="top">
-                <td class=label><? echo "$availbleSportsArray[courttypename] Ranking" ?>:</td>
-                <td><input type="text" name="<? echo "courttype$availbleSportsArray[courttypeid]" ?>" size=25 value="<?=$ranking ?>">
-
-                </td>
-        </tr>
-         <?
-           unset($ranking);
-           //While closing bracket - DO NOT remove
-           }
-         ?>
-       <tr>
-            <td colspan="2" height="20"></td>
-        </tr>
-          <tr>
-            <td class=label>Enable:</td>
-
-            <?
-
-            if  ( $frm["enable"]=='y' ){
-            echo "<td><input type=\"checkbox\" name=\"enable\" value=\"y\" checked></td>";
-            }
-            else{
-            echo "<td><input type=\"checkbox\" name=\"enable\" value=\"1\" ></td>";
-            }
-            ?>
-                <? is_object($errors) ? err($errors->enable) : ""?>
-        </tr>
-
-        <tr>
-            <td colspan="2" height="20"></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-            <input type="button" name="submit" value="Update Settings" id="submitbutton">
-            <input type="button" value="Cancel" id="cancelbutton" >
-            <input type="hidden" name="userid" value="<?pv($userid) ?>">
-            <input type="hidden" name="mycourttypes" value="<? pv($mycourtTypes) ?>">
-            <input type="hidden" name="mysites" value="<? pv($mysites) ?>">
-            <input type="hidden" name="searchname" value="<? pv($searchname)?>">
-            <input type="hidden" name="formname" value="entryform">
-            </td>
-        </tr>
-
-
-        </table>
-        
-        
-            
-       </form>
-
-    </td>
-</tr>
-
-</table>
-
-<div style="margin-top: 20px">
-	<span class="normal warning">* </span>
-	<span class="normal">indicates a required field</span>
-</div>
-
-            	
-
- <form name="backtolistform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_admin.php">
-    <input type="hidden" name="searchname" value="<? pv($searchname)?>">
-</form>
-         
-         
-
-
