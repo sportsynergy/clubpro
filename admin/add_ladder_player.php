@@ -6,10 +6,13 @@ $DOC_TITLE = "Player Ladder";
 require_loginwq();
 require_priv("2");
 
+// load ladder info
 if (!empty($_POST['ladderid'])) {
     $_SESSION["ladder_id"] = $_POST['ladderid'];
 }
 $ladderid = $_SESSION["ladder_id"];
+$ladderplayers = getLadder($ladderid);
+$ladderdetails = getLadderDetails($ladderid);
 
 /* form has been submitted, try to create the new user account */
 
@@ -24,8 +27,7 @@ if (match_referer() && isset($_POST['playeronename'])  ) {
     }
 }
 
-$ladderplayers = getLadder($ladderid);
-$ladderdetails = getLadderDetails($ladderid);
+
 
 include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/add_ladder_player_form.php");

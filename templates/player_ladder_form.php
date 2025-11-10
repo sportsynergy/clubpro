@@ -68,11 +68,11 @@ Click <a href="javascript:submitForm('addmetoladderform')">here</a> to add your 
 
 	<?  if(get_roleid()==2 || get_roleid()==4){ ?>
 			 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_ladder_player.php">Add Player</a> 
-				| <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder_match.php">Report Score</a> 
+				| <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder_score.php">Report Score</a> 
 
 	<? } ?>		
 	<?  if(get_roleid()==1 && $playingInLadder){ ?>
-			 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder_match.php">Report Score</a> 
+			 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder_score.php">Report Score</a> 
 	<? } ?>
 
 </div>
@@ -173,11 +173,7 @@ Click <a href="javascript:submitForm('addmetoladderform')">here</a> to add your 
 
 <script>
 
-		var allownewlines = false;
-		document.getElementById('rsname1').setAttribute("autocomplete", "off");
-		document.getElementById('rsname2').setAttribute("autocomplete", "off");
-		
-		
+	
 		
 		/**
 		 * Defaults the challenge dialog

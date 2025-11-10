@@ -301,63 +301,52 @@ function run_member_activity_report(&$frm) {
             include($_SESSION["CFG"]["includedir"]."/include_reportSelectHeader.php");
              ?>
            
-             <table cellspacing="5" cellpadding="5"  width="700" >
-             <tr>
-             <td valign="top">
+             <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        
+                    <h2>Most Active Members</h2>
+                     <table class="sortable table table-striped">
+                     <thead>           
+                        <tr>
+                                    <th></th>
+                                    <th> Name</th>
+                                    <th>No. of Reservations</th>
+                                </tr>
+                    </thead>
+                    <tbody>
+                                <?
 
-                           <table cellspacing="0" cellpadding="5" width="300" class="activitytable sortable table table-striped">
-                                  <tr class=clubid<?=get_clubid()?>th>
-                                      <td height="10" colspan="3">
-                                          <font class="whiteh1">
-                                                <div align="center">
-                                                    Most Active Members
-                                                </div>
-                                          <font>
-                                      </td>
-                                  </tr>
-                                  <tr class=clubid<?=get_clubid()?>th>
-                                     <td></td>
-                                     <td align="center"><span class="whitenormalsm"> Name</span></td>
-                                     <td align="center"><span class="whitenormalsm">No. of Reservations</span></td>
-                                  </tr>
-                                  <?
+                                arsort($dataArray);
+                                //print_r($dataArray);
+                                $i=1;
+                                $topTenDataArray = array_slice ($dataArray, 0, 20);
+                                foreach($topTenDataArray as $key=>$vals){
 
-                                   arsort($dataArray);
-                                   //print_r($dataArray);
-                                   $i=1;
-                                   $topTenDataArray = array_slice ($dataArray, 0, 20);
-                                   foreach($topTenDataArray as $key=>$vals){
+                                $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
+                                ?>
+                                <tr>
+                                <td ><?=$i?></td>
+                                <td ><?=$vals['firstname']?> <?=$vals['lastname']?></td>
+                                <td ><?=$vals['rescount']?></td>
+                                </tr>
+                                <? $i++; }  ?>
+                                </tbody>
+                            </table>
 
-                                   $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
-                                   ?>
-                                   <tr class='<?=$rc?>'>
-                                   <td align="center"><?=$i?></td>
-                                   <td align="center"><?=$vals['firstname']?> <?=$vals['lastname']?></td>
-                                   <td align="center"><?=$vals['rescount']?></td>
-                                   </tr>
-                                   <? $i++;
-                                   }
-                                  ?>
-                           </table>
+                    </div>
 
-              </td>
-               <td valign="top">
-
-                  <table cellspacing="0" cellpadding="5" width="300" class="bordertable">
-                     <tr class="clubid<?=get_clubid()?>th">
-                         <td height="10" colspan="3">
-                             <font class="whiteh1">
-                                   <div align="center">
-                                       Least Active Members
-                                   </div>
-                             <font>
-                         </td>
-                     </tr>
-                        <tr class=clubid<?=get_clubid()?>th>
-                                     <td></td>
-                                     <td align="center"><span class="whitenormalsm"> Name</span></td>
-                                     <td align="center"><span class="whitenormalsm">No. of Reservations</span></td>
+                    <div class="col-6">
+                    <h2>Least Active Members</h2>
+                    <table class="sortable table table-striped">
+                     <thead>
+                        <tr>
+                                     <th></th>
+                                     <th>Name</th>
+                                     <th>No. of Reservations</th>
                          </tr>
+                        </thead>
+                         <tbody>
                                 <?
 
                                    asort($dataArray);
@@ -369,25 +358,23 @@ function run_member_activity_report(&$frm) {
                                    $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
                                    
                                    ?>
-                                   <tr class='<?=$rc?>' >
-                                   <td align="center"><?=$i?></td>
-                                   <td align="center"><?=$vals['firstname']?> <?=$vals['lastname']?></td>
-                                   <td align="center"><?=$vals['rescount']?></td>
+                                   <tr>
+                                   <td><?=$i?></td>
+                                   <td><?=$vals['firstname']?> <?=$vals['lastname']?></td>
+                                   <td><?=$vals['rescount']?></td>
                                    </tr>
                                   <?
                                    $i++;
                                    }
                                   ?>
+                            <tbody>
+                            <table>
+                    </div>
+                </div><!-- row -->
+            </div><!-- container -->
 
-                  <table>
 
-                </td>
-                </tr>
-                </table>
-
-              </td>
-           </tr>
-         </table>
+                        
         <?
 }
 

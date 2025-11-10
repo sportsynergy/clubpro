@@ -40,9 +40,10 @@
                </select>
 
         </div>
-
+<div class="mb-3">
           <input type="hidden" name="submitme" value="submitme">
           <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Run Report</button>
+                    </div>
           
           
 </form>
