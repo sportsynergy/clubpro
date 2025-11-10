@@ -6216,7 +6216,7 @@ function isInPast($time){
 	$clubresult = db_query($clubquery);
 	$clubobj = db_fetch_array($clubresult);
 
-	$tzdelta = $clubobj[timezone]*3600;
+	$tzdelta = $clubobj['timezone']*3600;
 	$curtime =   time()+$tzdelta;
 
 
