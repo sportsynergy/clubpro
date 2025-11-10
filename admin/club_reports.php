@@ -207,6 +207,7 @@ function run_ladder_export_report($ladderid, $ladder_name) {
     if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
         <table class="table sortable  table table-striped" >
+            <thead>
             <tr>
             <th>Name</th>
             <th>Ranking</th>
@@ -214,6 +215,8 @@ function run_ladder_export_report($ladderid, $ladder_name) {
             <th>Email</th>
             <th>Phone</th>
             </tr>
+    </thead>
+    <tbody>
         
         <? while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){  ?> 
             <tr>
@@ -226,6 +229,7 @@ function run_ladder_export_report($ladderid, $ladder_name) {
         
      <?   }?>
         </td></tr>
+        </tbody>
         </table>
         
     
@@ -487,23 +491,25 @@ function run_court_utilization_report(&$frm) {
             </form>
 
                   <table cellspacing="0" cellpadding="5" width="440" class="table table-striped">
-                         
+                         <thead>
                          <tr >
                             <th>Court Name</th>
                             <th>Court Utilization %</th>
                             <th>Number of Reservations Made</th>
                          </tr>
+                        </thead>
+                        <tbody>
+
                          <?
                           $i=1;
                           arsort($dataArray);
-                          foreach($dataArray as $key=>$vals){
-                          
-                          ?>
+                          foreach($dataArray as $key=>$vals){  ?>
                           <tr >
                           <td><?=$vals['courtname']?></td>
                           <td><?=substr($vals['utilization'],0,5)?></td>
                           <td ><?=$vals['rescount']?></td>
                           <? } ?>
+                          </tbody>
                   </table>
 
 
