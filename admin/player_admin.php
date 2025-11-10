@@ -74,6 +74,7 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
 <div style="text-align: right;  padding-bottom: 2px;display:inline-block;float: right;"> <a href="javascript:submitForm('exportDataForm')">Export this list</a> </div>
 
 <table class="table table-striped">
+  <thead>
   <tr>
     <th height="25"><span>First Name</span></th>
     <th height="25"><span>Last Name</span></th>
@@ -81,6 +82,8 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
     <th height="25"><span>Mobile Phone</span></th>
     <th colspan="2"></th>
   </tr>
+    </thead>
+    <tbody>
   <?php
         $rownum = mysqli_num_rows($playerresult);
         while ($row = mysqli_fetch_array($playerresult)) {
@@ -106,6 +109,7 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
     </form>
   </tr>
   <?  $rownum = $rownum -1; } ?>
+        </tbody>
 </table>
 <?
 

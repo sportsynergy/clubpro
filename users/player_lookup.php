@@ -76,13 +76,16 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
 
 
 <table class="table table-striped" id="playerlookuptable">
-  <tr>
+  <thead>
+<tr>
     <th height="25"><span>First Name</span></th>
     <th height="25"><span>Last Name</span></th>
     <th height="25"><span>Email</span></th>
     <th height="25"><span>Mobile Phone</span></th>
     <th></th>
   </tr>
+    </thead>
+    <tbody>
   <?php
        $rownum = mysqli_num_rows($playerResults);
        while ($playerarray = mysqli_fetch_array($playerResults)) {      
@@ -113,6 +116,7 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
         $rownum = $rownum - 1;} 
           
           ?>
+          </tbody>
 </table>
 
 
