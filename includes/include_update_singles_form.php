@@ -224,13 +224,10 @@ function enable()
 	       //if its locked and its just a player disable the submit button
 	       $disabled="";
 	       if( $isPageBeingLoadedForPastReservation || ($locked=='y' && get_roleid()==1)){
-	       	
-	       	$disabled = "disabled=disabled";
-	       }
-	       
-	       ?>
+	       	$disabled = "disabled";
+	       }  ?>
 
-<div class="mb-3"> 
+  <div class="mb-3"> 
 
      <button type="submit" class="btn btn-primary" name="submit" onclick="onSubmitButtonClicked()">Update Reservation</button>
      <button type="submit" class="btn btn-primary" <?=$disabled?> onclick="onCancelReservationButtonClicked()">Cancel Reservation</button>
