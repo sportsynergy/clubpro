@@ -1,37 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* - createChallengematch()
-* - getLadder()
-* - sendEmailsForLadderMatch()
-* Classes list:
-*/
+
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/UserClubRelation.php");
@@ -75,37 +43,7 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         $result = db_query($query);
     }
 
-    // Add User to Ladder
-    if ($frm['cmd'] == 'addtoladder') {
-        
-        //Check to see if player is already in ladder
-        $check = "SELECT count(*) from tblClubLadder 
-        				WHERE userid = $userid 
-        				AND ladderid = $ladderid 
-        				AND enddate IS NULL";
-        $checkResult = db_query($check);
-
-        if (isDebugEnabled(2)) logMessage("player_ladder: addtoladder $check");
-
-        $exists = mysqli_result($checkResult, 0);
-        
-        if ($exists == 0) {
-            $position = $frm['placement'];
-            moveEveryOneInClubLadderDown($ladderid, $position);
-            
-            if (isDebugEnabled(2)) logMessage("player_rankings: adding user $userid to club ladder for club $clubid for ladder $ladderid in position $position");
-            $query = "INSERT INTO tblClubLadder (
-		                userid, ladderid, ladderposition
-		                ) VALUES (
-		                          $userid
-                                  ,$ladderid
-		                          ,$position)";
-            db_query($query);
-        } else {
-            
-            if (isDebugEnabled(2)) logMessage("player_ladder: user $userid is already playing in this ladder with an id $ladderid ");
-        }
-    } else 
+     else 
     if ($frm['cmd'] == 'moveupinladder') {
         
         if (isDebugEnabled(1)) logMessage("player_ladder: moving user $userid up in ladder $ladderid ");

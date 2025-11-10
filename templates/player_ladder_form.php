@@ -54,19 +54,11 @@ Nobody has signed up for the ladder yet.
 <?  if(get_roleid()==2 || get_roleid==4){ ?>
 
 
-Click
-<span id="show"><a style="text-decoration: underline; cursor: pointer">here</a>
-</span>
-to add somone now.
-
+Click <span id="show"><a style="text-decoration: underline; cursor: pointer">here</a> </span> to add somone now.
 
 <? } else {?>
 
-
-Click
-<a href="javascript:submitForm('addmetoladderform')">here</a>
-to add your name now.
-
+Click <a href="javascript:submitForm('addmetoladderform')">here</a> to add your name now.
 
 <? } ?>
 
@@ -75,14 +67,12 @@ to add your name now.
 <div id="ladderControlPanel" style="padding-bottom: 5px;">
 
 	<?  if(get_roleid()==2 || get_roleid()==4){ ?>
-		<span  id="show"><a
-			style="text-decoration: underline; cursor: pointer"> Add Player</a> </span>
-			| <span id="showreportscores"><a
-			style="text-decoration: underline; cursor: pointer"> Report Score</a></span>
+			 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_ladder_player.php">Add Player</a> 
+				| <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder_match.php">Report Score</a> 
+
 	<? } ?>		
 	<?  if(get_roleid()==1 && $playingInLadder){ ?>
-			 <span id="showreportscoresplayer"><a
-			style="text-decoration: underline; cursor: pointer"> Report Score</a></span>
+			 <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder_match.php">Report Score</a> 
 	<? } ?>
 
 </div>

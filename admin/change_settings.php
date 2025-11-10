@@ -31,12 +31,10 @@ if (isset($_POST['formname']) && $_POST['formname'] == "photoform") {
 
     if(!empty($_FILES["image"]["name"])) { 
        
-
         $fileName = basename($_FILES["image"]["name"]); 
         $fileType = pathinfo($fileName, PATHINFO_EXTENSION); 
 
         if (isDebugEnabled(1)) logMessage("change_settings: photo size is: $fileName");
-
 
         $image_info = getimagesize($_FILES["image"]["tmp_name"]);
         $image_width = $image_info[0];

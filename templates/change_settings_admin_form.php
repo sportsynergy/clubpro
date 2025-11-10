@@ -235,9 +235,9 @@ function onSubmitButtonClicked(){
             </div> <!-- .mb-3 -->
 
             <div class="mb-3">
+                <label for="enable" class="form-label">Enable</label>
                  <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="enable" value="y" name="enable" id="enable" checked>
-                    <label for="enable" class="form-label">Enable</label>
                 </div>
             </div>
 
