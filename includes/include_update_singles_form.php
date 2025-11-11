@@ -236,7 +236,7 @@ function enable()
          <button type="submit" class="btn btn-primary" <?=$disabled?> onclick="onCancelAllReservationButtonClicked()">Cancel All Occurrences</button>
         <? } ?>
 
-     <button type="submit" class="btn btn-secondary" <?=$disabled?> onclick="onCancelButtonClicked()">Go Back</button>
+     <button type="button" class="btn btn-secondary" <?=$disabled?> onclick="onCancelButtonClicked()">Go Back</button>
   
 
     <input type="hidden" name="cancelall" value="">

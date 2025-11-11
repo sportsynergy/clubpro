@@ -1,6 +1,14 @@
 
 
 /**********General***************************************************/
+
+.boxdateheader {
+	font-style: italic;
+    font-weight: normal;
+    font-size: small
+}
+
+
 .dropdown-item {
   color: rgba(0, 0, 0, .55)/* Example: dark gray */
 }

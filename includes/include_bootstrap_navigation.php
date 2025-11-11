@@ -45,6 +45,29 @@
               <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/players_wanted.php">Players Wanted</a>
             </li>
 
+        <? if( isSiteBoxLeageEnabled() ){ ?>
+
+          <? if( isJumpLadderRankingScheme() ){ ?>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Leagues
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">Box Leagues</a></li>
+             <? if( isSiteClubTeam( get_siteid() ) ) { ?>
+              <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/club_teams.php">Club Teams</a></li>
+              <? } ?>
+               <? if(isinBoxLeague( get_userid() ) && isOnClubTeam(  get_userid() )) { ?>
+              <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/my_league_schedule.php">My Team Matches</a></li>
+                <? } ?>
+            </ul>
+        </li>
+        <? } else {?>
+          <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">Leagues</a>
+            </li>
+            <? } ?>
+            <? } ?>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             My Account
