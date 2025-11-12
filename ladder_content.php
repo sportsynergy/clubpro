@@ -196,10 +196,10 @@ if ($siteid) {
 
 ?>
 
-<table width="710" cellspacing="0" cellpadding="0" align="center" class="borderless">
+<table class="borderless">
 
 <tr>
-<td align="right" colspan="2">
+<td class="text-align: right" colspan="2">
 
         <? if (isLadderRankingScheme() ) { ?>
         <div style="margin-bottom: 10px; margin-right: 10px">
@@ -382,7 +382,6 @@ $lastupdatestring = $wlobj->lastupdated;
 
        ++$resultcounter;
        
-
        //Reset the result counter
        if ($resultcounter==2){
          $resultcounter = 0;
@@ -411,7 +410,6 @@ if( isJumpLadderRankingScheme()  ){
         $lastupdated = $lastupdatestring;
         } ?>
 
-    
     <?=$lastupdated?>
     
     </div>
@@ -422,68 +420,6 @@ if( isJumpLadderRankingScheme()  ){
   <input type="hidden" name="ladderid">
 </form>
 
-<div id="reportscoredialogplayer" class="yui-pe-content">
-
-<div class="bd">
-		<form method="POST" action="<?=$ME?>" autocomplete="off">
-			
-
-		 <div style="margin:10px"> 
-			<span class="label">Outcome:</span>
-			<select name="outcome">
-					<option value="defeated">I won</option>
-					<option value="lostto">I lost</option>
-				</select>
-			</div>
-
-			<div style="margin:10px"> 
-			<span class="label">Score:</span>
-			<select name="score">
-					<option value="3-2">3-2</option>
-					<option value="3-1" selected>3-1</option>
-					<option value="2-1" selected>2-1</option>
-					<option value="3-0" selected>3-0</option>
-				</select>
-			</div>
-
-			<div style="margin:10px"> 
-			<span class="label"> Time </span>
-				<select name="hourplayed">
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-					<option value="7">7</option>
-					<option value="8" selected>8</option>
-					<option value="9">9</option>
-					<option value="10">10</option>
-					<option value="11">11</option>
-					<option value="00">12</option>
-				</select>
-
-				<select name="minuteofday">
-					<option value="00">00</option>
-					<option value="15">15</option>
-					<option value="30">30</option>
-					<option value="45">45</option>
-				</select>
-
-				<select name="timeofday">
-					<option value="AM">AM</option>
-					<option value="PM" selected>PM</option>
-				</select>
-			</div>
-                 <input type="hidden" name="scheduledmatchid" value="<?=$scheduledmatchid?>">
-                 <input type="hidden" name="otherguyid" value="<?=$otherguyid?>">
-                 <input type="hidden" name="ladderid" value="<?=$ladderid?>">
-				<input type="hidden" name="cmd" value="reportladderscore">
-		</form>
-
-</div>
-	
-</div>
 
   <script type="text/javascript" >
 
