@@ -14,20 +14,6 @@ return true;
 }
 
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-
-    });
-
-} ();
-
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');
@@ -42,9 +28,7 @@ function onCancelButtonClicked(){
 </script>
 
 
-<table cellspacing="0" cellpadding="0" border="0" width="710" align="center">
-<tr>
-<td>
+
 
 
 <form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);">
