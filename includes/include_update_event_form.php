@@ -20,8 +20,7 @@ function addToReservation(userid)
 }
 
 function removeFromReservation(userid)
-{
-	  YAHOO.clubevent.container.wait.show();		
+{		
       document.manageform.action.value = 'remove';
       document.manageform.userid.value = userid;
       document.manageform.submit();
@@ -85,13 +84,15 @@ function onCancelButtonClicked(){
 <input type="hidden" name="cmd" value="managecourtevent"/>
 </form>
 
+
+
 <div class="mb-5">
 
 <p class="bigbanner">
 	<? pv($DOC_TITLE) ?></p>
 </div>
 
-<form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" onSubmit="SubDisable(this);" autocomplete="off">
+<form name="entryform" method="post" action="<?=$MEWQ?>" onSubmit="SubDisable(this);" autocomplete="off">
     	
 		 <?  $allowChangeEvent = true;
 		 
@@ -109,7 +110,7 @@ function onCancelButtonClicked(){
 
 				<div class="collapse" id="collapseExample">
 
-						<form method="POST" action="<?=$ME?>" name="addeventplayer">
+						<form method="POST" action="<?=$MEWQ?>" name="addeventplayer">
 							<input id="name1" name="playeronename" type="text" size="30" class="form-control form-autocomplete" style="width:50%; display: inline" />
 							<input id="id1" name="userid" type="hidden" />
 							<input type="hidden" name="cmd" value="managecourtevent">
@@ -132,11 +133,11 @@ function onCancelButtonClicked(){
 									
 									document.getElementById('name1').setAttribute("autocomplete", "off");
 
-								function onSubmitButtonClicked(){
+								function onAddPlayerButtonClicked(){
 									submitForm('addeventplayer');
 								}
 							</script>
-							<button type="submit" class="btn btn-primary btn-sm" onclick="onSubmitButtonClicked()">Add New User</button>	
+							<button type="submit" class="btn btn-primary btn-sm" onclick="onAddPlayerButtonClicked()">Add New User</button>	
 						</form>
 						</div>
 			<? } else {?>
@@ -152,18 +153,21 @@ function onCancelButtonClicked(){
 				 <?  if( mysqli_num_rows($eventplayerResult) > 0 ){ 
 				 		
 				 		//If anyone has signed up, don't let the administrator change the event
-				 		$allowChangeEvent = false;
-				 		
-						while($player = mysqli_fetch_array($eventplayerResult)){ ?>
+				 		$allowChangeEvent = false; ?>
+				 		<ul style="padding: 0px">
+						<? while($player = mysqli_fetch_array($eventplayerResult)){ ?>
 							
-								<?=$player['firstname']?> <?=$player['lastname']?>
-								<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
+								<li>
+									<?=$player['firstname']?> <?=$player['lastname']?>
 								
+								<? if( get_roleid() ==2 || get_roleid() ==4){ ?>
 								  <a href="javascript:removeFromReservation(<?=$player['userid']?>);">
 								 	<img src="<?=$_SESSION["CFG"]["imagedir"]?>/recyclebin_empty.png" >
 								</a>
 								<? }?>
+								</li>
 				 	<? } ?>
+							</ul>
 				 <? } ?>	
 				 <?	}  ?>
 
