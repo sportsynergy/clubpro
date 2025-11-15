@@ -67,6 +67,7 @@
           <option value="0" selected>Practice</option>
           <option value="5">Solo</option>
         </select>
+	</div>
 
 	 <div class="form-text"> 
 		 <? if( get_roleid() == 2){ ?>
@@ -75,9 +76,6 @@
         <? } ?>
 	 	For more infomation on match types, click 
         <a href="javascript:newWindow('../help/squash-matchtypes.html')">here</a>.
-		
-	</div>
-
 	</div>
 	  
 	<? if( get_roleid()==2 || get_roleid()==4) {?>
@@ -142,22 +140,15 @@
 
 				if($timetonext >= 5400 || $nexttime == null ){ ?>
 					<option value="1.5">90 Minutes</option>
-				<? } ?>
-					
+				<? } ?>		
 			</select>
-	
-	
+		</div>
+
 	<? }  else { ?>
 		<div>
 			<input type="hidden" name="duration" value="<?=$reservation_duration  ?>">
 		</div>
-		
-	<? }  ?>
-    
-	
-		
-	</div>
-
+	<? } ?>
     
 
     <? if( get_roleid()==2 || get_roleid() ==4){ ?>
@@ -167,8 +158,6 @@
 	  <label for="lock" class="form-label">Lock Reservation</label>
 	</div>
 
-	
-	
     <?}?>
 
 	<div class="mt-5">
@@ -220,9 +209,7 @@ function defaultform() {
 		document.singlesform.playeronename.disabled=true;
     	
    <? } ?>
-    	
-   
-    
+        
 }
 
 defaultform();

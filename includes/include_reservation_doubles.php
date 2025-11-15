@@ -200,9 +200,9 @@
 
  <? if( get_roleid()==2 || get_roleid() ==4){ ?>
   <div class="form-check">
-    <label for="lock" class="form-label">Lock Reservation</label>
+    
 	  <input class="form-check-input" type="checkbox" name="lock" />
-	  
+	  <label for="lock" class="form-label">Lock Reservation</label>
 	</div>
   <? }?>
 

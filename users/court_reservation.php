@@ -1,64 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-
-/**
-* Class and Function List:
-* Function list:
-* - validate_form()
-* - update_reservation()
-* - insert_reservation()
-* - makeEventReservation()
-* - makeSoloReservation()
-* - makeDoublesReservation()
-* - makeSinglesReservation()
-* Classes list:
-*/
-/*
- A user can come into this page from a link in an email where the reservation has since changed
-sice the email was sent out.  This email is sent when players are looking for a match.  Here
-is an example of this kind of link
-http://localhost/clubpro/users/court_reservation.php?time=1285426800&courtid=5&user=2
-
-Now, the first time this link is clicked on the system will ask if they user wants to sign up for the court.  The problem happens when that first user adds hisself to the reservation and a second players comes in later and clicks on the same link. So as to prevent the second persom from being able to signup for this court, a little check needs to be made that makes sure that:
-
-1.) if this page is being loaded from the link in a players wanted email
-2.) The reservation has alredy has the maximum number or people in it
-
-then
-
-an error message will result notifing the user that the reservation is full.
-
-*/
-
-/*****************************************************************************
- *
- * Do some administrative things
- *
-/*****************************************************************************/
 
 include ("../application.php");
 require "../vendor/autoload.php";
@@ -74,7 +14,6 @@ if($userRelation->isUserLoggedin()){
 		$userRelation->KillUserSession();
 	}
 }
-
 
 $DOC_TITLE = "Court Reservation";
 
@@ -276,8 +215,8 @@ if ($newReservation) {
      $hoursquery = "SELECT duration from tblCourtHours WHERE courtid='$courtid' AND dayid ='$currDOW' ";
      $hoursresult = db_query($hoursquery);
      $reservation_duration = mysqli_result($hoursresult,0);
-
     include ($_SESSION["CFG"]["templatedir"] . "/reservation_form.php");
+    
 } elseif ($usertype == 0 && isSinglesReservationNeedPlayers($time, $courtid)) {
     
     if ($userid == get_userid() || get_roleid() == 2 || get_roleid() == 4) {

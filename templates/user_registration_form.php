@@ -159,8 +159,9 @@
       </div>
 
   <div class="mt-5">
-  <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add New User</button>
-      </div>
+    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add New User</button>
+  </div>
+  
   </form>
   
 
