@@ -27,6 +27,8 @@
 	//account for no reservations
 	$nexttime = mysqli_result($result,0);
 
+if (isDebugEnabled(1)) logMessage("hello $reservationType");
+
 ?>
 
 <p class="bigbanner"><? pv($DOC_TITLE) ?></p>
@@ -44,7 +46,7 @@
   <? } ?>
    <? if($reservationType==3 ) { ?>
   <li class="nav-item" role="presentation">
-    <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab" aria-controls="resources" aria-selected="false">Resources</button>
+    <button class="nav-link active" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab" aria-controls="resources" aria-selected="false">Resources</button>
   </li>
   <? } ?>
   <? if(get_roleid()==2 && ($reservationType==0 || $reservationType==1 || $reservationType==2 || $reservationType==3) ) { ?>
@@ -57,13 +59,13 @@
 
 
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade" id="singles" role="tabpanel" aria-labelledby="singles-tab">
+  <div class="tab-pane fade <?=$reservationType==0 || $reservationType==1?"show active":"" ?>" id="singles" role="tabpanel" aria-labelledby="singles-tab">
     <? include($_SESSION["CFG"]["includedir"]."/include_reservation_singles.php");?>
   </div>
-  <div class="tab-pane fade show active" id="doubles" role="tabpanel" aria-labelledby="doubles-tab">
+  <div class="tab-pane fade <?=$reservationType==2?"show active":"" ?>" id="doubles" role="tabpanel" aria-labelledby="doubles-tab">
     <? include($_SESSION["CFG"]["includedir"]."/include_reservation_doubles.php");?>
   </div>
-  <div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab">
+  <div class="tab-pane fade <?=$reservationType==3?"show active":"" ?>" id="resources" role="tabpanel" aria-labelledby="resources-tab">
      <?  include($_SESSION["CFG"]["includedir"]."/include_reservation_resource.php");?>
   </div>
   <div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="events-tab">
