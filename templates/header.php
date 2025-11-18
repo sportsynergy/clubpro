@@ -77,7 +77,7 @@
       </div>
 
       <div class="row">
-        <div class="col-3">
+        <div class="col-2">
        <div class="d-none d-lg-block">		
         
 

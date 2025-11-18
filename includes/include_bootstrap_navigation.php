@@ -20,7 +20,7 @@
         <? if(isLadderRankingScheme() || isJumpLadderRankingScheme() ) {?>
            <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Club Rankings
+            Rankings
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
@@ -114,7 +114,7 @@
       </span>
      <? } else { ?>
       <span class="navbar-text">
-        You are logged in as: <? p($_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"]) ?> | <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/logout.php">Logout</a>
+        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/logout.php">Logout</a>
       </span>
      <? } ?>
     </div>
