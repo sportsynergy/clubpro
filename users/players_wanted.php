@@ -375,7 +375,7 @@ if(mysqli_num_rows($singlespwresult)==0
 
     if(mysqli_num_rows($anyboxesresult)>0){  ?>
 
-         <div class="mb-3">
+         <div class="mt-3">
              <img src="<?=$imagedir?>/boxleague.gif"/>  Indicates League Match 
         </div>
   <?  } ?>

@@ -9,25 +9,25 @@
 <? if(!isSiteAutoLogin()){ ?>
  <div class="mb-3">
     <label for="username" class="form-label">Username:</label>
-    <input class="form-control" id="username" type="text" aria-label="Username">
+    <input class="form-control" name="username" id="username" type="text" aria-label="Username">
     <? is_object($errors) ? err($errors->username) : ""?>
   </div>
 
   <div class="mb-3">
     <label for="password" class="form-label">Password</label>
-    <input type="password" class="form-control" id="password">
+    <input type="password" name="password" class="form-control" id="password">
     <? is_object($errors) ? err($errors->password) : ""?>
   </div>
 <? }?>
 <div class="mb-3">
     <label for="firstname" class="form-label">First Name:</label>
-    <input class="form-control" id="firstname" type="text" aria-label="Firstname">
+    <input class="form-control" name="firstname" id="firstname" type="text" aria-label="Firstname">
     <? is_object($errors) ? err($errors->firstname) : ""?>
   </div>
 
   <div class="mb-3">
     <label for="lastname" class="form-label">Last Name:</label>
-    <input class="form-control" id="lastname" type="text" aria-label="Lastname">
+    <input class="form-control" name="lastname" id="lastname" type="text" aria-label="Lastname">
     <? is_object($errors) ? err($errors->lastname) : ""?>
   </div>
 
@@ -58,7 +58,7 @@
 
    <div class="mb-3">
     <label for="msince" class="form-label">Date Joined:</label>
-    <input class="form-control" id="msince" type="text" aria-label="Work Phone" value="<?=$frm["msince"]?>">
+    <input class="form-control" id="msince" type="text" aria-label="Work Phone" >
     <div id="msincelHelp" class="form-text"> e.g. January 2, 1988</div>
     <? is_object($errors) ? err($errors->msince) : ""?>
   </div>
@@ -77,7 +77,7 @@
 
       <div class="mb-3">
         <label for="memberid" class="form-label">Membership ID:</label>
-        <input type="text" class="form-control" id="memberid" name="memberid" size=35 value="<? pv($frm["memberid"]) ?>">
+        <input type="text" class="form-control" id="memberid" name="memberid" size=35 >
           <? is_object($errors) ? err($errors->memberid) : ""?>
       </div>
 
@@ -89,7 +89,7 @@
         <div class="mb-3">
 				<? if($parameterArray['parametertypename'] == "text"){ ?>
             <label for="<?="parameter-".$parameterArray['parameterid']?>" class="form-label"><? pv($parameterArray['parameterlabel'])?></label>
-            <input type="text" class="form-select" name="<?="parameter-".$parameterArray['parameterid']?>" size="35" value="<? pv($frm[$parameterArray['parameterid']]) ?>" maxlength="40">     
+            <input type="text" class="form-select" name="<?="parameter-".$parameterArray['parameterid']?>" size="35"  maxlength="40">     
             <? }
             
             elseif($parameterArray['parametertypename'] == "select") { ?>
@@ -141,10 +141,7 @@
 
 					unset($disabled);
 					unset($checked);
-				}
-
-				//Done with Authorized Sites
-				?>
+				} ?>
       </div>
 
 
