@@ -6,6 +6,7 @@
 
 <div class="mainpanel">
 
+<? if(!isSiteAutoLogin()){ ?>
  <div class="mb-3">
     <label for="username" class="form-label">Username:</label>
     <input class="form-control" id="username" type="text" aria-label="Username">
@@ -17,7 +18,7 @@
     <input type="password" class="form-control" id="password">
     <? is_object($errors) ? err($errors->password) : ""?>
   </div>
-
+<? }?>
 <div class="mb-3">
     <label for="firstname" class="form-label">First Name:</label>
     <input class="form-control" id="firstname" type="text" aria-label="Firstname">
