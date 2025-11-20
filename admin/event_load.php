@@ -1,41 +1,8 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* - validate_form()
-* - add_events()
-* - getReservationWindow()
-* - makeReoccurringReservations()
-* - cancelReservation()
-* Classes list:
-*/
+
 include ("../application.php");
 $DOC_TITLE = "Add Events";
+require_loginwq();
 require_priv("2");
 
 //Set the http variables
@@ -48,12 +15,7 @@ if (match_referer() && isset($_POST['submitme'])) {
     $wwwroot = $_SESSION["CFG"]["wwwroot"];
     $backtopage = "$wwwroot/admin/event_load.php?courtid=$courtid&time=$time";
     
-    if ($errormsg) {
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
-        include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
-        die;
-    } else {
+    if (empty($errormsg)) {
         add_events($frm);
         $wwwroot = $_SESSION["CFG"]["wwwroot"];
         header("Location: $wwwroot/clubs/" . get_sitecode() . "/index.php?daysahead=$time");
@@ -63,9 +25,9 @@ if (match_referer() && isset($_POST['submitme'])) {
 
 //Load up the window for which the events can be loaded.
 $reservationWindowArray = getReservationWindow($courtid, $time);
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/event_load_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
@@ -81,10 +43,13 @@ function validate_form(&$frm, &$errors) {
     
     if (empty($frm["eventid"])) {
         $msg.= "You did not specify an event name.";
+        $errors->eventid = true;
     } elseif (empty($frm["starttime"])) {
         $msg.= "You did not specify a start time.";
+        $errors->starttime = true;
     } elseif ($frm["endtime"] == "") {
         $msg.= "You did not specify an end time.";
+        $errors->endtime = true;
     }
 
     //Validate that the start is before end

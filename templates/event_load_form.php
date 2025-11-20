@@ -1,19 +1,13 @@
-
-
 <script language="Javascript">
 
 function disableEventOptions(repeat)
-{
-        
-         if(repeat.value == "norepeat"){
-            
-             document.entryform.reoccurringduration.disabled = true;
-
-        }
-        else{
-        	document.entryform.reoccurringduration.disabled = "";
-        }
-        
+{      
+	if(repeat.value == "norepeat"){
+		document.entryform.reoccurringduration.disabled = true;
+	}
+	else{
+		document.entryform.reoccurringduration.disabled = "";
+	}   
 }
 
 function updateDurationOptions(){
@@ -75,21 +69,6 @@ function addOption(selectbox,text,value )
 	selectbox.options.add(optn);
 }
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-
-    });
-
-} ();
-
-
 function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
@@ -104,164 +83,105 @@ function onCancelButtonClicked(){
 
 </script>
 
+
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
 <form name="entryform" method="post" action="<?=$ME?>">
 
+	 <div class="mb-3">
+      <label for="eventid" class="form-label">Event:</label>
+	  
+      <select name="eventid" class="form-select" aria-label="Event">
+		<option value="">Select Option</option>
+		<option value="">----------------------------</option>
 
+			<?  //Get Club Players
+		$query = "SELECT eventid, eventname
+					FROM tblEvents
+					WHERE siteid = ".get_siteid()."
+					ORDER BY eventname";
 
-<table cellspacing="0" cellpadding="0" width="550" class="generictable" id="formtable">
- 
- 
- <tr class="borderow">
-    <td class=clubid<?=get_clubid()?>th>
-    	<span class="whiteh1">
-    		<div align="center">Event Reservation</div>
-    	</span>
-    </td>
- </tr>
- <tr>
-    <td>
+		// run the query on the database
+		$result = db_query($query);
+			while($row = mysqli_fetch_row($result)) {
+				echo "<option value=\"$row[0]\">$row[1]</option>";
+			} ?>
+		</select>
+		<? is_object($errors) ? err($errors->eventid) : ""?>
+    </div>
 
-     <table cellspacing="10" cellpadding="0" width="500">
-        <tr>
-             <td height="20"></td>
-        </tr>
-        <tr>
-            <td class="label">
-            	
-            	Event:
-            </td>
-            <td><select name="eventid">
-                <option value="">Select Option</option>
-                <option value="">----------------------------</option>
+	<div class="mb-3">
+      <label for="starttime" class="form-label">First Reservation:</label>
+      <select name="starttime" class="form-select" aria-label="First Reservation">
+			<option value="">Select Option</option>
+			<option value="">----------------------------</option>
+			<?  for($i=0; $i<count($reservationWindowArray); ++$i){ ?>
+				<option value="<?=$reservationWindowArray[$i]?>"><?=gmdate("g:i",$reservationWindowArray[$i])?></option>
+			<? } ?>	
+		</select>
+		<? is_object($errors) ? err($errors->starttime) : ""?>
+    </div>
 
-                 <?  //Get Club Players
-               $query = "SELECT eventid, eventname
-                          FROM tblEvents
-                          WHERE siteid = ".get_siteid()."
-						  ORDER BY eventname";
+	<div class="mb-3">
+      <label for="endtime" class="form-label">Last Reservation:</label>
+      <select name="endtime" class="form-select" aria-label="Last Reservation">
+			<option value="">Select Option</option>
+			<option value="">----------------------------</option>
+			<? 
+			for($i=0; $i<count($reservationWindowArray); ++$i){ ?>
+				<option value="<?=$reservationWindowArray[$i]?>"><?=gmdate("g:i",$reservationWindowArray[$i])?></option>	
+			<? } ?>
+		</select>
+		<? is_object($errors) ? err($errors->endtime) : ""?>
+    </div>
 
-                // run the query on the database
-                $result = db_query($query);
-
-
-                 while($row = mysqli_fetch_row($result)) {
-                  echo "<option value=\"$row[0]\">$row[1]</option>";
-                 }
-                 ?>
-				<? is_object($errors) ? err($errors->eventid) : ""?>
-				
-                </select>
-
-                </td>
-       </tr>
-       <tr>
-       		<td class="label">
-       			
-       			First Reservation:
-       		</td>
-       		<td>
-  
-       			<select name="starttime">
-       				<option value="">Select Option</option>
-       				<option value="">----------------------------</option>
-       				<? 
-       				for($i=0; $i<count($reservationWindowArray); ++$i){ ?>
-       					
-	       				<option value="<?=$reservationWindowArray[$i]?>"><?=gmdate("g:i",$reservationWindowArray[$i])?></option>
-	       				
-	       		  <? } ?>
-       
-       				
-       			</select>
-       		</td>
-       </tr>
-       <tr>
-       		<td class="label">
-       			
-       			Last Reservation:
-       		</td>
-       		<td>
-       			<select name="endtime">
-       				<option value="">Select Option</option>
-       				<option value="">----------------------------</option>
-       				<? 
-       				for($i=0; $i<count($reservationWindowArray); ++$i){ ?>
-       					
-	       				<option value="<?=$reservationWindowArray[$i]?>"><?=gmdate("g:i",$reservationWindowArray[$i])?></option>
-	       				
-	       		  <? } ?>
-       			</select>
-       		</td>
-       </tr>
-       <tr>
-       	<td class="label">Repeat:</td> 
-       	<td>
-       			<select name="repeat" onchange="updateDurationOptions();disableEventOptions(this);">
-                <option value="">Select Option</option>
-                <option value="">----------------------------</option>
+	<div class="mb-3">
+      <label for="repeat" class="form-label">Repeat</label>
+      <select name="repeat" onchange="updateDurationOptions();disableEventOptions(this);" class="form-select" aria-label="Repeat">
+     
                 <option value="norepeat">None</option>
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
                 <option value="biweekly">Bi-Weekly</option>
                 <option value="monthly">Monthly</option>
-				<? is_object($errors) ? err($errors->repeat) : ""?>
                 </select>
-       </td>
-       </tr>
-       <tr>
-         <td><span class="label">Duration:</span> </td>
-           <td><select name="reoccurringduration">
+				<? is_object($errors) ? err($errors->repeat) : ""?>
+    </div>
+
+	<div class="mb-3">
+      <label for="reoccurringduration" class="form-label">Duration </label>
+      <select name="reoccurringduration" class="form-select" aria-label="Duration" disabled>
                 <option value="">Select Option</option>
                 <option value="">----------------------------</option>
                 <option value="week">For a Week</option>
                 <option value="month">For a Month</option>
                 <option value="year">For a Year</option>
-                <?err($errors->reoccuringduration)?>
-                </select>
+                </select>	
+			<? is_object($errors) ? err($errors->reoccurringduration) : ""?>	
+    </div>
+	
+     
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" name="cancelconflicts" id="cancelconflicts">
+  <label class="form-check-label" for="cancelconflicts">
+    Remove any existing reservations. </label>
+   <div id="reservationHelp" class="form-text"> By leaving this checkbox unchecked any reservations that were already out there will be left alone.</div>
+     
+</div>
 
-                </td>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" name="lock" id="lock">
+  <label class="form-check-label" for="lock">Lock reservation
+  </label>
+</div>
 
-       </tr>
-       <tr>
-       	<td colspan="2">
-	       	<span class="italitcsm">
-		       	If you want to make a block of reservations that reoccur, use the Repeat and Duration dropdowns.  For example, if you have lessons  from 
-		       	2:00 - 5:00 that will be held every week for a month, set the 'First Reservation' to 2:00 and the 'Last Reservation' to 4:00 then set Repeat to 'Weekly' 
-		       	and Duration for 'For A Month'. And so on.
-			</span>
-       	</td>
-       </tr>
-       <tr>
-       		<td colspan="2" class="normal">
-       			<input type="checkbox" name="cancelconflicts"> 
-						<span class="normal">
-							Remove any existing reservations. By leaving this checkbox unchecked any
-       						reservations that were already out there will be left alone.
-						</span>
-						<br/><br/>
-       		</td>
+<div class="mt-5">
+    <button type="submit" class="btn btn-primary" >Load Events</button>
+	<button type="submit" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
+  </div>
        		
-       </tr>
-     <tr>
-    	<td>
-    		<input type="checkbox" name="lock" />
-    		<span class="normal">Lock reservation</span>
-    		
-    	</td>
-    </tr>
-
-      
-       <tr>
-           <td colspan="2">
-           		<input type="button" name="submit" value="Load Events" id="submitbutton">
-           		<input type="button" value="Cancel" id="cancelbutton">
-           </td>
-    	</tr>
- </table>
-
-</td>
-</tr>
-</table>
 <?
 
 // The court reservation span is how long a resevation is made for, this is a 

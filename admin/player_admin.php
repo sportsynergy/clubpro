@@ -14,11 +14,19 @@ if (isset($searchname)) {
     $errormsg = validate_form($searchname);
     $backtopage = $_SESSION["CFG"]["wwwroot"] . "/admin/player_admin.php";
     
-
     if (empty($errormsg)) {
         $playerResults = get_admin_player_search($searchname);
-        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
-        print_players($searchname, $backtopage, $playerResults, $DOC_TITLE, $ME);
+
+        if (mysqli_num_rows($playerResults) < 1) {
+            $noticemsg = "Sorry, no results found.";
+            include ($_SESSION["CFG"]["templatedir"] . "/header.php");
+            include ($_SESSION["CFG"]["templatedir"] . "/player_admin_form.php");
+        } else{
+            include ($_SESSION["CFG"]["templatedir"] . "/header.php");
+            include ($_SESSION["CFG"]["templatedir"] . "/player_admin_form.php");
+            print_players($searchname, $backtopage, $playerResults, $DOC_TITLE, $ME);
+        }
+
         include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
@@ -57,11 +65,6 @@ function validate_form($searchname) {
  */
 function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME) {
      
-    if (mysqli_num_rows($playerresult) < 1) {
-        $errormsg = "Sorry, no results found.";
-        include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
-    } else {
-        include ($_SESSION["CFG"]["templatedir"] . "/player_admin_form.php");
         mysqli_data_seek($playerresult, 0);
         $num_fields = mysqli_num_fields($playerresult);
         $num_rows = mysqli_num_rows($playerresult);
@@ -113,12 +116,4 @@ function print_players($searchname, $backtopage, $playerresult, $DOC_TITLE, $ME)
   <?  $rownum = $rownum -1; } ?>
         </tbody>
 </table>
-<?
-
-
-		
-	}
-
-}
-	
-?>
+<? } ?>

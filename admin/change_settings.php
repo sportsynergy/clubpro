@@ -50,7 +50,7 @@ if (isset($_POST['formname']) && $_POST['formname'] == "photoform") {
                 // Insert image content into database 
                 $query = "UPDATE tblUsers set photo = '$imgContent' WHERE userid = $userid";
                 $result = db_query($query);
-                $noticemsg = "Your profile was saved.  Good Job!<br/><br/>"; 
+                $successmsg = "Your profile was saved.  Good Job!"; 
             }
         } else {
             $errormsg = "This photo is too big, please resize to 180 x 180"; 
@@ -211,7 +211,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
             
             if ($frm["clubsite$siteArray[siteid]"]) {
                 
-                if (isDebugEnabled(1)) logMessage("Checking on Site " . $siteArray[siteid]);
+                if (isDebugEnabled(1)) logMessage("Checking on Site " . $siteArray['siteid']);
 
                 //If the site isn't in the list insert it
                 

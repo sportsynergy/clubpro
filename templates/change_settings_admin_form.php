@@ -62,37 +62,37 @@ function onSubmitButtonClicked(){
 
          <div class="mb-3">
             <label for="firstname" class="form-label">First Name:</label>
-            <input class="form-control" id="firstname" type="text" aria-label="Firstname" value="<? pv($frm["firstname"]) ?>">
+            <input class="form-control" name="firstname" id="firstname" type="text" aria-label="Firstname" value="<? pv($frm["firstname"]) ?>">
             <? is_object($errors) ? err($errors->firstname) : ""?>
         </div>
 
         <div class="mb-3">
             <label for="lastname" class="form-label">Last Name:</label>
-            <input class="form-control" id="lastname" type="text" aria-label="Last Name" value="<? pv($frm["lastname"]) ?>">
+            <input class="form-control" name="lastname" id="lastname" type="text" aria-label="Last Name" value="<? pv($frm["lastname"]) ?>">
             <? is_object($errors) ? err($errors->lastname) : ""?>
         </div>
 
         <div class="mb-3">
             <label for="homephone" class="form-label">Home Phone:</label>
-            <input class="form-control" id="homephone" type="text" aria-label="Home Phone" value="<? pv($frm["homephone"]) ?>">
+            <input class="form-control" name="homephone" id="homephone" type="text" aria-label="Home Phone" value="<? pv($frm["homephone"]) ?>">
             <? is_object($errors) ? err($errors->homephone) : ""?>
         </div>
 
         <div class="mb-3">
             <label for="workphone" class="form-label">Work Phone:</label>
-            <input class="form-control" id="workphone" type="text"  aria-label="Work Phone" value="<? pv($frm["workphone"]) ?>">
+            <input class="form-control" name="workphone" id="workphone" type="text"  aria-label="Work Phone" value="<? pv($frm["workphone"]) ?>">
             <? is_object($errors) ? err($errors->workphone) : ""?>
         </div>
 
          <div class="mb-3">
             <label for="mobilephone" class="form-label">Mobile Phone:</label>
-            <input class="form-control" id="mobilephone" type="text"  aria-label="Mobile Phone" value="<? pv($frm["mobilephone"]) ?>">
+            <input class="form-control" name="mobilephone" id="mobilephone" type="text"  aria-label="Mobile Phone" value="<? pv($frm["mobilephone"]) ?>">
             <? is_object($errors) ? err($errors->mobilephone) : ""?>
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">Email:</label>
-            <input class="form-control" id="email" type="email"  aria-label="Email" value="<? pv($frm["email"]) ?>">
+            <input class="form-control" name="email" id="email" type="email"  aria-label="Email" value="<? pv($frm["email"]) ?>">
             <? is_object($errors) ? err($errors->email) : ""?>
         </div>
 
@@ -183,7 +183,6 @@ function onSubmitButtonClicked(){
         <? } ?>
 
         <div class="mb-3">
-
             <label for="Role" class="form-label">Role:</label>
             <select name="roleid" id="roleid" class="form-select" aria-label="Role"> 
                 <option value="1" <? if($frm["roleid"]==1) print "selected" ?> >Player</option>
@@ -235,9 +234,10 @@ function onSubmitButtonClicked(){
             </div> <!-- .mb-3 -->
 
             <div class="mb-3">
-                <label for="enable" class="form-label">Enable</label>
+               
                  <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="enable" value="y" name="enable" id="enable" checked>
+                     <label for="enable" class="form-label">Enable</label>
                 </div>
             </div>
 

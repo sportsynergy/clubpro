@@ -24,13 +24,23 @@ if (isset($searchname)) {
     $errormsg = validate_form($searchname);
     $backtopage = $_SESSION["CFG"]["wwwroot"] . "/users/player_lookup.php";
     
-    if (empty($errormsg)) {
-        $playerResults = get_player_search($searchname);
-        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
-        print_players($searchname, $playerResults, $DOC_TITLE, $ME);
-        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
-        die;
-    }
+        if (empty($errormsg)) {
+
+          $playerResults = get_player_search($searchname);
+
+          if (mysqli_num_rows($playerResults) < 1) {
+            $noticemsg = "Nobody by that name here.";
+            include ($_SESSION["CFG"]["templatedir"] . "/header.php");
+           include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");
+        } else {
+            include ($_SESSION["CFG"]["templatedir"] . "/header.php");
+            include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");
+            print_players($searchname, $playerResults, $DOC_TITLE, $ME);
+        }
+            include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
+            die;
+        
+}
 }
 include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");
@@ -64,11 +74,6 @@ function validate_form($searchname) {
  */
 function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
     
-    if (mysqli_num_rows($playerResults) < 1) {
-        $errormsg = "Nobody by that name here.";
-        include ($_SESSION["CFG"]["includedir"] . "/errorpage.php");
-    } else {
-        include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");
         mysqli_data_seek($playerResults, 0);
         $num_fields = mysqli_num_fields($playerResults);
         $num_rows = mysqli_num_rows($playerResults);
@@ -121,7 +126,7 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
 
 
 
-<?php }  } ?>
+<?  } ?>
 
 
 
