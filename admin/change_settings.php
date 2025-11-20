@@ -99,7 +99,7 @@ if (isset($_POST['formname']) && $_POST['formname'] == "entryform") {
         db_query($query);
 
         // Display this, their email validates
-        $noticemsg = "Your profile was saved.  Good Job!<br/><br/>";
+        $successmsg = "Your profile was saved.  Good Job!";
     }
 }
 $frm = load_user_profile($userid);

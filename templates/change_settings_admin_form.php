@@ -54,7 +54,7 @@ function onSubmitButtonClicked(){
 
              <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password">
+                <input type="password" class="form-control" id="password" name="password">
                 <div id="passwordHelp" class="form-text">By leaving this field blank, the password will not be updated.</div>
                 <? is_object($errors) ? err($errors->password) : ""?>
             </div>  

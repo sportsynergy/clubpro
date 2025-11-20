@@ -17,44 +17,44 @@
 
   <div class="mb-3">
     <label for="firstname" class="form-label">First Name:</label>
-    <input class="form-control" id="firstname" type="text" aria-label="Firstname">
-    <? is_object($errors) ? err($errors->username) : ""?>
+    <input class="form-control" id="firstname" type="text" aria-label="Firstname" value="<? pv($frm["firstname"]) ?>">
+    <? is_object($errors) ? err($errors->firstname) : ""?>
   </div>
 
   <div class="mb-3">
     <label for="lastname" class="form-label">Last Name:</label>
-    <input class="form-control" id="lastname" type="text" aria-label="Lastname">
-    <? is_object($errors) ? err($errors->username) : ""?>
+    <input class="form-control" id="lastname" type="text" aria-label="Lastname" value="<? pv($frm["lastname"]) ?>">
+    <? is_object($errors) ? err($errors->lastname) : ""?>
   </div>
   
   <div class="mb-3">
     <label for="email" class="form-label">Email:</label>
-    <input class="form-control" id="email" type="email"  aria-label="Email">
+    <input class="form-control" id="email" type="email"  aria-label="Email" value="<? pv($frm["email"]) ?>">
     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    <? is_object($errors) ? err($errors->workphone) : ""?>
+    <? is_object($errors) ? err($errors->email) : ""?>
   </div>
 
   <div class="mb-3">
     <label for="homephone" class="form-label">Home Phone:</label>
-    <input class="form-control" id="homephone" type="text" aria-label="Home Phone">
+    <input class="form-control" id="homephone" type="text" aria-label="Home Phone" value="<? pv($frm["homephone"]) ?>">
     <? is_object($errors) ? err($errors->homephone) : ""?>
   </div>
   
   <div class="mb-3">
     <label for="workphone" class="form-label">Work Phone:</label>
-    <input class="form-control" id="workphone" type="text"  aria-label="Work Phone">
+    <input class="form-control" id="workphone" type="text"  aria-label="Work Phone" value="<? pv($frm["workphone"]) ?>">
     <? is_object($errors) ? err($errors->workphone) : ""?>
   </div>
           
    <div class="mb-3">
     <label for="mobilephone" class="form-label">Mobile Phone:</label>
-    <input class="form-control" id="mobilephone" type="text"  aria-label="Mobile Phone">
+    <input class="form-control" id="mobilephone" type="text"  aria-label="Mobile Phone" value="<? pv($frm["mobilephone"]) ?>">
     <? is_object($errors) ? err($errors->mobilephone) : ""?>
   </div>       
        
   <div class="mb-3">
     <label for="address" class="form-label">Address:</label>
-    <textarea class="form-control" id="address" rows="3"></textarea>
+    <textarea class="form-control" id="address" rows="3"><? pv($frm["address"]) ?></textarea>
      <? is_object($errors) ? err($errors->useraddress) : ""?>
   </div>
   
