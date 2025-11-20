@@ -3,6 +3,8 @@
 include ("../application.php");
 $DOC_TITLE = "Account Maintenance";
 
+require_loginwq();
+
 /* form has been submitted, try to create the new role */
 
 //Set the http variables
