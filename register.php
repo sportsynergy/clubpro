@@ -45,9 +45,9 @@ if (match_referer() && isset($_REQUEST['submitme'])) {
     
     if (empty($errormsg)) {
         registerClub($frm['clubname'], $frm['clubcode'], $frm['courtnumber'], $frm['courttype'], $frm['timezone'], $frm['adminuser'], $frm['adminpass1'], $frm['adminfirstname'], $frm['adminlastname'], $frm['adminemail']);
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
         include ($_SESSION["CFG"]["includedir"] . "/include_club_registration_success.php");
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }

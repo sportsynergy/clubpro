@@ -23,7 +23,7 @@ $clubEvent = mysqli_fetch_array($clubEventResult);
 <span class="bigbanner"><?=$clubEvent['name']?></span><br/>
 <span class="italicnorm"><?=formatDateString($clubEvent['eventdate'])?></span>
 
-<div class="mt-3 mb-5">
+<div class="mt-3 mb-5" style="width: 70%; border:1px solid #ccc; padding:10px; background-color:#f9f9f9;">
 	<?=$clubEvent['description']?>
 </div>
 
