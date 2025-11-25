@@ -9,23 +9,17 @@ if(isset($clubName) && strlen($clubName) <> 0){
 }
  ?>
 </title>
-<!--
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css">
+
 <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
-<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
-<link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" /> -->
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=$sitecode?>/main.css" rel=stylesheet type=text/css>
-<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/element/element-min.js"></script>
-<script type="text/javascript" src="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/button-min.js"></script>
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/main.css" rel=stylesheet type=text/css>
+
 
 <style type="text/css">
 body {
 	margin:0;
 	padding:0;
 	/* TODO: Replace with club logo - So users are not confused */
-  background-image: url(images/squash-scotstoun.jpg);
+  background-image: url('<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/login_background.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
 }
@@ -98,8 +92,8 @@ a {
           <input type="button" value="Cancel" onClick="javascript: history.go(-1)" id="cancelbutton1" style="font-size:16px;">
         </div>
         <div style="height:15px;"> <!-- Spacer --> </div>
-        <span style="float:right;">Powered by<br />
-        <img src="images/01.gif" width="88" height="15"></span>
+        <span style="float:right;">Powered by:
+        <img src="images/logo.png" width="25" height="25"></span>
         <? if(!isSiteAutoLogin()){ ?>
         <div class="normal" style="margin-top: 15px"> <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/forgot_password.php">Forgot my password</a> </div>
         <? } ?>
