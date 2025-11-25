@@ -67,15 +67,14 @@
     <div class="container">
       <div class="row">
         <div class="col">
-           <? if( is_logged_in() ){ ?>
-           
-                <? if( isSystemAdministrationConsole() ){
-                  include($_SESSION["CFG"]["includedir"]."/include_bootstrap_admin_navigation.php");
-                } else {?>
-                  <? include($_SESSION["CFG"]["includedir"]."/include_bootstrap_navigation.php"); ?>
-                <? } ?>
-          <? } else { ?>
-          <? include($_SESSION["CFG"]["includedir"]."/include_bootstrap_loginbar.php"); ?>
+           <? if( is_logged_in() ){ ?>    
+            <? if( isSystemAdministrationConsole() ){
+              include($_SESSION["CFG"]["includedir"]."/include_bootstrap_admin_navigation.php");
+            } else {
+                  include($_SESSION["CFG"]["includedir"]."/include_bootstrap_navigation.php"); ?>
+            <? } ?>
+          <? } else { 
+                include($_SESSION["CFG"]["includedir"]."/include_bootstrap_loginbar.php"); ?>
           <? } ?> 
         </div>
         

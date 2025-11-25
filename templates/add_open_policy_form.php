@@ -1,18 +1,5 @@
 <script language="JavaScript">
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-
-    });
-
-} ();
 
 
 function onSubmitButtonClicked(){
@@ -95,70 +82,53 @@ print "var thisyear = new Array(13);
 
 
 
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
 <form name="entryform" method="post" action="<?=$ME?>">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
-  <tr class="borderow">
-    <td class=clubid<?=get_clubid()?>th>
-    	<span class=whiteh1>
-    		<div align="center"><? pv($DOC_TITLE) ?></div>
-    	</span>
-    </td>
- </tr>
-
- <tr>
-    <td>
-
-     <table width="400" cellpadding="5" cellspacing="2">
-
-
-        <tr>
-            <td class="label">Club:</td>
-            <td>
-            <select name="siteid">
+<div class="mb-3">
+      <label for="gender" class="form-label">Club:</label>
+      <select name="siteid">
             <option value="">Select Club Site</option>
             <option value="">-----------------------------</option>
             <?
-                      //Get Club Players
-                 $clubsDropDown = get_allsites_dropdown();
+            //Get Club Players
+                $clubsDropDown = get_allsites_dropdown();
 
-                 while($row = mysqli_fetch_array($clubsDropDown)) {
-                  echo "<option value=\"$row[siteid]\">$row[sitename] ($row[clubname])</option>\n";
-                 }
-                 ?>
-                <?err($errors->siteid)?>
-                </select>
-                </td>
-       </tr>
-        <tr>
-            <td class=label>Date:</td>
-            <td>
+                while($row = mysqli_fetch_array($clubsDropDown)) {
+                echo "<option value=\"$row[siteid]\">$row[sitename] ($row[clubname])</option>\n";
+                }
+                ?>
 
-            <select name="month" onChange="getDaysForMonth();">
+        </select>
+    </div>
 
-               <?
-                 $currentMonth =  gmdate("n");
-                 $months = get_months();
 
-                 for($i=0; $i<count($months); ++$i){
 
-                             if($currentMonth==($i+1)){
-                                  $selected = "selected";
-                             }
-                             else{
-                                 $selected = "";
-                             }
-                 ?>
-                    <option value="<?=$i+1?>" <?=$selected?>> <?=$months[$i]?></option>
+    <div class="mb-3">
+      <label for="month" class="form-label">Date:</label>
+      <select name="month" id="month" onChange="getDaysForMonth();"> 
+        <?
+            $currentMonth =  gmdate("n");
+            $months = get_months();
 
-                     <? unset($selected)?>
-                <? } ?>
-          </select>
-           <select name="day">
-           </select>
-           <select name="year" onChange="getDaysForMonth();">
+            for($i=0; $i<count($months); ++$i){
+
+                        if($currentMonth==($i+1)){
+                            $selected = "selected";
+                        }
+                        else{
+                            $selected = "";
+                        } ?>
+            <option value="<?=$i+1?>" <?=$selected?>> <?=$months[$i]?></option>
+
+                <? unset($selected)?>
+            <? } ?>
+        </select>
+        <select name="year" onChange="getDaysForMonth();">
                <?
 
                $currYear = gmdate("Y");
@@ -172,12 +142,13 @@ print "var thisyear = new Array(13);
                ?>
 
           </select>
-            </td>
-       </tr>
-       <tr>
-            <td class=label>Open Time:</td>
-            <td>
-                <select name="opentime">
+          <select name="day">
+           </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="opentime" class="form-label">Open Time:</label>
+      <select name="opentime" id="opentime">
                 <option value="">Select Open Time</option>
                 <option value="">--------------------</option>
                 <option value="01:00:00">01:00:00</option>
@@ -204,14 +175,12 @@ print "var thisyear = new Array(13);
                 <option value="22:00:00">22:00:00</option>
                 <option value="23:00:00">23:00:00</option>
                 <option value="24:00:00">24:00:00</option>
-                </select>
+                </select> 
+    </div>
 
-                </td>
-       </tr>
-       <tr>
-            <td class=label>Close Time:</td>
-            <td>
-                <select name="closetime">
+    <div class="mb-3">
+      <label for="closetime" class="form-label">Close Time:</label>
+      <select name="closetime" id="closetime">
                 <option value="">Select Close Time</option>
                 <option value="">--------------------</option>
                 <option value="01:00:00">01:00:00</option>
@@ -239,19 +208,17 @@ print "var thisyear = new Array(13);
                 <option value="23:00:00">23:00:00</option>
                 <option value="24:00:00">24:00:00</option>
                 </select>
-             </td>
-       </tr>
+    </div>
 
-       <tr>
-           <td colspan="2">
-           	<input type="button" name="submit" value="Add Open Policy" id="submitbutton">
-           	<input type="button" name="back" value="Go Back" id="cancelbutton">
-            <input type="hidden" name="submitme" value="submitme">
-           </td>
-    </tr>
- </table>
 
-</table>
+<div class="mt-5">
+    <button type="submit" class="btn btn-primary" id="submitbutton" >Add Open Policy</button>
+    <button type="button" name="cancel" id="cancelbutton" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
+    <input type="hidden" name="submitme" value="submitme">
+  </div>
+  
+
+    
 </form>
 
 <script language="JavaScript">
