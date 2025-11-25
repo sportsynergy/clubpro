@@ -58,16 +58,16 @@
 		
 		
 		<? } ?>
-			
+			</tbody>
+			<tfoot>
 			<tr>
-				<td colspan="4" height="60"></td>
-			</tr>
-			<tr>
-				<td></td>
+				<td>
+					Total
+				</td>
 				<td></td>
 				<td ><?=$memberTotal?></td>
 				<td ><?=$resrevationsTotal?></td>
 			</tr>
-			</tbody>
+			</tfoot>
 		</table>
 

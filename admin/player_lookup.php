@@ -17,9 +17,9 @@ if (isset($searchname)) {
         $playerResults = get_all_player_search($searchname);
         
         if (isDebugEnabled(1)) logMessage("player_lookup: Found " . mysqli_num_rows($playerResults) . " results");
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
         print_players($searchname, $playerResults, $DOC_TITLE, $ME);
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }
@@ -67,26 +67,26 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
         $num_rows = mysqli_num_rows($playerResults);
 ?>
 
-				<table cellpadding="20" width="650" class="bordertable">
-                       <tr class="loginth">
-                           <td height="25"><span class="whitenorm"><div align="center">First Name</div></span></td>
-                           <td height="25"><span class="whitenorm"><div align="center">Last Name</div></span></td>
-                           <td height="25"><span class="whitenorm"><div align="center">Club</div></span></td>
-
-                           <td></td>
+				<table cellpadding="20" width="650" class="table table-striped" >
+                <thead>       
+                <tr>
+                           <th>First Name</th>
+                           <th>Last Name</th>
+                           <th>Club</th>
+                           <th></th>
                        </tr>
-
+                </thead>
+            <tbody>
                 <?
 
 
 		$rownum = mysqli_num_rows($playerResults);
 		while ($playerarray = mysqli_fetch_array($playerResults)) {
 
-			 $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
 			
 			?>
 			
-			<tr class="<?=$rc?>" >
+			<tr >
 			<form name="playerform<?=$rownum?>" method="get" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_info.php">
 			<td><div align="center"><?=$playerarray['firstname']?></div> </td>
 			<td><div align="center"><?=$playerarray['lastname']?></div> </td>
@@ -101,12 +101,12 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
 			$rownum = $rownum -1;
 		}
 ?>
-            
+            </tbody>
                   </table>
                   
                  <div style="height: 2em;"></div>
                  <div>
-                 	<span style="text-align: right;"> <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_lookup.php"><< New Search</a>  </span>
+                 	<span style="text-align: right;"> <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_lookup.php">New Search</a>  </span>
                  </div> 
                  
                 <?

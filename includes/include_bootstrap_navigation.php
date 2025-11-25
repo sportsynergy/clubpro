@@ -1,6 +1,3 @@
-
-
-
 <nav class="navbar navbar-expand navbar-light bg-white" >
   <div class="container-fluid">
        <a class="navbar-brand" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/">
@@ -108,15 +105,11 @@
           <? } ?>
         
       </ul>
-    <? if( !is_logged_in() ){ ?>
-      <span class="navbar-text">
-        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/login.php">Login</a>
-      </span>
-     <? } else { ?>
+    
       <span class="navbar-text">
         <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/logout.php">Logout</a>
       </span>
-     <? } ?>
+
     </div>
   </div>
 </nav>
