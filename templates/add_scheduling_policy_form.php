@@ -90,7 +90,7 @@ function onSubmitButtonClicked(){
               
      <div class="mb-3">
       <label for="limit" class="form-label">Day of Week</label>
-      <select name="dow">
+      <select name="dow" class="form-select" id="dow">
                     
                     <option value="">Select Day</option>
                     <?

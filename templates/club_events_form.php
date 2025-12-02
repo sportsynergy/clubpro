@@ -1,11 +1,4 @@
-<?
 
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
- */
-?>
 
 <script type="text/javascript">
 		
@@ -51,11 +44,14 @@ if(  mysqli_num_rows($clubEvents) == 0 ){ ?>
 <div style="padding-bottom: 10px"><a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_club_event.php">Add another Club Event</a></div>
 
 <table  class="table table-striped">
+	<thead>
 <tr>
  <th>Name</th>
 <th>Date</th>
 <th></th>
 </tr>
+</thead>
+<tbody>
 
 <? 
 	  $rownum = mysqli_num_rows($clubEvents);
@@ -74,6 +70,7 @@ if(  mysqli_num_rows($clubEvents) == 0 ){ ?>
   			$rownum = $rownum - 1;
             }  
         ?>
+		</tbody>
 </table>
 
 <? } ?>

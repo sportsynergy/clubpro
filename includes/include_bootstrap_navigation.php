@@ -8,15 +8,15 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php">Directory</a>
+          <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_lookup.php" id="directory-navlink">Directory</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/">Bookings</a>
+          <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/" id="bookings-navlink">Bookings</a>
         </li>
         
         <? if(isLadderRankingScheme() || isJumpLadderRankingScheme() ) {?>
            <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="rankings-navlink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Rankings
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -39,17 +39,17 @@
             </li>
           <? }?>
           <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/players_wanted.php">Players Wanted</a>
+              <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/players_wanted.php" id="playerswanted-navlink">Players Wanted</a>
             </li>
 
         <? if( isSiteBoxLeageEnabled() ){ ?>
 
           <? if( isJumpLadderRankingScheme() ){ ?>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#"  role="button" data-bs-toggle="dropdown" aria-expanded="false" id="leagues-navlink">
             Leagues
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <ul class="dropdown-menu" aria-labelledby="leagues-navlink">
             <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">Box Leagues</a></li>
              <? if( isSiteClubTeam( get_siteid() ) ) { ?>
               <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/club_teams.php">Club Teams</a></li>
@@ -66,10 +66,10 @@
             <? } ?>
             <? } ?>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="myaccount-navlink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             My Account
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <ul class="dropdown-menu" aria-labelledby="myaccount-navlink">
             <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/change_settings.php">Edit Account</a></li>
             <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/change_password.php">Change Password</a></li>
             <li><a class="dropdown-item" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/my_buddylist.php">My Buddies</a></li>
@@ -81,7 +81,7 @@
         <?php if( get_roleid() == 2 ) { ?>
 
           <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="tools-navlink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Tools
           </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
