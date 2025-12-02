@@ -109,8 +109,6 @@ $boxid = $_REQUEST["boxid"];
         AND siteid = ".get_siteid()."");
         //echo "Moved me box ahead up one from $newboxrankval on box $boxid\n";
 
-
-
   }
  }
 
@@ -126,6 +124,8 @@ $boxid = $_REQUEST["boxid"];
 
 
 <script language="JavaScript">
+    
+    
 
 <?
 
@@ -228,7 +228,7 @@ print "var thisyear = new Array(13);
 
       <div class="mb-3">
         <label for="courttypeid" class="form-label">End Date</label>
-        <select class="form-select" name="enddatemonth" id="enddatemonth" aria-label="End Date Month">
+        <select class="form-select" name="enddatemonth" id="enddatemonth" aria-label="End Date Month" style="width: 150px; display: inline;" onChange="getDaysForMonth();">
                 <?
                  $currentMonth =  gmdate("n", $curtime);
                  $months = get_months();
@@ -247,11 +247,11 @@ print "var thisyear = new Array(13);
                 <? } ?>
           </select>
 
-          <select name="enddateday" class="form-select" aria-label="End Date Day">
+          <select name="enddateday" class="form-select" aria-label="End Date Day" style="width: 150px; display: inline;">
                     <!-- Days will be populated by javascript function -->
           </select>
 
-           <select name="enddateyear" class="form-select" onChange="getDaysForMonth();">
+           <select name="enddateyear" class="form-select" onChange="getDaysForMonth();" style="width: 150px; display: inline;" aria-label="End Date Year">
                <?
                $currYear = gmdate("Y", $curtime);
 
@@ -295,7 +295,7 @@ print "var thisyear = new Array(13);
 
 
     <? }  else {  # default to this for non jumpladder situations?>
-    <input type="hidden" name ="laddertype" value="manual" >
+    <input type="hidden" name ="ladder_type" value="manual" >
 
     <? }   ?>
 
@@ -325,21 +325,30 @@ print "var thisyear = new Array(13);
        // run the query on the database
        $result = db_query($query);
        
-       ?>
+       
+ $numrows = mysqli_num_rows($result);
+ $rowcount =  $numrows;
+$i=1;
+
+ if ($numrows==0){ ?>
+           <div class="mb-3">
+                    There are currently no box leagues configured.
+ </div>
+      
+        <?  } else { ?>
+       
         <table class="table table-striped">
-       <tr>
+       <thead>
+        <tr>
             <th colspan="5">
-                Name
+                Box Leagues
             </th>
         </tr>
-        
+    </thead>
+    <tbody>
         <?
-       $numrows = mysqli_num_rows($result);
-       $rowcount =  $numrows;
-       $i=1;
-       while($row = mysqli_fetch_row($result)) { 
-		
-       	?>
+      
+       while($row = mysqli_fetch_row($result)) {  ?>
             <tr >
             <td ></td>
             <td ><?=$row[0]?></td>
@@ -366,24 +375,22 @@ print "var thisyear = new Array(13);
 				
 				</td>
             </tr>
-
-            
-        <? }  if ($numrows==0){ ?>
-           <tr>
-           <td colspan="6">
-                <span class="normalsm">
-                    There are currently no box leagues configured.
-                </span>
-            </td>
-           </tr>
-      
-        <?  }  ?>
-      
+        <? 
+         $rowcount--;
+    }  ?>
+      </tbody>
      </table>
+    <? }?>
 
      </div> <!-- col -->
     </div> <!-- row -->
 </div> <!-- container -->
+
+<script type="text/javascript" >
+
+    document.getElementById('boxname').setAttribute("autocomplete", "off");
+
+</script>
         
     
 

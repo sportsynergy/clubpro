@@ -35,7 +35,7 @@
 
           <? } if(isPointRankingScheme()  )  { ?>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php">Rankings</a>
+              <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_rankings.php" id="pointrankings-navlink">Rankings</a>
             </li>
           <? }?>
           <li class="nav-item">
