@@ -8,13 +8,12 @@
 		<table class="table table-striped" style="width:70%;">
 			<thead>
 			<tr>
-				<th colspan='2'></td>
+				<th colspan='2'>Club</th>
 				<th>Number of Members</td>
 				<th >Number of Reservations</td>
 			</tr>
 </thead>
-<tbody>
-			
+<tbody>	
 			<? 
 			
 			$memberTotal = 0;

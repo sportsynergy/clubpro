@@ -10,8 +10,12 @@ function removeHoursPolicy(policyid)
 
 </script>
 
-<div><a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_open_policy.php">Add Policy</a> </div>
 
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
+<div><a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/add_open_policy.php">Add Policy</a> </div>
 
 
 <form name="entryform" method="post" action="<?=$ME?>">

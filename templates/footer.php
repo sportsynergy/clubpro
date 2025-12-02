@@ -47,7 +47,6 @@ switch ("<?=$DOC_TITLE ?>" ) {
   case "Sportsynergy Clubpro":
         myElement = document.getElementById("bookings-navlink");
         myElement.classList.add("active");
-         
     break;
   case "Member Directory":
         myElement = document.getElementById("directory-navlink");
@@ -57,23 +56,28 @@ switch ("<?=$DOC_TITLE ?>" ) {
         myElement = document.getElementById("playerswanted-navlink");
         myElement.classList.add("active");
     break;
-   case "Player Ladder":
+ case "Player Ladder":
         myElement = document.getElementById("rankings-navlink");
         myElement.classList.add("active");
     break;
-  case "Sportsynergy Box Leagues":
+case "Sportsynergy Box Leagues":
         myElement = document.getElementById("leagues-navlink");
         myElement.classList.add("active");
     break;
-   case "Edit Account":
+case "Edit Account":
         myElement = document.getElementById("myaccount-navlink");
         myElement.classList.add("active");
     break;
-   case "Change Password":
+case "Change Password":
         myElement = document.getElementById("myaccount-navlink");
-        myElement.classList.add("active");
+        if (myElement){
+            myElement.classList.add("active");
+        } else {
+             myElement = document.getElementById("changepassword-navlink");
+             myElement.classList.add("active");
+        }  
     break;
-   case "My Buddy List":
+case "My Buddy List":
         myElement = document.getElementById("myaccount-navlink");
         myElement.classList.add("active");
     break;
@@ -81,11 +85,11 @@ switch ("<?=$DOC_TITLE ?>" ) {
         myElement = document.getElementById("myaccount-navlink");
         myElement.classList.add("active");
     break;
-    case "User Registration":
+case "User Registration":
         myElement = document.getElementById("tools-navlink");
         myElement.classList.add("active");
     break;
-  case "Account Maintenance":
+case "Account Maintenance":
         myElement = document.getElementById("tools-navlink");
         myElement.classList.add("active");
     break;
@@ -125,6 +129,30 @@ case "Scheduling Policy Setup":
         myElement = document.getElementById("tools-navlink");
         myElement.classList.add("active");
     break;
+   case "Club Dashboard":
+        myElement = document.getElementById("clubdashboard-navlink");
+        myElement.classList.add("active");
+    break; 
+case "Club Dashboard":
+        myElement = document.getElementById("clubpolicies-navlink");
+        myElement.classList.add("active");
+    break; 
+case "System Preferences":
+        myElement = document.getElementById("systemprefs-navlink");
+        myElement.classList.add("active");
+    break; 
+    case "User Account Maintenance":
+        myElement = document.getElementById("accountmaintenance-navlink");
+        myElement.classList.add("active");
+    break; 
+    case "Change Password":
+        myElement = document.getElementById("changepassword-navlink");
+        myElement.classList.add("active");
+    break; 
+    case "Club Policy":
+        myElement = document.getElementById("clubpolicies-navlink");
+        myElement.classList.add("active");
+    break; 
   default:
      myElement = document.getElementById("bookings-navlink");
      if (myElement) myElement.classList.add("active");

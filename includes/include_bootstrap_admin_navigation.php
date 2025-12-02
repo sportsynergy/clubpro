@@ -7,19 +7,19 @@
   <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_dashboard.php">Club Dashboard</a>
+          <a class="nav-link" aria-current="page" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_dashboard.php" id="clubdashboard-navlink">Club Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/change_password.php">Change Password</a>
+          <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/change_password.php" id="changepassword-navlink">Change Password</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_lookup.php">Account Maintenance</a>
+          <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_lookup.php" id="accountmaintenance-navlink">Account Maintenance</a>
         </li>
         <li class="nav-item">
-           <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/manage_club_policies.php">Club Policies</a>
+           <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/manage_club_policies.php" id="clubpolicies-navlink">Club Policies</a>
         </li>
          <li class="nav-item">
-           <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/system_preferences.php">System Preferences</a>
+           <a class="nav-link" href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/system_preferences.php" id="systemprefs-navlink">System Preferences</a>
         </li>
       </ul>
        <? if( is_logged_in() ){ ?>

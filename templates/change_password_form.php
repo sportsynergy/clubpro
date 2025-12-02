@@ -22,7 +22,7 @@
   </div>
 
   <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Change Password</button>
-            
+      <input type="hidden" name="submitme" value="submitme">
   </form>
 </div>
 

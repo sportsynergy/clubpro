@@ -1,7 +1,7 @@
 <?php
 
 include ("../application.php");
-$DOC_TITLE = "Account Maintenance";
+$DOC_TITLE = "User Account Maintenance";
 require_loginwq();
 
 /* form has been submitted, try to create the new role */
