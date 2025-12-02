@@ -62,11 +62,14 @@
      
     <div class="mb-5"> 
         <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Team Name</th>
                 <th>Ladder Name</th>
                 <th></th>
             </tr>
+            </thead>
+            <tbody>
         
         <?
         
@@ -76,11 +79,15 @@
                     WHERE tCLT.enddate IS NULL
                     AND tCSL.siteid = ".get_siteid().";";
 
-        // run the query on the database
+         // run the query on the database
         $result = db_query($query);
+
+       $numrows = mysqli_num_rows($result);
+       $rowcount =  $numrows;
+       $i=1;
+      
        while($row = mysqli_fetch_array($result)) { 
-		
-       	 
+		 
        	?>
             <form name="removeteam<?=$rowcount?>" method="post" action="<?=$ME?>">
                 <input type="hidden" name="teamid" value="<?=$row['teamid']?>">
@@ -99,17 +106,19 @@
             
             <a href="javascript:submitForm('manageteam<?=$rowcount?>')">Manage</a>
             | <a href="javascript:submitForm('removeteam<?=$rowcount?>')">Delete</a></td>
+            </tr> 
 
-            </tr>
-
-            
+             <? $rowcount = $rowcount - 1; 
+                $i++;
+            ?>
         <? }
 
-        if ($numrows==0){ ?>
+        if ($numrows==0) { ?>
            <tr>
             <td colspan="2">There are currently no club teams configured.</td>
            </tr>
         <?  }  ?>
+        </tbody>
      </table>
 
     </div> <!-- mb-5 -->
