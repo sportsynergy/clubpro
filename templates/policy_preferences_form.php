@@ -34,7 +34,7 @@
         <div class="tab-pane fade show" id="message" role="tabpanel" aria-labelledby="message-tab"> 
 			 <? include($_SESSION["CFG"]["includedir"]."/include_messages_policies.php");?>
 		</div>
-        <div class="tab-pane fade show" id="court_events" role="tabpanel" aria-labelledby="mcourt-events-tab"> 
+        <div class="tab-pane fade show" id="court_events" role="tabpanel" aria-labelledby="court-events-tab"> 
 			 <? include($_SESSION["CFG"]["includedir"]."/include_court_events.php");?>
 		</div>
     </div>

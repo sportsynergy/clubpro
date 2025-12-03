@@ -454,7 +454,7 @@ if ($clubid) {
         <td ><table width=<?=$courtWidth?> cellpadding="0" cellspacing="0" align="center" class="scheduletable" >
           
  			<tr valign="top" >
-              <th class="ct<?=$ctobj->courttypeid?>cl<?=$clubobj->clubid?>" style="height: 14px">
+              <td  class="ct<?=$ctobj->courttypeid?>cl<?=$clubobj->clubid?> blackBackGround" style="height: 14px">
 			 	<? if(isDisplayCourtTypeName()=='y'){ ?>
 					<?=$ctobj->courttypename?>
 				<? } ?>	
@@ -486,12 +486,12 @@ if ($clubid) {
                    	 	$eventStartTime = $curtime;
                    	 }
                    	 ?>
-                   	 <th class="blackBackGround" id="courtname-header-<?=$courtobj->courtid?>"><a href="<?=$wwwroot?>/admin/event_load.php?time=<?=$eventStartTime?>&courtid=<?=$courtobj->courtid?>"><?=$courtobj->courtname?></a></th>
+                   	 <td class="blackBackGround" id="courtname-header-<?=$courtobj->courtid?>"><a href="<?=$wwwroot?>/admin/event_load.php?time=<?=$eventStartTime?>&courtid=<?=$courtobj->courtid?>"><?=$courtobj->courtname?></a></td>
 
                    	 <?
                    }
                    else{ ?>
-                   	 	<th id="courtname-header-<?=$courtobj->courtid?>"><?=$courtobj->courtname?></th>
+                   	 	<td class="blackBackGround" id="courtname-header-<?=$courtobj->courtid?>"><?=$courtobj->courtname?></td>
                    <?
 					}
                  

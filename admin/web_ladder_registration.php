@@ -94,7 +94,8 @@ function insert_box(&$frm) {
                           ,$autoschedule
                           ,'$ladder_type')";
 
-    // run the query on the database
+    
+                          // run the query on the database
     $result = db_query($query);
 }
 ?>

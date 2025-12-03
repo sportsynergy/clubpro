@@ -127,10 +127,14 @@ h2{
 	font-weight: bold; 
 }
 
+.blackBackGround  {
+	font-weight: bold; 
+	text-align: center;
+}
 th{ 
 
 	font-weight: bold; 
-	text-align: center;
+	
 }
 .h1{ 
 	font-size: 14pt; 

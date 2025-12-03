@@ -16,6 +16,11 @@ function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
 
+ function onCancelButtonClicked(){
+
+	parent.location="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_registration.php"
+ }
+
 
 
 <?
@@ -201,7 +206,7 @@ $userid = $_REQUEST["userid"];
       <label for="enddate" class="form-label">End Date:</label>
       <? $datesArray = explode("-", $boxarray["enddate"]); ?>
 
-     <select name="enddatemonth" class="form-select" onChange="getDaysForMonth();">
+     <select name="enddatemonth" class="form-select" onChange="getDaysForMonth();" style="width: 150px; display: inline;">
                <?
                 
 				// remove leading 0 
@@ -223,8 +228,8 @@ $userid = $_REQUEST["userid"];
                 <? } ?>
           </select>
 
-           <select name="enddateday" class="form-select"> </select>
-            <select name="enddateyear" class="form-select" onChange="getDaysForMonth();">
+           <select name="enddateday" class="form-select" style="width: 150px; display: inline;"> </select>
+            <select name="enddateyear" class="form-select" onChange="getDaysForMonth();" style="width: 150px; display: inline;">
                <?
 
                $currYear = gmdate("Y", $curtime);
@@ -246,8 +251,8 @@ $userid = $_REQUEST["userid"];
 
     </div>
 
-    <div class="mb-3">
-        <label for="gender" class="form-label">Add A User:</label>
+    <div class="mb-3" style="width: 70%">
+        <label for="name1" class="form-label">Player:</label>
         <input id="name1" name="name1" type="text" size="30" class="form-control form-autocomplete" />
                 <input id="id1" name="boxuser" type="hidden" />
 
@@ -315,8 +320,9 @@ $userid = $_REQUEST["userid"];
       <input type="hidden" name="submitme" value="submitme">
 			
        
-  <div class="mt-5">
-    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Submit</button>
+  <div class="mt-5 mb-3">
+    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add User</button>
+    <button type="button" class="btn btn-secondary" onclick="onCancelButtonClicked()">Back to web ladder registration page</button>
   </div>
 
 </form>
@@ -326,12 +332,12 @@ $userid = $_REQUEST["userid"];
 
        $query = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.userid, tblkpBoxLeagues.boxplace, tblkpBoxLeagues.games
                  FROM tblUsers INNER JOIN tblkpBoxLeagues ON tblUsers.userid = tblkpBoxLeagues.userid
-                 WHERE (((tblkpBoxLeagues.boxid)=$boxid))
+                 WHERE (tblkpBoxLeagues.boxid)=$boxid
                  ORDER BY tblkpBoxLeagues.boxplace";
 
        // run the query on the database
        $result = db_query($query); 
-       if (mysqli_num_rows($result) > 1) {
+       if (mysqli_num_rows($result) > 0) {
        ?>
 
        <table class="table table-striped" >
@@ -374,16 +380,15 @@ $userid = $_REQUEST["userid"];
      <? } ?>
 
 
-<div style="height: 2em;"></div>
-<div>
-    <span style="text-align: right;"> 
-    	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_registration.php" > << Back to web ladder registration page </a> 
-    </span>
-</div> 
+
 
 
 
 
   <script language="JavaScript">
+
+          document.entryform.name1.focus();
+
+          document.getElementById('name1').setAttribute("autocomplete", "off");
           getDaysForMonth();
    </script>

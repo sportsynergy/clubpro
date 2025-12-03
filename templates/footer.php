@@ -89,6 +89,7 @@ case "My Buddy List":
         myElement = document.getElementById("pointrankings-navlink");
         myElement.classList.add("active");
     break;
+    // Site Admin 
 case "User Registration":
         myElement = document.getElementById("tools-navlink");
         myElement.classList.add("active");
@@ -133,12 +134,20 @@ case "Scheduling Policy Setup":
         myElement = document.getElementById("tools-navlink");
         myElement.classList.add("active");
     break;
-   case "Club Dashboard":
-        myElement = document.getElementById("clubdashboard-navlink");
+
+case "Manage Box League":
+        myElement = document.getElementById("tools-navlink");
         myElement.classList.add("active");
-    break; 
+    break;
+
+    case "Box League History":
+        myElement = document.getElementById("tools-navlink");
+        myElement.classList.add("active");
+    break;
+    
+    // System Admin
 case "Club Dashboard":
-        myElement = document.getElementById("clubpolicies-navlink");
+        myElement = document.getElementById("clubdashboard-navlink");
         myElement.classList.add("active");
     break; 
 case "System Preferences":
@@ -161,9 +170,7 @@ case "System Preferences":
      myElement = document.getElementById("bookings-navlink");
      if (myElement) myElement.classList.add("active");
 
-if (myElement) { // Check if the element was found
-    myElement.classList.add("active");
-}
+
 
 }
 

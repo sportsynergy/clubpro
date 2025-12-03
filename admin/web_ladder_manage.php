@@ -18,7 +18,7 @@ if (match_referer() && isset($_POST['submitme'])) {
         insert_boxuser($frm);
 		update_box_enddate($frm);
 		
-		$noticemsg = "Box League Updated.  Good Job!<br/><br/>";
+		$successmsg = "Box League Updated. Good Job!";
     }
 }
 
@@ -36,7 +36,7 @@ $result = db_query($boxnamequery);
 $boxarray = mysqli_fetch_array($result);
 
 //Set some variables for the form
-$DOC_TITLE = "Box League - $boxarray[0] ";
+$DOC_TITLE = "Manage Box League";
 $courttype = $boxarray[1];
 include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/web_ladder_manage_form.php");
