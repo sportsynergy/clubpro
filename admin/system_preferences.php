@@ -12,7 +12,7 @@ if (match_referer() && isset($_POST['submitme'])) {
     
     if (empty($errormsg)) {
         update_clubprefs($frm['message']);
-        $noticemsg = "System Preferences Saved. <br/><br/>";
+        $successmsg = "System Preferences Saved";
     }
 }
 include ($_SESSION["CFG"]["templatedir"] . "/header.php");
