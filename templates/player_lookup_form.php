@@ -23,8 +23,7 @@
 
 <script type="text/javascript" >
 
-document.entryform.searchname.focus();
-
+  document.entryform.searchname.focus();
   document.getElementById('searchname').setAttribute("autocomplete", "off");
 
 function onSubmitButtonClicked(){

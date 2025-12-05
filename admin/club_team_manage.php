@@ -55,7 +55,7 @@ if (match_referer() && isset($_POST['submitme'])) {
         if (empty($errormsg) && empty($action)) {
             insert_teamplayer($frm);
             
-            $successmsg = "Club team Updated.  Good Job!";
+            $successmsg = "Club team updated.  Good Job!";
         }
     }
 }
@@ -75,7 +75,7 @@ $teamarray = mysqli_fetch_array($result);
 $ladderid = $teamarray['ladderid'];
 
 //Set some variables for the form
-$DOC_TITLE = "Team - $teamarray[teamname]";
+$DOC_TITLE = "Manage Club Team";
 
 include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/club_team_manage_form.php");

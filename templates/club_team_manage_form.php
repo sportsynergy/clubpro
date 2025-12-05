@@ -1,31 +1,6 @@
 
 
-<script language="Javascript">
 
-document.onkeypress = function (aEvent)
-{
-    if(!aEvent) aEvent=window.event;
-  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
-    if( key == 13 ) // enter key
-    {
-        return false; // this will prevent bubbling ( sending it to children ) the event!
-    }
-  	
-}
-
-
-
- function onCancelButtonClicked(){
-	parent.location="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_teams.php"
- }
-
-function onSubmitButtonClicked(){
-	submitForm('entryform');
-}
-
-  document.entryform.name1.focus();
-  document.getElementById('name1').setAttribute("autocomplete", "off");
-</script>
 
 <?
 
@@ -122,6 +97,32 @@ $userid = $_REQUEST["userid"];
 
      </table>
       </div>
+
+      <script language="Javascript">
+
+  document.entryform.name1.focus();
+  document.getElementById('name1').setAttribute("autocomplete", "off");
+
+document.onkeypress = function (aEvent)
+{
+    if(!aEvent) aEvent=window.event;
+  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+    if( key == 13 ) // enter key
+    {
+        return false; // this will prevent bubbling ( sending it to children ) the event!
+    }
+}
+
+ function onCancelButtonClicked(){
+	parent.location="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/club_teams.php"
+ }
+
+function onSubmitButtonClicked(){
+	submitForm('entryform');
+}
+
+
+</script>
 
 
 

@@ -149,6 +149,12 @@ case "Manage Box League":
         myElement = document.getElementById("tools-navlink");
         myElement.classList.add("active");
     break;
+
+    case "Manage Club Team":
+        myElement = document.getElementById("tools-navlink");
+        myElement.classList.add("active");
+    break;
+    
     
     // System Admin
 case "Club Dashboard":
