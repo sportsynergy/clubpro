@@ -35,8 +35,7 @@ while ($boxesforuserarray = db_fetch_array($boxesforuserresult)) {
             $league_result = load_league_schedule( $boxesforuserarray['boxid']);
             $rownum = mysqli_num_rows($league_result);
              while ($league_array = db_fetch_array($league_result)) {
-                $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
-
+               
                 $recent = getRecentLadderMatches( $league_array['userid'] , $boxesforuserarray['boxid'])
             ?>
                 <form name="playerform<?=$rownum?>" method="get"
@@ -46,7 +45,7 @@ while ($boxesforuserarray = db_fetch_array($boxesforuserresult)) {
                         name="origin" value="schedule">
                 </form>
 
-            <tr class="<?=$rc?>">
+            <tr>
                <td> 
                 
                 <a href="javascript:submitForm('playerform<?=$rownum?>')"><?=$league_array['fullname']?> </a>
