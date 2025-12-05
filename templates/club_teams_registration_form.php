@@ -10,13 +10,7 @@
 
   ?>
 
-<script language="JavaScript">
 
-
-    	function onSubmitButtonClicked(){
-    		submitForm('entryform');
-    	}
-</script>
 
 
 <div class="mb-5">
@@ -125,4 +119,15 @@
     </div> <!-- col-6 -->
    </div> <!-- row -->
 </div> <!-- container -->
+
+<script language="JavaScript">
+
+document.entryform.clubteam.focus();
+
+  document.getElementById('clubteam').setAttribute("autocomplete", "off");
+
+    	function onSubmitButtonClicked(){
+    		submitForm('entryform');
+    	}
+</script>
 

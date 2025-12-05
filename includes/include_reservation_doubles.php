@@ -208,7 +208,7 @@
 
    <div class="mt-5">
     <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Make Reservation</button>
-    <button type="submit" class="btn btn-secondary" onclick="onEventCancelButtonClicked()">Cancel</button>
+    <button type="button" class="btn btn-secondary" onclick="onEventCancelButtonClicked()">Cancel</button>
   </div> 
 
   <input type="hidden" name="time" value="<?=$_REQUEST["time"]?>">

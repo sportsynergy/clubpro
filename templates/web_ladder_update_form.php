@@ -20,7 +20,7 @@
 
 					$outcome_indicator = "W";
 						
-					 $row = mysqli_fetch_array($result);
+					
 
 						//get the other player
 						$query = "SELECT users.userid, users.firstname, users.lastname, details.outcome, reservations.time
@@ -67,7 +67,7 @@
 						<td><?=$time?></td>
 						<td ><?=$opponent?></td>
 						<td >
-							<select name="new_outcome_code">
+							<select name="new_outcome_code" class="form-select" aria-label="Select Outcome">
 				                <option value="W0" <?=$outcome_code=="W0"?"selected=\"selected\"":""?>>Won: 3-0</option>
 				                <option value="W1" <?=$outcome_code=="W1"?"selected=\"selected\"":""?>>Won: 3-1</option>
 								<option value="W2" <?=$outcome_code=="W2"?"selected=\"selected\"":""?>>Won: 3-2</option>
@@ -78,20 +78,14 @@
 						</td>
 						
 					</tr>
-					<tr>
-						<td colspan="3" height="25"><!--spacer --></td>
-					</tr>
-					<tr>
-						<td colspan="3">
-							<input type="button" name="cancel" value="Cancel, Go back" id="cancelbutton">
-							<input type="button" name="submit" value="Update Score" id="submitbutton" >
-						</td>
-					</tr>
+					
 						</tbody>
 			     </table>
-				
-
-
+	
+ <div class="mt-5">
+    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Update Score</button>
+    <button type="button" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
+  </div> 
 
 	<input type="hidden" name="reservationid" value="<?=$reservationid?>" >
 	<input type="hidden" name="userid" value="<?=$userid?>" >
@@ -104,7 +98,6 @@
 
 
 <script type="text/javascript">
-
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');

@@ -89,6 +89,11 @@ case "My Buddy List":
         myElement = document.getElementById("pointrankings-navlink");
         myElement.classList.add("active");
     break;
+case "Club Teams":
+        myElement = document.getElementById("leagues-navlink");
+        myElement.classList.add("active");
+    break;
+    
     // Site Admin 
 case "User Registration":
         myElement = document.getElementById("tools-navlink");
