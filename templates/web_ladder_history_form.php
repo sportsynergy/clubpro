@@ -94,7 +94,7 @@
 						</td>
 						<td align="center"> 
 								<? if( has_priv("2") ){ ?>
-								<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_update.php?reservationid=<?=$row[reservationid]?>&userid=<?=$userid?>" >Edit</a>
+								<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_update.php?reservationid=<?=$row['reservationid']?>&userid=<?=$userid?>" >Edit</a>
 								<? } ?>
 						</td>
 					</tr>
