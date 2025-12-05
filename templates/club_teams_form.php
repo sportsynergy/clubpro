@@ -6,14 +6,14 @@
 $count = 0;
 $result = getClubTeams( get_siteid() );
 
-$rownum = db_num_rows($webladderuserresult);
+
 
 $lastUpdated = NULL;
 
 while ($clubteam = db_fetch_array( $result )) {
 
     if (isDebugEnabled(1)) logMessage("club_team_manage: The last time this was updated was: $clubteam[lastUpdated]"); 
-    $lastUpdated = $clubteam[lastUpdated];
+    $lastUpdated = $clubteam['lastUpdated'];
 
     if ( $count == 0 ){ ?>
         <tr valign="top" id="newrow">
