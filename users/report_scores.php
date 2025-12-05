@@ -108,7 +108,7 @@ function validate_form(&$frm, &$errors) {
     }
 
     /*Check doubles reservation */
-    elseif ($reservationTypeValue == 1 && (isCurrentUserOnTeam($frm['Player1']) == 0) && (isCurrentUserOnTeam($frm['Player2']) == 0) && (get_roleid() == 1 || get_roleid() == 5)) {
+    elseif ($reservationTypeValue == 1 && (isCurrentUserOnTeam($frm['Player1']) == 0) && (isCurrentUserOnTeam($frm['Player2']) == 0) && (get_roleid() == 1 )) {
         $errors->reportscore = true;
         $msg.= "You have to be on one of the teams that played to report the score";
     } elseif (empty($frm["winner"])) {

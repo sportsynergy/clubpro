@@ -194,12 +194,6 @@ if (get_roleid() == 1) {
     }
 }
 
-if (get_roleid() == 5) {
-    $errormsg = "Sorry, you are not authorized to reserve this court.  Talk to the pro about getting set up to do this.";
-    include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
-    include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
-    die;
-}
 
 /******************************************************************************
  * Load Forms
@@ -427,7 +421,7 @@ function validate_form(&$frm, &$errors) {
         elseif ($frm['action'] == "create" && !isSiteGuestReservationEnabled() && get_roleid() == 1 && (isGuestPlayer($frm["playeroneid"], $frm["playeronename"]) || isGuestPlayer($frm["playertwoid"], $frm["playertwoname"]))) {
             $msg.= "It appears that you did not select your opponent correctly from the dropdown menu";
         } else 
-        if (get_roleid() == 1 || get_roleid() == 5) {
+        if (get_roleid() == 1 ) {
             $msg = validateSchedulePolicies($frm['courtid'], $frm['time'], $frm['playeroneid']);
         }
     }
@@ -495,15 +489,15 @@ function validate_form(&$frm, &$errors) {
 
             // Dont' allow regular players to type in names, they have to pick them from the drop down.
             
-            if (!isSiteGuestReservationEnabled() && $guestReservation && (get_roleid() == 1 || get_roleid() == 5)) {
+            if (!isSiteGuestReservationEnabled() && $guestReservation && (get_roleid() == 1 )) {
                 return "Please pick all of the player names from the drop down list";
             }
             
-            if (isSiteGuestReservationEnabled() && (get_roleid() == 1 || get_roleid() == 5)) {
+            if (isSiteGuestReservationEnabled() && (get_roleid() == 1 )) {
 
                 //Set the playerone name
                 
-                if (get_roleid() == 1 || get_roleid() == 5) {
+                if (get_roleid() == 1 ) {
                     $playerOneName = get_userfullname();
                 } else {
                     $playerOneName = $frm['playeronename'];
@@ -575,7 +569,7 @@ function validate_form(&$frm, &$errors) {
 			}
 			
 			//for buddy matches
-			if($frm['matchtype'] == 3 && (get_roleid() == 1 || get_roleid() == 2 || get_roleid() == 5)){
+			if($frm['matchtype'] == 3 && (get_roleid() == 1 || get_roleid() == 2 )){
 				
 				 if (isDebugEnabled(1)) logMessage("court_reservation.validate_form(): Validating Singles Buddy Reservation");
 
