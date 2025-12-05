@@ -5,7 +5,7 @@
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
 
-				<table width="500" class="table table-striped" >
+				<table class="table table-striped" >
 			    <thead>   
 				<tr>
 						<th>Date</th>
@@ -86,7 +86,7 @@
 						</td>
 						<td> 
 							<? if( has_priv("2") ){ ?>
-							<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_update.php?reservationid=<?=$row[reservationid]?>&userid=<?=$userid?>" >Edit</a>
+							<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_update.php?reservationid=<?=$row['reservationid']?>&userid=<?=$userid?>" >Edit</a>
 							<? } ?>
 						</td>
 					</tr>

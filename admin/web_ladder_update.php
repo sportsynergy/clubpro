@@ -83,11 +83,11 @@ $boxid = $box_id_array[0];
 
 
 //Set some variables for the form
-$DOC_TITLE = "Box League History for ".$box_user_array[0];
+$DOC_TITLE = "Box League History";
 
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/web_ladder_update_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

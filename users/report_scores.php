@@ -117,12 +117,12 @@ function validate_form(&$frm, &$errors) {
     } elseif (isClubGuest($frm['Player1']) || isClubGuest($frm['Player2'])) {
         
         if (get_roleid() == 1) {
-            $msg.= "Nice try to boost your ranking, but Club Guest matches can't be scored.  Seriously, instead coming up with new ways to cheat you should be out there hitting rails.";
+            $msg.= "Nice try to boost your ranking, but Club Guest matches can't be scored.";
         } else {
             $msg.= "Club Guest matches cannot be scored.";
         }
     } elseif (isClubMember($frm['Player1']) || isClubMember($frm['Player2'])) {
-        $msg.= "Club Member matches cannot be scored. Stop trying to cheat.";
+        $msg.= "Club Member matches cannot be scored. ";
     } elseif ($frm['matchtype'] == 1) {
 
         //When this match type has been changed (after the fact)

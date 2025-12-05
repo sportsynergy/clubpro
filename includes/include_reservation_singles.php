@@ -55,7 +55,7 @@
     <div class="mb-3">
 		<label for="matchtype" class="form-label">Match Type</label>
 		<select class="form-select" aria-label="Match Type" name="matchtype" id="matchtype" onchange="disablePlayerDropDownWithSoloSelection(this);onlyAllowLessonReoccuring(this)">
-			 <? if( isSiteBoxLeageEnabled() && isLadderRankingScheme()){ ?>
+			 <? if( isSiteBoxLeageEnabled() ){ ?>
           <option value="1">Box League</option>
           <? } ?>
           <? if ( isPointRankingScheme() ) {?>
