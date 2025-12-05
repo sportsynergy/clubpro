@@ -601,6 +601,7 @@ function getBoxLeaguesForUser($userid){
 						INNER JOIN tblClubLadderTeam tCLT ON tCLTM.teamid = tCLT.id AND tCLT.ladderid = tBL.ladderid
 				WHERE tCLT.enddate IS NULL
 				AND tCLTM.enddate IS NULL
+				AND tBL.enable = TRUE
 				AND tU.userid = $userid";
     return db_query($query);
 

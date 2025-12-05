@@ -93,6 +93,11 @@ case "Club Teams":
         myElement = document.getElementById("leagues-navlink");
         myElement.classList.add("active");
     break;
+case "League Schedule":
+        myElement = document.getElementById("leagues-navlink");
+        myElement.classList.add("active");
+    break;
+    
     
     // Site Admin 
 case "User Registration":

@@ -1,9 +1,8 @@
 <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
 
-<p>
-Here are your box league results:
-</p>
-<br>
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
 <?php
 // For each box league that the person is in
@@ -15,27 +14,21 @@ while ($boxesforuserarray = db_fetch_array($boxesforuserresult)) {
 
 
 
-<font class="smallbanner"> 
+<div class="smallbanner"> 
     <?=$boxesforuserarray['boxname'] ?> - <?=$boxesforuserarray['teamname'] ?>
+</div>
 
-</font>
 
-
-<table width="350" cellpadding="0" cellspacing="0" class="bordertable sortable">
-            <tr valign="top" class=clubid<?=get_clubid()?>th >
-                <td >
-                    <span class="whitenorm">Opponent</span>
-                </td>
-                <td>
-                    <span class="whitenorm">Team</span>
-                </td>
-                <td>
-                    <span class="whitenorm">Match 1</span>
-                </td>
-                <td>
-                    <span class="whitenorm">Match 2</span>
-                </td>
+<table class="table table-striped sortable">
+        <thead>
+        <tr >
+                <th >Opponent</th>
+                <th>Team</th>
+                <th>Match 1</th>
+                <th>Match 2</span></th>
             </tr>
+        </thead>
+        <tbody>
 
             <?php
 
@@ -66,7 +59,7 @@ while ($boxesforuserarray = db_fetch_array($boxesforuserresult)) {
             $rownum = $rownum - 1;
             } 
             ?>
-           
+           </tbody>
 </table>
 
 <? } ?>

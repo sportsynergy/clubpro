@@ -321,7 +321,7 @@ $userid = $_REQUEST["userid"];
 			
        
   <div class="mt-5 mb-3">
-    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Add User</button>
+    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Submit</button>
     <button type="button" class="btn btn-secondary" onclick="onCancelButtonClicked()">Back to web ladder registration page</button>
   </div>
 

@@ -218,8 +218,8 @@ if ($siteid) {
         <td colspan="2">
             <p id="rcorners1">
                 You are scheduled for league match with <?=$otherguy ?>. Record that score 
-                <span class="normal" id="showreportscoresplayer"><a
-			style="text-decoration: underline; cursor: pointer"> here</a>.</span>
+                <span id="showreportscoresplayer"><a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder_score.php"
+			style="text-decoration: underline; cursor: pointer" > here</a>.</span>
                 
                 <div style="height:10px"></div>
             </p>
