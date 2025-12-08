@@ -145,15 +145,13 @@
 				if($timetonext == 900 ){ ?>
 					<option value=".25">15 Minutes</option>
 				<?}
-				 if($timetonext == 1800 ){ ?>
+				 if($timetonext >= 1800 ){ ?>
 					<option value=".5">30 Minutes</option>
 				<?}
 				if($timetonext >= 2700 || $nexttime == null){ ?>
 					<option value=".75">45 Minutes</option>
 				<?}
-        if($timetonext >= 3000 || $nexttime == null){ ?>
-          <option value=".83334">50 Minutes</option>
-        <?}
+
 				if($timetonext >= 3600 || $nexttime == null ){ ?>
 					<option value="1" selected="selected">60 Minutes</option>
 				<?}
