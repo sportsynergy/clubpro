@@ -55,6 +55,11 @@ if(count($teamINClause) > 0 ){
 </form>
 
 
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
+
 <?
 $numrows = count($ladderplayers);
 if($numrows ==0) { ?>
