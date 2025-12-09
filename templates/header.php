@@ -19,7 +19,7 @@
     <link rel="icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/twitter1.png" type="image/x-icon" />
 
-    <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel="stylesheet" type="text/css" />
+    <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.css" rel="stylesheet" type="text/css" />
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/ajaxtags.css" rel="stylesheet" type="text/css" />
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/displaytag.css" rel="stylesheet" type="text/css" />
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/calendar.css" rel="stylesheet" type="text/css" />

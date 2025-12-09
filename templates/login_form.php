@@ -10,7 +10,7 @@ if(isset($clubName) && strlen($clubName) <> 0){
  ?>
 </title>
 
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.new.css" rel=stylesheet type=text/css>
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.css" rel=stylesheet type=text/css>
 <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/main.css" rel=stylesheet type=text/css>
 
 
