@@ -257,7 +257,7 @@ if ($usertype == 1 && isDoublesReservationNeedPlayers($time, $courtid)) {
 } else {
     print "Sorry, that match is already fully subscribed. Better luck next time!";
 }
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * Validate the FORMS
