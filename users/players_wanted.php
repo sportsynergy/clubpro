@@ -168,7 +168,7 @@ if(mysqli_num_rows($singlespwresult)==0
 
                      //Print out details on the singles reservations
                                  while($scourtdetailsrow = db_fetch_row($scourtdetailsresult)) { ?>
-                                    
+                                    <p>
                                      <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$scourtdetailsrow[0]?>&courtid=<?=$scourtdetailsrow[4]?>&userid=<?=$scourtdetailsrow[7]?>">
                                         <?=gmdate(" l F j h:i A",$scourtdetailsrow[0])?>
                                     </a> 
@@ -176,7 +176,7 @@ if(mysqli_num_rows($singlespwresult)==0
                                      <? if($scourtdetailsrow[6]==1){ ?>
                                           <img src="<?=$imagedir?>\boxleague.gif">
                                      <?  } ?>
-                                    
+                                     </p>
                                 <? } ?>
                     <? } ?>
 
@@ -243,17 +243,20 @@ if(mysqli_num_rows($singlespwresult)==0
             ?>
            
               <? if( $needTwoPlayer ){  ?>
+                <p>
               	 <a href="<?=$wwwroot?>/users/court_reservation.php?time=$playerOneArray[time]&courtid=$playerOneArray[courtid]&userid=<?=$lonelyuserid?>">
                     <?=gmdate(" l F j h:i A",$playerOneArray['time'])?>
                 </a> 
                 <?=$user1Name?> and <?=$user2Name?> are both looking for a partner.
+              </p>
 				
              <? }  elseif( $needThreePlayer ){ ?>
+             <p>
               	 <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$playerOneArray[time]?>&courtid=<?=$playerOneArray[courtid]?>&userid=<?=$lonelyuserid?>"> 
                     <?=gmdate(" l F j h:i A",$playerOneArray['time'])?>
                 </a> 
                 <?=$reallyLonelyuser?> is looking for some doubles
-				
+             </p>
               <? } elseif( $needOnePlayer ){
 
 				//Get the team player names
@@ -272,7 +275,7 @@ if(mysqli_num_rows($singlespwresult)==0
 
               $teamRankResult = db_query($teamRankQuery);
               $teamRankValue = mysqli_result($teamRankResult,0); ?>
-
+                <p>
                 <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$playerOneArray['time']?>&courtid=<?=$playerOneArray['courtid']?>&userid=<?=$lonelyuserid?>">
                     <?=gmdate(" l F j h:i A",$playerOneArray['time'])?>
                 </a> 
@@ -281,7 +284,7 @@ if(mysqli_num_rows($singlespwresult)==0
                  $teamnamesrow = db_fetch_row($teamnamesresult); ?>
                  <?=$teamnamesrow[0]?> <?=$teamnamesrow[1]?>
                  (rank <?=$teamRankValue?>) on <?=$playerOneArray['courtname']?> 
-             
+                </p>
              <? } else { //Display reservation where a team is needed
 
               //Get the team player names
@@ -303,6 +306,7 @@ if(mysqli_num_rows($singlespwresult)==0
               $teamRankValue = mysqli_result($teamRankResult,0);
                   
               ?>
+                 <p>
                  <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$playerTwoArray['time']?>&courtid=<?=$playerTwoArray['courtid']?>&userid=<?=$playerTwoArray['userid']?>">
                   <?=gmdate(" l F j h:i A", $playerTwoArray['time']) ?>
                 </a> 
@@ -313,7 +317,7 @@ if(mysqli_num_rows($singlespwresult)==0
                   ?>
                   <?=$teamnamesrow[0] ?>  <?=$teamnamesrow[1]?>
                    (rank <?=$teamRankValue?>) on <?=$playerTwoArray['courtname']?>
-            
+             </p>
             <?  } ?>
               
         <?  } ?>
@@ -348,7 +352,7 @@ if(mysqli_num_rows($singlespwresult)==0
 
         //Print out details on the singles reservations
         while($scourtdetailsrow = db_fetch_row($scourtdetailsresult)) { ?>
-        
+        <p>
         <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$scourtdetailsrow[0]?>&courtid=<?=$scourtdetailsrow[4]?>">
             <?=gmdate(" l F j h:i A",$scourtdetailsrow[0]) ?>
         </a> 
@@ -357,7 +361,7 @@ if(mysqli_num_rows($singlespwresult)==0
        <? if($scourtdetailsrow[6]==1){ ?>
             <img src="<?=$imagedir?>\boxleague.gif">
          <?  } ?>
-    
+       </p>
         <?  } ?>
 
    <? } ?>
