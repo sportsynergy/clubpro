@@ -50,9 +50,7 @@ function onSubmitButtonClicked(){
         	 
            <div class="form-check">
             <input class="form-check-input" type="radio" name="resdetails" id="lesson" value="5" checked>
-            <label class="form-check-label" for="lesson">
               Advertise this reservation as a lesson.
-            </label>
           </div>	
         	 	
         	 <? } ?>	
@@ -64,9 +62,7 @@ function onSubmitButtonClicked(){
         
         <div class="form-check">
             <input class="form-check-input" type="radio" name="resdetails" id="range" value="1" <?=$matchType!=4 ? "checked":"" ?>>
-            <label class="form-check-label" for="range">
              Advertise this reservation to players within <? pv($rankdev)?> of my skill level
-            </label>
           </div>	
         
 
@@ -80,9 +76,7 @@ function onSubmitButtonClicked(){
         
          <div class="form-check">
             <input class="form-check-input" type="radio" name="resdetails" id="buddies" value="2" <?=$advertBuddies ?> >
-            <label class="form-check-label" for="buddies">
              Advertise this reservation to my buddies:
-            </label>
           </div>
         
        
@@ -93,9 +87,7 @@ function onSubmitButtonClicked(){
 	     
           <div class="form-check">
             <input class="form-check-input" type="radio" name="resdetails" id="wholeclub" value="2"  >
-            <label class="form-check-label" for="wholeclub">
              Advertise this reservation to the whole club
-            </label>
           </div>
        
 	          
@@ -104,9 +96,7 @@ function onSubmitButtonClicked(){
 	       
 		    <div class="form-check">
             <input class="form-check-input" type="radio" name="resdetails" id="noadvertise" value="0"  >
-            <label class="form-check-label" for="noadvertise">
              Don't advertise this one 
-            </label>
           </div>
        
         <? }  else {  ?>

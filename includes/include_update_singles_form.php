@@ -55,77 +55,7 @@ $emailArray = getEmailAddressesForReservation($reservationid);
 $emailString = implode(",", $emailArray);
 
 ?>
-<script language="Javascript">
 
-
-document.onkeypress = function (aEvent)
-{
- if(!aEvent) aEvent=window.event;
-	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
- if( key == 13 ) // enter key
- {
-     return false; // this will prevent bubbling ( sending it to children ) the event!
- }
-	
-}
-
-  document.getElementById('name1').setAttribute("autocomplete", "off");
-  document.getElementById('name2').setAttribute("autocomplete", "off");
-
-       
-	//Default names
-	document.entryform.name1.value = "<?= addslashes($player1FullName) ?>";
-	document.entryform.name2.value = "<?= addslashes($player2FullName) ?>";
-		
-function onSubmitButtonClicked(){
-	var myButton = YAHOO.widget.Button.getButton('submitbutton'); 		
-	myButton.set('disabled', true);
-	
-	document.entryform.cancelall.value=4;
-	submitForm('entryform');
-}
-
-function onCancelReservationButtonClicked(){
-	document.entryform.cancelall.value=3;
-	submitForm('entryform');
-}
-
-function onCancelAllReservationButtonClicked(){
-  document.entryform.cancelall.value=9;
-  submitForm('entryform');
-}
-
-
- function onCancelButtonClicked(){
-	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
- }
-
-
-function disable(disableIt)
-{
-        document.entryform.name1.disabled = disableIt;
-        document.entryform.name2.disabled = disableIt;
-        document.entryform.lock.disabled = disableIt;
-}
-
-
-
-function enable()
-{
-     document.entryform.name1.disabled = "";
-     document.entryform.name2.disabled = "";
-    <? if( get_roleid()==2 || get_roleid() ==4){ ?>
- 	document.entryform.lock.disabled = "";
-	<?}?>
-}
-
-
-    
-
-
-      
-
-</script>
 
 <div class="mb-5">
 <p class="bigbanner"><? pv($DOC_TITLE) ?></p>
@@ -193,6 +123,8 @@ function enable()
    <select name="matchtype" class="form-select">
                       
               <option value="2" <?= $matchtype=="2" ? "selected=selected" : "" ?> >Challenge</option>
+              <option value="4" <?= $matchtype=="4" ? "selected=selected" : "" ?> >Lesson</option>
+
 
               <? if( isSiteBoxLeageEnabled() && isLadderRankingScheme()){ ?>
               <option value="1" <?= $matchtype=="1" ? "selected=selected" : "" ?> >Box League</option>
@@ -227,13 +159,13 @@ function enable()
 	       	$disabled = "disabled";
 	       }  ?>
 
-  <div class="mb-3"> 
+  <div class="mt-4"> 
 
      <button type="submit" class="btn btn-primary" name="submit" onclick="onSubmitButtonClicked()">Update Reservation</button>
-     <button type="submit" class="btn btn-primary" <?=$disabled?> onclick="onCancelReservationButtonClicked()">Cancel Reservation</button>
+     <button type="button" class="btn btn-secondary" <?=$disabled?> onclick="onCancelReservationButtonClicked()">Cancel Reservation</button>
    
       <? if(isReoccuringReservation($time, $courtid)){ ?>
-         <button type="submit" class="btn btn-primary" <?=$disabled?> onclick="onCancelAllReservationButtonClicked()">Cancel All Occurrences</button>
+         <button type="button" class="btn btn-secondary" <?=$disabled?> onclick="onCancelAllReservationButtonClicked()">Cancel All Occurrences</button>
         <? } ?>
 
      <button type="button" class="btn btn-secondary" <?=$disabled?> onclick="onCancelButtonClicked()">Go Back</button>
@@ -249,3 +181,73 @@ function enable()
   </div>
 
 </form>
+
+
+
+<script language="Javascript">
+
+
+document.onkeypress = function (aEvent)
+{
+ if(!aEvent) aEvent=window.event;
+	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+ if( key == 13 ) // enter key
+ {
+     return false; // this will prevent bubbling ( sending it to children ) the event!
+ }
+	
+}
+
+  document.getElementById('name1').setAttribute("autocomplete", "off");
+  document.getElementById('name2').setAttribute("autocomplete", "off");
+
+       
+	//Default names
+	document.entryform.name1.value = "<?= addslashes($player1FullName) ?>";
+	document.entryform.name2.value = "<?= addslashes($player2FullName) ?>";
+		
+function onSubmitButtonClicked(){
+	var myButton = YAHOO.widget.Button.getButton('submitbutton'); 		
+	myButton.set('disabled', true);
+	
+	document.entryform.cancelall.value=4;
+	submitForm('entryform');
+}
+
+function onCancelReservationButtonClicked(){
+	document.entryform.cancelall.value=3;
+	submitForm('entryform');
+}
+
+function onCancelAllReservationButtonClicked(){
+  document.entryform.cancelall.value=9;
+  submitForm('entryform');
+}
+
+
+ function onCancelButtonClicked(){
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
+
+function disable(disableIt)
+{
+        document.entryform.name1.disabled = disableIt;
+        document.entryform.name2.disabled = disableIt;
+        document.entryform.lock.disabled = disableIt;
+}
+
+
+
+function enable()
+{
+     document.entryform.name1.disabled = "";
+     document.entryform.name2.disabled = "";
+    <? if( get_roleid()==2 || get_roleid() ==4){ ?>
+ 	document.entryform.lock.disabled = "";
+	<?}?>
+}
+
+      
+
+</script>

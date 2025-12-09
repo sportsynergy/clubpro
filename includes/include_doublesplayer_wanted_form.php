@@ -62,41 +62,39 @@ function onSubmitButtonClicked(){
  $getfirstandlastobj = db_fetch_object($getfirstandlastresult);
 
 
-?>
+    //if its locked and its just a player disable the submit button
+        $disabled="";
+        if( $locked=='y' && get_roleid()==1){
+        
+          $disabled = "disabled=disabled";
+        }
+			       
+	?>
+
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
 
 <form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);">
-  <table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
-    <tr class="borderow">
-      <td class=clubid<?=get_clubid()?>th><span class="whiteh1">
-        <div align="center">
-          <? if($locked=='y'){ ?>
-          <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png">
-          <?}?>
-          <? pv($DOC_TITLE) ?>
-        </div>
-        </span></td>
-    </tr>
-    <tr>
-      <td><table width="400">
-          <tr>
-            <td class="normal">Are you sure you want to sign up to play with <?echo "$getfirstandlastobj->firstname $getfirstandlastobj->lastname"?>?</td>
-          </tr>
-          <tr>
-            <td><?
-			       //if its locked and its just a player disable the submit button
-			       $disabled="";
-			       if( $locked=='y' && get_roleid()==1){
-			       	
-			       	$disabled = "disabled=disabled";
-			       }
-			       
-			       ?>
-              <input type="button" name="cancel" value="Yes" <?=$disabled?> id="submitbutton">
-              <input type="button" value="No, go back" id="cancelbutton"></td>
-          </tr>
-        </table></td>
-    </tr>
-  </table>
+  
+<div class="mb-3">
+      
+<? if ( empty($disabled) ) { ?>
+    Are you sure you want to sign up to play with <?echo "$getfirstandlastobj->firstname $getfirstandlastobj->lastname"?>?
+  <? } else { ?>
+    Sorry this reservation is locked. You cannot sign up to play with <?echo "$getfirstandlastobj->firstname $getfirstandlastobj->lastname"?> at this time.
+  <? } ?>
+  
+ 
+</div>
+ 
+  <div class="mt-5">
+    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()"  <?=$disabled?>>Yes</button>
+	  <button type="button" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
+  </div>
+             
+         
   <input type="hidden" name="time" value="<?=$time?>">
   <input type="hidden" name="courtid" value="<?=$courtid?>">
   <input type="hidden" name="courttype" value="doubles">

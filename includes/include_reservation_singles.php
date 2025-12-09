@@ -80,8 +80,8 @@
 	  
 	<? if( get_roleid()==2 || get_roleid()==4) {?>
 	<div class="mb-3">
-			<label for="matchtype" class="form-label">Repeat</label>
-			<select class="form-select" aria-label="Match Type" name="matchtype" id="repeat" onchange="disableSinglesOptions(this)" disabled="true">
+			<label for="repeat" class="form-label">Repeat</label>
+			<select class="form-select" aria-label="Match Type" name="repeat" id="repeat" onchange="disableSinglesOptions(this)" disabled="true">
 				<option value="norepeat">None</option>
 				<option value="daily">Daily</option>
 				<option value="weekly">Weekly</option>

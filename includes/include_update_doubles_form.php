@@ -113,8 +113,6 @@ document.onkeypress = function (aEvent)
 
 function onSubmitButtonClicked(){
 
-	var myButton = YAHOO.widget.Button.getButton('submitbutton'); 		
-	myButton.set('disabled', true);
 	document.entryform.cancelall.value=8;
 	submitForm('entryform');
 }
@@ -140,8 +138,9 @@ function onCancelReservationButtonClicked(){
 
 <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" onSubmit="SubDisable(this);" autocomplete="off">
 	
-<div class="mb-3">
-	<input id="name1" name="name1" type="text" size="35" class="form-control form-autocomplete" value="<?=$player1FullName?>"  />
+<div class="mb-3"  >
+	<label for="username" class="form-label">Team 1:</label>
+	<input id="name1" name="name1" type="text" size="35" class="form-control form-autocomplete" value="<?=$player1FullName?>"  style="width: 30%; display: inline;"/>
 	<input id="id1" name="player1" type="hidden" value="<?=$player1Id?>"/>
 	<script>
 		<?
@@ -158,10 +157,8 @@ function onCancelReservationButtonClicked(){
 	
 			?>
 	</script>
-</div>
 
-<div class="mb-3">
- 	<input id="name2" name="name2" type="text" size="35" class="form-control form-autocomplete" value="<?=$player2FullName?>" />
+	<input id="name2" name="name2" type="text" size="35" class="form-control form-autocomplete" value="<?=$player2FullName?>" style="width: 30%; display: inline;"/>
 	<input id="id2" name="player2" type="hidden" value="<?=$player2Id?>"/>
 		<script>
 			<?
@@ -182,8 +179,11 @@ function onCancelReservationButtonClicked(){
 
 
 
+
+
 <div class="mb-3">
-	<input id="name3" name="name3" type="text" size="35" class="form-control form-autocomplete" value="<?=$player3FullName?>"  />
+	<label for="username" class="form-label">Team 2:</label>
+	<input id="name3" name="name3" type="text" size="35" class="form-control form-autocomplete" value="<?=$player3FullName?>" style="width: 30%; display: inline;" />
 	<input id="id3" name="player3" type="hidden" value="<?=$player3Id?>"/>
 	<script>
 		<?
@@ -200,10 +200,7 @@ function onCancelReservationButtonClicked(){
 	
 			?>
 	</script> 
-</div>
-
-<div class="mb-3">
- 	<input id="name4" name="name4" type="text" size="35" class="form-control form-autocomplete" value="<?=$player4FullName?>"  />
+	<input id="name4" name="name4" type="text" size="35" class="form-control form-autocomplete" value="<?=$player4FullName?>" style="width: 30%; display: inline;" />
 	<input id="id4" name="player4" type="hidden" value="<?=$player4Id?>" />
 		<script>
 			<?
@@ -221,6 +218,7 @@ function onCancelReservationButtonClicked(){
 				?>
 		</script> 
 </div>
+
 
 
 <div class="mb-3">
@@ -263,8 +261,8 @@ function onCancelReservationButtonClicked(){
 
 	<div class="mt-5">
     	<button type="submit" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()">Update Reservation</button>
-		<button type="submit" id="submitbutton" class="btn btn-primary" onclick="onCancelReservationButtonClicked()">Cancel Reservation</button>
-		<button type="submit" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
+		<button type="button" id="cancelbutton" class="btn btn-secondary" onclick="onCancelReservationButtonClicked()">Cancel Reservation</button>
+		<button type="button" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
 	</div>
 
 

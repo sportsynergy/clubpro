@@ -107,7 +107,7 @@
       </ul>
     
       <span class="navbar-text">
-        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/logout.php">Logout</a>
+        <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/logout.php" title="<? p($_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"]) ?>">Logout</a>
       </span>
 
     </div>

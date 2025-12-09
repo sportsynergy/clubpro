@@ -185,16 +185,12 @@ function onCancelButtonClicked(){
 				<div class="mt-5">
 					<div class="form-check">
 						<input class="form-check-input" value="3" onclick="disableevent(this.checked)" type="radio" name="cancelall" id="cancelall" checked>
-						<label class="form-check-label" for="flexRadioDefault1">
 							Cancel the event
-						</label>
 					</div>
 
 					<div class="form-check">
 						<input class="form-check-input" value="10"  type="radio" name="cancelall" id="cancelall10" onclick="javascript:enableEvent('<?=$allowChangeEvent?true:false ?>')">
-						<label class="form-check-label" for="flexRadioDefault1">
 							Update this event occurrence
-						</label>
 					</div>
 
 			</div>
