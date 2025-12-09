@@ -1,34 +1,23 @@
 
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
 
 <form name="entryform" method="post" action="<?=$ME?>">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable">
-  <tr>
-    <td class=clubid<?=get_clubid()?>th>
-    	<span class=whiteh1>
-    		<div align="center"><? pv($DOC_TITLE) ?></div>
-    	</span>
-    </td>
- </tr>
+<div class="mb-3">
+Are you sure you want to Delete this user? You know, if there is any chance of this player coming back a better idea is to disable them.
+          
+</div>
 
- <tr>
-    <td>
+  <div class="my-5">
+        <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Yes, I know. Delete this player</button>
+        <button type="button" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
+    </div>
 
-     <table width="400">
-       <tr>
-           <td class="normal">Are you sure you want to Delete this user? You know, if there is any chance of this player coming back a better idea is to disable them.</td>
-           
-    </tr>
-    <tr>
-    	<td>
-           		<input type="button" name="cancel" value="Yes, I know. Delete this player" id="submitbutton">
-           		<input type="button" value="No, go back" id="cancelbutton">
-           </td>
-    </tr>
- </table>
 
-</table>
 
 <input type="hidden" name="searchname" value="<?=$searchname?>">
 <input type="hidden" name="userid" value="<?=$userid?>">
@@ -40,19 +29,6 @@
 <script type="text/javascript">
 
 document.entryform.searchname.focus();
-
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-    });
-
-} ();
 
 
 function onSubmitButtonClicked(){

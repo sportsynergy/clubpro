@@ -51,10 +51,8 @@ if (!empty($player2Id)) {
 	$player2FullName =  htmlspecialchars($player2FullName);
 }
 
-
 $emailArray = getEmailAddressesForReservation($reservationid);
 $emailString = implode(",", $emailArray);
-
 
 ?>
 <script language="Javascript">
@@ -71,37 +69,14 @@ document.onkeypress = function (aEvent)
 	
 }
 
+  document.getElementById('name1').setAttribute("autocomplete", "off");
+  document.getElementById('name2').setAttribute("autocomplete", "off");
 
-
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-
-      document.getElementById('name1').setAttribute("autocomplete", "off");
-      document.getElementById('name2').setAttribute("autocomplete", "off");
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-		    var oCancelReservationButton = new YAHOO.widget.Button("cancelReservationbutton", { value: "cancelreservationbuttonvalue" });   
-        oCancelReservationButton.on("click", onCancelReservationButtonClicked);
-
-         <? if(isReoccuringReservation($time, $courtid)){ ?>
-            var oCancelAllReservationButton = new YAHOO.widget.Button("cancelAllReservationbutton", { value: "cancelreservationbuttonvalue" });   
-            oCancelAllReservationButton.on("click", onCancelAllReservationButtonClicked);
-
-        <? } ?>
-
-		//Default names
-		document.entryform.name1.value = "<?= addslashes($player1FullName) ?>";
-		document.entryform.name2.value = "<?= addslashes($player2FullName) ?>";
+       
+	//Default names
+	document.entryform.name1.value = "<?= addslashes($player1FullName) ?>";
+	document.entryform.name2.value = "<?= addslashes($player2FullName) ?>";
 		
-    });
-
-} ();
-
-
 function onSubmitButtonClicked(){
 	var myButton = YAHOO.widget.Button.getButton('submitbutton'); 		
 	myButton.set('disabled', true);
@@ -152,42 +127,35 @@ function enable()
 
 </script>
 
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
+
 <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" autocomplete="off">
-  <table cellspacing="0" cellpadding="20" width="410" class="generictable" id="formtable">
-    <tr class="borderow">
-      <td class=clubid<?=get_clubid()?>th><span class="whiteh1">
-        <div align="center">
-          <? if($locked=='y'){ ?>
-          <img src="<?=$_SESSION["CFG"]["imagedir"]?>/lock.png">
-          <?}?>
-          <? pv($DOC_TITLE) ?>
-        </div>
-        </span></td>
-    </tr>
-    <tr>
-      <td>
+ 
+ <div class="mb-3">
+        <input id="name1" name="name1" type="text" size="35" class="form-control form-autocomplete"  value="<?=$player1FullName?>" />
+          <input id="id1" name="player1" type="hidden" value="<?=$player1Id?>"/>
+          <script>
+            <?
+              $wwwroot = $_SESSION["CFG"]["wwwroot"];
+              pat_autocomplete( array(
+        'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+        'source'=>'name1',
+        'target'=>'id1',
+        'className'=>'autocomplete',
+        'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
+        'progressStyle'=>'throbbing',
+        'minimumCharacters'=>3,
+        ));
+              ?>
 
-        <table>
-          
-          <tr>
-            <td><input id="name1" name="name1" type="text" size="35" class="form-autocomplete"   />
-              <input id="id1" name="player1" type="hidden" value="<?=$player1Id?>"/>
-              <script>
-                <?
-                 $wwwroot = $_SESSION["CFG"]["wwwroot"];
-                 pat_autocomplete( array(
-						'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-						'source'=>'name1',
-						'target'=>'id1',
-						'className'=>'autocomplete',
-						'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
-						'progressStyle'=>'throbbing',
-						'minimumCharacters'=>3,
-						));
-                 ?>
+            </script>
+</div>
 
-                </script></td>
-            <td><input id="name2" name="name2" type="text" size="35" class="form-autocomplete" value="<?=$player2FullName?>"  />
+<div class="mb-3">
+<input id="name2" name="name2" type="text" size="35" class="form-control form-autocomplete" value="<?=$player2FullName?>"  />
               <input id="id2" name="player2" type="hidden"  value="<?=$player2Id?>"/>
               <script>
 	                <?
@@ -204,13 +172,12 @@ function enable()
 							));
 	           
 	                 ?>
-                </script></td>
-          </tr>
+                </script>
+
           <? if(!$isPageBeingLoadedForPastReservation){?>
-          <tr>
-            <td class="italitcsm" colspan="2">To Remove someone from the reservation, just delete their name<br>
-              <br></td>
-          </tr>
+         <div class="mb-3">
+              <div id="emailHelp" class="form-text">To Remove someone from the reservation, just delete their name</div>
+          </div>
           <? }?>
           <? if( get_roleid()==2 || get_roleid() ==4){ 
                  
@@ -221,65 +188,64 @@ function enable()
                  	
                  ?>
 
-          <tr>
-              <td  colspan="2">
-
-                <span class="label" style="margin-right: 20px">Match Type:</span> 
-             
-                  <select name="matchtype">
+<div class="mb-3">
+  <label for="workphone" class="form-label">Match Type</label>
+   <select name="matchtype" class="form-select">
                       
-                      <option value="2" <?= $matchtype=="2" ? "selected=selected" : "" ?> >Challenge</option>
+              <option value="2" <?= $matchtype=="2" ? "selected=selected" : "" ?> >Challenge</option>
 
-                      <? if( isSiteBoxLeageEnabled() && isLadderRankingScheme()){ ?>
-                      <option value="1" <?= $matchtype=="1" ? "selected=selected" : "" ?> >Box League</option>
-                      <? } ?>
-                      <option value="0" <?= $matchtype=="0" ? "selected=selected" : "" ?> >Practice</option>
-                  </select>
-              </td>
-          </tr>
-          <tr>
-              <td colspan="2" style="height: 20px"></td>
-          </tr>
-          <tr >
-            <td colspan="2" >
-                <input type="checkbox" name="lock" <?=$selected?> <? if($isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
-              <span class="normal">Lock reservation</span></td>
-          </tr>
-          <?}?>
-          <? 
-                //Only display the note if there are email addresses to send to.
-                if(count($emailArray)>0){?>
-          <tr>
-            <td colspan="2" class="normal"><a href="mailto:<?=$emailString?>">Send Note</a></td>
-          </tr>
-          <? } ?>
-        </table></td>
-    </tr>
-    <tr>
-      <td><br>
+              <? if( isSiteBoxLeageEnabled() && isLadderRankingScheme()){ ?>
+              <option value="1" <?= $matchtype=="1" ? "selected=selected" : "" ?> >Box League</option>
+              <? } ?>
+              <option value="0" <?= $matchtype=="0" ? "selected=selected" : "" ?> >Practice</option>
+          </select>             
+</div>
+
+<div class="form-check">
+  <input class="form-check-input" type="checkbox"  id="lock" name="lock" <?=$selected?> <? if($isPageBeingLoadedForPastReservation){?>disabled <? } ?>/>
+  <label class="form-check-label" for="lock">
+    Lock reservation
+  </label>
+</div>
+
+             
+ <?}?>
+
+
+    <? 
+    //Only display the note if there are email addresses to send to.
+    if(count($emailArray)>0){?>
+    <div class="mb-3">
+      <a href="mailto:<?=$emailString?>">Send Note</a>
+    </div>
+    <? } ?>
+       
         <?
 	       //if its locked and its just a player disable the submit button
 	       $disabled="";
 	       if( $isPageBeingLoadedForPastReservation || ($locked=='y' && get_roleid()==1)){
-	       	
-	       	$disabled = "disabled=disabled";
-	       }
-	       
-	       ?>
-        <input type="button" name="submit" value="Update Reservation" id="submitbutton">
-			<input type="button" value="Cancel Reservation" <?=$disabled?> id="cancelReservationbutton">
-      <? if(isReoccuringReservation($time, $courtid)){ ?>
-        <input type="button" value="Cancel All Occurrences" <?=$disabled?> id="cancelAllReservationbutton">
-        <? } ?>
-		</td>
-    </tr>
-  </table>
+	       	$disabled = "disabled";
+	       }  ?>
 
- <input type="hidden" name="cancelall" value="">
- <input type="hidden" name="reservationid" value="<?=$reservationid?>">
+  <div class="mb-3"> 
+
+     <button type="submit" class="btn btn-primary" name="submit" onclick="onSubmitButtonClicked()">Update Reservation</button>
+     <button type="submit" class="btn btn-primary" <?=$disabled?> onclick="onCancelReservationButtonClicked()">Cancel Reservation</button>
+   
+      <? if(isReoccuringReservation($time, $courtid)){ ?>
+         <button type="submit" class="btn btn-primary" <?=$disabled?> onclick="onCancelAllReservationButtonClicked()">Cancel All Occurrences</button>
+        <? } ?>
+
+     <button type="button" class="btn btn-secondary" <?=$disabled?> onclick="onCancelButtonClicked()">Go Back</button>
+  
+
+    <input type="hidden" name="cancelall" value="">
+  <input type="hidden" name="reservationid" value="<?=$reservationid?>">
   <input type="hidden" name="courtid" value="<?=$courtid?>">
   <input type="hidden" name="time" value="<?=$time?>">
   <input type="hidden" name="guylookingformatch" value="<?=$userid?>">
   <input type="hidden" name="lastupdated" value="<?=$lastupdated?>">
-  
+
+  </div>
+
 </form>

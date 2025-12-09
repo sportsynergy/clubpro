@@ -1,37 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* - validate_form()
-* - insert_user()
-* - validate_email()
-* Classes list:
-*/
+
 include ("../application.php");
 $DOC_TITLE = "User Registration";
 require_loginwq();
@@ -50,15 +18,17 @@ if (match_referer() && isset($_POST['username']) || isset($_POST['memberid']) ) 
     
     if (empty($errormsg)) {
         insert_user($frm, $availbleSportsResult, $availableSitesResult, $extraParametersResult);
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
-        include ($_SESSION["CFG"]["includedir"] . "/include_userregsuc.php");
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        $successmsg = "Registration Successful. Good Job!";
+        
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/user_registration_form.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/user_registration_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
@@ -117,14 +87,8 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
         $username = $frm['username'];
     }
 
-	if (get_magic_quotes_gpc()) {
-        $firstname = stripslashes($frm['firstname']);
-		$lastname = stripslashes($frm['lastname']);
-    } else {
-        $firstname = addslashes($frm['firstname']);
-        $lastname = addslashes($frm['lastname']);
-    }
-
+	$firstname = addslashes($frm['firstname']);
+    $lastname = addslashes($frm['lastname']);
 	
     $query = "INSERT INTO tblUsers (
 	                username, password, firstname, lastname, email, homephone, workphone, cellphone, pager, useraddress, gender

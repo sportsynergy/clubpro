@@ -13,7 +13,7 @@ services:
     image: mysql:8.0.42-debian
     container_name: clubpro-db
     command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    restart: no
     environment:
       MYSQL_ROOT_PASSWORD: clubs4life
       MYSQL_DATABASE: clubpro_main

@@ -18,17 +18,6 @@ function toggle()
         }
 }
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-    });
-
-} ();
-
 
 function onSubmitButtonClicked(){
 	document.skill_entryform.submit();
@@ -36,39 +25,33 @@ function onSubmitButtonClicked(){
 
 </script>
 
-<form name="skill_entryform" method="post" action="<?=$ME?>" autocomplete="off">
-  
-<div style="padding-bottom: 20px"> 
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
+<div class="mb-3"> 
   <a href="javascript:newWindow('../help/skill_range_policies_explained.html')">Help with Skill Range Policies</a>  
  </div>
+
+<form name="skill_entryform" method="post" action="<?=$ME?>" autocomplete="off">
   
-<table cellspacing="0" cellpadding="20" width="550" class="generictable" id="formtable">
-    <tr>
-      <td class=clubid<?=get_clubid()?>th><span class="whiteh1">
-        <div align="center">
-          <? pv($DOC_TITLE) ?>
-        </div>
-        </span></td>
-    </tr>
-    <tr>
-      <td><table cellpadding="5" cellspacing="2">
-          <tr>
-            <td class="label">Name:</td>
-            <td><input type="text" name="name" value="<?=$skillRangePolicy['policyname']?>" maxlength="60" size="30">
-              <? is_object($errors) ? err($errors->name) : ""?>
-            
-            </td>
-          </tr>
-          <tr>
-            <td class="label">Description:</td>
-            <td><textarea cols="25" rows="4" name="description" ><?=$skillRangePolicy['description']?>
-</textarea>
-            <? is_object($errors) ? err($errors->description) : ""?>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">Skill Range:</td>
-            <td><select name="skillrange">
+
+  
+ <div class="mb-3">
+    <label for="name" class="form-label">Name:</label>
+    <input class="form-control" id="name" name="name" type="text" aria-label="Skill Range Policy Name" value="<?=$skillRangePolicy['policyname']?>">
+    <? is_object($errors) ? err($errors->name) : ""?>
+  </div>
+
+   <div class="mb-3">
+    <label for="description" class="form-label">Description:</label>
+    <textarea cols="25" rows="4" class="form-control" id="description" name="description" ><?=$skillRangePolicy['description']?></textarea>
+    <? is_object($errors) ? err($errors->description) : ""?>
+  </div>
+
+   <div class="mb-3">
+      <label for="skillrange" class="form-label">Skill Range:</label>
+      <select name="skillrange" class="form-select" id="skillrange">
                 <option value="">Select Skill Range</option>
                 <option value="">-----------------------------</option>
                 <option value=".25" <?=$skillRangePolicy['skillrange']==".25" ? "selected" : "" ?> >.25</option>
@@ -76,13 +59,13 @@ function onSubmitButtonClicked(){
                 <option value=".75" <?=$skillRangePolicy['skillrange']==".75" ? "selected" : "" ?>  >.75</option>
                 <option value="1" <?=$skillRangePolicy['skillrange']=="1" ? "selected" : "" ?>  >1</option>
               </select>
-            <? is_object($errors) ? err($errors->skillrange) : ""?>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">Court:</td>
-            <td><select name="courtid">
-                <? is_object($errors) ? err($errors->courtid) : ""?>
+      <? is_object($errors) ? err($errors->skillrange) : ""?>
+    </div>
+
+  <div class="mb-3">
+      <label for="courtid" class="form-label">Court</label>
+      <select name="courtid" class="form-select" id="courtid">
+                
                 <option value="">Select Court</option>
                 <option value="">-----------------------------</option>
                 <option value="all" <?=$skillRangePolicy['courtid'] == null ? "selected" : "" ?>>All Courts</option>
@@ -96,12 +79,14 @@ function onSubmitButtonClicked(){
                 <?=$row['courtname']?>
                 </option>
                 <? } ?>
-              </select></td>
-          </tr>
-          <tr>
-            <td class="label">Day of Week:</td>
-            <td><select name="dow">
-                <? is_object($errors) ? err($errors->dow) : ""?>
+            </select>
+            <? is_object($errors) ? err($errors->courtid) : ""?>
+    </div>
+
+    <div class="mb-3">
+      <label for="dow" class="form-label">Day of Week</label>
+      <select name="dow" class="form-select" id="dow">
+                
                 <option value="">Select Day</option>
                 <option value="">-----------------------------</option>
                 <option value="all" <?=$skillRangePolicy['dayid'] == null ? "selected" : ""?>>All Days</option>
@@ -115,17 +100,19 @@ function onSubmitButtonClicked(){
                 <?=$row['name']?>
                 </option>
                 <? } ?>
-              </select></td>
-          </tr>
-          <tr>
-            <td class=label>Specifiy Window: </td>
-            <td><input type="checkbox" name="reservationwindow" value="yes" onclick="toggle(this.checked)" <?=$skillRangePolicy['starttime']!=null ? "checked" : ""?>>
-              <? is_object($errors) ? err($errors->window) : ""?>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">Start Time:</td>
-            <td><select name="starttime" <?= $skillRangePolicy['starttime']==null ? "disabled" : "" ?>>
+              </select>
+              <? is_object($errors) ? err($errors->dow) : ""?>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="yes" id="reservationwindow" onclick="toggle(this.checked)" <?=$skillRangePolicy['starttime']!=null ? "checked" : ""?> name="reservationwindow">
+      <label class="form-check-label" for="reservationwindow">Specifiy Window</label>
+      <? is_object($errors) ? err($errors->window) : ""?>
+</div>
+
+    <div class="mb-3">
+      <label for="starttime" class="form-label">Start Time</label>
+      <select name="starttime" <?= $skillRangePolicy['starttime']==null ? "disabled" : "" ?> class="form-select" id="starttime">
                 <? is_object($errors) ? err($errors->starttime) : ""?>
                 <option value="">Select Start Time</option>
                 <option value="">--------------------</option>
@@ -137,12 +124,14 @@ function onSubmitButtonClicked(){
                 <?=$hourtime?>
                 </option>
                 <? } ?>
-              </select></td>
-          </tr>
-          <tr>
-            <td class="label">End Time:</td>
-            <td><select name="endtime" <?= $skillRangePolicy['endtime']==null ? "disabled" : "" ?>>
-                <? is_object($errors) ? err($errors->endtime) : ""?>
+              </select>
+              <? is_object($errors) ? err($errors->starttime) : ""?>
+    </div>       
+         
+     <div class="mb-3">
+      <label for="endtime" class="form-label">End Time</label>
+      <select name="endtime" <?= $skillRangePolicy['endtime']==null ? "disabled" : "" ?> class="form-select" id="endtime">
+                
                 <option value="">Select End Time</option>
                 <option value="">--------------------</option>
                 <?
@@ -154,15 +143,24 @@ function onSubmitButtonClicked(){
                 </option>
                 <? } ?>
               </select>
-              <input type="hidden" name="policyid" value="<?=$skillRangePolicy['policyid']?>">
-              <input type="hidden" name="submitme" value="submitme"></td>
-          </tr>
-          <tr>
-            <td><input type="button" name="submit" value="<?=$buttonLabel?>" id="submitbutton"></td>
-          </tr>
-        </table></td>
-    </tr>
-  </table>
+              <? is_object($errors) ? err($errors->endtime) : ""?>
+    </div>     
+          
+         
+             
+  <div class="mt-5">
+      <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()" name="submit"  id="submitbutton">
+          <?=$buttonLabel?>
+        </button>
+         <input type="hidden" name="policyid" value="<?=$skillRangePolicy['policyid']?>">
+        <input type="hidden" name="submitme" value="submitme"></td>
+      </div>
+  </form>    
+           
+         
+
 </form>
-<div style="height: 2em;"></div>
-<div> <span class="normal"> <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/policy_preferences.php#skill" > << Back to Reservation Policies </a> </span> </div>
+
+<div class="mt-3"> 
+  <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/policy_preferences.php#skill" > << Back to Reservation Policies </a> 
+</div>

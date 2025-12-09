@@ -1,29 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
 
 //Load necessary libraries and set the wanturl to get back here.
 $_SESSION["wantsurl"] = qualified_mewithq();
@@ -31,7 +6,7 @@ $_SESSION["siteprefs"] = getSitePreferences($siteid);
 $frm = $_POST;
 $ladderid = $frm['ladderid'];
 $DOC_TITLE = "Sportsynergy Box Leagues";
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 
 if (isRequireLogin()) require_login();
 
@@ -221,10 +196,10 @@ if ($siteid) {
 
 ?>
 
-<table width="710" cellspacing="0" cellpadding="0" align="center" class="borderless">
+<table class="borderless">
 
 <tr>
-<td align="right" colspan="2">
+<td class="text-align: right" colspan="2">
 
         <? if (isLadderRankingScheme() ) { ?>
         <div style="margin-bottom: 10px; margin-right: 10px">
@@ -243,8 +218,8 @@ if ($siteid) {
         <td colspan="2">
             <p id="rcorners1">
                 You are scheduled for league match with <?=$otherguy ?>. Record that score 
-                <span class="normal" id="showreportscoresplayer"><a
-			style="text-decoration: underline; cursor: pointer"> here</a>.</span>
+                <span id="showreportscoresplayer"><a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/report_ladder_score.php"
+			style="text-decoration: underline; cursor: pointer" > here</a>.</span>
                 
                 <div style="height:10px"></div>
             </p>
@@ -302,56 +277,35 @@ $lastupdatestring = $wlobj->lastupdated;
           <? }     
     ?> 
             
-      <td width="350" >
-
-              <table width="350" cellpadding="0" cellspacing="0" class="bordertable">
+      <td width="350" style="padding: 10px" >
+              <table class="table table-striped">
+                <thead>
               	<tr valign="top">
-              		<td class=clubid<?=get_clubid()?>th colspan="<?=$colspan?>">
-              			<span class="whiteh1"><div align="center">
-                            <?=$wlobj->boxname?></div>
-                        </span>
-              		</td>
+              		<th colspan="<?=$colspan?>">
+                        <span class="bigbanner"><?=$wlobj->boxname?></span>
+                        <div class="boxdateheader">
+                                Start Date: <?=$startdatestring[1]."-".$startdatestring[2]."-".$startdatestring[0]?> 
+              	            End Date: <?=$datestring[1]."-".$datestring[2]."-".$datestring[0]?>
+                        </div>
+              		</th>
                	</tr>
-               	<tr>
-              		<td class=clubid<?=get_clubid()?>th colspan="<?=$colspan?>">
-              			<span class="whitenormsm">
-              				<div align="center">Start Date: <?=$startdatestring[1]."-".$startdatestring[2]."-".$startdatestring[0]?> 
-              	            End Date: <?=$datestring[1]."-".$datestring[2]."-".$datestring[0]?></div>
-                        </span>
-
-              	<div style="height: .5em"></div>
-              	</td>
-              </tr>
+               	
               
-             
-              <tr align="center" class=clubid<?=get_clubid()?>th>
-	              	<td>
-	              		<span class="whitenorm">Place</span>
-	              	</td>
-	              	<td>
-	              		<span class="whitenorm">Player</span>
-	              	</td>
-	              	<td>
-	              		<span class="whitenorm">Points</span>
-	              	</td>
+              <tr>
+	              	<th> Place</th>
+	              	<th> Player</th>
+	              	<th> Points </th>
                     <? if( isJumpLadderRankingScheme() ) { ?>
-                      <td>
-	              		<span class="whitenorm">Games Won</span>
-	              	</td>
+                      <th>Games Won</td>
 
                         <?  if( $wlobj->ladder_type == 'extended' ) { ?>
-                        <td>
-                            <span class="whitenorm">Total Points</span>
-                        </td>
-                         <td>
-                            <span class="whitenorm">Total Games Won</span>
-                        </td>
+                        <th>Total Points</th>
+                         <th> Total Games Won</th>
                         <?  } ?>
-
                     <?  } ?>
-                     
-
               </tr>
+                        </thead>
+                        <tbody>
         
 <?
                // Now list the players in the ladder
@@ -375,15 +329,10 @@ $lastupdatestring = $wlobj->lastupdated;
                 $n=1;
                 
                 $rownum = mysqli_num_rows($webladderuserresult);
-                while ($wluserobj = db_fetch_object($webladderuserresult)) {
-
-                	 $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
-                	 
-                	?>
-                        <tr align="center" class="<?=$rc?>">
-	                        <td>
-	                        	<span class="normal"><?=$n?></span>
-	                        </td>
+                while ($wluserobj = db_fetch_object($webladderuserresult)) { ?>
+                        
+                        <tr>
+	                        <td> <?=$n?></td>
 	                        <td>
                             <form name="playerform<?=$playercounter?>" method="get"
 								action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php">
@@ -391,43 +340,28 @@ $lastupdatestring = $wlobj->lastupdated;
 									value="<?=$wluserobj->userid?>"> 
                                     <input type="hidden" name="origin" value="league">
 							</form>
-	                        	<span class="normal">
+	                        	
                                     <a href="javascript:submitForm('playerform<?=$playercounter?>')">
                                     <?=$wluserobj->firstname?> <?=$wluserobj->lastname?>
                                     </a>
                                     
-                                    </span>
 	                        </td>
 	                       
 	                        <td>
-	                        	<span class="normal">
-                                    <? if ( isLadderRankingScheme() ) { ?>
-									<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/web_ladder_history.php?boxid=<?=$wluserobj->boxid?>&userid=<?=$wluserobj->userid?>" title="view history">
-									<? } ?>
-                                    <?=$wluserobj->score?></span>
-									</a>
+	                        	
+                                <? if ( isLadderRankingScheme() ) { ?>
+                                <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/web_ladder_history.php?boxid=<?=$wluserobj->boxid?>&userid=<?=$wluserobj->userid?>" title="view history">
+                                <? } ?>
+                                <?=$wluserobj->score?></span>
+                                </a>
 	                        </td>
                             <? if ( isJumpLadderRankingScheme() ) { ?>
-                            <td>
-                                    <span class="normal">
-                                    <?=$wluserobj->gameswon?>
-                                    </span>
-                            </td>
-
-                                <?  if( $wlobj->ladder_type == 'extended' ) {  ?>
-                                    <td>
-                                        <span class="normal">
-                                             <?=$wluserobj->totalscore?>
-                                        </span>
-                                    </td>
-                                     <td>
-                                        <span class="normal">
-                                             <?=$wluserobj->totalgameswon?>
-                                        </span>
-                                    </td>
-                                    <?  } ?>
+                            <td> <?=$wluserobj->gameswon?> </td>
+                            <?  if( $wlobj->ladder_type == 'extended' ) {  ?>
+                                <td><?=$wluserobj->totalscore?></td>
+                                <td><?=$wluserobj->totalgameswon?></td>
+                            <?  } ?>
                             <? } ?>   
-
                         </tr>
                      <?
                         $n++;
@@ -437,7 +371,7 @@ $lastupdatestring = $wlobj->lastupdated;
 
 				?>
                		<!-- Space things out -->
-               		
+            </tbody>
               </table>
 			<div style="height: 1em"></div>
       </td>
@@ -448,7 +382,6 @@ $lastupdatestring = $wlobj->lastupdated;
 
        ++$resultcounter;
        
-
        //Reset the result counter
        if ($resultcounter==2){
          $resultcounter = 0;
@@ -477,9 +410,8 @@ if( isJumpLadderRankingScheme()  ){
         $lastupdated = $lastupdatestring;
         } ?>
 
-    <span class="smallreg">
     <?=$lastupdated?>
-    </span>
+    
     </div>
     <? } ?>
 
@@ -488,68 +420,6 @@ if( isJumpLadderRankingScheme()  ){
   <input type="hidden" name="ladderid">
 </form>
 
-<div id="reportscoredialogplayer" class="yui-pe-content">
-
-<div class="bd">
-		<form method="POST" action="<?=$ME?>" autocomplete="off">
-			
-
-		 <div style="margin:10px"> 
-			<span class="label">Outcome:</span>
-			<select name="outcome">
-					<option value="defeated">I won</option>
-					<option value="lostto">I lost</option>
-				</select>
-			</div>
-
-			<div style="margin:10px"> 
-			<span class="label">Score:</span>
-			<select name="score">
-					<option value="3-2">3-2</option>
-					<option value="3-1" selected>3-1</option>
-					<option value="2-1" selected>2-1</option>
-					<option value="3-0" selected>3-0</option>
-				</select>
-			</div>
-
-			<div style="margin:10px"> 
-			<span class="label"> Time </span>
-				<select name="hourplayed">
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-					<option value="7">7</option>
-					<option value="8" selected>8</option>
-					<option value="9">9</option>
-					<option value="10">10</option>
-					<option value="11">11</option>
-					<option value="00">12</option>
-				</select>
-
-				<select name="minuteofday">
-					<option value="00">00</option>
-					<option value="15">15</option>
-					<option value="30">30</option>
-					<option value="45">45</option>
-				</select>
-
-				<select name="timeofday">
-					<option value="AM">AM</option>
-					<option value="PM" selected>PM</option>
-				</select>
-			</div>
-                 <input type="hidden" name="scheduledmatchid" value="<?=$scheduledmatchid?>">
-                 <input type="hidden" name="otherguyid" value="<?=$otherguyid?>">
-                 <input type="hidden" name="ladderid" value="<?=$ladderid?>">
-				<input type="hidden" name="cmd" value="reportladderscore">
-		</form>
-
-</div>
-	
-</div>
 
   <script type="text/javascript" >
 
@@ -561,62 +431,12 @@ if( isJumpLadderRankingScheme()  ){
 
     var allownewlines = false;
     
-    /*
-    * Report score dialoge
-    */
-    YAHOO.namespace("clubladder.container");
-    YAHOO.util.Event.onDOMReady(function () {
-        
-        
-
-        // Define various event handlers for Dialog
-        var handleSubmit = function() {
-            this.submit();
-        };
-        var handleCancel = function() {
-            this.cancel();
-        };
-        var handleSuccess = function(o) {
-            window.location.href=window.location.href;
-
-        };
     
-        var handleFailure = function(o) {
-            alert("Submission failed: " + o.status);
-        };
-    
-        // Remove progressively enhanced content class, just before creating the module
-        YAHOO.util.Dom.removeClass("reportscoredialogplayer", "yui-pe-content");
-    
-        // Instantiate the Dialog
-        YAHOO.clubladder.container.reportscoredialogplayer = new YAHOO.widget.Dialog("reportscoredialogplayer", 
-                            { width : "30em",
-                                fixedcenter : true,
-                                modal: true,
-                                visible : false, 
-                                constraintoviewport : true,
-                                buttons : [ { text:"Record Score", handler:handleSubmit, isDefault:true } ]
-                            });
-    
-
-        YAHOO.clubladder.container.reportscoredialogplayer.setHeader('Record Score');
-    
- 
-    
-        // Wire up the success and failure handlers
-        YAHOO.clubladder.container.reportscoredialogplayer.callback = { success: handleSuccess,
-                                failure: handleFailure };
-        
-        // Render the Dialog
-        YAHOO.clubladder.container.reportscoredialogplayer.render();
-        YAHOO.util.Event.addListener("showreportscoresplayer", "click", YAHOO.clubladder.container.reportscoredialogplayer.show, YAHOO.clubladder.container.reportscoredialogplayer, true);
-        YAHOO.util.Event.addListener("showreportscoresplayer", "click", disablenewlines, false, true);
-    });
 
 </script> 
 
 
 <?
 }
-include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+include($_SESSION["CFG"]["templatedir"]."/footer.php");
 ?>

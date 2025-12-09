@@ -23,18 +23,6 @@
 
 <script type="text/javascript" >
 
-YAHOO.clubpro.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-
-    });
-
-} ();
-
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');

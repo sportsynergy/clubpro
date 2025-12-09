@@ -1,189 +1,159 @@
 
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
-<div align="center">
-  <table width="650" cellpadding="20" cellspacing="0" class="generictable">
-    <tr>
-      <td class="clubid<?=get_clubid()?>th" ><span class=whiteh1>
-        <div align="center">
-          <? pv($DOC_TITLE) ?>
-        </div>
-        </span></td>
-    </tr>
-    <tr>
-      <td><table cellspacing="0" cellpadding="1" width="650" class="borderless">
-          <tr>
-            <td class=label>First Name:</td>
-            <td class="normal"><?=$frm["firstname"] ?></td>
-            <td rowspan="6" valign="top">
-              <div align="center"> 
 
-                   <?  if( isset($frm["photo"]) ){ ?>
-                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($frm["photo"]); ?>" width="180" height="180">
-                        <?   } else{  ?>
-						                <img src="<?=get_gravatar($frm["email"],180 )?>" />
-                        <?   }   ?>
-              </div>
-          </td>
-          </tr>
-          <tr>
-            <td class=label>Last Name:</td>
-            <td class="normal"><?=$frm["lastname"] ?></td>
-          </tr>
-          <tr>
-            <td class=label>Email:</td>
-            <td class="normal"><a href="mailto:<?=$frm["email"] ?>">
-              <?=$frm["email"] ?>
-              </a></td>
-          </tr>
-         
-          <? if(!empty($frm["cellphone"])){?>
-          <tr>
-            <td class=label>Mobile Phone:</td>
-            <td class="normal"><?  pv($frm["cellphone"]); ?></td>
-          </tr>
-          <? } ?>
-          <? if(!empty($frm["msince"])){?>
-          <tr>
-            <td class="label">Member Since:</td>
-            <td class="normal"><?=$frm["msince"] ?></td>
-          </tr>
-          <? } ?>
-          
-          <tr>
-            <?
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col">
+
+    <div class="mb-3">
+      <label for="username" class="form-label">First Name:</label>
+      <input class="form-control-plaintext" id="username" type="text" aria-label="Username" value="<?=$frm["firstname"] ?>" readonly>  
+  </div>
+  <div class="mb-3">
+      <label for="lastname" class="form-label">Last Name:</label>
+      <input class="form-control-plaintext" id="lastname" type="text" aria-label="Lastname" value="<?=$frm["lastname"] ?>" readonly>  
+  </div>
+  <div class="mb-3">
+      <label for="email" class="form-label">Email:</label>
+      <input class="form-control-plaintext" id="email" type="email"  aria-label="Email" value="<?=$frm["email"] ?>" readonly>  
+  </div>
+
+  <? if(!empty($frm["cellphone"])){?>
+
+    <div class="mb-3">
+      <label for="mobilephone" class="form-label">Mobile Phone:</label>
+      <input class="form-control-plaintext" id="mobilephone" type="text"  aria-label="Mobile Phone" value="<?=$frm["cellphone"] ?>" readonly>  
+  </div>
+
+  <? } ?>
+
+  <? if(!empty($frm["msince"])){?>
+      <label for="membersince" class="form-label">Member Since:</label>
+      <input class="form-control-plaintext" id="membersince" type="text"  aria-label="Member Since" value="<?=$frm["msince"] ?>" readonly>  
+    <? } ?>
+
+     <?
 		   // Get the Custom Parameters
 		  while( $parameterArray = db_fetch_array($extraParametersResult)){ 
 			
 			$parameterValue = load_site_parameter($parameterArray['parameterid'], $userid );
 	
 			if($parameterArray['parametertypename'] == "text" && !empty($parameterValue) ){ ?>
-          <tr>
-            <td class="label"><? pv($parameterArray['parameterlabel'])?>
-              :</td>
-            <td><? pv($parameterValue) ?></td>
-          </tr>
-          <? } elseif($parameterArray['parametertypename'] == "select" && !empty($parameterValue) ) { ?>
-          <tr>
-            <td class="label"><? pv($parameterArray['parameterlabel'])?>
-              :</td>
-            <td><? pv( load_parameter_option_name($parameterArray['parameterid'], $parameterValue)  ) ?></td>
-          </tr>
-          <? } ?>
-          <? } ?>
-          
-          <? if( isPointRankingScheme()  ) { ?>
-          <tr>
-            <td class="label" valign="top">Rankings:</td>
-            <td >
-              <table width="300">
-                <?  while ($registeredArray = db_fetch_array($registeredSports)){ ?>
-                <tr>
-                  <td><?=$registeredArray['courttypename']?>:
-                  <?=$registeredArray['ranking']?></td>
-                </tr>
-                <?  }
-							?>
-              </table>
-            </td>
-          </tr>
-
-          <? } ?>
-          <tr height="15">
-            <td colspan="2"></td>
-          </tr>
-          
-          <?php
-              # if player is on the ladder
-              if ( isJumpLadderRankingScheme() ){ 
-                $laddersforuserResult = getLadders($userid);
+          <div class="mb-3">
+          <label for="<? pv($parameterArray['parameterlabel'])?>" class="form-label"><? pv($parameterArray['parameterlabel'])?></label>
+           <input class="form-control-plaintext" id="<? pv($parameterArray['parameterlabel'])?>" type="text" aria-label="<? pv($parameterArray['parameterlabel'])?>" value="<? pv($parameterValue) ?>" readonly>   
+      </div>  
                
-                while($ladder = mysqli_fetch_array($laddersforuserResult)){ 
+      <? } elseif($parameterArray['parametertypename'] == "select" && !empty($parameterValue) ) { ?>
+        <div class="mb-3">
+        <label for="<? pv($parameterArray['parameterlabel'])?>" class="form-label"><? pv($parameterArray['parameterlabel'])?></label>
+        <input class="form-control-plaintext" id="<? pv($parameterArray['parameterlabel'])?>" type="text" aria-label="<? pv($parameterArray['parameterlabel'])?>" value="<? pv( load_parameter_option_name($parameterArray['parameterid'], $parameterValue)  ) ?>" readonly>
+        </div>
+      <? }  ?>
+      <? } ?>
 
-              ?>
-
-              <tr>
-              <td class="label" valign="top" colspan="2"><?=$ladder['name'] ?> Ladder Results</td>
-              </tr>
-              <tr>
-              <td class="label" valign="top" >Position</td>
-              <td> <?=$ladder['ladderposition'] ?> </td>
-              </tr>
-              <tr>
-              <td colspan="2">
-
-                <?
-                $ladderMatchResult = getLadderMatchesForUser($ladder['id'], $userid, 40 );
-                
-                if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
-
-                  <table class="activitytable" width="400">
-                    <tr>
-                      <th>Date</th>
-                      <th>Winner</th>
-                      <th>Loser</th>
-                      <th>Score</th>
-                    </tr>
-                    
-                <?
-                while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
-
-                  $scored = $challengeMatch['score'];
-                  $winner_obj = new clubpro_obj;
-                  $winner_obj->fullname =  $challengeMatch['winner_first']." ". $challengeMatch['winner_last'];
-                  $winner_obj->id = $challengeMatch['winner_id'];
-                  
-                  $loser_obj = new clubpro_obj;
-                  $loser_obj->fullname =  $challengeMatch['loser_first']." ". $challengeMatch['loser_last'];
-                  $loser_obj->id = $challengeMatch['loser_id'];
-                  
-                  //don't include timestamp
-                  $challengeDate = explode(" ",$challengeMatch['match_time']);
-
-                  printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['league']);
-                      
-                } ?>
-                </table>
-                <td>
-              </tr>
-             <? } 
-             
-              }
-              ?>
-
-              </td>
-              </tr>
-              <?  }  ?>
+        <? if( isPointRankingScheme()  ) { ?>
+          
+     <div class="mb-3">
         
-          </tr>
-         
-        </table>
+        <?  while ($registeredArray = db_fetch_array($registeredSports)){ ?>
+          <label for="<?=$registeredArray['courttypename']?>" class="form-label"><?=$registeredArray['courttypename']?> Ranking</label>
+          <input class="form-control-plaintext" id="<?=$registeredArray['courttypename']?>" type="text"  aria-label="Member Since" value="<?=$registeredArray['ranking']?>" readonly>  
+        <?  } ?>
+         </div>    
+        <? } ?>  
+
+        
+        
+      </div> <!-- .col-md-8 -->
+      <div class="col">
+
+      <div class="my-3">
+
+        <?  if( isset($frm["photo"]) ){ ?>
+                <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($frm["photo"]); ?>" width="180" height="180">
+            <?   } else{  ?>
+                <img src="<?=get_gravatar($frm["email"],180 )?>" />
+            <?   }   ?>
+            </div>
+        </div>
+</div> <!-- .row justify-content-center -->
+<div class="row">
+<div class="col">
+
+            
+ <div class="my-5">
+  <? if ( isJumpLadderRankingScheme() ){ 
+        $laddersforuserResult = getLadders($userid);
+        
+        while($ladder = mysqli_fetch_array($laddersforuserResult)){   ?>
+
       
-      </td>
-    </tr>
-   
-  </table>
-  <table width="650" cellpadding="20" cellspacing="0" >
-  <tr height="15">
-            <td colspan="2">
-            <div class="spacer"></div>
-            <?php
-            if( $origin == 'ladder') { ?>
-              <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">< Back to ladder</a>
-            <? } elseif ($origin == 'league') { ?>
-              <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">< Back to leagues</a>
-              
-              <? } elseif ($origin == 'schedule') { ?>
-              <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/my_league_schedule.php">< Back to the ladder schedule</a>
-              
-              <? } ?>
-            </td>
-          </tr>
-            </table>
-  <div style="height: 2em;">
+            <? $ladderMatchResult = getLadderMatchesForUser($ladder['id'], $userid, 40 );
+            
+            if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
+            <h2><?=$ladder['name'] ?> Results</h2>
 
-</div>
-  <div style="text-align: left;">
+              <table class="table table-striped" style="width: 50%">
+                <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Winner</th>
+                  <th>Loser</th>
+                  <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>    
+            <?
+            while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
+
+              $scored = $challengeMatch['score'];
+              $winner_obj = new clubpro_obj;
+              $winner_obj->fullname =  $challengeMatch['winner_first']." ". $challengeMatch['winner_last'];
+              $winner_obj->id = $challengeMatch['winner_id'];
+              
+              $loser_obj = new clubpro_obj;
+              $loser_obj->fullname =  $challengeMatch['loser_first']." ". $challengeMatch['loser_last'];
+              $loser_obj->id = $challengeMatch['loser_id'];
+              
+              //don't include timestamp
+              $challengeDate = explode(" ",$challengeMatch['match_time']);
+
+              printLadderMatchRow($challengeMatch['id'], $winner_obj, $loser_obj, $challengeDate[0], $scored, $challengeMatch['league']);
+                  
+            } ?>
+          </tbody>
+          </table>
+
+          <? } ?>   
+      <?  }  ?>  
+      <?  }  ?>  
+          </div>
+      
+<!-- TODO: Put in the jump ladder recent matches -->
+        
+<div class="mb-3">
+<?php
+if( $origin == 'ladder') { ?>
+  <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">< Back to ladder</a>
+<? } elseif ($origin == 'league') { ?>
+  <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">< Back to leagues</a>
   
+  <? } elseif ($origin == 'schedule') { ?>
+  <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/my_league_schedule.php">< Back to the ladder schedule</a>
+  
+  <? } ?>
+
   </div>
-</div>
+ 
+</div> <!--  row --> 
+  </div> <!--  col-->       
+   </div> <!-- .container -->
+
+
+
+

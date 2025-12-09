@@ -47,7 +47,7 @@ if (match_referer() && isset($_POST['submitme'])) {
     $errormsg = validate_form($frm, $errors);
     
     if (empty($errormsg)) {
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 
         if ($frm["report"] == "memberactivity") {
             run_member_activity_report($frm);
@@ -76,13 +76,13 @@ if (match_referer() && isset($_POST['submitme'])) {
         else{
             print "nothing";
         }
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/club_reports_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footerphp");
 
 /******************************************************************************
  * FUNCTIONS
@@ -110,23 +110,18 @@ function run_ladder_score_report($ladderid, $ladder_name) {
     $ladderMatchResult = getLadderMatches( $ladderid, 100 );
 
     // Display the data
+    
     ?>
+
+    <p class="bigbanner"><? pv($reportName) ?></p>
+    <p><?pv($reportDescription)?></p>
+
     <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
-     <table cellspacing="0" cellpadding="0" border="0" width="710" align="center" class="borderless">
-        <tr>
-            <td>
+    
             <?
             include($_SESSION["CFG"]["includedir"]."/include_reportSelectHeader.php");
              ?>
-            </td>
-        </tr>
-        <tr>
-            <td class="normal">
-           <?pv($reportDescription)?>
-             </td>
-        </tr>
-        <tr>
-          <td>
+              
           <div>
             <a href="javascript:submitForm('exportDataForm')">Export full report</a>
             <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/ladder_score_log.php" method="post">
@@ -134,20 +129,12 @@ function run_ladder_score_report($ladderid, $ladder_name) {
             </form>
                 
             </div>
-          </td>
-         </tr>
-         <tr>
-          <td height="40"></td>
-         </tr>
-        <tr> 
-        
-         <tr>
-            <td>
+         
             <?
     
     if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
-        <table class="activitytable sortable" width="450">
+        <table class="activitytable sortable table table-striped" width="450">
             <tr>
             <th>Date</th>
             <th>Challenger</th>
@@ -197,22 +184,16 @@ function run_ladder_export_report($ladderid, $ladder_name) {
 
     // Display the data
     ?>
+
+    <p class="bigbanner"><? pv($reportName) ?></p>
+     <p><?pv($reportDescription)?></p>
+
     <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
-     <table cellspacing="0" cellpadding="0" border="0" width="710" align="center" class="borderless">
-        <tr>
-            <td>
+    
             <?
             include($_SESSION["CFG"]["includedir"]."/include_reportSelectHeader.php");
              ?>
-            </td>
-        </tr>
-        <tr>
-            <td class="normal">
-           <?pv($reportDescription)?>
-             </td>
-        </tr>
-        <tr>
-          <td>
+            
           <div>
             <a href="javascript:submitForm('exportDataForm')">Export full report</a>
             <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/ladder_export_log.php" method="post">
@@ -220,20 +201,13 @@ function run_ladder_export_report($ladderid, $ladder_name) {
             </form>
                 
             </div>
-          </td>
-         </tr>
-         <tr>
-          <td height="40"></td>
-         </tr>
-        <tr> 
-        
-         <tr>
-            <td>
+          
             <?
     
     if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
-        <table class="activitytable sortable" width="650" >
+        <table class="table sortable  table table-striped" >
+            <thead>
             <tr>
             <th>Name</th>
             <th>Ranking</th>
@@ -241,6 +215,8 @@ function run_ladder_export_report($ladderid, $ladder_name) {
             <th>Email</th>
             <th>Phone</th>
             </tr>
+    </thead>
+    <tbody>
         
         <? while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){  ?> 
             <tr>
@@ -253,6 +229,7 @@ function run_ladder_export_report($ladderid, $ladder_name) {
         
      <?   }?>
         </td></tr>
+        </tbody>
         </table>
         
     
@@ -320,81 +297,60 @@ function run_member_activity_report(&$frm) {
 
     
 ?>
-        <table cellspacing="0" cellpadding="0" border="0" width="710" align="center" class="borderless">
-        <tr>
-            <td>
+
+<p class="bigbanner"><? pv($reportName) ?></p>
+     <p><?pv($reportDescription)?></p>
+       
             <?
             include($_SESSION["CFG"]["includedir"]."/include_reportSelectHeader.php");
              ?>
-            </td>
-        </tr>
-        <tr>
-            <td class="normal">
-           <?pv($reportDescription)?>
-             </td>
-        </tr>
-        <tr>
-          <td height="15"></td>
-         </tr>
-        <tr>
-        <td>
-             <table cellspacing="5" cellpadding="5" border="0" width="700" >
-             <tr>
-             <td valign="top">
+           
+             <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        
+                    <h2>Most Active Members</h2>
+                     <table class="sortable table table-striped">
+                     <thead>           
+                        <tr>
+                                    <th></th>
+                                    <th> Name</th>
+                                    <th>No. of Reservations</th>
+                                </tr>
+                    </thead>
+                    <tbody>
+                                <?
 
-                           <table cellspacing="0" cellpadding="5" width="300" class="bordertable">
-                                  <tr class=clubid<?=get_clubid()?>th>
-                                      <td height="10" colspan="3">
-                                          <font class="whiteh1">
-                                                <div align="center">
-                                                    Most Active Members
-                                                </div>
-                                          <font>
-                                      </td>
-                                  </tr>
-                                  <tr class=clubid<?=get_clubid()?>th>
-                                     <td></td>
-                                     <td align="center"><span class="whitenormalsm"> Name</span></td>
-                                     <td align="center"><span class="whitenormalsm">No. of Reservations</span></td>
-                                  </tr>
-                                  <?
+                                arsort($dataArray);
+                                //print_r($dataArray);
+                                $i=1;
+                                $topTenDataArray = array_slice ($dataArray, 0, 20);
+                                foreach($topTenDataArray as $key=>$vals){
 
-                                   arsort($dataArray);
-                                   //print_r($dataArray);
-                                   $i=1;
-                                   $topTenDataArray = array_slice ($dataArray, 0, 20);
-                                   foreach($topTenDataArray as $key=>$vals){
+                                $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
+                                ?>
+                                <tr>
+                                <td ><?=$i?></td>
+                                <td ><?=$vals['firstname']?> <?=$vals['lastname']?></td>
+                                <td ><?=$vals['rescount']?></td>
+                                </tr>
+                                <? $i++; }  ?>
+                                </tbody>
+                            </table>
 
-                                   $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
-                                   ?>
-                                   <tr class='<?=$rc?>'>
-                                   <td align="center"><?=$i?></td>
-                                   <td align="center"><?=$vals['firstname']?> <?=$vals['lastname']?></td>
-                                   <td align="center"><?=$vals['rescount']?></td>
-                                   </tr>
-                                   <? $i++;
-                                   }
-                                  ?>
-                           </table>
+                    </div>
 
-              </td>
-               <td valign="top">
-
-                  <table cellspacing="0" cellpadding="5" width="300" class="bordertable">
-                     <tr class="clubid<?=get_clubid()?>th">
-                         <td height="10" colspan="3">
-                             <font class="whiteh1">
-                                   <div align="center">
-                                       Least Active Members
-                                   </div>
-                             <font>
-                         </td>
-                     </tr>
-                        <tr class=clubid<?=get_clubid()?>th>
-                                     <td></td>
-                                     <td align="center"><span class="whitenormalsm"> Name</span></td>
-                                     <td align="center"><span class="whitenormalsm">No. of Reservations</span></td>
+                    <div class="col-6">
+                    <h2>Least Active Members</h2>
+                    <table class="sortable table table-striped">
+                     <thead>
+                        <tr>
+                                     <th></th>
+                                     <th>Name</th>
+                                     <th>No. of Reservations</th>
                          </tr>
+                        </thead>
+                         <tbody>
                                 <?
 
                                    asort($dataArray);
@@ -406,25 +362,23 @@ function run_member_activity_report(&$frm) {
                                    $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
                                    
                                    ?>
-                                   <tr class='<?=$rc?>' >
-                                   <td align="center"><?=$i?></td>
-                                   <td align="center"><?=$vals['firstname']?> <?=$vals['lastname']?></td>
-                                   <td align="center"><?=$vals['rescount']?></td>
+                                   <tr>
+                                   <td><?=$i?></td>
+                                   <td><?=$vals['firstname']?> <?=$vals['lastname']?></td>
+                                   <td><?=$vals['rescount']?></td>
                                    </tr>
                                   <?
                                    $i++;
                                    }
                                   ?>
+                            <tbody>
+                            <table>
+                    </div>
+                </div><!-- row -->
+            </div><!-- container -->
 
-                  <table>
 
-                </td>
-                </tr>
-                </table>
-
-              </td>
-           </tr>
-         </table>
+                        
         <?
 }
 
@@ -484,7 +438,6 @@ function run_court_utilization_report(&$frm) {
 
          }
 	
-	
        //Reset the court results
         mysqli_data_seek($courtResult,0);
 
@@ -509,7 +462,6 @@ function run_court_utilization_report(&$frm) {
                   $utilization = $hoursOfUse/$dailyCourtReservations;
                   
                  
-                
                  if( isDebugEnabled(1) ) logMessage("\tReservation Count: $reservationCount ");
                  if( isDebugEnabled(1) ) logMessage("\tCourt Name: ".$row['courtname']);
                  if( isDebugEnabled(1) ) logMessage("\tUtilization:$utilization ");
@@ -527,72 +479,41 @@ function run_court_utilization_report(&$frm) {
         //*****************************************************************
 
         ?>
-        <table cellspacing="0" cellpadding="0" border="0" width="710" align="center" class="borderless">
-        <tr>
-            <td>
+       
+       <p class="bigbanner"><? pv($reportName) ?></p>
+      <p><?pv($reportDescription)?></p>
+
             <?
              include($_SESSION["CFG"]["includedir"]."/include_reportSelectHeader.php");
              ?>
-            </td>
-        </tr>
-        <tr>
-            <td class="normal">
-                <?pv($reportDescription)?>
+            <a href="javascript:submitForm('exportDataForm')">Export Booking Log</a>
+                <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/booking_log.php" method="post">
+            </form>
 
-             </td>
-        </tr>
-         <tr>
-          <td height="15"></td>
-         </tr>
-        <tr>
-        <td>
+                  <table cellspacing="0" cellpadding="5" width="440" class="table table-striped">
+                         <thead>
+                         <tr >
+                            <th>Court Name</th>
+                            <th>Court Utilization %</th>
+                            <th>Number of Reservations Made</th>
+                         </tr>
+                        </thead>
+                        <tbody>
 
-                  <table cellspacing="0" cellpadding="5" width="440" class="bordertable">
-                         <tr class=clubid<?=get_clubid()?>th>
-                             <td height="10" colspan="3">
-                                 <font class="whiteh1">
-                                       <div align="center">
-                                          Court Utilization
-                                       </div>
-                                 <font>
-                             </td>
-                         </tr>
-                         <tr class=clubid<?=get_clubid()?>th>
-                            <td><span class="whitenormalsm">Court Name</span></td>
-                            <td><span class="whitenormalsm">Court Utilization %</span></td>
-                            <td><span class="whitenormalsm">Number of Reservations Made</span></td>
-                         </tr>
                          <?
                           $i=1;
                           arsort($dataArray);
-                          foreach($dataArray as $key=>$vals){
-                          $rc = (($i/2 - intval($i/2)) > .1) ? "lightrow" : "darkrow";
-                          ?>
-                          <tr class='<?=$rc?>' >
+                          foreach($dataArray as $key=>$vals){  ?>
+                          <tr >
                           <td><?=$vals['courtname']?></td>
-                          <td align="center"><?=substr($vals['utilization'],0,5)?></td>
-                          <td align="center"><?=$vals['rescount']?></td>
-                          <?
-                          $i++;
-                          }
-                         ?>
+                          <td><?=substr($vals['utilization'],0,5)?></td>
+                          <td ><?=$vals['rescount']?></td>
+                          <? } ?>
+                          </tbody>
                   </table>
 
 
-   </td>
-  </tr>
-   <tr>
-    <td height="15"></td>
-   </tr>     
-  <tr>
-    <td>
-     <a href="javascript:submitForm('exportDataForm')">Export Booking Log</a>
-      <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/booking_log.php" method="post">
-</form>
-    </td>
- </tr>
  
-  </table>
 <?
 
 }

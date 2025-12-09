@@ -1,50 +1,18 @@
-<?php
 
-/**
- * Class and Function List:
- * Function list:
- * Classes list:
- */
-?>
-<script language="JavaScript">
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("resource_formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("resource_submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onResourceSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("resource_cancelbutton", { value: "cancelbutton1value" });   
-        oCancelButton.on("click", onResourceCancelButtonClicked);
-
-    });
-
-} ();
-
-function onResourceSubmitButtonClicked(){
-  submitForm('resource_reservation_form');
-}
-
-function onResourceCancelButtonClicked(){
-
-  parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
-}
-
-</script>
 
 <form name="resource_reservation_form" method="post" action="<?=$ME?>" autocomplete="off">
-  <table cellspacing="10" cellpadding="0" width="400" class="tabtable" id="resource_formtable">
-    
-    <tr>
-     <td class="label" >Name</td>
-    <td><?=$courtname ?></td>
-    </tr>
-    <tr> 
-     <td class="label">Duration:</td>
-     <td>
-      <select name="duration">
-        <?
+  
+
+<div class="mb-3">
+  <label for="resourcename" class="form-label">Name</label>
+  <input type="text" id="resourcename" class="form-control" placeholder="<?=$courtname ?>" disabled>
+</div>
+
+<div class="mb-3">
+  <label for="duration" class="form-label">Duration</label>
+  <select class="form-select" aria-label="Duration" name="duration" id="duration">
+     <?
         $timetonext = $nexttime - $time; 
         
         if($timetonext == 900 ){ ?>
@@ -73,25 +41,34 @@ function onResourceCancelButtonClicked(){
         
         if($timetonext >= 10800 || $nexttime == null){ ?>
           <option value="3">3 Hours</option>
-        <? } ?>
-          
+        <? } ?> 
       </select>
-      </td>
-    </tr>
-    
-    <tr>
-      <td colspan="2" style="height: 20px;"></td>
-    </tr>
+</div>
 
-    <tr>
-      <td colspan="2"><input type="button" name="submit" value="Make Reservation" id="resource_submitbutton">
-        <input type="button" value="Cancel" id="resource_cancelbutton"></td>
-      <td></td>
-    </tr>
-  </table>
+ <div class="mt-5">
+    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Make Reservation</button>
+  </div>
+
+    
+ 
   <input type="hidden" name="courttype" value="resource">
   <input type="hidden" name="time" value="<?=$_REQUEST["time"]?>">
   <input type="hidden" name="courtid" value="<?=$_REQUEST["courtid"]?>">
   <input type="hidden" name="action" value="create">
   <input type="hidden" name="matchtype" value="0">
 </form>
+
+
+<script language="JavaScript">
+
+
+function onResourceSubmitButtonClicked(){
+  submitForm('resource_reservation_form');
+}
+
+function onResourceCancelButtonClicked(){
+
+  parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+}
+
+</script>

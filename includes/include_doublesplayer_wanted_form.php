@@ -37,18 +37,7 @@ $DOC_TITLE = "Doubles Court Reservation";
 
 
 
-YAHOO.example.init = function () {
 
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbuttonvalue" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-    });
-
-} ();
 
 
 function onSubmitButtonClicked(){

@@ -1,36 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* - validate_form()
-* - update_settings()
-* Classes list:
-*/
+
 include ("../application.php");
 require_login();
 require_priv("2");
@@ -62,12 +31,10 @@ if (isset($_POST['formname']) && $_POST['formname'] == "photoform") {
 
     if(!empty($_FILES["image"]["name"])) { 
        
-
         $fileName = basename($_FILES["image"]["name"]); 
         $fileType = pathinfo($fileName, PATHINFO_EXTENSION); 
 
         if (isDebugEnabled(1)) logMessage("change_settings: photo size is: $fileName");
-
 
         $image_info = getimagesize($_FILES["image"]["tmp_name"]);
         $image_width = $image_info[0];
@@ -83,7 +50,7 @@ if (isset($_POST['formname']) && $_POST['formname'] == "photoform") {
                 // Insert image content into database 
                 $query = "UPDATE tblUsers set photo = '$imgContent' WHERE userid = $userid";
                 $result = db_query($query);
-                $noticemsg = "Your profile was saved.  Good Job!<br/><br/>"; 
+                $successmsg = "Your profile was saved.  Good Job!"; 
             }
         } else {
             $errormsg = "This photo is too big, please resize to 180 x 180"; 
@@ -132,14 +99,14 @@ if (isset($_POST['formname']) && $_POST['formname'] == "entryform") {
         db_query($query);
 
         // Display this, their email validates
-        $noticemsg = "Your profile was saved.  Good Job!<br/><br/>";
+        $successmsg = "Your profile was saved.  Good Job!";
     }
 }
 $frm = load_user_profile($userid);
 
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/change_settings_admin_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
@@ -244,7 +211,7 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
             
             if ($frm["clubsite$siteArray[siteid]"]) {
                 
-                if (isDebugEnabled(1)) logMessage("Checking on Site " . $siteArray[siteid]);
+                if (isDebugEnabled(1)) logMessage("Checking on Site " . $siteArray['siteid']);
 
                 //If the site isn't in the list insert it
                 
@@ -279,14 +246,9 @@ function update_settings(&$frm, $availableSites, $availbleSports, $extraParamete
         $username = $frm['username'];
     }
     
-    if (get_magic_quotes_gpc()) {
-        $firstName = $frm['firstname'];
-        $lastName = $frm['lastname'];
-    } else {
-        $firstName = addslashes($frm['firstname']);
-        $lastName = addslashes($frm['lastname']);
-    }
-
+    $firstName = addslashes($frm['firstname']);
+    $lastName = addslashes($frm['lastname']);
+    
     $available_5pm = 'false';
     $available_6pm = 'false';
     $available_7pm = 'false';

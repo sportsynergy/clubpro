@@ -1,5 +1,49 @@
 
+
 /**********General***************************************************/
+
+.boxdateheader {
+	font-style: italic;
+    font-weight: normal;
+    font-size: small
+}
+
+
+.dropdown-item {
+  color: rgba(0, 0, 0, .55)/* Example: dark gray */
+}
+
+label {
+  font: bold 1em Arial, sans-serif;
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+  font-size: 0.8em;
+}
+
+li {
+    list-style: none;
+}
+
+@media (min-width: 576px) {
+    .bd-example {
+        padding:1.5rem;
+        margin-right: 0;
+        margin-left: 0;
+        border-width: 1px;
+        border-top-left-radius: .25rem;
+        border-top-right-radius: .25rem;
+    }
+}
+
+.bd-example {
+    position: relative;
+    padding: 1rem;
+    margin: 1rem -.75rem 0;
+    border: solid #dee2e6;
+    border-width: 1px 0 0
+}
+
 .isDisabled {
 	color: currentColor;
 	cursor: not-allowed;
@@ -83,20 +127,23 @@ h2{
 	font-weight: bold; 
 }
 
-th{ 
-
-	font-size: 10pt; 
+.blackBackGround  {
 	font-weight: bold; 
 	text-align: center;
 }
+th{ 
+
+	font-weight: bold; 
+	
+}
 .h1{ 
 	font-size: 14pt; 
-	font-weight: bold; 
+	
 }
 
 .h2{ 
 	font-size: 12pt; 
-	font-weight: bold; 
+	
 }
 
 .label  { 
@@ -110,7 +157,6 @@ th{
 	text-decoration: underline;
 }
 .lighttext  {
-	font-size: 8pt;
 	color : gray;
 }
 
@@ -138,6 +184,11 @@ th{
 
 .italicnorm { 
 	font-size: 12pt;
+	font-style: italic;  
+	font-weight: normal;
+}
+
+.italic { 
 	font-style: italic;  
 	font-weight: normal;
 }
@@ -370,13 +421,24 @@ background:#DBDDDD none repeat scroll 0 0;
 
 /********* For Unordered Lists *********************************************************/
 
+ul.clubevents {
+	padding-left: 0px;
+}
 
 ul.clubevents li{
 	padding-bottom: 10px;
 }
 
+ul.recentavtivity {
+	padding-left: 0px;
+}
+
 ul.recentavtivity li{
 padding-bottom: 10px;
+}
+
+ul.clubnews {
+	padding-left: 0px;
 }
 
 ul.clubnews li{

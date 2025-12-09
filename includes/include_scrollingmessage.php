@@ -50,7 +50,7 @@ if (isset($clubid)) {
 			*/
 			
 			//Specify the marquee's width (in pixels)
-			var marqueewidth="770px";
+			var marqueewidth="750px";
 			//Specify the marquee's height
 			var marqueeheight="25px";
 			//Specify the marquee's marquee speed (larger is faster 1-10)

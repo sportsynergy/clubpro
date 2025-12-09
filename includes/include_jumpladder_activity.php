@@ -41,7 +41,7 @@ $ladderMatchResult = getLadderMatches($ladderid, 40 );
 
 if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
-<table class="activitytable sortable" width="400"">
+<table class="activitytable sortable">
     <tr>
       <th>Date</th>
       <th>Winner</th>
@@ -73,9 +73,10 @@ while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){
 </table>
 
   <div style="margin-top: 20px">
-    <img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif "\> <font class="normalsm"> Indicates League Match</font>
+    <img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif "\> Indicates League Match
   </div>
-  <div > <span class="smallbold">Ladders last updated:</span> 
+  <div > 
+    Ladders last updated:
   <?php
     
     if( is_null($ladderdetails->lastUpdated) ){
@@ -86,14 +87,14 @@ while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){
     }
     
   ?>
-  <span class="smallreg"><?=$lastupdated ?></span>
+  <?=$lastupdated ?>
 
 
   </div>
   
 
 <? }  else { ?>
-  <table class="activitytable" width="400">
+  <table class="activitytable" >
 <tr>
   <td style="text-align: left">No challenge matches found.</td>
 </tr>

@@ -1,52 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* - validate_form()
-* - validate_messages_form()
-* - validate_skillrange_form()
-* - get_sitecourts_dropdown()
-* - get_dow_dropdown()
-* - load_scrolling_messages()
-* - load_general_preferences()
-* - insert_skill_range_policy()
-* - update_clubprefs()
-* - load_skill_range_policies()
-* - removeSchedulePolicy()
-* - removeSkillRangePolicy()
-* - validate_scheduling_policy_form()
-* - get_scheduling_policy_types()
-* - insert_hours_policy()
-* - update_message_clubprefs()
-* - update_general_clubprefs()
-* - wipeOutCurrentClubMessages()
-* Classes list:
-*/
+
 include ("../application.php");
 $DOC_TITLE = "Club Preferences";
 require_login();
@@ -80,7 +33,7 @@ if (match_referer() && isset($_POST['submitme'])) {
         if (empty($errormsg)) {
 
             update_general_clubprefs($frm);
-            $noticemsg = "Preferences Saved.  Good Job!<br/><br/>";
+            $successmsg = "Preferences Saved. Good Job!";
         }
 
         //Refresh
@@ -105,9 +58,9 @@ $scrollingMessages = load_scrolling_messages(get_siteid());
 $generalPreferences = load_general_preferences(get_siteid());
 $courtEvents = load_court_events(get_siteid());
 
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/policy_preferences_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

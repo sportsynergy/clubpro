@@ -7,9 +7,6 @@
 
 
 
-a, a:visited {
-  color: #00f;
-}
 
 a:hover {
   color: #f00;
@@ -53,12 +50,14 @@ h1 { font-size: 1.2em }
 h2 { font-size: 1.1em }
 h3 { font-size: 1.0em }
 
+/*
 label {
   font: bold 1em Verdana;
   display: block;
   margin-top: 1em;
   margin-bottom: 0.25em;
 }
+  */
 
 fieldset {
   width: 500px;
@@ -74,7 +73,10 @@ legend {
   background: #eee;
 }
 
+/* Form elements 
 label { font-size: 0.8em; }
+
+*/
 
 input [type="text"] {
   background-color: #ffd;
@@ -148,12 +150,12 @@ input [type="button"] {
 /* Animated throbber */
 
 input.form-autocomplete {
-  background: url('../images/throbber.gif') no-repeat 100% 2px;
+  background: url('../images/throbber.gif') no-repeat 100% 6px;
   background-color: white;
 }
 
 input.throbbing {
-  background-position: 100% -18px;
+  background-position: 100% -28px;
 }
 
 

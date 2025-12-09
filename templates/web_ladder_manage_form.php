@@ -1,5 +1,3 @@
-
-
 <script language="Javascript">
 
 document.onkeypress = function (aEvent)
@@ -13,23 +11,15 @@ document.onkeypress = function (aEvent)
   	
 }
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        document.getElementById('name1').setAttribute("autocomplete", "off");
-
-    });
-
-} ();
-
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
+
+ function onCancelButtonClicked(){
+
+	parent.location="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_registration.php"
+ }
 
 
 
@@ -183,8 +173,6 @@ $userid = $_REQUEST["userid"];
 
    $newboxplaceval = $boxplaceval - 1;
 
-
-
         // MOve the player ahead down
         $qid1 = db_query("
         UPDATE tblkpBoxLeagues
@@ -207,31 +195,18 @@ $userid = $_REQUEST["userid"];
 
   ?>
 
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
 
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
-<table width="500" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
-     <tr>
-         <td class=clubid<?=get_clubid()?>th>
-         	<span class="whiteh1">
-         		<div align="center"><? pv($DOC_TITLE) ?></div>
-         	</span>
-         </td>
-    </tr>
+<div class="mb-3">
+      <label for="enddate" class="form-label">End Date:</label>
+      <? $datesArray = explode("-", $boxarray["enddate"]); ?>
 
- <tr>
-    <td>
-
-      <table width="550" cellspacing="5" cellpadding="0" class="borderless">
-      
-		<tr>
-			<td class="label">End Date:</td>
-			<td>
-				<?
-					$datesArray = explode("-", $boxarray["enddate"]);
-				
-				?>
-			<select name="enddatemonth" onChange="getDaysForMonth();">
+     <select name="enddatemonth" class="form-select" onChange="getDaysForMonth();" style="width: 150px; display: inline;">
                <?
                 
 				// remove leading 0 
@@ -252,20 +227,12 @@ $userid = $_REQUEST["userid"];
                      <? unset($selected)?>
                 <? } ?>
           </select>
-          <?
 
-             //$todaystart = gmmktime (0,0,0,$currMonth,0,$currYear);
-          ?>
-          <select name="enddateday">
-
-          </select>
-
-          <select name="enddateyear" onChange="getDaysForMonth();">
+           <select name="enddateday" class="form-select" style="width: 150px; display: inline;"> </select>
+            <select name="enddateyear" class="form-select" onChange="getDaysForMonth();" style="width: 150px; display: inline;">
                <?
 
-
                $currYear = gmdate("Y", $curtime);
-
 
                for($i=0; $i<2; ++$i){
                    $year = $currYear + $i;
@@ -280,20 +247,13 @@ $userid = $_REQUEST["userid"];
               <? }
                 unset($selected);
                ?>
-
           </select>
 
-		</td>
-		
-		</tr>
-		
-		
-		<tr>
+    </div>
 
-        <td class="label">Add A User:</td>
-        <td>
-            
- 				<input id="name1" name="name1" type="text" size="30" class="form-autocomplete" />
+    <div class="mb-3" style="width: 70%">
+        <label for="name1" class="form-label">Player:</label>
+        <input id="name1" name="name1" type="text" size="30" class="form-control form-autocomplete" />
                 <input id="id1" name="boxuser" type="hidden" />
 
           <? if( isset($boxarray["ladderid"]) ) { ?>
@@ -309,10 +269,7 @@ $userid = $_REQUEST["userid"];
                   'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&ladderid=$ladderid",
                   'progressStyle'=>'throbbing',
                   'minimumCharacters'=>3,
-                  ));
-
-                
-                 ?>
+                  )); ?>
             </script>
 
             <? }  else { ?>
@@ -328,100 +285,81 @@ $userid = $_REQUEST["userid"];
 						'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&courttype=$courttype&siteid=".get_siteid()."&clubid=".get_clubid()."",
 						'progressStyle'=>'throbbing',
 						'minimumCharacters'=>3,
-						));
-           
-                 ?>
+						)); ?>
             </script>
-
-
-              <? }  ?>
-        </td>
+          <? }  ?>
+    </div>
+		
+     
   <?php
   if ( isJumpLadderRankingScheme() ) {
   ?>
-        <tr>
-          <td class="label">Ladder:</td>
-          <td> <?= $boxarray["name"]?></td>
-        </tr>
-        <tr>
-          <td class="label">Autoschedule:</td>
-          <td> <?= $boxarray["autoschedule"] == 1 ? "Yes": "No" ?></td>
-        </tr>
-        <tr>
-          <td class="label">Rollover Scores:</td>
-          <td> <?= $boxarray["ladder_type"] == "extended" ? "Yes": "No" ?></td>
-        </tr>
-    <? } ?>
-       <tr>
-            <td></td>
-            <td>
-            <input type="hidden" name="ladderid" value="<?=$boxarray["ladderid"] ?>">
-            	<input type="hidden" name="boxid" value="<?=$boxid ?>">
-            	<input type="hidden" name="courttype" value="<?=$courttype?>">
-				<input type="hidden" name="boxenddatemonth" value="<?=ltrim($datesArray[1], '0')?>">
-				<input type="hidden" name="boxenddatedate" value="<?=ltrim($datesArray[2], '0')?>">
-				<input type="hidden" name="boxenddateyear" value="<?=ltrim($datesArray[0], '0')?>">
-            	<input type="hidden" name="submitme" value="submitme">
-			</td>
-       </tr>
-       
-     <tr>
-      <td><input type="button" value="Submit" name="submit" id="submitbutton"></td>
-      <td> </td>
-     </tr>
-     <tr>
-      <td colspan="2">
-          <hr>
-      </td>
+      <div class="mb-3">
+        <label for="ladder" class="form-label">Ladder:</label>
+        <input class="form-control-plaintext" id="ladder" type="text" aria-label="ladder" value="<?= $boxarray["name"]?>" readonly> 
+     </div>
 
-     </tr>
+     <div class="mb-3">
+        <label for="autoschedule" class="form-label">Autoschedule:</label>
+        <input class="form-control-plaintext" id="autoschedule" type="text" aria-label="autoschedule" value="<?= $boxarray["autoschedule"] == 1 ? "Yes": "No" ?>" readonly> 
+     </div>
+
+     <div class="mb-3">
+        <label for="autoschedule" class="form-label">Rollover Scores:</label>
+        <input class="form-control-plaintext" id="autoschedule" type="text" aria-label="autoschedule" value="<?= $boxarray["ladder_type"] == "extended" ? "Yes": "No" ?>" readonly> 
+     </div>
+   
+    <? } ?>
+
+      <input type="hidden" name="ladderid" value="<?=$boxarray["ladderid"] ?>">
+      <input type="hidden" name="boxid" value="<?=$boxid ?>">
+      <input type="hidden" name="courttype" value="<?=$courttype?>">
+			<input type="hidden" name="boxenddatemonth" value="<?=ltrim($datesArray[1], '0')?>">
+			<input type="hidden" name="boxenddatedate" value="<?=ltrim($datesArray[2], '0')?>">
+			<input type="hidden" name="boxenddateyear" value="<?=ltrim($datesArray[0], '0')?>">
+      <input type="hidden" name="submitme" value="submitme">
+			
+       
+  <div class="mt-5 mb-3">
+    <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Submit</button>
+    <button type="button" class="btn btn-secondary" onclick="onCancelButtonClicked()">Back to web ladder registration page</button>
+  </div>
+
+</form>
+
      <?
        //List out all of the players in the box league
 
        $query = "SELECT tblUsers.firstname, tblUsers.lastname, tblUsers.userid, tblkpBoxLeagues.boxplace, tblkpBoxLeagues.games
                  FROM tblUsers INNER JOIN tblkpBoxLeagues ON tblUsers.userid = tblkpBoxLeagues.userid
-                 WHERE (((tblkpBoxLeagues.boxid)=$boxid))
+                 WHERE (tblkpBoxLeagues.boxid)=$boxid
                  ORDER BY tblkpBoxLeagues.boxplace";
 
-
        // run the query on the database
-       $result = db_query($query); ?>
+       $result = db_query($query); 
+       if (mysqli_num_rows($result) > 0) {
+       ?>
 
-       <table width="500" class="borderless">
+       <table class="table table-striped" >
+       <thead>
        <tr>
-	       	<td align="center">
-	       		<span class="label">Place</span>
-	       	</td>
-	       	<td>
-	       		<span class="label">Player</span>
-	       	</td>
-	       	<td align="center">
-	       		<span class="label">Games Played</span>
-	       	</td>
-	       <td></td>
-	       <td></td>
+	       	<th>Place</th>
+	       	<th>Player</th>
+	       	<th>Games Played</th>
+	       <th></th>
+	       <th></th>
        </tr>
-       
+      </thead>
+       <tbody>
        <? 
         $rownum = mysqli_num_rows($result);
-        
-       
-        while($row = mysqli_fetch_row($result)) {
-		
-       	$rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
-       	
-       	?>
+      
+        while($row = mysqli_fetch_row($result)) { ?>
 
-          <tr class="<?=$rc?>" >
-	         <td align="center">
-	         	<span class="normal"><?=$row[3]?></span>
-	         </td>
-	         <td>	
-	         	<span class="normal"><? print "$row[0] $row[1]" ?></span>
-	         </td>
-	         <td align="center">
-	         	<span class="normal"><?=$row[4]?></span>
-	         </td>
+          <tr>
+	         <td> <?=$row[3]?></td>
+	         <td>	<? print "$row[0] $row[1]" ?></td>
+	         <td><?=$row[4]?></td>
 	         <td>
 	         	<a href="web_ladder_manage.php?action=remove&boxid=<?=$boxid?>&userid=<?=$row[2]?>"> Remove </a>
 	         	|<a href="web_ladder_manage.php?action=moveup&boxid=<?=$boxid?>&userid=<?=$row[2]?>"> Moveup</a>
@@ -432,35 +370,25 @@ $userid = $_REQUEST["userid"];
       </td>
 	        
          </tr>
-        
+            
        <? 
         $rownum = $rownum - 1;
        } ?>
-
+</tbody>
      </table>
 
-
-   </td>
-</tr>
-</tr>
-	
+     <? } ?>
 
 
 
-</table>
 
-<div style="height: 2em;"></div>
-<div>
-    <span style="text-align: right;"> 
-    	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_registration.php" > << Back to web ladder registration page </a> 
-    </span>
-</div> 
 
-</td>
-</tr>
-</table>
-</form>
+
 
   <script language="JavaScript">
+
+          document.entryform.name1.focus();
+
+          document.getElementById('name1').setAttribute("autocomplete", "off");
           getDaysForMonth();
    </script>

@@ -191,9 +191,9 @@ if (isDebugEnabled(1)) logMessage("team_ladder: initializing the view");
 $availbleSports = load_avail_sports();
 $ladderplayers = getLadderTeam($ladderid);
 $playingInLadder = isPlayingInLadder(get_userid() , $ladderid);
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/team_ladder_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

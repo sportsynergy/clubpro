@@ -1,21 +1,25 @@
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
-<table cellspacing="0" cellpadding="0" border="0" width="710" align="center">
-<tr>
-<td>
-		<?  $clubs = get_allclubs_dropdown() ?>
+
+
 		
-		<table cellspacing="0" cellpadding="0" width="700" >
+		<table class="table table-striped" style="width:70%;">
+			<thead>
 			<tr>
-				<td colspan='2'></td>
-				<td align='center' class='normalsm'>Number of Members</td>
-				<td align='center' class='normalsm'>Number of Reservations</td>
+				<th colspan='2'>Club</th>
+				<th>Number of Members</td>
+				<th >Number of Reservations</td>
 			</tr>
-			
+</thead>
+<tbody>	
 			<? 
 			
 			$memberTotal = 0;
 			$resrevationsTotal = 0;
 			
+			$clubs = get_allclubs_dropdown();
 			while($club = mysqli_fetch_array($clubs)){ 
 				
 			if($club['clubname']=="System"){
@@ -25,7 +29,9 @@
 			?>
 			
 			 <tr>
-			     <td aligh='right' colspan='4'><span class=h2><?=$club['clubname']?></span></td>
+			     <td aligh='right' colspan='4'>
+					<span class=h2><?=$club['clubname']?></span>
+				</td>
 			 </tr>
 			<? 
 			
@@ -41,31 +47,26 @@
 			 <tr>
 			 	<td width='15'></td>
 			 	<td>
-			 		<span class=normalsm>
 					<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/site_info.php?siteid=<?=$site['siteid']?>">
-					<?=$site['sitename']?></a></span>
+					<?=$site['sitename']?></a>
 			 	</td>
-			     <td align='center'><span class=normalsm><?=$members?></span></td>
-			     <td align='center'><span class=normalsm><?=$resrevations?></span></td>
+			     <td><?=$members?></td>
+			     <td><?=$resrevations?></td>
 			 </tr>
 			<? } ?>
 		
 		
 		<? } ?>
-			
+			</tbody>
+			<tfoot>
 			<tr>
-				<td colspan="4" height="60"></td>
-			</tr>
-			<tr>
+				<td>
+					Total
+				</td>
 				<td></td>
-				<td></td>
-				<td align='center'><span class=normalsm><?=$memberTotal?> </span></td>
-				<td align='center'><span class=normalsm><?=$resrevationsTotal?></span></td>
+				<td ><?=$memberTotal?></td>
+				<td ><?=$resrevationsTotal?></td>
 			</tr>
+			</tfoot>
 		</table>
 
-</td>
-</tr>
-
-
-</table>

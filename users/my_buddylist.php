@@ -47,12 +47,11 @@ if($userRelation->isUserLoggedin()){
 
 /* form has been submitted, check if it the user login information is correct */
 
-if (match_referer() && isset($_POST)) {
+if (match_referer() && isset($_POST['name']) ) {
     $frm = $_POST;
     $errormsg = validate_form($frm, $errors);
     
     if (empty($errormsg)) {
-        
         if (isDebugEnabled(1)) logMessage("my_buddylist: inserting buddy");
         insert_buddy($frm);
     } else {
@@ -62,10 +61,11 @@ if (match_referer() && isset($_POST)) {
 }
 
 if (isDebugEnabled(1)) logMessage("my_buddylist");
+
 $DOC_TITLE = "My Buddy List";
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/my_buddylist_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS

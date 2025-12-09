@@ -43,8 +43,8 @@ if (!isset($_SESSION["footermessage"])) {
     $_SESSION["footermessage"] = $footerMessage;
 }
 
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/adminpage.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 ?>

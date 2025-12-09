@@ -1,28 +1,20 @@
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
+
 <form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
 
-<table width="500" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
-     <tr>
-         <td class=clubid<?=get_clubid()?>th>
-         	<span class="whiteh1">
-         		<div align="center"><? pv($DOC_TITLE) ?></div>
-         	</span>
-         </td>
-    </tr>
 
- <tr>
-    <td>
-
-      <table width="550" cellspacing="5" cellpadding="0" class="borderless">
-      
-     <tr>
-      <td>
-				<table width="500" class="borderless">
-			       <tr>
+				<table class="table table-striped" >
+			    <thead>   
+				<tr>
 						<th>Date</th>
 						<th>Opponent</th>
 						<th>Outcome</th>
 						<th>Points Scored</th>
 					</tr>
+</thead>
+<tbody>
 
 					<?php
 
@@ -84,18 +76,18 @@
 						$total_points += $points_scored;
 					?>
 					<tr>
-						<td align="center"><?=$time?></td>
-						<td align="center"><?=$opponent?></td>
-						<td align="center">
+						<td><?=$time?></td>
+						<td ><?=$opponent?></td>
+						<td>
 							<?=$outcome_code?>
 						</td>
-						<td align="center">
+						<td>
 							<?=$points_scored?>
 						</td>
-						<td align="center"> 
-								<? if( has_priv("2") ){ ?>
-								<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_update.php?reservationid=<?=$row['reservationid']?>&userid=<?=$userid?>" >Edit</a>
-								<? } ?>
+						<td> 
+							<? if( has_priv("2") ){ ?>
+							<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/web_ladder_update.php?reservationid=<?=$row['reservationid']?>&userid=<?=$userid?>" >Edit</a>
+							<? } ?>
 						</td>
 					</tr>
 					
@@ -106,7 +98,7 @@
 							<td></td>
 							<td></td>
 							<td></td>
-							<td align="center">
+							<td>
 								<span style="text-decoration:underline">
 								<?=$total_points?>
 								</span>
@@ -121,7 +113,7 @@
    </td>
 </tr>
 </tr>
-	
+	<tbody>
 
 
 
@@ -129,9 +121,7 @@
 
 
 
-</td>
-</tr>
-</table>
+
 
 
 </form>

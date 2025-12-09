@@ -601,6 +601,7 @@ function getBoxLeaguesForUser($userid){
 						INNER JOIN tblClubLadderTeam tCLT ON tCLTM.teamid = tCLT.id AND tCLT.ladderid = tBL.ladderid
 				WHERE tCLT.enddate IS NULL
 				AND tCLTM.enddate IS NULL
+				AND tBL.enable = TRUE
 				AND tU.userid = $userid";
     return db_query($query);
 
@@ -3149,21 +3150,19 @@ function record_score(&$frm, $source) {
         unset($wteamnameresult);
         $wteamnameresult = db_query($wteamnamequery);
         $wteamnamearray = db_fetch_array($wteamnameresult);
-        echo "<div class=normal>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by " . round($winnerAdjustment, 4) . " to " . round($playerOneNewRanking, 4) . "</div>";
+        echo "<div>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by " . round($winnerAdjustment, 4) . " to " . round($playerOneNewRanking, 4) . "</div>";
         $wteamnamearray = db_fetch_array($wteamnameresult);
-        echo "<div class=normal>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by " . round($winnerAdjustment, 4) . "  to " . round($playerTwoNewRanking, 4) . "</div>";
+        echo "<div>$wteamnamearray[0] $wteamnamearray[1]'s ranking went up by " . round($winnerAdjustment, 4) . "  to " . round($playerTwoNewRanking, 4) . "</div>";
         echo "<br>";
-        echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by " . round($winnerAdjustment, 4) . "  to " . round($playerThreeRanking, 4) . "</div>";
+        echo "<div > $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by " . round($winnerAdjustment, 4) . "  to " . round($playerThreeRanking, 4) . "</div>";
         $lteamnamearray = db_fetch_array($lteamnameresult);
-        echo "<div class=normal> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by " . round($winnerAdjustment, 4) . "  to " . round($playerFourRanking, 4) . "</div>";
+        echo "<div> $lteamnamearray[0] $lteamnamearray[1]'s ranking went down by " . round($winnerAdjustment, 4) . "  to " . round($playerFourRanking, 4) . "</div>";
 ?>
 <div>
 <? if( isset($source) && $source == "ladder"){ ?>
-	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back
-		to the ladder</a>
+	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back to the ladder</a>
 		<? } else { ?>
-	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back
-		to the scheduler</a>
+	<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back to the scheduler</a>
 		<? } ?>
 </div>
 
@@ -3173,36 +3172,22 @@ function record_score(&$frm, $source) {
 
 	} else {  ?>
 
-<table cellspacing="0" cellpadding="0" border="0" width="710"
-	align="center">
-	<tr>
-		<td class="normal"><font class="bigbanner"> Congratulations <?=$winneridarray[1]?>
+<div class="mb-3">
+		<span class="bigbanner"> Congratulations <?=$winneridarray[1]?>
 		<?=$winneridarray[2] ?>!!
-		</font><br> <br> <?= $winneridarray[1]?> <?=$winneridarray[2]?>'s
+	</span><br> <br> <?= $winneridarray[1]?> <?=$winneridarray[2]?>'s
 			rating rose from <?=$winneridarray[0]?> to <?=round($newWinnerRanking,4)?>
 			<br> <?=$loseridarray[1]?> <?=$loseridarray[2]?>'s rating fell from <?=$loseridarray[0]?>
 			to <?=round($newLoserRanking,4)?> <br>
-		
-		<td>
-	
-	
-	<tr>
-	
-	
-	<tr>
-		<td class="normal"><br /> <?
-		if( isset($source) && $source == "ladder"){?> <a
-			href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back
-				to the ladder</a> <? } else { ?> <a
-			href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back
-				to the scheduler</a> <? } ?>
-		
-		<td>
-	
-	
-	<tr>
+	</div>
+	<div class="mb-3">
 
-</table>
+		<td class="normal"><br /> <?
+		if( isset($source) && $source == "ladder"){?> 
+		<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">Back to the ladder</a> <? } 
+		else { ?> 
+			<a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>">Back to the scheduler</a> <? } ?>		
+	</div>
 
 		<?
 		//Send out the emails
@@ -6493,6 +6478,7 @@ function getClubEvents($clubid){
 			   FROM tblClubEvents events 
 				WHERE clubid = $clubid 
 				AND enddate is NULL
+				AND events.eventdate >= CURDATE()
 				ORDER BY events.eventdate LIMIT 6";
 
 	return db_query($query);

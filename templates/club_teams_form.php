@@ -1,5 +1,5 @@
 
-<table width="710" cellspacing="0" cellpadding="0" align="center" class="borderless">
+<table width="710"  class="borderless">
 
 <?
 
@@ -19,22 +19,23 @@ while ($clubteam = db_fetch_array( $result )) {
         <tr valign="top" id="newrow">
     <?  } ?>
 
-    <td width="350" nowrap id="tablecontainer">
+    <td nowrap id="tablecontainer">
            
-           <table width="350" cellpadding="0" cellspacing="0" class="bordertablethick">
-               <tr valign="top">
-                   <td class=clubid<?=get_clubid()?>th>
-                       <span class="whiteh1">
-                           <div align="center">
+        <table width="350" class="table table-striped">
+        <thead>
+               <tr> 
+                   <th>
+                           <div class="bigbanner">
                                <?=$clubteam['name']?>
                            </div>
-                           <div align="center">
-                                <span class="whitenormsm">Total Points: <?=$clubteam['score']?> </span>
-                                <span class="whitenormsm">Total Games: <?=$clubteam['games']?></span>
+                           <div class="boxdateheader">
+                              Total Points: <?=$clubteam['score']?> 
+                              Total Games: <?=$clubteam['games']?>
                             </div>
-                       </span>
                    </td>
                </tr>
+                <thead>
+                    <tbody>
                
                <? 
                 $playersresult = getClubTeamMembers( $clubteam['id'] );
@@ -43,13 +44,11 @@ while ($clubteam = db_fetch_array( $result )) {
                 while ($clubteamplayer = db_fetch_array( $playersresult )) { 
                     $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
                ?>
-               <tr align="center" class="<?=$rc?>">
+               <tr>
                 <td> <?=$clubteamplayer['teamplayername']?></td>
                 </tr>
-                <? 
-                $rownum = $rownum - 1;
-                } 
-                ?>
+                <?  }  ?>
+                </tbody>
            </table>
 
        </td>
@@ -66,10 +65,10 @@ while ($clubteam = db_fetch_array( $result )) {
     
 
     } ?>
+    </table>
 
-<tr>
-    <td>
-        <span class="smallbold">Last Updated: </span>
+<div class="mb-3">
+        Last Updated: 
         
         <?
 
@@ -81,13 +80,5 @@ if (isDebugEnabled(1)) logMessage("club_team_manage: lastUpdated is is $lastUpda
             $lastupdated_label = $lastUpdated;
           }
           ?>
-          <span class="smallreg"> <?=$lastupdated_label?> </span>
-    </td>
-</tr>
-</table>
-
-<? 
-
-
-
-?>
+          <?=$lastupdated_label?> 
+        </div>

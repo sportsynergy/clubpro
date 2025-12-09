@@ -54,9 +54,9 @@ if (match_referer() && isset($_POST['submitme'])) {
     }
 }
 $availbleSports = load_avail_sports();
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/player_mailer_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
@@ -83,10 +83,6 @@ function validate_form(&$frm, &$errors) {
 function send_message($subject, $message, $siteid, $category, $sport, $ranking) {
 
     // Strip Slashes
-    if (get_magic_quotes_gpc()) {
-        $message = stripslashes($message);
-        $subject = stripslashes($subject);
-    }
     $message = nl2br($message);
     
     if (isDebugEnabled(1)) logMessage("playerMailer.send_message(): \n subject: $subject\n message: $message\n siteid: $siteid\n category: $category\n sport: $sport\n ranking: $ranking\n");

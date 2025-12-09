@@ -14,21 +14,6 @@ return true;
 }
 
 
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-        var oCancelButton = new YAHOO.widget.Button("cancelbutton", { value: "cancelbutton1value" });   
-        oCancelButton.on("click", onCancelButtonClicked);
-
-    });
-
-} ();
-
-
 function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
@@ -42,46 +27,27 @@ function onCancelButtonClicked(){
 </script>
 
 
-<table cellspacing="0" cellpadding="0" border="0" width="710" align="center">
-<tr>
-<td>
+
+<div class="mb-5">
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+</div>
 
 
 <form name="entryform" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);">
 
 
-<table cellspacing="0" cellpadding="20" width="400" class="generictable" id="formtable" >
-  
-   <tr class="borderow">
-    <td class=clubid<?=get_clubid()?>th>
-    <span class="whiteh1">
-    	<div align="center"><? pv($DOC_TITLE) ?></div>
-    </span>
-   </td>
- </tr>
-	<tr>
-           <td>
-           		<div class="normal">Are you sure you want to cancel this reservation?</div>
-        	</td>
-    </tr>
-    <tr>
-     <td>
-      	<input type="button" name="cancel" value="Yes" id="submitbutton">
-	    <input type="button" value="No" id="cancelbutton">
-     </td>
-    </tr>
+<div class="mb-3">
+Are you sure you want to cancel this reservation?
+</div>
 
-
-
-
-</table>
-
+  <div class="mt-5">
+    <button type="submit" class="btn btn-primary" id="submitbutton" onclick="onSubmitButtonClicked()">Yes</button>
+    <button type="button" class="btn btn-secondary" id="cancelbutton" onclick="onCancelButtonClicked()">No</button>
+  </div>
+           
 <input type="hidden" name="cancelall" value="3">
 <input type="hidden" name="time" value="<?=$time?>">
 <input type="hidden" name="courtid" value="<?=$courtid?>">
 </form>
 
 
-</td>
-</tr>
-</table>

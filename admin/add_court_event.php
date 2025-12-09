@@ -61,9 +61,9 @@ if (match_referer() && isset($_POST['submitme'])) {
     $wwwroot = $_SESSION["CFG"]["wwwroot"];
     header("Location: $wwwroot/admin/policy_preferences.php");
 }
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/add_court_event_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
@@ -83,12 +83,7 @@ function validate_form(&$frm, &$errors) {
 function insert_court_event(&$frm) {
 
     // Strip Slashes
-    
-    if (get_magic_quotes_gpc()) {
-        $name = stripslashes($frm['name']);
-    } else {
-        $name = addslashes($frm['name']);
-    }
+    $name = addslashes($frm['name']);
 
     //If this is the case, then we're updating an existing policy
     

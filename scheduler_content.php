@@ -1,36 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* Classes list:
-*/
-
-
 
 
 require ($_SESSION["CFG"]["libdir"] . "/reservationlib.php");
@@ -106,7 +74,7 @@ if (isset($username) && isset($password) && !is_logged_in()) {
     }
 }
 $DOC_TITLE = "Sportsynergy Clubpro";
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 
 // When a site has a court group configured set a session variable.  The first court group id will be the default.
 // If a court group isn't found, just display the courts by displayorder (using the navigation arrows if necessary)
@@ -308,9 +276,12 @@ if ($clubid) {
 
 <!-- Date and Drop Down Table begin -->
 
-<table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
+<table cellspacing="0" cellpadding="0" width="100%" class="borderless">
   <tr>
-    <td align="left" valign="top"><span class=bigbanner><? echo gmdate("l F j",$todaystart) ?></span>
+    <td >
+		<span class="bigbanner">
+			<? echo gmdate("l F j",$todaystart) ?>
+		</span>
       <? include($_SESSION["CFG"]["includedir"]."/include_datepicker.php") ?></td>
   </tr>
   
@@ -355,7 +326,7 @@ if ($clubid) {
 <?
 						
 						print "</table>";
-						include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+						include($_SESSION["CFG"]["templatedir"]."/footer.php");
 						die;
 					}
 				
@@ -483,7 +454,7 @@ if ($clubid) {
         <td ><table width=<?=$courtWidth?> cellpadding="0" cellspacing="0" align="center" class="scheduletable" >
           
  			<tr valign="top" >
-              <th class="ct<?=$ctobj->courttypeid?>cl<?=$clubobj->clubid?>" style="height: 14px">
+              <td  class="ct<?=$ctobj->courttypeid?>cl<?=$clubobj->clubid?> blackBackGround" style="height: 14px">
 			 	<? if(isDisplayCourtTypeName()=='y'){ ?>
 					<?=$ctobj->courttypename?>
 				<? } ?>	
@@ -506,23 +477,21 @@ if ($clubid) {
                    	 */
                    	 
                    	if( isset($specDate)){
-                   	 	logMessage("spec date: ".$specDate);
                    	 	$eventStartTime = $specDate;
                    	 }
                    	 else if( !empty($daysahead)  ){
-                   	 	logMessage("daysahead: ".$specDate);
                    	 	$eventStartTime = $daysahead;
                    	 }
                    	 else{
                    	 	$eventStartTime = $curtime;
                    	 }
                    	 ?>
-                   	 <th class="blackBackGround" id="courtname-header-<?=$courtobj->courtid?>"><a href="<?=$wwwroot?>/admin/event_load.php?time=<?=$eventStartTime?>&courtid=<?=$courtobj->courtid?>"><?=$courtobj->courtname?></a></th>
+                   	 <td class="blackBackGround" id="courtname-header-<?=$courtobj->courtid?>"><a href="<?=$wwwroot?>/admin/event_load.php?time=<?=$eventStartTime?>&courtid=<?=$courtobj->courtid?>"><?=$courtobj->courtname?></a></td>
 
                    	 <?
                    }
                    else{ ?>
-                   	 	<th id="courtname-header-<?=$courtobj->courtid?>"><?=$courtobj->courtname?></th>
+                   	 	<td class="blackBackGround" id="courtname-header-<?=$courtobj->courtid?>"><?=$courtobj->courtname?></td>
                    <?
 					}
                  
@@ -1045,7 +1014,8 @@ $i = resetReservationPointer($courtobj->variableduration, $hoursobj->duration, $
 
     <?php
 }
-include($_SESSION["CFG"]["templatedir"]."/footer_yui.php");
+include($_SESSION["CFG"]["templatedir"]."/footer.php");
+	
 
 // can't make reservattions before 6 for normal users on the last day out
 if(  (!is_logged_in() || get_roleid()==1) && $jsdate2 == $jsdate && $currHour <  6 ){ 

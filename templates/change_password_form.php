@@ -1,58 +1,35 @@
+
+<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+
+<form name="entryform" method="post" action="<?=$ME?>" autocomplete="off">
+
+  <div class="mb-3">
+    <label for="oldpassword" class="form-label">Password</label>
+    <input type="password" class="form-control" id="oldpassword">
+    <? is_object($errors) ? err($errors->oldpassword) : ""?>
+  </div>
+
+  <div class="mb-3">
+    <label for="onewpassword" class="form-label">Password</label>
+    <input type="password" class="form-control" id="newpassword">
+    <? is_object($errors) ? err($errors->newpassword) : ""?>
+  </div>
+
+   <div class="mb-3">
+    <label for="onewpassword2" class="form-label">Confirm Password</label>
+    <input type="password" class="form-control" id="newpassword2">
+    <? is_object($errors) ? err($errors->newpassword2) : ""?>
+  </div>
+
+  <button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Change Password</button>
+      <input type="hidden" name="submitme" value="submitme">
+  </form>
+</div>
+
+
 <script type="text/javascript">
-
-
-YAHOO.example.init = function () {
-
-    YAHOO.util.Event.onContentReady("formtable", function () {
-
-        var oSubmitButton1 = new YAHOO.widget.Button("submitbutton", { value: "submitbuttonvalue" });
-        oSubmitButton1.on("click", onSubmitButtonClicked);
-
-    });
-
-} ();
-
 
 function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
 </script>
-
-<div>
-  <form name="entryform" method="post" action="<?=$ME?>">
-    <table width="400" cellpadding="20" cellspacing="0" class="generictable" id="formtable">
-      <tr class="borderow">
-        <td class=clubid<?=get_clubid()?>th><font class=whiteh1>
-          <div align="center">
-            <? pv($DOC_TITLE) ?>
-          </div>
-          </font></td>
-      </tr>
-      <tr>
-        <td><table cellspacing="5" cellpadding="0" class="borderless">
-            <tr>
-              <td class="label">Old Password:</td>
-              <td><input type="password" name="oldpassword" size=25>
-              <? is_object($errors) ? err($errors->oldpassword) : ""?>
-              </td>
-            </tr>
-            <tr>
-              <td class="label">New Password:</td>
-              <td><input type="password" name="newpassword" size=25>
-               <? is_object($errors) ? err($errors->newpassword) : ""?>
-              </td>
-            </tr>
-            <tr>
-              <td class="label">Confirm Password:</td>
-              <td><input type="password" name="newpassword2" size=25>
-              <? is_object($errors) ? err($errors->newpassword2) : ""?>
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td><input type="button" name="submit" value="Change Password" id="submitbutton"></td>
-          </table></td>
-      </tr>
-    </table>
-  </form>
-</div>

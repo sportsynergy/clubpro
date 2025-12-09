@@ -1,44 +1,7 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
 
-/**
-* Class and Function List:
-* Function list:
-* - validate_form()
-* - print_players()
-* Classes list:
-*/
-/*
- * $LastChangedRevision: 838 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2011-02-23 00:14:23 -0600 (Wed, 23 Feb 2011) $
-*/
 include ("../application.php");
-$DOC_TITLE = "Account Maintenance";
+$DOC_TITLE = "User Account Maintenance";
 require_loginwq();
 
 /* form has been submitted, try to create the new role */
@@ -54,15 +17,15 @@ if (isset($searchname)) {
         $playerResults = get_all_player_search($searchname);
         
         if (isDebugEnabled(1)) logMessage("player_lookup: Found " . mysqli_num_rows($playerResults) . " results");
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
         print_players($searchname, $playerResults, $DOC_TITLE, $ME);
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/player_lookup_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
@@ -104,26 +67,26 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
         $num_rows = mysqli_num_rows($playerResults);
 ?>
 
-				<table cellpadding="20" width="650" class="bordertable">
-                       <tr class="loginth">
-                           <td height="25"><span class="whitenorm"><div align="center">First Name</div></span></td>
-                           <td height="25"><span class="whitenorm"><div align="center">Last Name</div></span></td>
-                           <td height="25"><span class="whitenorm"><div align="center">Club</div></span></td>
-
-                           <td></td>
+				<table cellpadding="20" width="650" class="table table-striped" >
+                <thead>       
+                <tr>
+                           <th>First Name</th>
+                           <th>Last Name</th>
+                           <th>Club</th>
+                           <th></th>
                        </tr>
-
+                </thead>
+            <tbody>
                 <?
 
 
 		$rownum = mysqli_num_rows($playerResults);
 		while ($playerarray = mysqli_fetch_array($playerResults)) {
 
-			 $rc = (($rownum/2 - intval($rownum/2)) > .1) ? "darkrow" : "lightrow";
 			
 			?>
 			
-			<tr class="<?=$rc?>" >
+			<tr >
 			<form name="playerform<?=$rownum?>" method="get" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_info.php">
 			<td><div align="center"><?=$playerarray['firstname']?></div> </td>
 			<td><div align="center"><?=$playerarray['lastname']?></div> </td>
@@ -138,12 +101,12 @@ function print_players($searchname, $playerResults, $DOC_TITLE, $ME) {
 			$rownum = $rownum -1;
 		}
 ?>
-            
+            </tbody>
                   </table>
                   
                  <div style="height: 2em;"></div>
                  <div>
-                 	<span style="text-align: right;"> <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_lookup.php"><< New Search</a>  </span>
+                 	<span style="text-align: right;"> <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/player_lookup.php">New Search</a>  </span>
                  </div> 
                  
                 <?

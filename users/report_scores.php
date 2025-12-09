@@ -1,35 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* - validate_form()
-* Classes list:
-*/
+
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 require "../vendor/autoload.php";
@@ -57,14 +27,12 @@ if (match_referer() && isset($_POST["submitme"])) {
     $errormsg = validate_form($frm, $errors);
     
     if (empty($errormsg)) {
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 
         // If this is a box league
-        
         if ($frm['matchtype'] == 1) {
 
             if (isDebugEnabled(1)) logMessage("applicationlib.record_score: This reporting a score for a box league: gameswon is ".$frm['gameswon'] );
-
 
             //Get Box Id
             $query = "SELECT history.boxid 
@@ -79,7 +47,6 @@ if (match_referer() && isset($_POST["submitme"])) {
             // if not found, set it in box history (this was changed to a box league
             // match when it was scored.
 
-            
             if (empty($boxId)) {
                 $boxId = getBoxIdTheseTwoGuysAreInTogether($frm['Player1'], $frm['Player2']);
                 $query = "INSERT INTO tblBoxHistory ( boxid, reservationid ) VALUES ( $boxId, $frm[reservationid])";
@@ -100,7 +67,7 @@ if (match_referer() && isset($_POST["submitme"])) {
         record_score($frm, $source);
         update_streakval($frm);
         $goto = empty($_SESSION["wantsurl"]) ? $_SESSION["CFG"]["wwwroot"] : $_SESSION["wantsurl"];
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }
@@ -108,9 +75,9 @@ if (match_referer() && isset($_POST["submitme"])) {
 
 $matchscores = getMatchScores($reservationid);
 
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/report_scores_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
@@ -141,7 +108,7 @@ function validate_form(&$frm, &$errors) {
     }
 
     /*Check doubles reservation */
-    elseif ($reservationTypeValue == 1 && (isCurrentUserOnTeam($frm['Player1']) == 0) && (isCurrentUserOnTeam($frm['Player2']) == 0) && (get_roleid() == 1 || get_roleid() == 5)) {
+    elseif ($reservationTypeValue == 1 && (isCurrentUserOnTeam($frm['Player1']) == 0) && (isCurrentUserOnTeam($frm['Player2']) == 0) && (get_roleid() == 1 )) {
         $errors->reportscore = true;
         $msg.= "You have to be on one of the teams that played to report the score";
     } elseif (empty($frm["winner"])) {
@@ -150,12 +117,12 @@ function validate_form(&$frm, &$errors) {
     } elseif (isClubGuest($frm['Player1']) || isClubGuest($frm['Player2'])) {
         
         if (get_roleid() == 1) {
-            $msg.= "Nice try to boost your ranking, but Club Guest matches can't be scored.  Seriously, instead coming up with new ways to cheat you should be out there hitting rails.";
+            $msg.= "Nice try to boost your ranking, but Club Guest matches can't be scored.";
         } else {
             $msg.= "Club Guest matches cannot be scored.";
         }
     } elseif (isClubMember($frm['Player1']) || isClubMember($frm['Player2'])) {
-        $msg.= "Club Member matches cannot be scored. Stop trying to cheat.";
+        $msg.= "Club Member matches cannot be scored. ";
     } elseif ($frm['matchtype'] == 1) {
 
         //When this match type has been changed (after the fact)

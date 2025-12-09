@@ -1,38 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* - validate_form()
-* - record_scores()
-* - isUserValidForCourtType()
-* - getUserRankingForUserType()
-* Classes list:
-*/
+
 include ("../application.php");
 require ($_SESSION["CFG"]["libdir"] . "/ladderlib.php");
 require ($_SESSION["CFG"]["libdir"] . "/courtlib.php");
@@ -74,9 +41,9 @@ if (match_referer() && isset($_POST['submitme'])) {
 
         $message = record_scores($frm);
 
-        include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
         include ($_SESSION["CFG"]["includedir"] . "/include_message.php");
-        include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
         die;
     }
 }
@@ -87,9 +54,9 @@ $singlesMatchScores = get_singlesMatchscoresForSite(get_siteid());
 $doublesMatchScores = get_doublesMatchscoresForSite(get_siteid());
 $allmatchscores = getAllMatchScores();
 
-include ($_SESSION["CFG"]["templatedir"] . "/header_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/report_scores_admin_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footer_yui.php");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
@@ -307,7 +274,7 @@ function record_scores(&$frm) {
         $losersOldRanking = sprintf("%01.4f", $losersOldRanking);
         $newLoserRanking = sprintf("%01.4f", $newLoserRanking);
         report_scores_doubles_simple($winnerTeamId, $loserTeamId, $winnersOldRanking, $newWinnerRanking, $losersOldRanking, $newLoserRanking, $frm["score"], $frm['matchtype']);
-        return "<font class=bigbanner> Yipeeee for " . getFullNamesForTeamId($winnerTeamId) . "!!!</font><br/><br/>" . getFullNamesForTeamId($winnerTeamId) . " ranking climbed from $winnersOldRanking to $newWinnerRanking<br>
+        return "Yipeeee for " . getFullNamesForTeamId($winnerTeamId) . "!!!<br/><br/>" . getFullNamesForTeamId($winnerTeamId) . " ranking climbed from $winnersOldRanking to $newWinnerRanking<br>
 						" . getFullNamesForTeamId($loserTeamId) . " ranking fell from $losersOldRanking to $newLoserRanking<br><br>
 						Click <a href=" . ">here</a> to put another one in.";
     }
@@ -365,7 +332,7 @@ function record_scores(&$frm) {
 
         // send out the email
         report_scores_singles_simple($frm["player1"], $frm["player2"], $winnersOldRanking, $newWinnerRanking, $losersOldRanking, $newLoserRanking, $frm["score"], $frm['matchtype']);
-        return "<font class=bigbanner> Yay for " . getFullNameForUserId($frm["player1"]) . "!!!</font><br/><br/>" . getFullNameForUserId($frm["player1"]) . "'s ranking climbed from $winnersOldRanking to $newWinnerRanking<br>
+        return "Yay for " . getFullNameForUserId($frm["player1"]) . "!!!<br/><br/>" . getFullNameForUserId($frm["player1"]) . "'s ranking climbed from $winnersOldRanking to $newWinnerRanking<br>
 						" . getFullNameForUserId($frm["player2"]) . "'s ranking fell from $losersOldRanking to $newLoserRanking<br><br>
 						Click <a href=" . ">here</a> to put another one in.";
     }
