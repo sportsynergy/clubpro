@@ -878,6 +878,11 @@ function get_siteid() {
 function isSiteAutoLogin() {
     return $_SESSION["siteprefs"]["enableautologin"] == 'y' ? true : false;
 }
+
+/** displays news on small screens */
+function isMobileOptimized() {
+    return $_SESSION["siteprefs"]["mobileoptimized"] == 'y' ? true : false;
+}
 /**
  * this function simply returns whether or not the recent activity should be displayed
  * @return boolean
@@ -5691,7 +5696,8 @@ function getSitePreferencesForCourt($courtid) {
                     sites.showplayernames,
                     sites.requirelogin,
 					sites.timeoutlink,
-					sites.boxsession
+					sites.boxsession,
+					sites.mobileoptimized
 	        FROM tblClubSites sites, tblCourts courts, tblClubs clubs
 			WHERE sites.siteid = courts.siteid
 			AND sites.clubid = clubs.clubid
@@ -5750,7 +5756,8 @@ function getSitePreferences($siteid) {
                     clubs.timezone,
                     sites.showplayernames,
                     sites.requirelogin,
-					sites.timeoutlink
+					sites.timeoutlink,
+					sites.mobileoptimized
 	        FROM tblClubSites sites, tblClubs clubs
 			WHERE sites.siteid = '$siteid'
 			AND sites.clubid = clubs.clubid";
