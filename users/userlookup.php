@@ -1,39 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
 
-/**
-* Class and Function List:
-* Function list:
-* Classes list:
-*/
-/*
- * Created on Feb 28, 2008
- *
-*/
 $name = $_GET['name'];
 $clubid = $_GET['clubid'];
 $courtid = $_GET['courtid'];
@@ -55,7 +21,7 @@ if( isset($ladderid) ){
 	if (isDebugEnabled(1)) logMessage("Users.Userlookup: name: $name ladderid: $ladderid userid: $userid");
 
 } else {
-	if (isDebugEnabled(1)) logMessage("Users.Userlookup: name: $name clubid: $clubid courtid: $courtid siteid: $siteid userid: $userid");
+	if (isDebugEnabled(1)) logMessage("Users.Userlookup: name: $name clubid: $clubid siteid: $siteid userid: $userid");
 
 }
 

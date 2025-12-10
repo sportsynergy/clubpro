@@ -111,11 +111,6 @@ function validate_form(&$frm, &$errors) {
         return "I am sorry but your partner is already signed up for this event.";
     } 
 
-
-
-
-    
-
 }
 ?>
 

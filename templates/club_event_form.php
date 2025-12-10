@@ -107,9 +107,15 @@ if ($clubEvent['registerteam']=='y' ){   ?>
 
 
 
-<div>
+<div class="container">
+
+<div class="row">
+<div class="col-md-3">
 <span class="biglabel">Who is coming </span>  
 
+
+<? if( get_roleid()==1) { ?>
+	<p>Please log in to sign up for this event.</p>}
 <?  if( $alreadySignedUp   ){ ?>
 		<a href="javascript:submitForm('removemefromeventform');">Take me out</a>
 	<? } else if ($clubEvent['registerteam']!='y') { // team registration have a seperate signup form ?>
@@ -132,15 +138,12 @@ if ($clubEvent['registerteam']=='y' ){   ?>
 		</form>
 		<a href="javascript:submitForm('addtoeventformwithdivision');">Put me down</a>
 		<? } else { ?>
-			<a href="javascript:submitForm('addtoeventform');">Put me down</a>
+			<a href="javascript:submitForm('addtoeventform');">Put me down </a>
 		<? }  ?>
 
-	<? } ?>
-	
+		<? }} ?>
 
-
-
-<div id="peoplelistpanel">
+		<div id="peoplelistpanel">
 
 <? 
 
@@ -192,7 +195,50 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 	<? } }?>
 
 </div>
-</div>
+
+		
+
+	
+
+		</div>
+		<div class="col-md-9">
+			
+		<div class="mb-3">
+			<label for="memberid" class="form-label">Add Person</label>
+		
+    <input id="name1" name="partnername" type="text" size="30" class="form-autocomplete form-control"  style="width: 70%"/>
+		          <input id="id1" name="partner" type="hidden" />
+		    			<script>
+		                <?
+		                $wwwroot = $_SESSION["CFG"]["wwwroot"];
+		                 pat_autocomplete( array(
+								'baseUrl'=> "$wwwroot/users/ajaxServer.php",
+								'source'=>'name1',
+								'target'=>'id1',
+								'className'=>'autocomplete',
+								'parameters'=> "action=autocomplete&name={name1}&userid=".get_userid()."&siteid=".get_siteid()."&clubid=".get_clubid()."",
+								'progressStyle'=>'throbbing',
+								'minimumCharacters'=>3,
+								));
+		                 ?>
+		                </script>
+						</div>
+
+			<div class="mb-3">
+				<button type="submit" class="btn btn-primary" onclick="onSubmitButtonClicked()">Submit</button>
+			</div>
+
+		</div>
+
+		 
+
+		</div> <!-- row -->
+</div> <!-- container -->
+
+
+
+
+
 
 
 
@@ -200,8 +246,7 @@ if( mysqli_num_rows($clubEventParticipants)==0){ ?>
 
 <script>
 
-document.getElementById('name1').setAttribute("autocomplete", "off");
-document.getElementById('name2').setAttribute("autocomplete", "off");
+
 
 function submitAddToEventForm()
 { 
