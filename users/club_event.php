@@ -30,10 +30,13 @@ if (isset($eventid)) {
 if (match_referer() && isset($_POST['cmd'])) {
     $frm = $_POST;
 
+    $errormsg = validate_form($frm, $errors);
+
     // Add user to Club Event
     
     if ($frm['cmd'] == 'addtoevent') {
         logMessage("club_event.validate_form: adding user to club event");
+        
         $userid = $frm['userid'];
         $division = $frm['division'];
         $clubeventid = $frm['clubeventid'];
@@ -57,15 +60,13 @@ if (match_referer() && isset($_POST['cmd'])) {
         $clubeventid = $frm['clubeventid'];
         $division = $frm['division'];
 
-        $errormsg = validate_form($frm, $errors);
-
+        
         if (empty($errormsg)) {
             addToClubEventAsTeam($userid, $partnerid, $clubeventid, $division);
         } 
 
     }
 }
-
 
 $clubEventResult = loadClubEvent($_SESSION["clubeventid"]);
 $clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);
@@ -84,33 +85,36 @@ function validate_form(&$frm, &$errors) {
 
     logMessage("club_event.validate_form: checking if parter for ". $frm['userid']." is alredy signed up");
 
-    $clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);
-    
-    
     if ( empty($frm["userid"]) ){
-        return "Please select a user from the dropdown menu.";
+        return "Please select a user from the menu.";
     } 
 
-    if ( empty($frm["partnerid"]) ){
-        return "Please select a user from the dropdown menu.";
-    } 
 
-    $userSignedUp = isClubEventParticipant(trim($frm['userid']), $clubEventParticipants, $frm["division"]);
+    if ( $frm["cmd"]=="addtoeventasteam" ) {
 
-    if ( $userSignedUp ){
-        return "I am sorry but you're already signed up for this event.";
-    } 
-
-    if ( $frm["division"]=="--"  ){
-        return "Please select a division";
-    } 
-
-    $partnerSignedUp = isClubEventParticipant(trim($frm['partnerid']), $clubEventParticipants, $frm["division"]);
+        $clubEventParticipants = getClubEventParticipants($_SESSION["clubeventid"]);
     
-    if ( $partnerSignedUp ){
-        return "I am sorry but your partner is already signed up for this event.";
-    } 
+            if ( empty($frm["partnerid"]) ){
+                return "Please select a user from the menu.";
+            } 
 
+            $userSignedUp = isClubEventParticipant(trim($frm['userid']), $clubEventParticipants, $frm["division"]);
+
+            if ( $userSignedUp ){
+                return "I am sorry but you're already signed up for this event.";
+            } 
+
+            if ( $frm["division"]=="--"  ){
+                return "Please select a division";
+            } 
+
+            $partnerSignedUp = isClubEventParticipant(trim($frm['partnerid']), $clubEventParticipants, $frm["division"]);
+            
+            if ( $partnerSignedUp ){
+                return "I am sorry but your partner is already signed up for this event.";
+            } 
+    }
+    
 }
 ?>
 
