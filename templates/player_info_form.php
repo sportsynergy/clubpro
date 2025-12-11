@@ -16,10 +16,7 @@
       <label for="lastname" class="form-label">Last Name:</label>
       <input class="form-control-plaintext" id="lastname" type="text" aria-label="Lastname" value="<?=$frm["lastname"] ?>" readonly>  
   </div>
-  <div class="mb-3">
-      <label for="email" class="form-label">Email:</label>
-      <input class="form-control-plaintext" id="email" type="email"  aria-label="Email" value="<?=$frm["email"] ?>" readonly>  
-  </div>
+
 
   <? if(!empty($frm["cellphone"])){?>
 
@@ -34,6 +31,11 @@
       <label for="membersince" class="form-label">Member Since:</label>
       <input class="form-control-plaintext" id="membersince" type="text"  aria-label="Member Since" value="<?=$frm["msince"] ?>" readonly>  
     <? } ?>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email:</label>
+      <input class="form-control-plaintext" id="email" type="email"  aria-label="Email" value="<?=$frm["email"] ?>" readonly>  
+    </div>
 
      <?
 		   // Get the Custom Parameters

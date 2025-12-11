@@ -92,7 +92,7 @@ function onCancelButtonClicked(){
 	<? pv($DOC_TITLE) ?></p>
 </div>
 
-<form name="entryform" method="post" action="<?=$MEWQ?>" onSubmit="SubDisable(this);" autocomplete="off">
+
     	
 		 <?  $allowChangeEvent = true;
 		 
@@ -170,7 +170,7 @@ function onCancelButtonClicked(){
 							</ul>
 				 <? } ?>	
 				 <?	}  ?>
-
+		<form name="entryform" method="post" action="<?=$MEWQ?>" onSubmit="SubDisable(this);" autocomplete="off">
        		<? 
        		//Only display this to administrators
        		if( get_roleid()==2 || get_roleid()==4){  
@@ -233,8 +233,8 @@ function onCancelButtonClicked(){
 
 	    		
 	    	  <div class="mt-5">
-				<button type="submit" class="btn btn-primary" id="submitbutton" onclick="onSubmitButtonClicked()">Update Court Reservation</button>
-				<button type="button" class="btn btn-secondary" id="cancelbutton" onclick="onCancelButtonClicked()">Back to Court Reservations</button>
+				<button type="submit" class="btn btn-primary" id="submitbutton" onclick="onSubmitButtonClicked()">Submit</button>
+				<button type="button" class="btn btn-secondary" id="cancelbutton" onclick="onCancelButtonClicked()">Cancel</button>
 				
 				<input type="hidden" name="reservationid" value="<?=$courtTypeArray['reservationid']?>">
 				<input type="hidden" name="courtid" value="<?=$courtid?>">

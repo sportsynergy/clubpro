@@ -73,8 +73,7 @@ if (isset($_POST['cancelall'])) {
 }
 
 //This little part handles adding and removing players from events
-else 
-if (isset($_POST['cmd']) && $_POST['cmd'] == "managecourtevent") {
+else if (isset($_POST['cmd']) && $_POST['cmd'] == "managecourtevent") {
     
     if (isDebugEnabled(1)) logMessage("court_cancelation: managing court events");
 
