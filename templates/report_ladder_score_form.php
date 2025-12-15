@@ -18,8 +18,21 @@
 
 <div class="mb-3">
 
-    <input id="rsname1" name="" type="text" size="30" class="form-control form-autocomplete" autocomplete="off"/> 
-    <input id="rsid1" name="rsuserid" type="hidden" />
+
+    <input id="rsname1" name="playeronename" type="text" size="30" class="form-control form-autocomplete" autocomplete="off"  <?
+             // If regular player default the first player as them selves, don't allow them to edit this either
+             if( get_roleid() == 1){ ?>
+             	value="<?=get_userfullname()?>" disabled
+              <? }else{ ?>
+              	value="<? pv($frm["playeronename"]) ?>"
+              <? } ?>/> 
+    <input id="rsid1" name="rsuserid" type="hidden"  <?
+             // If regular player default the first player as them selves, don't allow them to edit this either
+             if( get_roleid() == 1){ ?>
+             	value="<?=get_userid()?>"
+             <? } else {?>
+             	value="<? pv($frm["rsuserid"]) ?>"
+             <? } ?>/>
     <script>
                 <?
                 $wwwroot =$_SESSION["CFG"]["wwwroot"] ;
