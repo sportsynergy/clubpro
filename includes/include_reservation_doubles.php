@@ -72,8 +72,8 @@
   <div class="row">
     <div class="col">
         <div class="mb-3">
-        <label for="name3" class="form-label">Player Three</label>
-         <input id="name3" name="playerthreename" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayerthree();" value="<? pv($frm["playerthreename"]) ?>"/>
+        <label for="dname3" class="form-label">Player Three</label>
+         <input id="dname3" name="playerthreename" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayerthree();" value="<? pv($frm["playerthreename"]) ?>"/>
           <? is_object($errors) ? err($errors->playerthreename) : ""?>
         
           <input id="id3" name="playerthreeid" type="hidden" value="<? pv($frm["playerthreeid"]) ?>"/>
@@ -82,10 +82,10 @@
 	                 $wwwroot = $_SESSION["CFG"]["wwwroot"];
 	                 pat_autocomplete( array(
 							'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-							'source'=>'name3',
+							'source'=>'dname3',
 							'target'=>'id3',
 							'className'=>'autocomplete',
-							'parameters'=> "action=autocomplete&name={name3}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
+							'parameters'=> "action=autocomplete&name={dname3}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
 							'progressStyle'=>'throbbing',
 							'minimumCharacters'=>3,
 							));
