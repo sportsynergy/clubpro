@@ -98,7 +98,7 @@
     <div class="col">
         <div class="mb-3">
           <label for="name4" class="form-label">Player Four </label>
-        <input id="name4" name="playerfourname" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayerfour();" value="<? pv($frm["playerfourname"]) ?>"/>
+        <input id="dname4" name="playerfourname" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayerfour();" value="<? pv($frm["playerfourname"]) ?>"/>
         <? is_object($errors) ? err($errors->playerfourname) : ""?>
         <input id="id4" name="playerfourid" type="hidden" value="<? pv($frm["playerfourid"]) ?>"/>
         <script>
@@ -106,10 +106,10 @@
               $wwwroot = $_SESSION["CFG"]["wwwroot"];
               pat_autocomplete( array(
               'baseUrl'=> "$wwwroot/users/ajaxServer.php",
-              'source'=>'name4',
+              'source'=>'dname4',
               'target'=>'id4',
               'className'=>'autocomplete',
-              'parameters'=> "action=autocomplete&name={name4}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
+              'parameters'=> "action=autocomplete&name={dname4}&userid=".get_userid()."&courtid=$courtid&siteid=".get_siteid()."&clubid=".get_clubid()."",
               'progressStyle'=>'throbbing',
               'minimumCharacters'=>3,
               ));

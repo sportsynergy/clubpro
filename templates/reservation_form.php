@@ -27,8 +27,6 @@
 	//account for no reservations
 	$nexttime = mysqli_result($result,0);
 
-if (isDebugEnabled(1)) logMessage("hello $reservationType");
-
 ?>
 
 <p class="bigbanner"><? pv($DOC_TITLE) ?></p>
@@ -118,14 +116,14 @@ function unsetplayertwo(fieldname)
 
 function unsetplayerthree(fieldname)
 {
-       if( document.doubles_reservation_form.name3.value.length == 0){
+       if( document.doubles_reservation_form.dname3.value.length == 0){
        	 document.doubles_reservation_form.id3.value = "";
        }
 }
 
 function unsetplayerfour(fieldname)
 {
-       if( document.doubles_reservation_form.name4.value.length == 0){
+       if( document.doubles_reservation_form.dname4.value.length == 0){
        	 document.doubles_reservation_form.id4.value = "";
        }
 }

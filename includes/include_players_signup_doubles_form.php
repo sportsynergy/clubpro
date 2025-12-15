@@ -71,12 +71,12 @@ function onCancelButtonClicked(){
 <div class="mb-3">
 
 <div class="form-check">
-  <input class="form-check-input" type="radio"  id="partner" name="partner" value="<?=$playerOneArray['userid']?>" checked="checked" onclick="disablePartnerList(this.checked)">
+  <input class="form-check-input" type="radio"  id="partner" name="partner" value="<?=$playerOneArray['userid']?>" checked="checked" >
    		Play with <?echo "$playerOneNameArray[firstname] $playerOneNameArray[lastname]"?>
 </div>
 
 <div class="form-check">
-  <input class="form-check-input" type="radio"  id="partner" name="partner" value="<?=$playerTwoArray['userid']?>"  onclick="disablePartnerList(this.checked)">
+  <input class="form-check-input" type="radio"  id="partner" name="partner" value="<?=$playerTwoArray['userid']?>"  >
    		Play with <?echo "$playerTwoNameArray[firstname] $playerTwoNameArray[lastname]"?>
 </div>
 

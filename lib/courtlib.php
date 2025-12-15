@@ -368,10 +368,10 @@ function printResourceReservation($courtid, $time, $creatorid, $reservationid, $
 
 
 function printDoublesReservationSinglePlayer($userid, $lock, $matchType, $time, $courtid, $creator, $inpast){
-	
-	
-		if( isDebugEnabled(1) ) logMessage("scheduler_content.printDoubles single player where lock is $lock");
-		
+
+    if( isDebugEnabled(1) )
+        logMessage("courtlib.printDoublesReservationSinglePlayer: userid $userid courtid $courtid lock $lock matchType $matchType time $time creator $creator inpast $inpast");
+
 		$clubid = get_clubid();
 		$fullNameResult = getFullNameResultForUserId($userid);
 		$userArray = mysqli_fetch_array($fullNameResult); 

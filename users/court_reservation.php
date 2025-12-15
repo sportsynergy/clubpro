@@ -1457,7 +1457,12 @@ function makeDoublesReservation($frm, $guesttype, $reservationid) {
          * looking for a partner, in that case usertype will be 0 (single)
         */
         
-        if (empty($frm['playertwoid'])) {
+        
+        if (empty($frm['playeroneid']) && empty($frm['playertwoid'])) {
+            $teamid1 = 0;
+            $teamone_usertype = 0;
+        }
+        elseif (empty($frm['playertwoid'])) {
             $teamid1 = $frm['playeroneid'];
             $teamone_usertype = 0;
         } elseif (empty($frm['playeroneid'])) {
@@ -1467,7 +1472,8 @@ function makeDoublesReservation($frm, $guesttype, $reservationid) {
             $teamid1 = getTeamIDForPlayers($courttypeid, $frm['playeroneid'], $frm['playertwoid']);
             $teamone_usertype = 1;
         }
-        $query = "INSERT INTO tblkpUserReservations (
+
+            $query = "INSERT INTO tblkpUserReservations (
 	                                reservationid, userid, usertype
 	                                ) VALUES (
 	                                       '$reservationid'
@@ -1476,13 +1482,13 @@ function makeDoublesReservation($frm, $guesttype, $reservationid) {
 
         // run the query on the database
         $result = db_query($query);
-
+         
         /* There is the distinct possibility that a club administrator or front desk user
          * left playerthree and playerfour empty.  what this means is that they will be
          * making this reservation looking for another team
          *
         */
-        
+
         if (empty($frm['playerthreeid']) && empty($frm['playerfourid'])) {
             $teamid2 = 0;
             $teamtwo_usertype = 0;

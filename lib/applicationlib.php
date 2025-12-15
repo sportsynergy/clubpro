@@ -6157,6 +6157,7 @@ function getFullNameForUserIdWithEscapes($userId){
  */
 function getFullNameResultForUserId($userId){
 
+	if( empty($userId) ) $userId = 0;
 	$userQuery = "SELECT tblUsers.firstname, tblUsers.lastname
                         FROM tblUsers
                         WHERE tblUsers.userid=$userId";
