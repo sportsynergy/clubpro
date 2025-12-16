@@ -35,6 +35,7 @@ class UpdateBoxLeagueScores{
                     INNER JOIN tblClubSiteLadders tCSL ON tblBoxLeagues.ladderid = tCSL.id
                     WHERE startdate IS NOT NULL
                     AND  tblBoxLeagues.ladder_type = 'basic'
+                    AND tblBoxLeagues.enddate > NOW()
                     AND enable=TRUE";
                     
         $mresult = db_query($query);

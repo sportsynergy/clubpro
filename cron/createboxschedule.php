@@ -43,6 +43,7 @@ class CreateBoxLeagueSchedule {
                     INNER JOIN tblClubSiteLadders tCSL 
                         ON tblBoxLeagues.ladderid = tCSL.id
                     WHERE tblBoxLeagues.autoschedule IS TRUE
+                    AND tblBoxLeagues.enddate > NOW()
                     AND tblBoxLeagues.enable IS TRUE"; 
                     
         $mresult = db_query($query);
