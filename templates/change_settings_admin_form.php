@@ -233,6 +233,51 @@ function onSubmitButtonClicked(){
             <?  } ?>
             </div> <!-- .mb-3 -->
 
+            
+ <?
+
+
+
+        for ( $i=0; $i<mysqli_num_rows($availbleSports); ++$i){
+
+        	$availbleSportsArray = db_fetch_array($availbleSports);
+
+                  //Match up the users ranking with the availbe court types
+                 for ($j=0; $j<mysqli_num_rows($registeredSports); ++$j){
+
+                   $registeredArray = db_fetch_array($registeredSports);
+                       //Put the results in a nice little string to be passed up in the post vars.
+
+                       if($j==0){
+                           $mycourtTypes =  $registeredArray['courttypeid'];
+                       }
+                       else{
+                           $mycourtTypes .=  ",$registeredArray[courttypeid]";
+                       }
+
+					   if($availbleSportsArray['courttypeid'] == $registeredArray['courttypeid']){
+					   	 $ranking = $registeredArray['ranking'];
+					   }
+                         
+                 }
+
+               if(mysqli_num_rows($registeredSports)>0){
+                    mysqli_data_seek($registeredSports,0);
+               }
+
+         ?>
+         <div class="mb-3">
+            <label for="<? echo "courttype$availbleSportsArray[courttypeid]" ?>" class="form-label"><? echo "$availbleSportsArray[courttypename] Ranking" ?>:</label>
+            <input class="form-control" type="text" id="<? echo "courttype$availbleSportsArray[courttypeid]" ?>" name="<? echo "courttype$availbleSportsArray[courttypeid]" ?>" size=25 value="<?=$ranking ?>">
+        </div>
+            
+         <?
+           unset($ranking);
+           //While closing bracket - DO NOT remove
+           }
+         ?>
+
+
             <div class="mb-3">
                
                  <div class="form-check">
