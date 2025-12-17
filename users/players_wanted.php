@@ -50,14 +50,14 @@ function get_playerswanted() {
                    ORDER BY tblReservations.time";
 
     $doublesspwquery = "SELECT DISTINCTROW tblReservations.reservationid, tblReservations.time
-                    FROM (tblCourts INNER JOIN tblReservations
-                    ON tblCourts.courtid = tblReservations.courtid)
-                    INNER JOIN tblkpUserReservations
-                    ON tblReservations.reservationid = tblkpUserReservations.reservationid
-                    WHERE (((tblReservations.time)>$curtime)
-                    AND ((tblkpUserReservations.userid)=0)
-                    AND ((tblCourts.siteid)=" . get_siteid() . ")
-                    AND ((tblReservations.usertype)=1))
+                    FROM tblCourts 
+                    INNER JOIN tblReservations ON tblCourts.courtid = tblReservations.courtid
+                    INNER JOIN tblkpUserReservations ON tblReservations.reservationid = tblkpUserReservations.reservationid
+                    WHERE tblReservations.time>$curtime
+                    AND tblkpUserReservations.userid=0
+                    AND tblCourts.siteid=" . get_siteid() . "
+                    AND tblReservations.usertype
+                    AND tblReservations.enddate IS NULL
                     ORDER BY tblReservations.time";
 
     //get doubles reservations that need an extra player
