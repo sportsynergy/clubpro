@@ -61,74 +61,7 @@ if ($teamRow['usertype'] == 1) {
 }
 ?>
 
-<script language="Javascript">
 
-// please keep these lines on when you copy the source
-// made by: Nicolas - http://www.javascript-page.com
-
-function SubDisable(dform) {
-  if (document.getElementById) {
-   for (var sch = 0; sch < dform.length; sch++) {
-    if (dform.elements[sch].type.toLowerCase() == "submit") dform.elements[sch].disabled = true;
-   }
-  }
-return true;
-}
-
-function enabledoubles()
-{
-     document.entryform.name1.disabled = "";
-     document.entryform.name2.disabled = "";
-     document.entryform.name3.disabled = "";
-     document.entryform.name4.disabled = "";
-     document.entryform.lock.disabled = "";
-}
-
-function disabledoubles(disableIt)
-{
-        document.entryform.name1.disabled = true;
-        document.entryform.name2.disabled = true;
-        document.entryform.name3.disabled = true;
-        document.entryform.lock.disabled = true;
-
-}
-
-function unsetPlayer(id)
-{
-    id.value = "";
-}
-
-document.onkeypress = function (aEvent)
-{
-
-	    if(!aEvent) aEvent=window.event;
-  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
-    if( key == 13 ) // enter key
-    {
-          return false; // this will prevent bubbling ( sending it to children ) the event!
-    }
-
-}
-
-
-function onSubmitButtonClicked(){
-
-	document.entryform.cancelall.value=8;
-	submitForm('entryform');
-}
-
-function onCancelReservationButtonClicked(){
-
-	document.entryform.cancelall.value=3;
-	submitForm('entryform');
-}
-
- function onCancelButtonClicked(){
-
-	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
- }
-
-</script>
 
 
 <div class="mb-5">
@@ -136,7 +69,7 @@ function onCancelReservationButtonClicked(){
 	<? pv($DOC_TITLE) ?></p>
 </div>
 
-<form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" onSubmit="SubDisable(this);" autocomplete="off">
+<form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" autocomplete="off">
 	
 <div class="mb-3"  >
 	<label for="username" class="form-label">Team 1:</label>
@@ -177,10 +110,6 @@ function onCancelReservationButtonClicked(){
 		</script>
 </div>
 
-
-
-
-
 <div class="mb-3">
 	<label for="username" class="form-label">Team 2:</label>
 	<input id="name3" name="name3" type="text" size="35" class="form-control form-autocomplete" value="<?=$player3FullName?>" style="width: 30%; display: inline;" />
@@ -218,8 +147,6 @@ function onCancelReservationButtonClicked(){
 				?>
 		</script> 
 </div>
-
-
 
 <div class="mb-3">
 
@@ -260,23 +187,82 @@ function onCancelReservationButtonClicked(){
 	} ?>
 
 	<div class="mt-5">
-    	<button type="submit" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()">Update Reservation</button>
+    	<button type="button" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()">Update Reservation</button>
 		<button type="button" id="cancelbutton" class="btn btn-secondary" onclick="onCancelReservationButtonClicked()">Cancel Reservation</button>
 		<button type="button" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
 	</div>
 
+	<input type="hidden" name="cancelall" value="">
+	<input type="hidden" name="reservationid" value="<?=$reservationid?>">
+	<input type="hidden" name="courtid" value="<?=$courtid?>">
+	<input type="hidden" name="time" value="<?=$time?>">
+	<input type="hidden" name="lastupdated" value="<?=$lastupdated?>">
+	<input type="hidden" name="creator" value="<?=$creator?>">
 
-<input type="hidden" name="cancelall" value="">
-<input type="hidden" name="reservationid" value="<?=$reservationid?>">
-<input type="hidden" name="courtid" value="<?=$courtid?>">
-<input type="hidden" name="time" value="<?=$time?>">
-<input type="hidden" name="lastupdated" value="<?=$lastupdated?>">
-<input type="hidden" name="creator" value="<?=$creator?>">
-	
-	
 </form>
 
-             
-                 
+                
+<script language="Javascript">
+
+// please keep these lines on when you copy the source
+// made by: Nicolas - http://www.javascript-page.com
+
+function SubDisable(dform) {
+  if (document.getElementById) {
+   for (var sch = 0; sch < dform.length; sch++) {
+    if (dform.elements[sch].type.toLowerCase() == "submit") dform.elements[sch].disabled = true;
+   }
+  }
+return true;
+}
+
+function enabledoubles()
+{
+     document.entryform.name1.disabled = "";
+     document.entryform.name2.disabled = "";
+     document.entryform.name3.disabled = "";
+     document.entryform.name4.disabled = "";
+     document.entryform.lock.disabled = "";
+}
+
+function disabledoubles(disableIt)
+{
+        document.entryform.name1.disabled = true;
+        document.entryform.name2.disabled = true;
+        document.entryform.name3.disabled = true;
+        document.entryform.lock.disabled = true;
+}
+
+function unsetPlayer(id)
+{
+    id.value = "";
+}
+
+document.onkeypress = function (aEvent)
+{
+	if(!aEvent) aEvent=window.event;
+  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+    if( key == 13 ) // enter key
+    {
+          return false; // this will prevent bubbling ( sending it to children ) the event!
+    }
+}
+
+
+function onSubmitButtonClicked(){
+	document.entryform.cancelall.value=8;
+	submitForm('entryform');
+}
+
+function onCancelReservationButtonClicked(){
+	document.entryform.cancelall.value=3;
+	submitForm('entryform');
+}
+
+ function onCancelButtonClicked(){
+	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
+ }
+
+</script>
                     
         

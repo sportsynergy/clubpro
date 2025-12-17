@@ -1,22 +1,5 @@
 <?php
 
-/**
-* Class and Function List:
-* Function list:
-* Classes list:
-*/
-/*
- *
- * The following variables are required before loading this form:
- *
- * 		$userid
- * 		$time
- * 		$courtid
- * 		$reservationid
- *
- *
-*/
-
 //Program administrators have the option of rearranging a doubles reservation after it has already occured.  This variable is used for enabling/disabling functions to support this feature.
 
 $isPageBeingLoadedForPastReservation = isInPast($time);
@@ -139,10 +122,8 @@ $emailString = implode(",", $emailArray);
     Lock reservation
   </label>
 </div>
-
-             
+          
  <?}?>
-
 
     <? 
     //Only display the note if there are email addresses to send to.
@@ -161,7 +142,7 @@ $emailString = implode(",", $emailArray);
 
   <div class="mt-4"> 
 
-     <button type="submit" class="btn btn-primary" name="submit" onclick="onSubmitButtonClicked()">Update Reservation</button>
+     <button type="submit" class="btn btn-primary"  onclick="onSubmitButtonClicked()">Update Reservation</button>
      <button type="button" class="btn btn-secondary" <?=$disabled?> onclick="onCancelReservationButtonClicked()">Cancel Reservation</button>
    
       <? if(isReoccuringReservation($time, $courtid)){ ?>
@@ -207,9 +188,7 @@ document.onkeypress = function (aEvent)
 	document.entryform.name2.value = "<?= addslashes($player2FullName) ?>";
 		
 function onSubmitButtonClicked(){
-	var myButton = YAHOO.widget.Button.getButton('submitbutton'); 		
-	myButton.set('disabled', true);
-	
+
 	document.entryform.cancelall.value=4;
 	submitForm('entryform');
 }

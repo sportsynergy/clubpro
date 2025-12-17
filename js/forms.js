@@ -15,14 +15,14 @@ function newWindow(newContent)
         // SUBMIT
         form.submit();
 
-}//end function submitForm()
+}
 
 function submitForm(theForm)
 { 
 	var form = eval("document." + theForm);
-      form.submit();
+    form.submit();
 
-}//end function submitForm()
+}
 
 function loadReservationPage(month,date,year,site){
 	
