@@ -145,6 +145,7 @@ if(mysqli_num_rows($singlespwresult)==0
        <div class="mb-3">
         <h2>Players looking for a Singles Match</h2>
        </div>
+       <ul>
  
      <?
                while($row = mysqli_fetch_array($singlespwresult)){
@@ -165,10 +166,10 @@ if(mysqli_num_rows($singlespwresult)==0
 
                  // run the query on the database
                  $scourtdetailsresult = db_query($scourtdetailsquery);
-
+                    
                      //Print out details on the singles reservations
                                  while($scourtdetailsrow = db_fetch_row($scourtdetailsresult)) { ?>
-                                    <p>
+                                    <li>
                                      <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$scourtdetailsrow[0]?>&courtid=<?=$scourtdetailsrow[4]?>&userid=<?=$scourtdetailsrow[7]?>">
                                         <?=gmdate(" l F j h:i A",$scourtdetailsrow[0])?>
                                     </a> 
@@ -176,16 +177,17 @@ if(mysqli_num_rows($singlespwresult)==0
                                      <? if($scourtdetailsrow[6]==1){ ?>
                                           <img src="<?=$imagedir?>\boxleague.gif">
                                      <?  } ?>
-                                     </p>
+                                     </li>
                                 <? } ?>
                     <? } ?>
+                                     </ul>
 
 <? } ?>
 <? if(count($doublesArray)>0){ ?>
        <div class="mb-3">
         <h2>Players looking for a Doubles Match</h2>
     </div>
- 
+ <ul>
  
  <? for($i=0; $i<count($doublesArray); $i++){
 			
@@ -210,8 +212,6 @@ if(mysqli_num_rows($singlespwresult)==0
                  $dcourtdetailsresult = db_query($dcourtdetailsquery);
 				         $playerOneArray = mysqli_fetch_array($dcourtdetailsresult);
 				         $playerTwoArray = mysqli_fetch_array($dcourtdetailsresult);
-
-
 
 				//Get Users for reservation needing one player
 	           if($playerOneArray['usertype']=="0" && $playerOneArray['userid']!="0" && $playerTwoArray['usertype']=="1"){
@@ -243,20 +243,20 @@ if(mysqli_num_rows($singlespwresult)==0
             ?>
            
               <? if( $needTwoPlayer ){  ?>
-                <p>
+                <li>
               	 <a href="<?=$wwwroot?>/users/court_reservation.php?time=$playerOneArray[time]&courtid=$playerOneArray[courtid]&userid=<?=$lonelyuserid?>">
                     <?=gmdate(" l F j h:i A",$playerOneArray['time'])?>
                 </a> 
                 <?=$user1Name?> and <?=$user2Name?> are both looking for a partner.
-              </p>
+              </li>
 				
              <? }  elseif( $needThreePlayer ){ ?>
-             <p>
+             <li>
               	 <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$playerOneArray[time]?>&courtid=<?=$playerOneArray[courtid]?>&userid=<?=$lonelyuserid?>"> 
                     <?=gmdate(" l F j h:i A",$playerOneArray['time'])?>
                 </a> 
                 <?=$reallyLonelyuser?> is looking for some doubles
-             </p>
+             </li>
               <? } elseif( $needOnePlayer ){
 
 				//Get the team player names
@@ -275,7 +275,7 @@ if(mysqli_num_rows($singlespwresult)==0
 
               $teamRankResult = db_query($teamRankQuery);
               $teamRankValue = mysqli_result($teamRankResult,0); ?>
-                <p>
+                <li>
                 <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$playerOneArray['time']?>&courtid=<?=$playerOneArray['courtid']?>&userid=<?=$lonelyuserid?>">
                     <?=gmdate(" l F j h:i A",$playerOneArray['time'])?>
                 </a> 
@@ -284,7 +284,7 @@ if(mysqli_num_rows($singlespwresult)==0
                  $teamnamesrow = db_fetch_row($teamnamesresult); ?>
                  <?=$teamnamesrow[0]?> <?=$teamnamesrow[1]?>
                  (rank <?=$teamRankValue?>) on <?=$playerOneArray['courtname']?> 
-                </p>
+              </li>
              <? } else { //Display reservation where a team is needed
 
               //Get the team player names
@@ -306,7 +306,7 @@ if(mysqli_num_rows($singlespwresult)==0
               $teamRankValue = mysqli_result($teamRankResult,0);
                   
               ?>
-                 <p>
+                 <li>
                  <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$playerTwoArray['time']?>&courtid=<?=$playerTwoArray['courtid']?>&userid=<?=$playerTwoArray['userid']?>">
                   <?=gmdate(" l F j h:i A", $playerTwoArray['time']) ?>
                 </a> 
@@ -317,11 +317,13 @@ if(mysqli_num_rows($singlespwresult)==0
                   ?>
                   <?=$teamnamesrow[0] ?>  <?=$teamnamesrow[1]?>
                    (rank <?=$teamRankValue?>) on <?=$playerTwoArray['courtname']?>
-             </p>
+             </li>
             <?  } ?>
               
         <?  } ?>
+        
     <? } ?>
+    </ul>
 <? } ?> 
 
  <?  if(mysqli_num_rows($lessonpwresult)>0){ ?>
@@ -329,6 +331,7 @@ if(mysqli_num_rows($singlespwresult)==0
      <div class="mb-3">
         <span class="smallbanner">Club Pro Available for a Lesson</span>
        </div>
+       <ul>
  <?
 
     while($row = mysqli_fetch_array($lessonpwresult)){
@@ -346,13 +349,12 @@ if(mysqli_num_rows($singlespwresult)==0
                            AND clubuser.clubid=".get_clubid()."
 						   AND reservations.enddate IS NULL";
 
-
       // run the query on the database
         $scourtdetailsresult = db_query($scourtdetailsquery);
 
         //Print out details on the singles reservations
         while($scourtdetailsrow = db_fetch_row($scourtdetailsresult)) { ?>
-        <p>
+        <li>
         <a href="<?=$wwwroot?>/users/court_reservation.php?time=<?=$scourtdetailsrow[0]?>&courtid=<?=$scourtdetailsrow[4]?>">
             <?=gmdate(" l F j h:i A",$scourtdetailsrow[0]) ?>
         </a> 
@@ -361,12 +363,12 @@ if(mysqli_num_rows($singlespwresult)==0
        <? if($scourtdetailsrow[6]==1){ ?>
             <img src="<?=$imagedir?>\boxleague.gif">
          <?  } ?>
-       </p>
+       </li>
         <?  } ?>
 
    <? } ?>
-
-
+       
+</ul>
 <? } ?>
 
 
