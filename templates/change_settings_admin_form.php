@@ -85,9 +85,9 @@ function onSubmitButtonClicked(){
         </div>
 
          <div class="mb-3">
-            <label for="mobilephone" class="form-label">Mobile Phone:</label>
-            <input class="form-control" name="mobilephone" id="mobilephone" type="text"  aria-label="Mobile Phone" value="<? pv($frm["mobilephone"]) ?>">
-            <? is_object($errors) ? err($errors->mobilephone) : ""?>
+            <label for="cellphone" class="form-label">Mobile Phone:</label>
+            <input class="form-control" name="cellphone" id="cellphone" type="text"  aria-label="Mobile Phone" value="<? pv($frm["cellphone"]) ?>">
+            <? is_object($errors) ? err($errors->cellohone) : ""?>
         </div>
 
         <div class="mb-3">
