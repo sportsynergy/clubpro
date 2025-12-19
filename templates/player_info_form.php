@@ -34,7 +34,9 @@
 
     <div class="mb-3">
       <label for="email" class="form-label">Email:</label>
-      <input class="form-control-plaintext" id="email" type="email"  aria-label="Email" value="<?=$frm["email"] ?>" readonly>  
+      <a href="mailto:<?=$frm["email"] ?>">
+        <input class="form-control-plaintext text-truncate" id="email" type="email" aria-label="Email" value="<?=$frm["email"] ?>" readonly>  
+      </a>
     </div>
 
      <?
