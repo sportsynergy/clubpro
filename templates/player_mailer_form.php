@@ -53,7 +53,7 @@
        
 	 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Subject:</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="<? pv($frm["subject"]) ?>">
+    <input type="text" name="subject" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="<? pv($frm["subject"]) ?>">
     <? is_object($errors) ? err($errors->subject) : ""?>
   </div>    
   
