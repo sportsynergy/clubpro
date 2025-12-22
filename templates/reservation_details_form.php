@@ -86,7 +86,7 @@ function onSubmitButtonClicked(){
 	       ?>
 	     
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="resdetails" id="wholeclub" value="2"  >
+            <input class="form-check-input" type="radio" name="resdetails" id="wholeclub" value="3"  >
              Advertise this reservation to the whole club
           </div>
        
