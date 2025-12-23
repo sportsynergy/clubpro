@@ -69,7 +69,7 @@ if ($teamRow['usertype'] == 1) {
 	<? pv($DOC_TITLE) ?></p>
 </div>
 
-<form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" autocomplete="off">
+<form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/court_cancelation.php" autocomplete="off" onSubmit="SubDisable(this);" >
 	
 <div class="mb-3"  >
 	<label for="username" class="form-label">Team 1:</label>
@@ -187,7 +187,7 @@ if ($teamRow['usertype'] == 1) {
 	} ?>
 
 	<div class="mt-5">
-    	<button type="button" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()">Update Reservation</button>
+    	<button type="submit" id="submitbutton" class="btn btn-primary" onclick="onSubmitButtonClicked()" >Update Reservation</button>
 		<button type="button" id="cancelbutton" class="btn btn-secondary" onclick="onCancelReservationButtonClicked()">Cancel Reservation</button>
 		<button type="button" class="btn btn-secondary" onclick="onCancelButtonClicked()">Cancel</button>
 	</div>
@@ -208,12 +208,13 @@ if ($teamRow['usertype'] == 1) {
 // made by: Nicolas - http://www.javascript-page.com
 
 function SubDisable(dform) {
-  if (document.getElementById) {
-   for (var sch = 0; sch < dform.length; sch++) {
-    if (dform.elements[sch].type.toLowerCase() == "submit") dform.elements[sch].disabled = true;
-   }
-  }
-return true;
+if (document.getElementById) {
+	for (var sch = 0; sch < dform.length; sch++) {
+ 		if (dform.elements[sch].type.toLowerCase() == "submit") dform.elements[sch].disabled = true;
+		if (dform.elements[sch].type.toLowerCase() == "button") dform.elements[sch].disabled = true;
+	}
+}
+	return true;
 }
 
 function enabledoubles()
@@ -249,6 +250,8 @@ document.onkeypress = function (aEvent)
 }
 
 
+
+
 function onSubmitButtonClicked(){
 	document.entryform.cancelall.value=8;
 	submitForm('entryform');
@@ -262,6 +265,11 @@ function onCancelReservationButtonClicked(){
  function onCancelButtonClicked(){
 	parent.location='<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/index.php?daysahead=<?= gmmktime (0,0,0,gmdate("n",$time+get_tzdelta() ),gmdate("j", $time+get_tzdelta()),gmdate("Y", $time+get_tzdelta())) ?>'
  }
+
+document.getElementById('name1').setAttribute("autocomplete", "off");
+document.getElementById('name2').setAttribute("autocomplete", "off");
+document.getElementById('name3').setAttribute("autocomplete", "off");
+document.getElementById('name4').setAttribute("autocomplete", "off");
 
 </script>
                     
