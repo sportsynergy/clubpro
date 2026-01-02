@@ -82,12 +82,8 @@
 
       <div class="row">
         <div class="col-2">
-          <? if(  isMobileOptimized() ){ ?>
-       <div class="d-none d-lg-block">	
-        <? } else { ?>
-            <div> <!-- no class for non mobile optimized sites -->
-          <? } ?>
-        
+
+       <div class="d-none d-lg-block">	        
 
         <?php if( isSystemAdministrationConsole() ){ ?>
         <p>

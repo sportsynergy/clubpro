@@ -1,6 +1,32 @@
 
  </div> <!--col -->
   </div> <!--row -->
+  <div class="row">
+    <div class="col">
+      <div class="d-none d-md-block d-sm-block d-lg-none">	        
+        <?php if( isSystemAdministrationConsole() ){ ?>
+        <p>
+          <?php include($_SESSION["CFG"]["includedir"]."/include_admin_activity.php"); ?>
+        </p>
+        <?php } else{ ?>
+        <p>
+          <?php include($_SESSION["CFG"]["includedir"]."/include_news.php"); ?>
+        </p>
+        <p>
+          <?php include($_SESSION["CFG"]["includedir"]."/include_events.php"); ?>
+        </p>
+
+        <?  if( isDisplayRecentActivity() ){ ?>
+        <p>
+          <?php include($_SESSION["CFG"]["includedir"]."/include_recent_activity.php"); ?>
+        </p>
+        <?php } ?>
+         
+    <?php } ?>
+
+      </div>
+    </div>
+</div> <!--row -->
 
   <div class="row">
     <div class="col">
