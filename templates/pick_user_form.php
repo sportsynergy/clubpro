@@ -5,7 +5,7 @@
 
 
 <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css"> 
-<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.css" rel=stylesheet type=text/css>
+<link href="<?=$_SESSION["CFG"]["wwwroot"]?>/css/main.css?123" rel=stylesheet type=text/css>
 
 <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/fonts/fonts-min.css" />
 <link rel="stylesheet" type="text/css" href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/button/assets/skins/sam/button.css" />

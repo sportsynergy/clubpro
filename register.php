@@ -342,7 +342,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     if (isDebugEnabled(1)) logMessage("register.registerClub: Created Club Configuration Folder...Done");
 
     // Create the Style Sheet
-    $fp0 = fopen($_SESSION["CFG"]["dirroot"] . "/clubs/$clubCode/main.css", "w");
+    $fp0 = fopen($_SESSION["CFG"]["dirroot"] . "/clubs/$clubCode/main.css?123", "w");
     fputs($fp0, ".ct2cl$clubid    { \n");
     fputs($fp0, "font-family: Arial, sans-serif;\n");
     fputs($fp0, "font-size: 10pt;\n");

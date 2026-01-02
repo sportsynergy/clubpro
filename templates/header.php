@@ -27,7 +27,7 @@
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/assets/skins/sam/container.css" rel="stylesheet" type="text/css" />
     
     <?php if(isset( $_SESSION["siteprefs"]["siteid"]) ){ ?>
-    <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?php echo get_sitecode(); ?>/main.css" rel="stylesheet" type="text/css" />
+    <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?php echo get_sitecode(); ?>/main.css?123" rel="stylesheet" type="text/css" />
     <?php } ?>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" type="text/javascript"></script>
