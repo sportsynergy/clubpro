@@ -3,7 +3,7 @@
   </div> <!--row -->
   <div class="row">
     <div class="col">
-      <div class="d-none d-md-block d-sm-block d-lg-none">	        
+      <div class="d-none d-md-block d-sm-block d-lg-none d-sm-none">	        
         <?php if( isSystemAdministrationConsole() ){ ?>
         <p>
           <?php include($_SESSION["CFG"]["includedir"]."/include_admin_activity.php"); ?>
