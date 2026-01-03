@@ -3,7 +3,7 @@
   </div> <!--row -->
   <div class="row">
     <div class="col">
-      <div class="d-none d-md-block d-sm-block d-lg-none d-sm-none">	        
+      <div class="d-lg-none">	        
         <?php if( isSystemAdministrationConsole() ){ ?>
         <p>
           <?php include($_SESSION["CFG"]["includedir"]."/include_admin_activity.php"); ?>
@@ -49,7 +49,7 @@
         </div>
         <div style="text-align: center; padding-bottom: 15px"> 
             <span class="lighttext">
-                &copy;2025 <a href="https://www.sportsynergy.net" target="_blank">Sportsynergy</a> 
+                &copy;2026 <a href="https://www.sportsynergy.net" target="_blank">Sportsynergy</a> 
             </span> 
         </div>
 
