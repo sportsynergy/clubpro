@@ -41,6 +41,48 @@
 
   </div>
 
+  <div> 
+		  <label for="duration" class="form-label">Duration</label>
+			<select name="duration" class="form-select" >
+				<?
+				$timetonext = $nexttime - $time; 
+				
+				if($timetonext == 900 ){ ?>
+					<option value=".25">15 Minutes</option>
+				<?}
+				
+				if($timetonext >= 1800 || $nexttime == null ){ ?>
+					<option value=".5">30 Minutes</option>
+				<?}
+					
+				if($timetonext >= 2700 || $nexttime == null){ ?>
+					<option value=".75">45 Minutes</option>
+				<?}
+						
+				if($timetonext >= 3600 || $nexttime == null){ ?>
+					<option value="1">60 Minutes</option>
+				<? } 
+
+        if($timetonext >= 5400 || $nexttime == null){ ?>
+          <option value="1.5">90 Minutes</option>
+        <? } 
+
+				if($timetonext >= 7200 || $nexttime == null){ ?>
+					<option value="2">2 Hours</option>
+        <? } 
+        
+        if($timetonext >= 9000 || $nexttime == null){ ?>
+					<option value="2.5">2.5 Hours</option>
+				<? } 
+				
+				if($timetonext >= 10800 || $nexttime == null){ ?>
+					<option value="3">3 Hours</option>
+				<? } ?>
+					
+			</select>
+			
+    </div>
+
   <div class="form-check">
 	  <input class="form-check-input" type="checkbox" name="lock" />
 	  <label for="lock" class="form-label">Lock Reservation</label>
