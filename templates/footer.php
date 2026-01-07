@@ -1,6 +1,32 @@
 
  </div> <!--col -->
   </div> <!--row -->
+  <div class="row">
+    <div class="col">
+      <div class="d-lg-none">	        
+        <?php if( isSystemAdministrationConsole() ){ ?>
+        <p>
+          <?php include($_SESSION["CFG"]["includedir"]."/include_admin_activity.php"); ?>
+        </p>
+        <?php } else{ ?>
+        <p>
+          <?php include($_SESSION["CFG"]["includedir"]."/include_news.php"); ?>
+        </p>
+        <p>
+          <?php include($_SESSION["CFG"]["includedir"]."/include_events.php"); ?>
+        </p>
+
+        <?  if( isDisplayRecentActivity() ){ ?>
+        <p>
+          <?php include($_SESSION["CFG"]["includedir"]."/include_recent_activity.php"); ?>
+        </p>
+        <?php } ?>
+         
+    <?php } ?>
+
+      </div>
+    </div>
+</div> <!--row -->
 
   <div class="row">
     <div class="col">
@@ -23,7 +49,7 @@
         </div>
         <div style="text-align: center; padding-bottom: 15px"> 
             <span class="lighttext">
-                &copy;2025 <a href="https://www.sportsynergy.net" target="_blank">Sportsynergy</a> 
+                &copy;2026 <a href="https://www.sportsynergy.net" target="_blank">Sportsynergy</a> 
             </span> 
         </div>
 

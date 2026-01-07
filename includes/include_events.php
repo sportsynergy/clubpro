@@ -17,7 +17,7 @@ if(mysqli_num_rows($clubEventsResult) > 0){ ?>
 while($clubEvent = mysqli_fetch_array($clubEventsResult)){ ?>
 	
 	<li>
-	<a href="javascript:submitForm('loadClubEventForm<?=$clubEvent['id']?>')">
+	<a href="javascript:safeSubmit('loadClubEventForm<?=$clubEvent['id']?>')" >
 		<?=$clubEvent['name']?>
 	</a> 
 	<div class="italic">
@@ -26,7 +26,7 @@ while($clubEvent = mysqli_fetch_array($clubEventsResult)){ ?>
 	</li>
 
 	 <form name="loadClubEventForm<?=$clubEvent['id']?>" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/club_event.php" method="post">
-           <input type="hidden" name="clubeventid" value="<?=$clubEvent['id'] ?>">
+           <input type="hidden" name="clubeventid" value="<?=$clubEvent['id'] ?>">	
      </form>
 <? }} ?>
 

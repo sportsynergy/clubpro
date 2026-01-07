@@ -27,7 +27,7 @@
     <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/yui/container/assets/skins/sam/container.css" rel="stylesheet" type="text/css" />
     
     <?php if(isset( $_SESSION["siteprefs"]["siteid"]) ){ ?>
-    <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?php echo get_sitecode(); ?>/main.css" rel="stylesheet" type="text/css" />
+    <link href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?php echo get_sitecode(); ?>/main.css?123" rel="stylesheet" type="text/css" />
     <?php } ?>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" type="text/javascript"></script>
@@ -39,7 +39,7 @@
     
     <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/prototype-1.3.1.js" type="text/javascript"></script>
     <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/ajaxtags-1.1.5.js" type="text/javascript"></script>
-    <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js" type="text/javascript"></script>
+    <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js?123" type="text/javascript"></script>
     
 
   </head>
@@ -82,12 +82,8 @@
 
       <div class="row">
         <div class="col-2">
-          <? if(  isMobileOptimized() ){ ?>
-       <div class="d-none d-lg-block">	
-        <? } else { ?>
-            <div> <!-- no class for non mobile optimized sites -->
-          <? } ?>
-        
+
+       <div class="d-none d-lg-block">	        
 
         <?php if( isSystemAdministrationConsole() ){ ?>
         <p>
