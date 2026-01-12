@@ -4417,9 +4417,9 @@ function get_player_search($searchname) {
  This function decides is the box is expired
 */
 
-function isBoxExpired($time, $boxnum) {
+function isBoxExpired($reservation_time, $boxnum) {
 
-	$expired = FALSE;
+	$expired = FALSE;  
 
 	if ($boxnum > 0) {
 
@@ -4427,11 +4427,12 @@ function isBoxExpired($time, $boxnum) {
 		$expiredQuery = "SELECT enddatestamp FROM tblBoxLeagues where boxid = $boxnum";
 		$expiredResult = db_query($expiredQuery);
 		$boxtimeArray = mysqli_fetch_array($expiredResult);
-        $boxtime = $boxtimeArray[0];
+        $box_enddatetime = $boxtimeArray[0];
 		$boxplus = $boxtime +86400;
 
 		//give them the whole day
-		if ($time > $boxtime +86400) {
+		if ($reservation_time > $box_enddatetime +86400) {
+			
 			$expired = TRUE;
 		}
 	}
@@ -4448,7 +4449,8 @@ is not is a box at all -1 will be retuned.
 
 function getBoxIdForUser($userid) {
 
-	$boxUserQuery = "SELECT boxid from tblkpBoxLeagues where userid = $userid";
+	$boxUserQuery = "SELECT tblBoxLeagues.boxid FROM tblkpBoxLeagues INNER JOIN tblBoxLeagues on tblkpBoxLeagues.boxid = tblBoxLeagues.boxid WHERE userid = $userid AND tblBoxLeagues.enable = TRUE";
+
 	$boxUserResult = db_query($boxUserQuery);
 
 	if (mysqli_num_rows($boxUserResult) > 0) {
