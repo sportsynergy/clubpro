@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <?php
+      if( isset($trackingid) ){
+      include_once("analyticstracking.php") ;
+    }
+    ?>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,8 +17,6 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta http-equiv="refresh" content="1830">
     <meta name="referrer" content="always">
-
-
     
     <!-- Misc -->
     <link rel="icon" href="<?=$_SESSION["CFG"]["imagedir"]?>/favicon.ico" type="image/x-icon" />
@@ -48,9 +51,7 @@
    
 
   <?php
-    if( isset($trackingid) ){
-      include_once("analyticstracking.php") ;
-    }
+
     //
     // When site is disabled display the gone fishing sign,
     // but not for the system administration console.
