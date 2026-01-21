@@ -6,5 +6,9 @@
   gtag('js', new Date());
 
   gtag('config', '<?=$trackingid?>');
+  
+  gtag('set', 'user_properties', {
+  'site': '<?=get_sitecode()?>'});
+
 </script>
 
