@@ -85,7 +85,7 @@ Click <a href="javascript:submitForm('addmetoladderform')">here</a> to add your 
 	<div class="row">
 		<div class="col-6">
 
-		<table class="table table-striped">
+		<table class="table table-striped sortable">
 		<tr>
 			<th width="25%">
 				<span class="bold">Place</span>
