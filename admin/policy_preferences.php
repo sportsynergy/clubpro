@@ -47,9 +47,12 @@ if (isset($_POST['action']) && $_POST['action'] == "removeCourtEvent") {
     $eventid = $_POST['eventid'];
     $query = "UPDATE tblReservations SET enddate = NOW() WHERE eventid = $eventid";
     db_query($query);
+
     $eventid = $_POST['eventid'];
     $query = "DELETE FROM tblEvents where eventid = $eventid";
     db_query($query);
+
+   
 }
 
 $reservationPolicies = load_reservation_policies(get_siteid());
