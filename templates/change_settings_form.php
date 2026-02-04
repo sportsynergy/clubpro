@@ -17,19 +17,19 @@
 
   <div class="mb-3">
     <label for="firstname" class="form-label">First Name:</label>
-    <input class="form-control" id="firstname" type="text" aria-label="Firstname" value="<? pv($frm["firstname"]) ?>">
+    <input class="form-control" id="firstname" name="firstname" type="text" aria-label="Firstname" value="<? pv($frm["firstname"]) ?>">
     <? is_object($errors) ? err($errors->firstname) : ""?>
   </div>
 
   <div class="mb-3">
     <label for="lastname" class="form-label">Last Name:</label>
-    <input class="form-control" id="lastname" type="text" aria-label="Lastname" value="<? pv($frm["lastname"]) ?>">
+    <input class="form-control" id="lastname" type="text" name="lastname" aria-label="Lastname" value="<? pv($frm["lastname"]) ?>">
     <? is_object($errors) ? err($errors->lastname) : ""?>
   </div>
   
   <div class="mb-3">
     <label for="email" class="form-label">Email:</label>
-    <input class="form-control" id="email" type="email"  aria-label="Email" value="<? pv($frm["email"]) ?>">
+    <input class="form-control" id="email" name="email" type="email"  aria-label="Email" value="<? pv($frm["email"]) ?>">
     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     <? is_object($errors) ? err($errors->email) : ""?>
   </div>
@@ -50,7 +50,9 @@
     <label for="mobilephone" class="form-label">Mobile Phone:</label>
     <input class="form-control" id="mobilephone" type="text"  aria-label="Mobile Phone" value="<? pv($frm["mobilephone"]) ?>">
     <? is_object($errors) ? err($errors->mobilephone) : ""?>
-  </div>       
+  </div>  
+  
+  
        
   <div class="mb-3">
     <label for="address" class="form-label">Address:</label>
@@ -75,6 +77,26 @@
               echo "</select>";
               ?>
       </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="gender" class="form-label">Receive SMS Notifications:</label>
+      <select name="recsms" class="form-select" aria-label="Receive SMS Notifications">
+          <?
+              if  ($frm["recsms"]=='y'){
+
+              echo "<option value=\"y\">Yes</option>";
+              echo "<option value=\"n\">No</option>";
+
+              }
+              else {
+              echo "<option value=\"n\">No</option>";
+              echo "<option value=\"y\">Yes</option>";
+              }
+              echo "</select>";
+              ?>
+      </select>
+      <div id="smsHelp" class="form-text">Standard messaging rates apply</div>
     </div>
 
   <?  if ( isJumpLadderRankingScheme() ){  
@@ -110,14 +132,15 @@
     
     ?>
 
+    <label class="form-label">Available Times for Matches:</label>
     <div class="form-check">
-      Match Availability
+    
 	  <input class="form-check-input" type="checkbox" name="available_5pm" id="available_5pm"/>
-	  <label for="available_5pm" class="form-label">5pm</label>
+	  <label for="available_5pm" >5pm</label>
     <input class="form-check-input" type="checkbox" name="available_6pm" id="available_6pm" />
-	  <label for="available_6pm" class="form-label">6pm</label>
+	  <label for="available_6pm" >6pm</label>
     <input class="form-check-input" type="checkbox" name="available_6pm" id="available_7pm" />
-	  <label for="available_7pm" class="form-label">7pm</label>
+	  <label for="available_7pm" >7pm</label>
 	</div>
 
 
