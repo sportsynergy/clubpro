@@ -3847,6 +3847,7 @@ function load_user_profile($userid) {
 							users.cellphone, 
 							users.pager, 
 							clubuser.recemail,
+							clubuser.recsms,
 							clubuser.roleid,  
 							users.useraddress, 
 							clubuser.enable, 

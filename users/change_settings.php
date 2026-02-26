@@ -45,7 +45,7 @@ if (match_referer() && isset($_POST['submitme']) ) {
         if (mysqli_num_rows($extraParametersResult) > 0) {
             mysqli_data_seek($extraParametersResult, 0);
         }
-        $noticemsg = "Your profile was saved.  Good Job!<br/><br/>";
+        $successmsg = "Your profile was saved.  Good Job!";
     }
 }
 
@@ -140,6 +140,7 @@ function update_settings(&$frm, $extraParametersResult) {
     $qid = db_query("
         UPDATE tblClubUser SET
 			recemail = '$frm[recemail]'
+            ,recsms = '$frm[recsms]'
             ,available_at_5 = $available_5pm
             ,available_at_6 = $available_6pm
             ,available_at_7 = $available_7pm
