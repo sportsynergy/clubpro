@@ -97,7 +97,7 @@ function run_ladder_score_report($ladderid, $ladder_name) {
     
     if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
-        <table class="activitytable sortable table table-striped" width="450">
+        <table class="sortable table table-striped" width="450">
             <tr>
             <th>Date</th>
             <th>Challenger</th>
