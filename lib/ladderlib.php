@@ -1265,7 +1265,6 @@ function isInBoxLeagueTogether($userid1, $userid2, $ladderid){
  */
 function isPlayerAbleToScoreLeagueMatch($userid1, $userid2, $ladderid){
 
-
 	$query = "SELECT count(*) FROM tblkpBoxLeagues
 				INNER JOIN tblBoxLeagues  tBL on tblkpBoxLeagues.boxid = tBL.boxid
 				WHERE (userid = $userid1 OR userid = $userid2)
@@ -1285,7 +1284,25 @@ function isPlayerAbleToScoreLeagueMatch($userid1, $userid2, $ladderid){
 
 }
 
+function getBoxLeagueForPlayers($userid1, $userid2, $ladderid, $match_time){
 
+
+	$query = "SELECT tBL.boxname
+			FROM tblkpBoxLeagues boxuser1
+				INNER JOIN tblBoxLeagues  tBL on boxuser1.boxid = tBL.boxid
+				INNER JOIN tblkpBoxLeagues boxuser2 ON boxuser1.boxid = boxuser2.boxid
+				WHERE boxuser1.userid = $userid1
+				AND boxuser2.userid = $userid2
+				AND '$match_time' > tBL.startdate
+				AND '$match_time' < tBL.enddate
+				AND tBL.ladderid = $ladderid";
+    
+    $usersResult = db_query($query);
+	
+	return mysqli_result($usersResult, 0);
+
+
+}
 
 
 ?>
