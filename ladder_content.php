@@ -278,6 +278,16 @@ $lastupdatestring = $wlobj->lastupdated;
     ?> 
             
       <td width="350" style="padding: 10px" >
+
+      <div>
+
+                        <span class="bigbanner"><?=$wlobj->boxname?></span>
+                        <div class="boxdateheader">
+                                Start Date: <?=$startdatestring[1]."-".$startdatestring[2]."-".$startdatestring[0]?> 
+              	            End Date: <?=$datestring[1]."-".$datestring[2]."-".$datestring[0]?>
+                        </div>
+              		
+    </div>
               <table class="sortable table table-striped">
                 <thead>
               	

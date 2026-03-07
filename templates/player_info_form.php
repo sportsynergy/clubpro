@@ -141,6 +141,10 @@
 <!-- TODO: Put in the jump ladder recent matches -->
         
 <div class="mb-3">
+
+<div class="mb-2">
+    <img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif "\> Indicates Scored League Match
+  </div>
 <?php
 if( $origin == 'ladder') { ?>
   <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">< Back to ladder</a>

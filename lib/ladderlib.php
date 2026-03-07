@@ -1304,5 +1304,14 @@ function getBoxLeagueForPlayers($userid1, $userid2, $ladderid, $match_time){
 
 }
 
+function setLadderMatchLeagueStatus($ladderMatchId, $leagueStatus){
+
+	logMessage("ladderlib.setLadderMatchLeagueStatus: setting league status to $leagueStatus for ladder match id $ladderMatchId");
+	
+	$query = "UPDATE tblLadderMatch SET league = '$leagueStatus' WHERE id = $ladderMatchId";
+	
+	db_query($query);
+	
+}
 
 ?>
