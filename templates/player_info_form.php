@@ -142,13 +142,16 @@
         
 <div class="mb-3">
 
-<div class="mb-2">
-    <img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif "\> Indicates Scored League Match
-  </div>
+
 <?php
 if( $origin == 'ladder') { ?>
   <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">< Back to ladder</a>
 <? } elseif ($origin == 'league') { ?>
+
+<div class="mb-2">
+    <img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif "\> Indicates Scored League Match
+  </div>
+  
   <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">< Back to leagues</a>
   
   <? } elseif ($origin == 'schedule') { ?>
