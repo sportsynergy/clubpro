@@ -392,21 +392,7 @@ echo "</table>";
 if( isJumpLadderRankingScheme()  ){
 ?>
 
-<? if( isset($ladderid)  ){ ?>
-<div style="margin-top: 20px"> <span class="smallbold">Box leagues last updated:</span> 
-    <?php
-        
-        if( is_null($lastupdatestring) ){
-        $lastupdated = "Never";
-        } else {
-        //$lastupdated = ladderdetails['lastUpdated'];
-        $lastupdated = $lastupdatestring;
-        } ?>
 
-    <?=$lastupdated?>
-    
-    </div>
-    <? } ?>
 
 
   <form name="league_form" method="POST" action="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">
