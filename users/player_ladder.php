@@ -28,6 +28,7 @@ if (!empty($_POST['ladderid'])) {
     $_SESSION["ladder_id"] = $_POST['ladderid'];
 }
 $ladderid = $_SESSION["ladder_id"];
+$laddername = getLadderName($ladderid);
 
 /* form has been submitted */
 if (isset($_POST['submit']) || isset($_POST['cmd'])) {
@@ -134,10 +135,6 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
         }
             
 
-        // only allow 4 matches for the player
-
-        
-
         if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: winner: $winnerid, loser: $loserid, hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday, kind: $kind, and league: $league");
 
         // Set the match time
@@ -226,4 +223,10 @@ function createChallengematch($challengerid, $challengeeid, $courttypeid) {
     db_query($query);
 }
 
+
+function getLadderName($ladderid){
+    $query = "SELECT name from tblClubSiteLadders WHERE id = $ladderid";
+    $result = db_query($query);
+    return mysqli_result($result, 0);
+}
 ?>
