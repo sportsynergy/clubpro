@@ -126,15 +126,7 @@ class UpdateBoxLeagueScores{
   
                         // Only award points for the first 4 matches against the same opponent to encourage trying out different opponents. After 4 matches, players can still play each other but it won't count for points.
                             if( $matches <= 4){
-
-                                // No points for matches on thursdays to encourage players to play on other days and free up courts on thursdays for non league play
-                                 if( $day_of_week == 'Thursday' ) {
-                                    if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): No points for a match on a Thursday against ".$lp_match_array['loser']." on ".$lp_match_array['match_time']. " and updating to nonleague match" );
-                                    // update this match to not count as a league match
-                                    setLadderMatchLeagueStatus($lp_match_array['id'], false);
-                                    continue;
-                                }
-
+                        
                                 $games = $games + 1;
                                 $gameswon = $gameswon + $wins;
                                 $points = $points + 2;
@@ -178,13 +170,6 @@ class UpdateBoxLeagueScores{
 
                             if( $matches <= 4){
 
-                                if( $day_of_week == 'Thursday' ) {
-                                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): No points for a match on a Thursday against ".$lp_match_array['loser']." on ".$lp_match_array['match_time'] ." and updating to nonleague match" );
-                                // update this match to not count as a league match
-                                setLadderMatchLeagueStatus($lp_match_array['id'], false);
-                                continue;
-                                }
-
                                 $games = $games + 1;
                                 $gameswon = $gameswon + $wins;
                                 $points = $points + 1;
@@ -203,7 +188,7 @@ class UpdateBoxLeagueScores{
                             // update this match to not count as a league match
                             setLadderMatchLeagueStatus($lp_match_array['id'], false);
                         }
-    
+
                         array_push($players, $lp_match_array['winnerid']);
                     }
 
