@@ -32,7 +32,7 @@ $wwwroot = $_SESSION["CFG"]["wwwroot"];
 $username = $_REQUEST['username'];
 $password = $_REQUEST['password'];
 $courtGroupFromForm = $_REQUEST['courtGroupFromForm'];
-
+$courtWindowStart = $_REQUEST['courtWindowStart'];
 
 if ( isset($_SESSION["courtWindowStart"]) ){
 	$courtWindowStart = $_REQUEST['courtWindowStart'];
@@ -221,6 +221,7 @@ if (isset($month) && isset($date) && isset($year)) {
     $currDay = $date;
     $specDate = mktime(0, 0, 0, $month, $date, $year);
     $currDOW = getDOW(gmdate("l", $specDate));
+	$daysahead = $specDate;
 }
 
 //Set Current date and time
@@ -391,8 +392,8 @@ if ($clubid) {
 <tr>
   <td><table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
       <tr height="15">
-        <td align="left" class="normal"><? printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead=0, $siteid); ?> <br></td>
-        <td align="right" class="normal" ><? printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead=0, $siteid); ?> <br></td>
+        <td align="left" class="normal"><? printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
+        <td align="right" class="normal" ><? printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
       </tr>
     </table></td>
 </tr>
