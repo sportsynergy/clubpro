@@ -1,38 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
-/**
-* Class and Function List:
-* Function list:
-* - validate_form()
-* - isClubCodeRightLength()
-* - doesClubCodeAlreadyExist()
-* - registerClub()
-* Classes list:
-*/
+
 include ("./application.php");
 require './vendor/autoload.php';
 $DOC_TITLE = "Register Club";
@@ -45,10 +12,12 @@ if (match_referer() && isset($_REQUEST['submitme'])) {
     
     if (empty($errormsg)) {
         registerClub($frm['clubname'], $frm['clubcode'], $frm['courtnumber'], $frm['courttype'], $frm['timezone'], $frm['adminuser'], $frm['adminpass1'], $frm['adminfirstname'], $frm['adminlastname'], $frm['adminemail']);
-        include ($_SESSION["CFG"]["templatedir"] . "/header.php");
-        include ($_SESSION["CFG"]["includedir"] . "/include_club_registration_success.php");
-        include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
-        die;
+
+        $successmsg = "Ok, we've got your registration.  At this very moment we are filing it away.  In a few minutes you should 
+      get an email from us that will have all sorts of goodies including the link of your new online reservation
+      system and a user name and password you can use to log in with.  Thanks for trying us out.  In our opinion,
+      this is the smartest thing you have done all day.";
+
     }
 }
 $availbleTimezones = load_avail_timezones();
@@ -121,6 +90,15 @@ function validate_form(&$frm, &$errors) {
     } elseif (empty($frm['adminlastname'])) {
         $errors->adminlastname = true;
         $msg.= "You did not specify your last name.";
+    } elseif (empty($frm['courtnumber'])) {
+        $errors->courtnumber = true;
+        $msg.= "You did not specify the number of courts.";
+    } elseif (empty($frm['courttype'])) {
+        $errors->courttype = true;
+        $msg.= "You did not specify the court type.";
+    } elseif (empty($frm['timezone'])) {
+        $errors->timezone = true;
+        $msg.= "You did not specify the timezone.";
     }
     return $msg;
 }
