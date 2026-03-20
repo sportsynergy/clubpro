@@ -21,7 +21,6 @@ setcookie("timeoutlink", "");
 setcookie("timeoutlink", getTimeOutLink() , time() + 31536000);
 
 
-
 //Only load the site ladders if the ranking scheme is configured as such
 
 if (isLadderRankingScheme() || isJumpLadderRankingScheme()) {
@@ -47,7 +46,6 @@ if (!isset($_SESSION["footermessage"])) {
 }
 
 //Get user log in the user in from the multiuser login form
-
 if (isset($_POST["frompickform"])) {
     $user = load_user($_POST["userid"]);
     
@@ -57,7 +55,6 @@ if (isset($_POST["frompickform"])) {
 }
 
 //Display the multiuser login form
-
 if (isset($username) && isset($password) && !is_logged_in()) {
     $usersResult = getAllUsersWithIdResult($username, $clubid);
     
@@ -75,6 +72,7 @@ if (isset($username) && isset($password) && !is_logged_in()) {
     }
 }
 $DOC_TITLE = "Sportsynergy Clubpro";
+$COURTS_DISPLAYED = 7;
 include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 
 // When a site has a court group configured set a session variable.  The first court group id will be the default.
@@ -86,14 +84,12 @@ $grouping = "SELECT gp.id from tblCourtGrouping gp
 $groupingResult = db_query($grouping);
 
 //Update the court group session variable if set
-
 if (isset($courtGroupFromForm)) {
     $_SESSION["courtGroup"][$siteid] = $courtGroupFromForm;
     unset($_SESSION["courtWindowStart"]);
 }
 
 // Set the Court Group ID
-
 if (mysqli_num_rows($groupingResult) > 0 && !isset($_SESSION["courtGroup"][$siteid])) {
     
 	$siteIdArray = mysqli_fetch_array($groupingResult);
@@ -133,7 +129,7 @@ if (isset($_SESSION["courtWindowStart"][$siteid])) {
 								AND courts.courtid >=$courtWindowStart
 								AND courts.enable = 1
 								ORDER BY courts.displayorder
-								LIMIT 6";
+								LIMIT $COURTS_DISPLAYED";
     } else {
         $courtquery = "SELECT * 
 							FROM tblCourts courts
@@ -142,7 +138,7 @@ if (isset($_SESSION["courtWindowStart"][$siteid])) {
 							AND siteid=$siteid 
 							AND enable = 1
 							ORDER BY courts.displayorder
-						    LIMIT 6";
+						    LIMIT $COURTS_DISPLAYED";
     }
 }
 
@@ -155,7 +151,7 @@ elseif (isset($_SESSION["courtGroup"][$siteid])) {
 				AND courts.courtid = groupingentry.courtid 
 				AND courts.enable = 1
 				ORDER BY courts.displayorder
-				LIMIT 6";
+				LIMIT $COURTS_DISPLAYED";
 }
 
 //If not set just get all of them (which should be under 6)
@@ -166,7 +162,7 @@ else {
 				AND siteid=$siteid 
 				AND enable = 1
 				ORDER BY courts.displayorder
-				LIMIT 6";
+				LIMIT $COURTS_DISPLAYED";
 }
 $currentCourtResult = db_query($courtquery);
 
