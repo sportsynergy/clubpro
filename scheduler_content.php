@@ -36,6 +36,7 @@ $courtGroupFromForm = $_REQUEST['courtGroupFromForm'];
 
 if ( isset($_SESSION["courtWindowStart"]) ){
 	$courtWindowStart = $_REQUEST['courtWindowStart'];
+	logMessage("scheduler_content.php: courtWindowStart from form is $courtWindowStart");
 }
 
 //Set the footer message
@@ -347,7 +348,7 @@ if ($clubid) {
 <tr>
   <td><table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
       <tr height="15" >
-        <td align="right" class="normal"><SCRIPT LANGUAGE=JAVASCRIPT TYPE="TEXT/JAVASCRIPT">
+        <td><SCRIPT LANGUAGE=JAVASCRIPT TYPE="TEXT/JAVASCRIPT">
 							 function submitCourtGroupForm(action, groupid)
 							{
 						        document.courtGroupForm.courtGroupFromForm.value = groupid;
