@@ -37,11 +37,18 @@
     <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#singles" type="button" role="tab" aria-controls="singles" aria-selected="true">Singles</button>
   </li>
   <? } ?>
-  <? if($reservationType==2 || $reservationType==1) { ?>
+
+  <? if($reservationType==1) { ?>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="doubles-tab" data-bs-toggle="tab" data-bs-target="#doubles" type="button" role="tab" aria-controls="doubles" aria-selected="false">Doubles</button>
+  </li>
+  <? } ?>
+  <? if($reservationType==2 ) { ?>
   <li class="nav-item" role="presentation">
     <button class="nav-link active" id="doubles-tab" data-bs-toggle="tab" data-bs-target="#doubles" type="button" role="tab" aria-controls="doubles" aria-selected="false">Doubles</button>
   </li>
   <? } ?>
+
    <? if($reservationType==3 ) { ?>
   <li class="nav-item" role="presentation">
     <button class="nav-link active" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab" aria-controls="resources" aria-selected="false">Resources</button>
@@ -60,7 +67,7 @@
   <div class="tab-pane fade <?=$reservationType==0 || $reservationType==1?"show active":"" ?>" id="singles" role="tabpanel" aria-labelledby="singles-tab">
     <? include($_SESSION["CFG"]["includedir"]."/include_reservation_singles.php");?>
   </div>
-  <div class="tab-pane fade <?=$reservationType==2?"show active":"" ?>" id="doubles" role="tabpanel" aria-labelledby="doubles-tab">
+  <div class="tab-pane fade <?=$reservationType==2 ?"show active":"" ?>" id="doubles" role="tabpanel" aria-labelledby="doubles-tab">
     <? include($_SESSION["CFG"]["includedir"]."/include_reservation_doubles.php");?>
   </div>
   <div class="tab-pane fade <?=$reservationType==3?"show active":"" ?>" id="resources" role="tabpanel" aria-labelledby="resources-tab">
