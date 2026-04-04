@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
   <div class="container-fluid">
      <a class="navbar-brand" href="<?=$_SESSION["CFG"]["wwwroot"]?>/system/">
-        <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/system/logo.png" alt="" width="80" height="80" class="d-inline-block align-text-top">
+        <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/system/logo.png" alt="" class="d-inline-block align-text-top clublogo">
     </a>
 
   <div class="collapse navbar-collapse" id="navbarNav">

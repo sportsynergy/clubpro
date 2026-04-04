@@ -5,7 +5,7 @@
   <div class="container-fluid">
 
     <a class="navbar-brand" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/">
-        <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/logo.png" alt="" width="80" height="80" class="d-inline-block align-text-top">
+        <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/logo.png" alt="Logo" class="d-inline-block align-text-top clublogo">
     </a>
     
     <? if( !is_logged_in() ){ ?>
