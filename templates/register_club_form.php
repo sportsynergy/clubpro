@@ -39,7 +39,7 @@
 		<? include($_SESSION["CFG"]["templatedir"]."/form_header.php"); ?>
 		<div class="mb-5">
 			<div style="float:left; margin-right: 20px;">
-				<img src="<?=$_SESSION["CFG"]["wwwroot"]?>/images/logo.png" class="img-fluid" alt="ClubPro Logo" width="50" height="50">
+				<img src="<?=$_SESSION["CFG"]["wwwroot"]?>/images/logo.png?123" class="img-fluid" alt="ClubPro Logo" width="50" height="50">
 			</div>	
 			<div>
 				<p class="bigbanner"><? pv($DOC_TITLE) ?></p>

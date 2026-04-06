@@ -1,7 +1,7 @@
  <nav class="navbar navbar-expand-lg navbar-light bg-white">
   <div class="container-fluid">
      <a class="navbar-brand" href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/">
-        <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/logo.png" alt="Logo" class="d-inline-block align-text-top clublogo">
+        <img src="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?=get_sitecode()?>/logo.png?123" alt="Logo" class="d-inline-block align-text-top clublogo">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
