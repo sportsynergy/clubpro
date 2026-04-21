@@ -45,7 +45,7 @@ if (match_referer() && isset($_POST['submitme'])) {
 }
 include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 include ($_SESSION["CFG"]["templatedir"] . "/club_reports_form.php");
-include ($_SESSION["CFG"]["templatedir"] . "/footerphp");
+include ($_SESSION["CFG"]["templatedir"] . "/footer.php");
 
 /******************************************************************************
  * FUNCTIONS
