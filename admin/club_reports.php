@@ -18,6 +18,8 @@ if (match_referer() && isset($_POST['submitme'])) {
             run_court_utilization_report($frm);
         } elseif ($frm["report"] == "courtbookinglog") {
             run_court_booking_report($frm);
+        } elseif ($frm["report"] == "courtbookings") {
+            run_court_bookings_report($frm);
         } elseif (  startsWith( $frm["report"], 'ladderreport' )  ){
             $ladderinfo = explode("-", $frm["report"]);
 
@@ -479,5 +481,84 @@ function run_court_utilization_report(&$frm) {
  
 <?
 
+}
+
+function run_court_bookings_report(&$frm) {
+    
+    if (isDebugEnabled(1)) logMessage("club_reports.php.run_court_bookings_report");
+    $reportName = "Court Bookings Report";
+    $reportDescription = "This report shows all court bookings for your site including player names, court, and booking time.";
+
+    // Get all court bookings for this site
+    $bookingsQuery = "SELECT 
+                        u.firstname,
+                        u.lastname,
+                        c.courtname,
+                        r.time
+                    FROM tblReservations r
+                    INNER JOIN tblkpUserReservations kp ON r.reservationid = kp.reservationid
+                    INNER JOIN tblUsers u ON kp.userid = u.userid
+                    INNER JOIN tblCourts c ON r.courtid = c.courtid
+                    WHERE c.siteid = " . get_siteid() . "
+                    AND r.enddate IS NULL
+                    AND kp.usertype = 0
+                    ORDER BY r.time DESC, c.courtname ASC LIMIT 100";
+
+    $bookingsResult = db_query($bookingsQuery);
+    
+    ?>
+    
+    <p class="bigbanner"><? pv($reportName) ?></p>
+    <p><?pv($reportDescription)?></p>
+    
+    <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
+    
+    <?
+    include($_SESSION["CFG"]["includedir"]."/include_reportSelectHeader.php");
+    ?>
+    
+    <div>
+        <a href="javascript:submitForm('exportDataForm')">Export Court Bookings to CSV</a>
+        <form name="exportDataForm" action="<?=$_SESSION["CFG"]["wwwroot"]?>/admin/court_bookings_export.php" method="post">
+        </form>
+    </div>
+    
+    <?
+    
+    if(mysqli_num_rows($bookingsResult) > 0) { ?>
+        
+        <table class="sortable table table-striped">
+            <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Court</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+            <tbody>
+        
+            <? while($booking = mysqli_fetch_array($bookingsResult)) { 
+                // Format the timestamp to a readable date/time format
+                $bookingDateTime = date('Y-m-d H:i', $booking['time']);
+            ?>
+            <tr>
+                <td><?=$booking['firstname']?></td>
+                <td><?=$booking['lastname']?></td>
+                <td><?=$booking['courtname']?></td>
+                <td><?=$bookingDateTime?></td>
+            </tr>
+            <? } ?>
+            
+            </tbody>
+        </table>
+    
+    <? } else { ?>
+        <div class="alert alert-info" role="alert">
+            No court bookings found for your site.
+        </div>
+    <? } ?>
+    
+    <?
 }
 ?>
