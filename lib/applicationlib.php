@@ -2843,15 +2843,15 @@ function report_scores_doubles($resid, $wor, $wnr, $lor, $lnr, $score) {
     #bad/not_bad/close
     if ($score == 0) {
         $rand_key = array_rand($bad,1);
-        $var->howbad = $bad[$rand_key];
+        $var->howbad = "defeated";
         $var->loserscore = 0;
     } elseif ($score == 2) {
         $rand_key = array_rand($close,1);
-        $var->howbad = $close[$rand_key];
+        $var->howbad = "defeated";
         $var->loserscore = 2;
     } else {
         $rand_key = array_rand($not_bad,1);
-        $var->howbad = $not_bad[$rand_key];
+        $var->howbad = "defeated";
         $var->loserscore = 1;
     }
     $var->courtname = $robj->courtname;
