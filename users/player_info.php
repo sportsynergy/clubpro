@@ -89,4 +89,23 @@ function validate_form(&$frm, &$errors) {
     }
     return $msg;
 }
+
+function load_player_head_to_head($userid, $ladderid) {
+    $curresidquery = "SELECT
+                        opp.userid AS opponent_id,
+                        concat_ws(' ', opp.firstname, opp.lastname) AS opponent_full,
+                        SUM(IF(ladder.winnerid = $userid, 1, 0)) AS wins,
+                        SUM(IF(ladder.loserid = $userid, 1, 0)) AS losses
+                    FROM tblLadderMatch ladder
+                    INNER JOIN tblClubSiteLadders tCSL ON ladder.ladderid = tCSL.id
+                    INNER JOIN tblUsers opp ON opp.userid = IF(ladder.winnerid = $userid, ladder.loserid, ladder.winnerid)
+                    WHERE ladder.ladderid = $ladderid
+                      AND tCSL.enddate IS NULL
+                      AND ladder.enddate IS NULL
+                      AND ($userid IN (ladder.winnerid, ladder.loserid))
+                    GROUP BY opp.userid, opp.firstname, opp.lastname
+                    ORDER BY wins DESC, losses ASC, opp.lastname";
+
+    return db_query($curresidquery);
+}
 ?>
