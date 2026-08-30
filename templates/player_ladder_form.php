@@ -78,7 +78,7 @@ Click <a href="javascript:submitForm('addmetoladderform')">here</a> to add your 
 </div>
 
 <div class="mb-5">
-<p class="bigbanner"><? pv($DOC_TITLE) ?></p>
+<p class="bigbanner"><?=$laddername?>	</p>
 </div>
 
 <div class="container">

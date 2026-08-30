@@ -455,9 +455,6 @@ function cancel_court(&$frm) {
                 array_push($workingEventsArray, $i);
             }
 
-            if (isDebugEnabled(2)) logMessage("\tprocessing ".$reOccuringEventsArray['id']);
-
-
             //If its found in the array, delete all of them
             
             if (in_array($frm['time'], $workingEventsArray)) {
@@ -519,7 +516,7 @@ function cancel_court(&$frm) {
                          * will not be delete
                         */
                         
-                        if (isDebugEnabled(2)) logMessage("\tenddating reservation for court " . $frm[courtid] . " and time " . $workingEventsArray[$i]);
+                        if (isDebugEnabled(2)) logMessage("\tenddating reservation for court " . $frm['courtid'] . " and time " . $workingEventsArray[$i]);
                         $deleteEventQuery = "UPDATE tblReservations 
 												SET lastmodifier = " . get_userid() . ", enddate = NOW() 
 												WHERE courtid = $frm[courtid] 

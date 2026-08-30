@@ -1,4 +1,6 @@
 
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
+
 <div class="mb-5">
 <p class="bigbanner"><? pv($DOC_TITLE) ?></p>
 </div>
@@ -92,28 +94,41 @@
  <div class="my-5">
   <? if ( isJumpLadderRankingScheme() ){ 
         $laddersforuserResult = getLadders($userid);
-        
-        while($ladder = mysqli_fetch_array($laddersforuserResult)){   ?>
+        $ladders = [];
+        while($ladder = mysqli_fetch_array($laddersforuserResult)){
+          $ladders[] = $ladder;
+        }
+        if(count($ladders) > 0){ ?>
 
-      
-            <? $ladderMatchResult = getLadderMatchesForUser($ladder['id'], $userid, 40 );
-            
+  <ul class="nav nav-tabs" id="playerInfoTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="ladder-results-tab" data-bs-toggle="tab" data-bs-target="#ladder-results" type="button" role="tab" aria-controls="ladder-results" aria-selected="true">Ladder Results</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="head-to-head-tab" data-bs-toggle="tab" data-bs-target="#head-to-head" type="button" role="tab" aria-controls="head-to-head" aria-selected="false">Head to Head</button>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="playerInfoTabsContent">
+    <div class="tab-pane fade show active pt-3" id="ladder-results" role="tabpanel" aria-labelledby="ladder-results-tab">
+      <? foreach($ladders as $ladder){
+            $ladderMatchResult = getLadderMatchesForUser($ladder['id'], $userid, 40 );
             if(mysqli_num_rows($ladderMatchResult) > 0){  ?>
 
             <h2><?=$ladder['name'] ?> Results</h2>
 
-              <table class="table table-striped" style="width: 50%">
+              <table class="table table-striped sortable" style="width: 50%">
                 <thead>
                 <tr>
                   <th>Date</th>
                   <th>Winner</th>
                   <th>Loser</th>
                   <th>Score</th>
-                </tr>
+                </tr> 
             </thead>
             <tbody>    
             <?
-            while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){ 
+            while($challengeMatch = mysqli_fetch_array($ladderMatchResult)){
 
               $scored = $challengeMatch['score'];
               $winner_obj = new clubpro_obj;
@@ -133,18 +148,58 @@
           </tbody>
           </table>
 
-          <? } ?>   
-      <?  }  ?>  
-      <?  }  ?>  
+      <?  } } ?>
+    </div>
+
+    <div class="tab-pane fade pt-3" id="head-to-head" role="tabpanel" aria-labelledby="head-to-head-tab">
+      <? foreach($ladders as $ladder){
+            $headToHeadResult = load_player_head_to_head($userid, $ladder['id']);
+            if(mysqli_num_rows($headToHeadResult) > 0){ ?>
+              <h2><?=$ladder['name'] ?> Head to Head</h2>
+              <table class="table table-striped sortable" style="width: 50%">
+                <thead>
+                  <tr>
+                    <th>Opponent</th>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                    <th>Win %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <? while($headRow = mysqli_fetch_array($headToHeadResult)){
+                        $played = $headRow['wins'] + $headRow['losses'];
+                        $percent = $played ? round(($headRow['wins'] / $played) * 100, 1) : 0; ?>
+                    <tr>
+                      <td><?=$headRow['opponent_full']?></td>
+                      <td><?=$headRow['wins']?></td>
+                      <td><?=$headRow['losses']?></td>
+                      <td><?=$percent?>%</td>
+                    </tr>
+                  <? } ?>
+                </tbody>
+              </table>
+      <?  } } ?>
+    </div>
+  </div>
+
+  <? } ?>
+  <? } ?>
           </div>
       
 <!-- TODO: Put in the jump ladder recent matches -->
         
 <div class="mb-3">
+
+
 <?php
 if( $origin == 'ladder') { ?>
   <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_ladder.php">< Back to ladder</a>
 <? } elseif ($origin == 'league') { ?>
+
+<div class="mb-2">
+    <img src="<?=$_SESSION["CFG"]["imagedir"]?>/boxleague.gif "\> Indicates Scored League Match
+  </div>
+  
   <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">< Back to leagues</a>
   
   <? } elseif ($origin == 'schedule') { ?>

@@ -13,10 +13,13 @@
                     $selected_report1 = "selected";
                 } elseif ($frm["report"]== "courtutil"){
                     $selected_report2 = "selected";
+                } elseif ($frm["report"]== "courtbookings"){
+                    $selected_report3 = "selected";
                 }
                     ?>
                 <option value="memberactivity" <?=$selected_report1?>>Member Activity Report</option>
                 <option value="courtutil" <?=$selected_report2?>>Court Utilization Report</option>
+                <option value="courtbookings" <?=$selected_report3?>>Court Bookings Report</option>
                 
                 <? if ( isJumpLadderRankingScheme() ) { 
                     

@@ -65,6 +65,41 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
+<script type="text/javascript">
+    var element = document.getElementById("sidebar");
+<?php
+
+// set sidebar width based on whether recent activity is being shown or not
+if( mysqli_num_rows($clubEventsResult) > 0 ){
+  if (isDebugEnabled(1)) logMessage("footer.php: there are club events to show, setting sidebar width to 2 columns");
+   ?>
+  element.classList.remove("col-1");
+  element.classList.add("col-2");
+  <?php
+} elseif (mysqli_num_rows($clubNewsResult) > 0) {
+  if (isDebugEnabled(1)) logMessage("footer.php: there are club news to show, setting sidebar width to 2 columns");
+  ?>
+  element.classList.remove("col-1");
+  element.classList.add("col-2");
+  <?php
+} elseif (isDisplayRecentActivity()) {
+  if (isDebugEnabled(1)) logMessage("footer.php: recent activity is enabled, setting sidebar width to 2 columns");
+  ?>
+  element.classList.remove("col-1");
+  element.classList.add("col-2");
+  <?php
+    } 
+ 
+
+  else {
+  if (isDebugEnabled(1)) logmessage("footer.php: setting sidebar width to 1 column because there are not club events and news to show or recent activity is not enabled");
+  ?>
+
+    var element = document.getElementById("sidebar");
+    element.classList.add("col-1");
+  <? } ?>
+</script>
+
 <? if ( is_logged_in() ) { ?>
 <script type="text/javascript">
 

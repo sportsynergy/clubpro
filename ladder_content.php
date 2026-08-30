@@ -278,19 +278,19 @@ $lastupdatestring = $wlobj->lastupdated;
     ?> 
             
       <td width="350" style="padding: 10px" >
-              <table class="table table-striped">
-                <thead>
-              	<tr valign="top">
-              		<th colspan="<?=$colspan?>">
+
+      <div>
+
                         <span class="bigbanner"><?=$wlobj->boxname?></span>
                         <div class="boxdateheader">
                                 Start Date: <?=$startdatestring[1]."-".$startdatestring[2]."-".$startdatestring[0]?> 
               	            End Date: <?=$datestring[1]."-".$datestring[2]."-".$datestring[0]?>
                         </div>
-              		</th>
-               	</tr>
-               	
-              
+              		
+    </div>
+              <table class="sortable table table-striped">
+                <thead>
+              	
               <tr>
 	              	<th> Place</th>
 	              	<th> Player</th>
@@ -303,6 +303,7 @@ $lastupdatestring = $wlobj->lastupdated;
                          <th> Total Games Won</th>
                         <?  } ?>
                     <?  } ?>
+                  
               </tr>
                         </thead>
                         <tbody>
@@ -334,17 +335,9 @@ $lastupdatestring = $wlobj->lastupdated;
                         <tr>
 	                        <td> <?=$n?></td>
 	                        <td>
-                            <form name="playerform<?=$playercounter?>" method="get"
-								action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php">
-								<input type="hidden" name="userid"
-									value="<?=$wluserobj->userid?>"> 
-                                    <input type="hidden" name="origin" value="league">
-							</form>
-	                        	
-                                    <a href="javascript:submitForm('playerform<?=$playercounter?>')">
-                                    <?=$wluserobj->firstname?> <?=$wluserobj->lastname?>
-                                    </a>
-                                    
+                                <a href="javascript:submitPlayerForm(<?=$wluserobj->userid?>)" title="view player info">
+                                <?=$wluserobj->firstname?> <?=$wluserobj->lastname?>
+                                </a>  
 	                        </td>
 	                       
 	                        <td>
@@ -399,34 +392,30 @@ echo "</table>";
 if( isJumpLadderRankingScheme()  ){
 ?>
 
-<? if( isset($ladderid)  ){ ?>
-<div style="margin-top: 20px"> <span class="smallbold">Box leagues last updated:</span> 
-    <?php
-        
-        if( is_null($lastupdatestring) ){
-        $lastupdated = "Never";
-        } else {
-        //$lastupdated = ladderdetails['lastUpdated'];
-        $lastupdated = $lastupdatestring;
-        } ?>
 
-    <?=$lastupdated?>
-    
-    </div>
-    <? } ?>
 
 
   <form name="league_form" method="POST" action="<?=$_SESSION["CFG"]["wwwroot"]?>/clubs/<?echo get_sitecode()?>/web_ladder.php">
   <input type="hidden" name="ladderid">
 </form>
 
+<form name="playerform" method="get" action="<?=$_SESSION["CFG"]["wwwroot"]?>/users/player_info.php">
+	<input type="hidden" name="userid"> 
+    <input type="hidden" name="origin" value="league">
+</form>
 
+<script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/sorttable.js" type="text/javascript"></script>
   <script type="text/javascript" >
 
     function submitLeagueForm( ladderid){
         
     document.league_form.ladderid.value = ladderid;
     document.league_form.submit();
+    }
+
+    function submitPlayerForm( userid ){
+        document.playerform.userid.value = userid;
+        document.playerform.submit();
     }
 
     var allownewlines = false;

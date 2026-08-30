@@ -35,6 +35,7 @@ create table clubpro_main.tblClubSites
     timeoutlink                 varchar(255)                                                                       null comment 'the url after a timeout',
     autocancelincompletes       enum ('none', '1', '4', '12')                            default 'none'            not null,
     boxsession                  date                                                                               null comment 'used with extended box leagues',
+    mobileoptimized             enum ('y', 'n')                                          default 'y'               null,
     constraint sitecode
         unique (sitecode)
 )

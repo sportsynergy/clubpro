@@ -16,7 +16,8 @@ create table clubpro_main.tblClubUser
     available_at_5              bit             default b'0'              not null,
     available_at_6              bit             default b'0'              not null,
     available_at_7              bit             default b'0'              not null,
-    recleaguematchnotifications enum ('y', 'n') default 'n'               not null
+    recleaguematchnotifications enum ('y', 'n') default 'n'               not null,
+    recsms                      enum ('y', 'n') default 'n'               not null
 )
     engine = MyISAM
     charset = utf8;

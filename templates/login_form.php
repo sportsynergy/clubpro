@@ -93,7 +93,7 @@ a {
         </div>
         <div style="height:15px;"> <!-- Spacer --> </div>
         <span style="float:right;">Powered by:
-        <img src="images/logo.png" width="25" height="25"></span>
+        <img src="images/logo.png?123" width="25" height="25"></span>
         <? if(!isSiteAutoLogin()){ ?>
         <div class="normal" style="margin-top: 15px"> <a href="<?=$_SESSION["CFG"]["wwwroot"]?>/users/forgot_password.php">Forgot my password</a> </div>
         <? } ?>

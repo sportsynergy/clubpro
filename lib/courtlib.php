@@ -214,7 +214,7 @@ function printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $curren
     print "<form name=\"windowForm\" method=\"post\"><input type=\"hidden\" name=\"courtWindowStart\" value=\"$startCourtId\"><input type=\"hidden\" name=\"daysahead\" value=\"$daysahead\"></form>";
 
     //Print the link to the form
-    print "<br><a STYLE=\"text-decoration:none\" href=\"javascript:submitFormWithAction('windowForm','$wwwroot/clubs/" . get_sitecode() . "/index.php')\"> Next >  </a><br>";
+    print "<br><a  STYLE=\"text-decoration:none\" href=\"javascript:submitFormWithAction('windowForm','$wwwroot/clubs/" . get_sitecode() . "/index.php')\"> Next >  </a><br>";
 }
 /**
  *

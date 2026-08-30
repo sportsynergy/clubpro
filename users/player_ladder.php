@@ -28,6 +28,7 @@ if (!empty($_POST['ladderid'])) {
     $_SESSION["ladder_id"] = $_POST['ladderid'];
 }
 $ladderid = $_SESSION["ladder_id"];
+$laddername = getLadderName($ladderid);
 
 /* form has been submitted */
 if (isset($_POST['submit']) || isset($_POST['cmd'])) {
@@ -127,16 +128,12 @@ if (isset($_POST['submit']) || isset($_POST['cmd'])) {
             $kind = "by admin";
         }
         // Disable this for dave, for now
-        /*
+        
         if(!isPlayerAbleToScoreLeagueMatch($winnerid, $loserid, $ladderid) && $league){
             if (isDebugEnabled(1)) logMessage("player_ladder: Players ($winnerid, $loserid) are not in a box league together in league $leagues, but this was recorded as a league match. This will still be recorded but just not as a league match.");
             $league = "FALSE";
         }
-            */
-
-        // only allow 4 matches for the player
-
-        
+            
 
         if (isDebugEnabled(1)) logMessage("player_ladder: Reporting a ladder score: winner: $winnerid, loser: $loserid, hourplayed: $hourplayed, score: $score, minuteofday: $minuteofday, timeofday: $timeofday, kind: $kind, and league: $league");
 
@@ -226,4 +223,10 @@ function createChallengematch($challengerid, $challengeeid, $courttypeid) {
     db_query($query);
 }
 
+
+function getLadderName($ladderid){
+    $query = "SELECT name from tblClubSiteLadders WHERE id = $ladderid";
+    $result = db_query($query);
+    return mysqli_result($result, 0);
+}
 ?>

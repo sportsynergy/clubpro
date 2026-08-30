@@ -39,6 +39,12 @@ class UpdateBoxLeagueScores{
                     AND enable=TRUE";
 
         $mresult = db_query($query);
+
+        $num_rows = mysqli_num_rows($mresult);
+        if ( $num_rows == 0 ){
+            if (isDebugEnabled(2)) logMessage("UpdateBoxLeagueScores(e): No box leagues to update" ); 
+        }
+
         
         while($box_array = mysqli_fetch_array($mresult) ){
 
@@ -85,13 +91,18 @@ class UpdateBoxLeagueScores{
                         AND ladderid = ".$box_array['ladderid'];
 
                 $lpresult = db_query($query);
-
                 $points = 0;
                 $games = 0;
                 $gameswon = 0;
                 $players = array();
+                $matches = 0;
 
                 while($lp_match_array = mysqli_fetch_array($lpresult) ){
+
+                    // Skip if its a thursday 
+                    $date_string = $lp_match_array['match_time'];
+                    $timestamp = strtotime($date_string);
+                    $day_of_week = date('l', $timestamp); // 'l' is the lowercase L
 
                     // when the player wins
                     if( $lm_player_array['player'] == $lp_match_array['winnerid']){
@@ -112,16 +123,28 @@ class UpdateBoxLeagueScores{
                         }
 
                         if($pastmatches == 0){
-
-                            $games = $games + 1;
-                            $gameswon = $gameswon + $wins;
-                            $points = $points + 2;
+  
+                        // Only award points for the first 4 matches against the same opponent to encourage trying out different opponents. After 4 matches, players can still play each other but it won't count for points.
+                            if( $matches <= 4){
+                        
+                                $games = $games + 1;
+                                $gameswon = $gameswon + $wins;
+                                $points = $points + 2;
+                                $matches = $matches + 1;
+                                
+                                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): Adding 2 points for a win (".$lp_match_array['score'].") in match against ".$lp_match_array['loser']." on ".$lp_match_array['match_time'] . " and updated gameswon to $gameswon" );   
                             
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): Adding 2 points for a win (".$lp_match_array['score'].") in match against ".$lp_match_array['loser']." on ".$lp_match_array['match_time'] . " and updated gameswon to $gameswon" );   
-
+                            } else {
+                                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): No points for a win in the 5th or later match against ".$lp_match_array['loser']." on ".$lp_match_array['match_time'] . " and updated gameswon to $gameswon and updating to nonleague match" );  
+                                // update this match to not count as a league match
+                                setLadderMatchLeagueStatus($lp_match_array['id'], false); 
+                            }
+                            
                         } else {
 
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): no scoring for a win after the first matche against ".$lp_match_array['loser']." on ".$lp_match_array['match_time'] ); 
+                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): No scoring for a win after the first matche against ".$lp_match_array['loser']." on ".$lp_match_array['match_time']." and updating to nonleague match" ); 
+                            // update this match to not count as a league match
+                            setLadderMatchLeagueStatus($lp_match_array['id'], false);
                         }
 
                         array_push($players, $lp_match_array['loserid']);
@@ -145,23 +168,30 @@ class UpdateBoxLeagueScores{
 
                         if($pastmatches == 0){
 
-                            $games = $games + 1;
-                            $gameswon = $gameswon + $wins;
-                            $points = $points + 1;
+                            if( $matches <= 4){
 
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): Adding 1 point for a loss (".$lp_match_array['score'].") in first match against ".$lp_match_array['winner'] ." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon" );  
+                                $games = $games + 1;
+                                $gameswon = $gameswon + $wins;
+                                $points = $points + 1;
+                                $matches = $matches + 1;
 
-
+                                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): Adding 1 point for a loss (".$lp_match_array['score'].") in first match against ".$lp_match_array['winner'] ." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon" );  
+                            } else {
+                                if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): No points for a loss in the 5th or later match against ".$lp_match_array['winner'] ." on ".$lp_match_array['match_time']. " and updated gameswon to $gameswon and updating to nonleague match" );
+                                // update this match to not count as a league match
+                                setLadderMatchLeagueStatus($lp_match_array['id'], false);
+                            }
+                           
                         } else {
 
-                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): no scoring for a loss after the first match against ".$lp_match_array['winnerid'] ." on ".$lp_match_array['match_time'] ); 
+                            if (isDebugEnabled(1)) logMessage("UpdateBoxLeagueScores(e): No scoring for a loss after the first match against ".$lp_match_array['winner'] ." on ".$lp_match_array['match_time']." and updating to nonleague match" ); 
+                            // update this match to not count as a league match
+                            setLadderMatchLeagueStatus($lp_match_array['id'], false);
                         }
 
                         array_push($players, $lp_match_array['winnerid']);
                     }
 
-                   
-               
                 #Set the score and games played
                 $query = "UPDATE tblkpBoxLeagues SET score = $points, games = $games, gameswon = $gameswon WHERE boxid = ".$box_array['boxid']." AND userid = ".$lm_player_array['player'];
                 $result = db_query($query);

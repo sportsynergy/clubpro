@@ -21,7 +21,6 @@ setcookie("timeoutlink", "");
 setcookie("timeoutlink", getTimeOutLink() , time() + 31536000);
 
 
-
 //Only load the site ladders if the ranking scheme is configured as such
 
 if (isLadderRankingScheme() || isJumpLadderRankingScheme()) {
@@ -32,10 +31,11 @@ $wwwroot = $_SESSION["CFG"]["wwwroot"];
 $username = $_REQUEST['username'];
 $password = $_REQUEST['password'];
 $courtGroupFromForm = $_REQUEST['courtGroupFromForm'];
-
+$courtWindowStart = $_REQUEST['courtWindowStart'];
 
 if ( isset($_SESSION["courtWindowStart"]) ){
 	$courtWindowStart = $_REQUEST['courtWindowStart'];
+	logMessage("scheduler_content.php: courtWindowStart from form is $courtWindowStart");
 }
 
 //Set the footer message
@@ -46,7 +46,6 @@ if (!isset($_SESSION["footermessage"])) {
 }
 
 //Get user log in the user in from the multiuser login form
-
 if (isset($_POST["frompickform"])) {
     $user = load_user($_POST["userid"]);
     
@@ -56,7 +55,6 @@ if (isset($_POST["frompickform"])) {
 }
 
 //Display the multiuser login form
-
 if (isset($username) && isset($password) && !is_logged_in()) {
     $usersResult = getAllUsersWithIdResult($username, $clubid);
     
@@ -74,6 +72,7 @@ if (isset($username) && isset($password) && !is_logged_in()) {
     }
 }
 $DOC_TITLE = "Sportsynergy Clubpro";
+$COURTS_DISPLAYED = 7;
 include ($_SESSION["CFG"]["templatedir"] . "/header.php");
 
 // When a site has a court group configured set a session variable.  The first court group id will be the default.
@@ -85,14 +84,12 @@ $grouping = "SELECT gp.id from tblCourtGrouping gp
 $groupingResult = db_query($grouping);
 
 //Update the court group session variable if set
-
 if (isset($courtGroupFromForm)) {
     $_SESSION["courtGroup"][$siteid] = $courtGroupFromForm;
     unset($_SESSION["courtWindowStart"]);
 }
 
 // Set the Court Group ID
-
 if (mysqli_num_rows($groupingResult) > 0 && !isset($_SESSION["courtGroup"][$siteid])) {
     
 	$siteIdArray = mysqli_fetch_array($groupingResult);
@@ -132,7 +129,7 @@ if (isset($_SESSION["courtWindowStart"][$siteid])) {
 								AND courts.courtid >=$courtWindowStart
 								AND courts.enable = 1
 								ORDER BY courts.displayorder
-								LIMIT 6";
+								LIMIT $COURTS_DISPLAYED";
     } else {
         $courtquery = "SELECT * 
 							FROM tblCourts courts
@@ -141,7 +138,7 @@ if (isset($_SESSION["courtWindowStart"][$siteid])) {
 							AND siteid=$siteid 
 							AND enable = 1
 							ORDER BY courts.displayorder
-						    LIMIT 6";
+						    LIMIT $COURTS_DISPLAYED";
     }
 }
 
@@ -154,7 +151,7 @@ elseif (isset($_SESSION["courtGroup"][$siteid])) {
 				AND courts.courtid = groupingentry.courtid 
 				AND courts.enable = 1
 				ORDER BY courts.displayorder
-				LIMIT 6";
+				LIMIT $COURTS_DISPLAYED";
 }
 
 //If not set just get all of them (which should be under 6)
@@ -165,7 +162,7 @@ else {
 				AND siteid=$siteid 
 				AND enable = 1
 				ORDER BY courts.displayorder
-				LIMIT 6";
+				LIMIT $COURTS_DISPLAYED";
 }
 $currentCourtResult = db_query($courtquery);
 
@@ -220,6 +217,7 @@ if (isset($month) && isset($date) && isset($year)) {
     $currDay = $date;
     $specDate = mktime(0, 0, 0, $month, $date, $year);
     $currDOW = getDOW(gmdate("l", $specDate));
+	$daysahead = $specDate;
 }
 
 //Set Current date and time
@@ -347,7 +345,7 @@ if ($clubid) {
 <tr>
   <td><table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
       <tr height="15" >
-        <td align="right" class="normal"><SCRIPT LANGUAGE=JAVASCRIPT TYPE="TEXT/JAVASCRIPT">
+        <td><SCRIPT LANGUAGE=JAVASCRIPT TYPE="TEXT/JAVASCRIPT">
 							 function submitCourtGroupForm(action, groupid)
 							{
 						        document.courtGroupForm.courtGroupFromForm.value = groupid;
@@ -390,8 +388,8 @@ if ($clubid) {
 <tr>
   <td><table cellspacing="0" cellpadding="0" border="0"  width="100%" class="borderless">
       <tr height="15">
-        <td align="left" class="normal"><? printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead=0, $siteid); ?> <br></td>
-        <td align="right" class="normal" ><? printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead=0, $siteid); ?> <br></td>
+        <td align="left" class="normal"><? printLeftCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
+        <td align="right" class="normal" ><? printRightCourtNavigationArrow($totalCourts, $totalCourtResult, $currentCourtResult, $totalCurrentCourts, $daysahead, $siteid); ?> <br></td>
       </tr>
     </table></td>
 </tr>
