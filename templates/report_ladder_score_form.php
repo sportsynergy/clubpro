@@ -49,9 +49,15 @@
     </script>
     <? is_object($errors) ? err($errors->winner) : ""?>
 </div>
-			
+	
+<?
+
+?>
 <div class="mb-3"> 
-    <label class="form-label">Defeated</label>
+    <select name="outcome" class="form-select">
+            <option value="defeated">Defeated</option>
+            <option value="lostto">Was Defeated By</option>
+        </select>
 </div>
 
 <div class="mb-3">

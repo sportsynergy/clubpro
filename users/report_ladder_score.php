@@ -68,20 +68,19 @@ function record_scores(&$frm) {
 
         // when players report
         if ( $frm['outcome'] == "defeated"){
-            $winnerid = get_userid();
-            $loserid = $frm['rsuserid3'];
+            $winnerid = $frm['rsuserid'];
+            $loserid = $frm['rsuserid2'];
             $kind = "by user";
 
 
         } elseif ( $frm['outcome'] == "lostto" ){
-            $winnerid = $frm['rsuserid3'];
-            $loserid = get_userid();
+            $winnerid = $frm['rsuserid2'];
+            $loserid = $frm['rsuserid'];
             $kind = "by user";
 
         } else {
-            $winnerid = $frm['rsuserid'];
-            $loserid = $frm['rsuserid2'];
-            $kind = "by admin";
+            // this should never happen, but just in case
+            if (isDebugEnabled(1)) logMessage("report_ladder_score: Invalid outcome value: " . $frm['outcome'] . ". This should never happen.");
         }
 
         if(!isPlayerAbleToScoreLeagueMatch($winnerid, $loserid, $ladderid) && $league){
@@ -115,6 +114,9 @@ function record_scores(&$frm) {
 
         $checkResult = db_query($check);
         $dontexist = mysqli_result($checkResult, 0);
+
+        if (isDebugEnabled(1)) logMessage("report_ladder_score: here was the result of the check query: $check, and the result was $dontexist");
+
 
         if( $dontexist == 0){
 
