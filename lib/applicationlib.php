@@ -6197,7 +6197,7 @@ function get_site_events($siteid){
 	 
 	$query = "SELECT eventid, eventname
                           FROM tblEvents
-                          WHERE siteid = $siteid";
+                          WHERE siteid = $siteid ORDER BY eventname";
 
 	return  db_query($query);
 }
