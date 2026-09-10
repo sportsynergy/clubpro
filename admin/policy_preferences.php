@@ -22,7 +22,7 @@ if (match_referer() && isset($_POST['submitme'])) {
         
         if (empty($errormsg)) {
             update_message_clubprefs($frm);
-            $noticemsg = "Preferences Saved.  Good Job!<br/><br/>";
+            $noticemsg = "Preferences Saved.  Good Job!";
         }
     }
 
@@ -98,15 +98,12 @@ function validate_messages_form(&$frm, &$errors) {
     if ($frm["messagedisplay"] == "on" && empty($frm["Messagetextarea"])) {
         $errors->Messagetextarea = true;
         $msg.= "Turn off the display message or type in a message.";
-    } elseif (empty($frm["Messagetextarea"]) && empty($frm["ClubNewsMessage"])) {
-        $errors->Messagetextarea = true;
-        $errors->ClubNewsMessage = true;
+    } elseif ( empty($frm["clubnewsmessages"])) {
+  
+        $errors->clubnewsmessages = true;
         $msg.= "You didn't specifiy a message.";
-    } elseif (preg_match("\n", $frm["Messagetextarea"])) {
-        $errors->Messagetextarea = true;
-        $msg.= "This time don't put a return in the message";
-    } elseif (strpos($frm["ClubNewsMessage"], "'") !== false)  {
-        $errors->ClubNewsMessage = true;
+    } elseif (strpos($frm["clubnewsmessages"], "'") !== false)  {
+        $errors->clubnewsmessages = true;
         $msg.= "Please don't use apostrophes, I beg of you.";
     }
     return $msg;
@@ -455,68 +452,11 @@ function update_message_clubprefs(&$frm) {
     /* add the new user into the database */
      if (isDebugEnabled(2)) logMessage("policy_preferences.update_message_clubprefs: Updating messaging preferences");
 
-    if (!empty($frm['Messagetextarea'])) {
-        
-        $message = addslashes($frm["Messagetextarea"]);
-
-		if (isDebugEnabled(2)) logMessage("policy_preferences.update_message_clubprefs: Updating message text to $message");
-
-        if ($frm["messagedisplay"] == "on") {
-            $displaymessage = 1;
-        } else {
-            $displaymessage = 0;
-        }
-
-        
-        //Check to see if club has a message
-        $qid = db_query("SELECT id, message, enable FROM tblMessages WHERE siteid = " . get_siteid() . " AND messagetypeid = 1 order by id");
-        $numrows = mysqli_num_rows($qid);
-	    $messagearray = db_fetch_array($qid);
-        
-        if ($numrows == 0) {
-            $query = 'INSERT INTO tblMessages (
-                   siteid, message, messagetypeid, enable
-                   ) VALUES (
-                   "' . get_siteid() . '"
-                   ,"'.$message.'"
-                   ,1
-                   ,"'.$displaymessage.'")';
-
-				  // run the query on the database
-			      db_query($query);
-                   if (isDebugEnabled(2)) logMessage("equals 0");
-			
-        } elseif ($numrows == 1) {
-            $query = 'Update tblMessages SET
-                message = "'.$message.'"
-                ,enable = "'.$displaymessage.'"
-                WHERE siteid = "'. get_siteid() .'"
-                AND messagetypeid = 1';
-
- 				db_query($query);
-                if (isDebugEnabled(2)) logMessage("equals 1");
-        }
-		// only update the first one
-		else {
-			
-			 $query = 'Update tblMessages SET
-	                message = "'.$message.'"
-	                ,enable = "'.$displaymessage.'"
-	                WHERE siteid = "' . get_siteid() . '"
-	                AND messagetypeid = 1
-					AND id = '.$messagearray['id'];
-
-	 				db_query($query);
-                     if (isDebugEnabled(2)) logMessage($query);
-			
-		}
-
-      
-    }
+    
 
     // Now add the Club News Message
     
-    if (!empty($frm['ClubNewsMessage'])) {
+    if (!empty($frm['clubnewsmessages'])) {
        
 			if (isDebugEnabled(2)) logMessage("policy_preferences.update_message_clubprefs: Updating news text to ". $frm['ClubNewsMessage']);
 			
@@ -524,10 +464,12 @@ function update_message_clubprefs(&$frm) {
                    siteid, message, messagetypeid, enable
                    ) VALUES (
                    '" . get_siteid() . "'
-                   ,'$frm[ClubNewsMessage]'
+                   ,'$frm[clubnewsmessages]'
                    ,2
                    ,1)";
         $result = db_query($query);
+    } else {
+        if (isDebugEnabled(2)) logMessage("policy_preferences.update_message_clubprefs: No news text to update");
     }
 }
 /**

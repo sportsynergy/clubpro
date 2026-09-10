@@ -15,6 +15,9 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule" type="button" role="tab" aria-controls="schedule" aria-selected="true" onclick="clearMessage()">Scheduling Policies</button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="message-tab" data-bs-toggle="tab" data-bs-target="#message" type="button" role="tab" aria-controls="message" aria-selected="true" onclick="clearMessage()">Message Preferences</button>
+        </li>
   
        <li class="nav-item" role="presentation">
             <button class="nav-link" id="court-events-tab" data-bs-toggle="tab" data-bs-target="#court_events" type="button" role="tab" aria-controls="court events" aria-selected="true" onclick="clearMessage()">Court Events</button>

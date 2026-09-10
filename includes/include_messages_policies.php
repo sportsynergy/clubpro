@@ -23,28 +23,6 @@ function wipeOutClubMessages()
 <form name="message_preferences_form" method="post" action="<?=$ME?>" onSubmit="SubDisable(this);" autocomplete="off">
   
 
-<div class="mb-3">
-  <label for="name" class="form-label">Scrolling Message:</label>
-    <div id="scrollingHelp" class="form-text"> This is an optional message you can set to advertise events at your club.  This will scroll across the main court reservation page. </div>
-</div>
-
-  <div class="mb-3">
-    <textarea cols="60" rows="4" class="form-control" id="scrollingmessage" name="scrollingmessage" onKeyDown="limitText(this.form.scrollingmessage,this.form.remLen1,255);" onKeyUp="limitText(this.form.scrollingmessage,this.form.remLen1,255);"><?=$messagePreferences['scrollingmessage']?></textarea>
-    <div class="form-text"> You have <input readonly type="text" name="remLen1" size="3" value="<?=255 - strlen($messagePreferences['scrollingmessage']);?>"> characters remaining. </div>
-  </div>  
-
-  <div class="mb-3"> 
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="messagedisplay" value="on"  <? if($scrollingMessages["enable"] ==1){ echo "checked";} ?>>
-      <label class="form-check-label" for="inlineCheckbox1">On</label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="messagedisplay" value="off" <? if($scrollingMessages["enable"] ==0){ echo "checked";} ?>>
-      <label class="form-check-label" for="inlineCheckbox2">Off</label>
-    </div>
-  
-  </div>
-
   <div class="my-3">
   <label for="name" class="form-label">Club News Messages:</label>
     <div id="clubnewsHelp" class="form-text"> If set, these little bits of news will appear on each page on the right hand side of the page next to Club Events and Recent Activity.  The 
