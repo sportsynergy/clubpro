@@ -2,9 +2,11 @@ FROM php:8.4.27-apache
 
 RUN docker-php-ext-install mysqli && docker-php-ext-install pdo_mysql
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+COPY . /var/www/html
 
 RUN sed -i "s/short_open_tag = Off/short_open_tag = On/" /usr/local/etc/php/php.ini
 RUN sed -i 's/^Listen 80/Listen 8000/' /etc/apache2/ports.conf
+
 
 # Install Composer
 RUN  apt-get update -y && \
