@@ -15,7 +15,12 @@ RUN  apt-get update -y && \
      apt-get -y autoremove && \
      apt-get clean
      
-RUN apt-get install -y zip awscli
 RUN cp ./config/clubpro.logrotate /etc/logrotate.d/clubpro
+RUN apt-get install -y zip awscli logrotate ruby
+
+#RUN unzip ./config/simple-s3-backup.zip -d /opt/simple-s3-backp
+
+RUN cp ./config/clubpro.logrotate /etc/logrotate.d/clubpro
+RUN cp ./config/crontab /var/spool/cron/crontabs/root
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
