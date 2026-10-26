@@ -1,0 +1,8 @@
+/var/log/sportsynergy/*.log {
+	weekly
+	missingok
+	rotate 14
+	compress
+	dateext
+	delaycompress
+}
