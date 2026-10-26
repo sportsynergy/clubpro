@@ -18,7 +18,6 @@ RUN  apt-get update -y && \
 RUN cp ./config/clubpro.logrotate /etc/logrotate.d/clubpro
 RUN apt-get install -y zip awscli logrotate gpg
 
-#RUN unzip ./config/simple-s3-backup.zip -d /opt/simple-s3-backp
 
 RUN cp ./config/clubpro.logrotate /etc/logrotate.d/clubpro
 RUN cp ./config/crontab /var/spool/cron/crontabs/root
