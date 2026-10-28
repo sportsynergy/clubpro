@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name SUBDOMAIN.sportsynergy.net;
+    server_name www.sportsynergy.net;
 
     # Certbot webroot challenge location
     location /.well-known/acme-challenge/ {

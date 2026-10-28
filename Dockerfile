@@ -3,6 +3,7 @@ FROM php:8.4.27-apache
 RUN docker-php-ext-install mysqli && docker-php-ext-install pdo_mysql
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 COPY . /var/www/html
+COPY application.php.default /var/www/html/application.php
 
 RUN sed -i "s/short_open_tag = Off/short_open_tag = On/" /usr/local/etc/php/php.ini
 RUN sed -i 's/^Listen 80/Listen 8000/' /etc/apache2/ports.conf
@@ -16,11 +17,10 @@ RUN  apt-get update -y && \
      apt-get clean
      
 RUN cp ./config/clubpro.logrotate /etc/logrotate.d/clubpro
-RUN apt-get install -y zip awscli logrotate gpg
-
+RUN apt-get install -y zip logrotate
 
 RUN cp ./config/clubpro.logrotate /etc/logrotate.d/clubpro
 RUN cp ./config/crontab /var/spool/cron/crontabs/root
 
-RUN curl -fsSL https://awscli.amazonaws.com/v2/install.sh | bash
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+

@@ -43,7 +43,6 @@ if (isset($_SESSION["CFG"]["wwwroot"])) {
     $pathArray = explode("/", $scriptName);
     
     if ("$pathArray[1]/" != $_SESSION["CFG"]["wwwroot"]) {
-
         unset($_SESSION["CFG"]);
     }
 }
@@ -54,7 +53,7 @@ if (!isset($_SESSION["CFG"])) {
 
     $_SESSION["CFG"]["wwwroot"] = "/clubpro";
     $_SESSION["CFG"]["clubconfig"] = "/clubpro";
-    $_SESSION["CFG"]["imagedir"] = "/images";
+    $_SESSION["CFG"]["imagedir"] = "/clubpro/images";
     $_SESSION["CFG"]["dirroot"] = "/var/www/html";
     $_SESSION["CFG"]["templatedir"] = "/var/www/html/templates";
     $_SESSION["CFG"]["libdir"] = "/var/www/html/lib";
@@ -64,7 +63,6 @@ if (!isset($_SESSION["CFG"])) {
     $_SESSION["CFG"]["support"] = "support@sportsynergy.net";
     $_SESSION["CFG"]["mailer.email"] = "player.mailer@sportsynergy.net";
     $_SESSION["CFG"]["logFile"] = "/var/log/sportsynergy/application.log";
-	$_SESSION["CFG"]["sendgrid_api"] = "PUT_KEY_HERE";
 
 }
 
@@ -80,9 +78,9 @@ $trackingid="TRACKING_ID_GOES_HERE";
 $ME = qualified_me();
 $MEWQ = qualified_mewithq();
 $dbhost = "db";  // use "localhost" when not using docker
-$dbname = "clubpro_main";
-$dbuser = "root";
-$dbpass = "clubs4life";
+$dbname = getenv('CLUBPRO_DB_NAME');
+$dbuser = getenv('CLUBPRO_DB_USER');
+$dbpass = getenv('CLUBPRO_DB_PASS');
 
 /* connect to the database */
 $dbh = db_connect($dbhost, $dbname, $dbuser, $dbpass);
