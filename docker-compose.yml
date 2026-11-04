@@ -39,7 +39,7 @@ services:
     build: .
     restart: unless-stopped
     volumes:
-    - .:/var/www/html
+    - .:/var/www/html/clubpro
     depends_on:
       - db
     # Internal port your app listens on (do not expose to the host)

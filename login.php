@@ -31,8 +31,6 @@
 include ("./application.php");
 $DOC_TITLE = "Login Screen";
 
-/* form has been submitted, check if it the user login information is correct */
-
 if (match_referer() && isset($_POST)) {
     if (isset($_POST["frompickform"])) {
         $user = load_user($_POST["userid"]);
@@ -90,8 +88,9 @@ if (match_referer() && isset($_POST)) {
 
             $goto = $_SESSION["CFG"]["wwwroot"] . "/system/";
         } else {
-            $goto = empty($_SESSION["wantsurl"]) ? $_SESSION["CFG"]["wwwroot"] : $_SESSION["wantsurl"];
-        }
+	    $goto =   "https://" . $_SESSION["CFG"]["dns"] . "" . $_SESSION["CFG"]["wwwroot"] . "/clubs/" . get_sitecode(). "/";
+	}
+
         header("Location: $goto");
         die;
     } else {

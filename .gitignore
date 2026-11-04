@@ -5,3 +5,5 @@ vendor/
 application.log
 .env
 .htaccess
+composer.lock
+
