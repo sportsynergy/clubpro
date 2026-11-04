@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Court closed for resurfacing | Sportsynergy</title>
+<style>
+  :root {
+    --cream: #fdf9f4;
+    --peach: #fcefe2;
+    --orange: #f27316;
+    --orange-dark: #d85f08;
+    --orange-text: #c2410c;
+    --ink: #111111;
+    --gray: #4b5563;
+    --line: #ece4da;
+  }
+  * { box-sizing: border-box; }
+  html, body { min-height: 100%; margin: 0; }
+  body {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--peach) 100%);
+    color: var(--ink);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 28px;
+    background: rgba(255,255,255,.7);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 700; font-size: 1.25rem; }
+  .brand svg { width: 34px; height: 34px; }
+  .btn {
+    display: inline-block; background: var(--orange); color: #fff; text-decoration: none;
+    font-weight: 600; padding: 10px 18px; border-radius: 10px;
+  }
+  .btn:hover { background: var(--orange-dark); }
+  .btn:focus-visible, .brand:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  main { max-width: 760px; margin: 0 auto; padding: 64px 24px 48px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fbe9d6; color: var(--orange-text);
+    padding: 10px 18px; border-radius: 999px; font-size: .95rem; margin-bottom: 24px;
+  }
+  .badge i { width: 10px; height: 10px; border-radius: 50%; background: var(--orange); display: block; animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .25; } }
+  h1 {
+    margin: 0 0 20px;
+    font-size: clamp(2.6rem, 9vw, 4.6rem);
+    line-height: 1.02; letter-spacing: -.035em; font-weight: 700;
+  }
+  .sub { margin: 0 0 32px; color: var(--gray); font-size: 1.2rem; line-height: 1.55; max-width: 34em; }
+  .card {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(242,115,22,.08);
+    margin: 0 0 32px; overflow: hidden;
+  }
+  .card h2 { margin: 0; padding: 14px 20px; font-size: 1rem; background: #fff7ee; border-bottom: 1px solid var(--line); }
+  .row { display: flex; justify-content: space-between; gap: 16px; padding: 13px 20px; border-bottom: 1px solid var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .row span:first-child { font-weight: 600; }
+  .row span:last-child { color: var(--gray); text-align: right; }
+  .excuse { margin: 0 0 8px; min-height: 3.2em; font-size: 1.1rem; line-height: 1.5; font-style: italic; color: var(--gray); }
+  .foot { margin: 16px 0 0; color: var(--gray); font-size: .95rem; }
+  @media (max-width: 520px) { .row { flex-direction: column; gap: 2px; } .row span:last-child { text-align: left; } }
+  @media (prefers-reduced-motion: reduce) { .badge i { animation: none; } }
+</style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="https://sportsynergy.net">
+      <svg viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="3" y="6" width="28" height="25" rx="5" fill="#f27316"/>
+        <rect x="9" y="2" width="4" height="7" rx="2" fill="#f27316"/>
+        <rect x="21" y="2" width="4" height="7" rx="2" fill="#f27316"/>
+        <rect x="8" y="13" width="18" height="14" rx="3" fill="#fdf9f4"/>
+        <rect x="13" y="17" width="8" height="7" rx="1.5" fill="#f27316"/>
+      </svg>
+      Sportsynergy
+    </a>
+    <a class="btn" href="https://sportsynergy.net">Book a Demo</a>
+  </header>
+
+  <main>
+    <div class="badge"><i></i>Scheduled maintenance</div>
+    <h1>Court closed for resurfacing.</h1>
+    <p class="sub">We're giving the site a tune-up. Our team is wiping down the walls, re-taping the tin, and debating whether that last one was a let. Back shortly.</p>
+
+    <section class="card" aria-label="Status">
+      <h2>Current status</h2>
+      <div class="row"><span>Bookings</span><span>Warming up</span></div>
+      <div class="row"><span>Player matching</span><span>Stretching (hamstrings, mostly)</span></div>
+      <div class="row"><span>Our developer</span><span>"Almost done" (said an hour ago)</span></div>
+      <div class="row"><span>The server</span><span>Hit the tin, retrieving the ball</span></div>
+    </section>
+
+    <p class="excuse" id="excuse" aria-live="polite">We asked the database to get off the T. It's still thinking about it.</p>
+
+    <p class="foot">Thanks for your patience. Try again in a few minutes, or catch up on <a href="https://sportsynergy.net" style="color:var(--orange-text)">sportsynergy.net</a>.</p>
+  </main>
+
+  <script>
+    var excuses = [
+      "We asked the database to get off the T. It's still thinking about it.",
+      "A ball boy is checking the servers. He is eleven and very confident.",
+      "We turned it off and on again. Then we called a let.",
+      "Currently reviewing the video replay. The replay is also down.",
+      "The cache is on a water break. It has been gone a while."
+    ];
+    var i = 0, el = document.getElementById("excuse");
+    setInterval(function () {
+      i = (i + 1) % excuses.length;
+      el.textContent = excuses[i];
+    }, 5000);
+  </script>
+</body>
+</html>

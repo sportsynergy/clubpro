@@ -1,11 +1,7 @@
 /.settings
 clubs/
 .DS_Store
-build.properties
-
-clubpro.tar.gz
-version.txt
-clubpro_latest
 vendor/
 application.log
 .env
+.htaccess
