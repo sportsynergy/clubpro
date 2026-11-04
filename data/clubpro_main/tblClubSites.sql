@@ -23,6 +23,7 @@ create table clubpro_main.tblClubSites
     allownearrankingadvertising enum ('y', 'n')                                          default 'y'               not null,
     rankingscheme               enum ('point', 'ladder', 'jumpladder', 'jumpladderplus') default 'point'           not null,
     challengerange              smallint                                                 default 2                 not null,
+    jumpladdermaxmove           smallint                                                 default 0                 not null,
     facebookurl                 varchar(255)                                                                       null,
     twitterurl                  varchar(255)                                                                       null,
     singleplayerdoublesmatch    enum ('y', 'n')                                                                    not null,
@@ -41,4 +42,3 @@ create table clubpro_main.tblClubSites
 )
     engine = MyISAM
     charset = utf8;
-

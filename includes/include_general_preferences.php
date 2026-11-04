@@ -96,6 +96,19 @@
 
       <? } ?>
 
+    <? if(isJumpLadderRankingScheme() ){ ?>
+
+      <div class="mb-3">
+        <label for="jumpladdermaxmove" class="form-label">Limit how many spots a player can move up when winning a ladder match</label>
+          <select name="jumpladdermaxmove" id="jumpladdermaxmove" class="form-select" aria-label="Limit how many spots a player can move up when winning a ladder match">
+                <option value="10" <?=$generalPreferences["jumpladdermaxmove"] == 10 ? "selected" : ""?> >10 spots</option>
+                <option value="5" <?=$generalPreferences["jumpladdermaxmove"] == 5 ? "selected" : ""?> >5 spots</option>
+                <option value="0" <?=$generalPreferences["jumpladdermaxmove"] == 0 ? "selected" : ""?> >Not Limited</option>
+          </select>
+      </div>
+
+      <? } ?>
+
 
       <div class="mb-3">
         <label for="reminders" class="form-label">Email Reminders</label>
