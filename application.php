@@ -72,7 +72,7 @@ require ($_SESSION["CFG"]["libdir"] . "/dblib.php");
 require ($_SESSION["CFG"]["libdir"] . "/applicationlib.php");
 require ($_SESSION["CFG"]["includedir"] . "/include_phpAjaxTags.php");
 
-$trackingid="TRACKING_ID_GOES_HERE";
+$trackingid= getenv('CLUBPRO_GA_TRACKING');
 
 /* setup some global variables */
 $ME = qualified_me();
