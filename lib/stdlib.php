@@ -185,6 +185,18 @@ function mewithq() {
 
     return $me;
 }
+
+function hostprotocol() {
+
+    /* like me() but returns a fully URL */
+    $HTTPS = getenv("HTTPS");
+    $SERVER_PROTOCOL = getenv("SERVER_PROTOCOL");
+    $HTTP_HOST = getenv("HTTP_HOST");
+    $protocol = (isset($HTTPS) && $HTTPS == "on") ? "https://" : "http://";
+    return "$protocol$HTTP_HOST";
+    
+}
+
 function qualified_me() {
 
     /* like me() but returns a fully URL */

@@ -396,7 +396,7 @@ function registerClub($clubName, $clubCode, $numberOfCourts, $courtType, $timezo
     $var->email = $adminEmail;
     $var->username = $adminUser;
     $var->password = $adminPass;
-    $var->url = "http://" . $_SESSION["CFG"]["dns"] . "/" . $_SESSION["CFG"]["wwwroot"] . "/clubs/" . $clubCode;
+    $var->url = "https://" . $_SESSION["CFG"]["dns"] . "/" . $_SESSION["CFG"]["wwwroot"] . "/clubs/" . $clubCode;
 
     // Tried to use the read temaplate, but it didn't work right away so
     // now doing the "templating" manually.

@@ -31,6 +31,8 @@
 include ("./application.php");
 $DOC_TITLE = "Login Screen";
 
+#log message for printing request information
+logMessage("Login.php: Request information: " . hostprotocol() . " from IP: " . $_SERVER['REMOTE_ADDR'] . " with user agent: " . $_SERVER['HTTP_USER_AGENT']);
 if (match_referer() && isset($_POST)) {
     if (isset($_POST["frompickform"])) {
         $user = load_user($_POST["userid"]);
@@ -88,7 +90,7 @@ if (match_referer() && isset($_POST)) {
 
             $goto = $_SESSION["CFG"]["wwwroot"] . "/system/";
         } else {
-	    $goto =   "https://" . $_SESSION["CFG"]["dns"] . "" . $_SESSION["CFG"]["wwwroot"] . "/clubs/" . get_sitecode(). "/";
+	    $goto =   hostprotocol() . "/" . $_SESSION["CFG"]["wwwroot"] . "/clubs/" . get_sitecode(). "/";
 	}
 
         header("Location: $goto");
