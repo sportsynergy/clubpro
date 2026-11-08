@@ -59,7 +59,7 @@ if (!isset($_SESSION["CFG"])) {
     $_SESSION["CFG"]["libdir"] = "/var/www/html/clubpro/lib";
     $_SESSION["CFG"]["wordlist"] = "/var/www/html/clubpro/lib/wordlist.txt";
     $_SESSION["CFG"]["includedir"] = "/var/www/html/clubpro/includes";
-    $_SESSION["CFG"]["dns"] = "poems.sportsynergy.net";
+    $_SESSION["CFG"]["dns"] = "www.sportsynergy.net";
     $_SESSION["CFG"]["support"] = "support@sportsynergy.net";
     $_SESSION["CFG"]["mailer.email"] = "player.mailer@sportsynergy.net";
     $_SESSION["CFG"]["logFile"] = "/var/log/sportsynergy/application.log";
