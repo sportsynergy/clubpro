@@ -6,7 +6,7 @@ create table clubpro_main.tblClubSiteLadders
     courttypeid    int                                 not null,
     name           varchar(255)                        not null,
     enddate        timestamp default CURRENT_TIMESTAMP null,
-    lastUpdated    timestamp                           null,
+    lastUpdated    timestamp                           null on update CURRENT_TIMESTAMP,
     leaguesUpdated timestamp                           null
 )
     engine = MyISAM;
