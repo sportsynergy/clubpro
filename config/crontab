@@ -1,12 +1,11 @@
-15 3 * * * /opt/simple-s3-backup/simple-s3-backup.rb >/dev/null 2>&1
-0 0 * * * /opt/clubpro/cron/adjustranking.pl >> /var/log/sportsynergy/adjustranking.log
-0 * * * * /opt/clubpro/cron/send-reminder.sh
-0 3 * * * /opt/clubpro/cron/disable_expired_accounts.sh
-0 1 * * * /opt/clubpro/cron/mysql-backup.sh
-59 23 * * * /opt/clubpro/cron/updateladder.sh
-55 23 * * * /opt/clubpro/cron/updateboxscores.sh
-54 23 * * * /opt/clubpro/cron/updateboxscores-extended.sh
-56 23 * * * /opt/clubpro/cron/updateteamscores.sh
-50 23 * * 0 /opt/clubpro/cron/createboxschedule.sh 
-51 23 * * 0 /opt/clubpro/cron/send-league-reminders.sh
-*/15 * * * * /opt/clubpro/cron/cancel_incompletes.sh
+0 0 * * * /var/www/html/clubpro/cron/adjustranking.pl >> /var/log/sportsynergy/adjustranking.log
+0 * * * * /var/www/html/clubpro/cron/send-reminder.sh
+0 3 * * * /var/www/html/clubpro/cron/disable_expired_accounts.sh
+0 1 * * * /var/www/html/clubpro/cron/mysql-backup.sh
+59 23 * * * /var/www/html/clubpro/cron/updateladder.sh
+55 23 * * * /var/www/html/clubpro/cron/updateboxscores.sh
+54 23 * * * /var/www/html/clubpro/cron/updateboxscores-extended.sh
+56 23 * * * /var/www/html/clubpro/cron/updateteamscores.sh
+50 23 * * 0 /var/www/html/clubpro/cron/createboxschedule.sh 
+51 23 * * 0 /var/www/html/clubpro/cron/send-league-reminders.sh
+*/15 * * * * /var/www/html/clubpro/cron/cancel_incompletes.sh
