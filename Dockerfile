@@ -14,11 +14,13 @@ RUN  apt-get update -y && \
      apt-get -y autoremove && \
      apt-get clean
      
-RUN apt-get install -y zip logrotate
+RUN apt-get install -y zip logrotate gnupg
 
 COPY ./config/clubpro.logrotate /etc/logrotate.d/clubpro
 COPY ./config/crontab /var/spool/cron/crontabs/root
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN curl -fsSL https://awscli.amazonaws.com/v2/install.sh | bash
 
 

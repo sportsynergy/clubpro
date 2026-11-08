@@ -151,7 +151,7 @@
 </script>
 
 <span style="padding-left: 10px"> <img src="<?=$_SESSION["CFG"]["imagedir"]?>/cal.png" alt="Calendar" id="show" title="Click here to change the date"> </span >
-<form name="calendarform" method="post" action="<?=$MEWQ?>">
+<form name="calendarform" method="post" action="<?=hostprotocol() . "" . $_SESSION["CFG"]["wwwroot"] . "/clubs/" . get_sitecode() ."/" ?>">
   <input type="hidden" name="month">
   <input type="hidden" name="date">
   <input type="hidden" name="year">
