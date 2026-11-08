@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /opt/app/current-sportsynergy/demo/clubpro/cron
+cd /var/www/html/clubpro/cron
 php send-reminder.php

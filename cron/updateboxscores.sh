@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /opt/clubpro/cron
+cd /var/www/html/clubpro/cron
 php updateboxscores.php >> /var/log/sportsynergy/updateboxscores.log

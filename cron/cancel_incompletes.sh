@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /opt/clubpro/cron
+cd /var/www/html/clubpro/cron
 php cancel_incompletes.php
 
 

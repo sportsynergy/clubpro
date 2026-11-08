@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd /opt/clubpro/cron
+cd /var/www/html/clubpro/cron
 php disable_expired_accounts.php
