@@ -90,7 +90,7 @@ if (match_referer() && isset($_POST)) {
 
             $goto = $_SESSION["CFG"]["wwwroot"] . "/system/";
         } else {
-	    $goto =   hostprotocol() . "/" . $_SESSION["CFG"]["wwwroot"] . "/clubs/" . get_sitecode(). "/";
+	    $goto =   hostprotocol() . "" . $_SESSION["CFG"]["wwwroot"] . "/clubs/" . get_sitecode(). "/";
 	}
 
         header("Location: $goto");
