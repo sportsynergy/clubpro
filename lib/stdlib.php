@@ -228,10 +228,9 @@ function match_referer($good_referer = "") {
     }
 	
     #do this because requests from proxy are http and qualified me is https
-    $gf = get_referer();
-    $http_referrer = str_replace("https", "http", $gf);
+    $referer = get_referer();
 
-    return $good_referer == $http_referrer;
+    return $good_referer == $referer;
 }
 function redirect($url, $message = "", $delay = 0) {
 
