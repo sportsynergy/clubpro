@@ -203,7 +203,8 @@ function qualified_me() {
     $HTTPS = getenv("HTTPS");
     $SERVER_PROTOCOL = getenv("SERVER_PROTOCOL");
     $HTTP_HOST = getenv("HTTP_HOST");
-    $protocol = (isset($HTTPS) && $HTTPS == "on") ? "https://" : "http://";
+    #$protocol = (isset($HTTPS) && $HTTPS == "on") ? "https://" : "http://";
+    $protocol = "https://";
     $url_prefix = "$protocol$HTTP_HOST";
     return $url_prefix . me();
 }
