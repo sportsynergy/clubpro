@@ -24,6 +24,12 @@ services:
     # Internal port your app listens on (do not expose to the host)
     expose:
       - "8000" 
+    environment:
+      - CLUBPRO_DB_USER=${CLUBPRO_DB_USER}
+      - CLUBPRO_DB_PASS=${CLUBPRO_DB_PASS}
+      - CLUBPRO_DB_NAME=${CLUBPRO_DB_NAME}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     ports:
       - "8000:8000"
 
