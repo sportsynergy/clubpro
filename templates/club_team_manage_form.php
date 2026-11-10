@@ -100,7 +100,7 @@ $userid = $_REQUEST["userid"];
 
       <script language="Javascript">
 
-  document.entryform.name1.focus();
+  document.entryform.name1.focus({ preventScroll: true });
   document.getElementById('name1').setAttribute("autocomplete", "off");
 
 document.onkeypress = function (aEvent)

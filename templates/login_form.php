@@ -46,18 +46,15 @@ a {
 
 </head>
 <?php
-	$rememberLast = $_COOKIE["remembercookie"];
+	$rememberLast = $_COOKIE["remembercookie"] ?? null;
 	$checked = "";
 	if( isset($rememberLast) ){
 		$checked = "checked";
 	}
 	
-//	print "This remember: $rememberLast";
-//	print "This is the username: $username, $pass";
-	
 ?>
 
-<body OnLoad="document.entryform.username.focus();">
+<body OnLoad="document.entryform.username.focus({ preventScroll: true });">
 <div id="overlayHld">
   <div id="contentHld" align="center">
     <form name="entryform" method="post" action="<?=$_SESSION["CFG"]["wwwroot"]?>/login.php" autocomplete="off">
@@ -78,10 +75,10 @@ a {
         </div>
         <? } ?>
         Username:
-        <input id="username" type="text" name="username" value="<?=$_COOKIE["username"]; ?>" style="width:100%;">
+        <input id="username" type="text" name="username" value="<?= $_COOKIE["username"] ?? ""; ?>" style="width:100%;">
         <br />
         Password:
-        <input type="password" name="password" value="<?=$_COOKIE["pass"]; ?>" style="width:100%;">
+        <input type="password" name="password" value="<?= $_COOKIE["pass"] ?? ""; ?>" style="width:100%;">
         <br />
         <div style="text-align:center;"> Remember Me:
           <input type="checkbox" name="remember" <?=$checked?> >

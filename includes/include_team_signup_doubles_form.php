@@ -58,7 +58,7 @@ prompted for how you would like to advertise this match on the next screen.</div
 
 <script language="Javascript">
 
-document.getElementById('partnername').focus();
+document.getElementById('partnername').focus({ preventScroll: true });
 document.getElementById('partnername').setAttribute("autocomplete", "off");
 
 document.onkeypress = function(aEvent)

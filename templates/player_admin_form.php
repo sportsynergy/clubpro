@@ -21,7 +21,7 @@
         
 <script type="text/javascript">
 
-document.entryform.searchname.focus();
+document.entryform.searchname.focus({ preventScroll: true });
 
 
 function onSubmitButtonClicked(){

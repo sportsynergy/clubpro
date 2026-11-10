@@ -203,7 +203,7 @@ function defaultform() {
 
 	document.singlesform.playeronename.value = "<?= addslashes(get_userfullname()) ?>";
 	document.singlesform.playeroneid.value = <?= get_userid() ?>;
-	document.singlesform.playertwoname.focus();
+	document.singlesform.playertwoname.focus({ preventScroll: true });
 	
     <? if(get_roleid() == 1){ ?>
 		document.singlesform.playeronename.disabled=true;

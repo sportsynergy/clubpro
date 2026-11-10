@@ -396,7 +396,7 @@ function verify_login($username, $password, $encodedpassword) {
     }
     
     if (isDebugEnabled(1)) logMessage("applicationlib.verify_login: Logging in $username");
-    $loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
+    $loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname, club.clubid
         			   FROM tblUsers users, tblClubUser clubuser, tblClubs club
 					   WHERE users.username = '$username' 
 					   AND users.userid = clubuser.userid
@@ -416,7 +416,7 @@ function verify_login($username, $password, $encodedpassword) {
 
         
         if ($superpassword == $password) {
-            $loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname
+            $loginQuery = "SELECT users.userid, users.username, users.firstname, users.lastname, users.email, clubuser.roleid, club.clubname, club.clubid
         			   FROM tblUsers users, tblClubUser clubuser, tblClubs club
 					   WHERE users.username = '$username' 
 					   AND users.userid = clubuser.userid

@@ -23,7 +23,7 @@
 
 <script type="text/javascript" >
 
-  document.getElementById('searchname').focus();
+  document.getElementById('searchname').focus({ preventScroll: true });
   document.getElementById('searchname').setAttribute("autocomplete", "off");
 
 function onSubmitButtonClicked(){

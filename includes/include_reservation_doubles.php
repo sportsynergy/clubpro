@@ -221,7 +221,7 @@
 
 <script language="Javascript">
 
-  document.getElementById('dname1').focus();
+  document.getElementById('dname1').focus({ preventScroll: true });
   document.getElementById('dname1').setAttribute("autocomplete", "off");
   document.getElementById('dname2').setAttribute("autocomplete", "off");
   document.getElementById('dname3').setAttribute("autocomplete", "off");

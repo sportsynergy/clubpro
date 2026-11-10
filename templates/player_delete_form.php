@@ -28,7 +28,7 @@ Are you sure you want to Delete this user? You know, if there is any chance of t
 
 <script type="text/javascript">
 
-document.entryform.searchname.focus();
+document.entryform.searchname.focus({ preventScroll: true });
 
 
 function onSubmitButtonClicked(){

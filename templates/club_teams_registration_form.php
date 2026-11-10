@@ -122,7 +122,7 @@
 
 <script language="JavaScript">
 
-document.entryform.clubteam.focus();
+document.entryform.clubteam.focus({ preventScroll: true });
 
   document.getElementById('clubteam').setAttribute("autocomplete", "off");
 

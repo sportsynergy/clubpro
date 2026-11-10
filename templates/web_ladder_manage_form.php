@@ -387,7 +387,7 @@ $userid = $_REQUEST["userid"];
 
   <script language="JavaScript">
 
-          document.entryform.name1.focus();
+          document.entryform.name1.focus({ preventScroll: true });
 
           document.getElementById('name1').setAttribute("autocomplete", "off");
           getDaysForMonth();
