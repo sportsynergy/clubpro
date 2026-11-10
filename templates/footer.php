@@ -253,7 +253,12 @@ case "System Preferences":
 
 <? } ?>
 
-
+<script>
+        window.addEventListener('load', function() {
+            document.body.classList.add('fully-loaded');
+        });
+    </script>
+    
 </body>
 </html>
 

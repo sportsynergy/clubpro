@@ -44,6 +44,10 @@
     <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/ajaxtags-1.1.5.js" type="text/javascript"></script>
     <script src="<?=$_SESSION["CFG"]["wwwroot"]?>/js/forms.js?123" type="text/javascript"></script>
     
+    <style>
+        body { opacity: 0; transition: opacity 0.2s ease-in-out; }
+        body.fully-loaded { opacity: 1; }
+    </style>
 
   </head>
   
