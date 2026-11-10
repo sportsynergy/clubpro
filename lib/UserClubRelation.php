@@ -47,7 +47,7 @@ class UserClubRelation {
      * Checks to see if a user is logged in
      */
     public function isUserLoggedin() {
-        $_id = $_SESSION["user"]["userid"];
+        $_id = $_SESSION["user"]["userid"] ?? 0;
         $id = (int)$_id; // force int.
 
         

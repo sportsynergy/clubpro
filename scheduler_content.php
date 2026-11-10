@@ -28,13 +28,12 @@ if (isLadderRankingScheme() || isJumpLadderRankingScheme()) {
     $_SESSION["ladders"] = $ladders;
 }
 $wwwroot = $_SESSION["CFG"]["wwwroot"];
-$username = $_REQUEST['username'];
-$password = $_REQUEST['password'];
-$courtGroupFromForm = $_REQUEST['courtGroupFromForm'];
-$courtWindowStart = $_REQUEST['courtWindowStart'];
+$username = $_REQUEST['username'] ?? null;
+$password = $_REQUEST['password'] ?? null;
+$courtGroupFromForm = $_REQUEST['courtGroupFromForm'] ?? null;
+$courtWindowStart = $_REQUEST['courtWindowStart'] ?? null;
 
-if ( isset($_SESSION["courtWindowStart"]) ){
-	$courtWindowStart = $_REQUEST['courtWindowStart'];
+if (isset($_REQUEST['courtWindowStart'])) {
 	logMessage("scheduler_content.php: courtWindowStart from form is $courtWindowStart");
 }
 
@@ -111,7 +110,7 @@ if (mysqli_num_rows($groupingResult) == 0) {
 if (isset($courtWindowStart)) {
     $_SESSION["courtWindowStart"][$siteid] = $courtWindowStart;
 } else {
-    $courtWindowStart = $_SESSION["courtWindowStart"][$siteid];
+    $courtWindowStart = $_SESSION["courtWindowStart"][$siteid] ?? null;
 }
 
 //If courtWindowStart is set get courts starting with that
@@ -228,6 +227,7 @@ elseif (empty($daysahead) || !isset($daysahead)) {
     $currMonth = gmdate("n", $curtime);
     $currDay = gmdate("j", $curtime);
     $currDOW = getDOW(gmdate("l", $curtime));
+	$daysahead = $curtime;
 } else {
     $currYear = gmdate("Y", $daysahead);
     $currMonth = gmdate("n", $daysahead);

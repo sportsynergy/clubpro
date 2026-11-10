@@ -18,11 +18,10 @@ if($userRelation->isUserLoggedin()){
 $DOC_TITLE = "Court Reservation";
 
 //Set the http variables
-$courtid = $_REQUEST["courtid"];
-$time = $_REQUEST["time"];
-$userid = $_REQUEST["userid"];
-$courttype = $_REQUEST["courttype"];
-$courtid = $_REQUEST["courtid"];
+$courtid = $_REQUEST["courtid"] ?? null;
+$time = $_REQUEST["time"] ?? null;
+$userid = $_REQUEST["userid"] ?? null;
+$courttype = $_REQUEST["courttype"] ?? null;
 
 
 /* In case the user is loading this page from a link on an email,
@@ -134,7 +133,7 @@ if ( match_referer() && isset( $courttype ) ) {
 } else {
 
     if (isDebugEnabled(1)) {
-        logMessage("court_reservation: not processing for user(".get_userid().") - courttype is not set: " . $_POST['courttype']);
+        logMessage("court_reservation: not processing for user(".get_userid().") - courttype is not set: " . ($_POST['courttype'] ?? ""));
     }
 
 }
