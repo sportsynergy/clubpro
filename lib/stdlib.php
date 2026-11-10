@@ -1,72 +1,6 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-/* ====================================================================
- * GNU Lesser General Public License
- * Version 2.1, February 1999
- * 
- * <one line to give the library's name and a brief idea of what it does.>
- *
- * Copyright (C) 2001~2012 Adam Preston
- * 
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * $Id:$
- */
 
-/**
-* Class and Function List:
-* Function list:
-* - setdefault()
-* - nvl()
-* - ov()
-* - pv()
-* - o()
-* - p()
-* - db_query_loop()
-* - db_listbox()
-* - strip_querystring()
-* - get_refererwithq()
-* - get_referer()
-* - me()
-* - mewithq()
-* - qualified_me()
-* - qualified_mewithq()
-* - match_referer()
-* - redirect()
-* - read_template()
-* - checked()
-* - frmchecked()
-* Classes list:
-*/
-/*
- * $LastChangedRevision: 2 $
- * $LastChangedBy: Adam Preston $
- * $LastChangedDate: 2006-05-26 15:46:27 -0500 (Fri, 26 May 2006) $
 
- stdlib.php (c) 2000 Ying Zhang (ying@zippydesign.com)
- *
- * TERMS OF USAGE:
- * This file was written and developed by Ying Zhang (ying@zippydesign.com)
- * for educational and demonstration purposes only.  You are hereby granted the
- * rights to use, modify, and redistribute this file as you like.  The only
- * requirement is that you must retain this notice, without modifications, at
- * the top of your source code.  No warranties or guarantees are expressed or
- * implied. DO NOT use this code in a production environment without
- * understanding the limitations and weaknesses pretaining to or caused by the
- * use of these scripts, directly or indirectly. USE AT YOUR OWN RISK!
-*/
 function setdefault(&$var, $default = "") {
 
     /* if $var is undefined, set it to $default.  otherwise leave it alone */
@@ -186,35 +120,23 @@ function mewithq() {
     return $me;
 }
 
-function hostprotocol() {
-
-    /* like me() but returns a fully URL */
-    $HTTPS = getenv("HTTPS");
-    $SERVER_PROTOCOL = getenv("SERVER_PROTOCOL");
-    $HTTP_HOST = getenv("HTTP_HOST");
-    $protocol = (isset($HTTPS) && $HTTPS == "on") ? "https://" : "http://";
-    return "$protocol$HTTP_HOST";
-    
-}
-
 function qualified_me() {
 
     /* like me() but returns a fully URL */
     $HTTPS = getenv("HTTPS");
-    $SERVER_PROTOCOL = getenv("SERVER_PROTOCOL");
+    $SERVER_PROTOCOL = getenv("HTTP_X_FORWARDED_PROTO");
     $HTTP_HOST = getenv("HTTP_HOST");
-    #$protocol = (isset($HTTPS) && $HTTPS == "on") ? "https://" : "http://";
-    $protocol = "https://";
+    $protocol = $SERVER_PROTOCOL == "https" ? "https://" : "http://";
     $url_prefix = "$protocol$HTTP_HOST";
     return $url_prefix . me();
 }
 function qualified_mewithq() {
 
-    /* like me() but returns a fully URL */
+ /* like me() but returns a fully URL */
     $HTTPS = getenv("HTTPS");
-    $SERVER_PROTOCOL = getenv("SERVER_PROTOCOL");
+    $SERVER_PROTOCOL = getenv("HTTP_X_FORWARDED_PROTO");
     $HTTP_HOST = getenv("HTTP_HOST");
-    $protocol = (isset($HTTPS) && $HTTPS == "on") ? "https://" : "http://";
+    $protocol = $SERVER_PROTOCOL == "https" ? "https://" : "http://";
     $url_prefix = "$protocol$HTTP_HOST";
     return $url_prefix . mewithq();
 }
@@ -229,6 +151,8 @@ function match_referer($good_referer = "") {
 	
     #do this because requests from proxy are http and qualified me is https
     $referer = get_referer();
+
+     if (isDebugEnabled(1)) logMessage("match_referer: good_referer: $good_referer, referer: $referer");
 
     return $good_referer == $referer;
 }

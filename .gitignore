@@ -6,4 +6,5 @@ application.log
 .env
 .htaccess
 composer.lock
+phpinfo.php
 
