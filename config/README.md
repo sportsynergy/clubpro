@@ -12,3 +12,13 @@ jdk.tls.disabledAlgorithms=SSLv3, RC4, DES, MD5withRSA, \
 I removed TLSv1 from the list.
 
     Go to you data source Advanced tab and add to VM Options: -Djava.security.properties=${PATH_TO_FILE?}/custom.java.security. Don't forget to replace ${PATH_TO_FILE?}.
+
+
+For expired certificates for localhost do this
+
+openssl req -x509 -nodes -days 365 \
+ -newkey rsa:2048 \
+ -keyout config/localhost.key \
+ -out config/localhost.crt \
+ -config localhost.cnf \
+ -extensions ext

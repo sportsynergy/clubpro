@@ -5,6 +5,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
       - certbot-etc:/etc/letsencrypt
@@ -31,7 +36,12 @@ services:
      - "3308:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${CLUBPRO_DB_PASS}
-      MYSQL_DATABASE: clubpro_main
+      MYSQL_DATABASE: ${CLUBPRO_DB_NAME}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       - data:/var/lib/mysql
 
@@ -50,7 +60,12 @@ services:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     expose:
-      - "8000" 
+      - "8000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3" 
 volumes:
   data:
   certbot-etc:
