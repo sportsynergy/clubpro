@@ -25,7 +25,7 @@
              	value="<? pv($frm["playeroneid"]) ?>"
              <? } ?>
              />
-        <? is_object($errors) ? err($errors->playeronename) : ""?>
+       
         <script>
                 <?
                  $wwwroot = $_SESSION["CFG"]["wwwroot"];
@@ -47,7 +47,7 @@
             <div class="mb-3">
               <label for="dname2" class="form-label">Player Two</label>
               <input id="dname2" name="playertwoname" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayertwo();" value="<? pv($frm["playertwoname"]) ?>"/>
-        <? is_object($errors) ? err($errors->playertwoname) : ""?>
+        
         
         <input id="did2" name="playertwoid" type="hidden" value="<? pv($frm["playertwoid"]) ?>" />
         <script>
@@ -74,7 +74,7 @@
         <div class="mb-3">
         <label for="dname3" class="form-label">Player Three</label>
          <input id="dname3" name="playerthreename" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayerthree();" value="<? pv($frm["playerthreename"]) ?>"/>
-          <? is_object($errors) ? err($errors->playerthreename) : ""?>
+         
         
           <input id="id3" name="playerthreeid" type="hidden" value="<? pv($frm["playerthreeid"]) ?>"/>
           <script>
@@ -99,7 +99,7 @@
         <div class="mb-3">
           <label for="name4" class="form-label">Player Four </label>
         <input id="dname4" name="playerfourname" type="text" size="30" class="form-autocomplete form-control" onchange="javascript:unsetplayerfour();" value="<? pv($frm["playerfourname"]) ?>"/>
-        <? is_object($errors) ? err($errors->playerfourname) : ""?>
+        
         <input id="id4" name="playerfourid" type="hidden" value="<? pv($frm["playerfourid"]) ?>"/>
         <script>
             <?

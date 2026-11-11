@@ -55,7 +55,8 @@ function pat_Empty($var) {
  * diplays js tags for ajax
 */
 function pat_gen($arg, $name, $req) {
-    $var = (!pat_Empty($arg['uid'])) ? 'var ' . $arg['uid'] . '=' : '';
+    $uid = $arg['uid'] ?? null;
+	$var = (!pat_Empty($uid)) ? 'var ' . $uid . '=' : '';
 ?>
 <?=$var?>new AjaxJspTag.<?=$name?>(
  "<?=$arg['baseUrl']?>", {
