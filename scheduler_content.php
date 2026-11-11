@@ -632,9 +632,9 @@ if ($clubid) {
                                                   } else {
                                                   	
                                                   	$useridarray = db_fetch_array($useridresult);
-                                                  	$userid1 = $useridarray['userid'];
+                                                    $userid1 = $useridarray['userid'] ?? null;
                                                   	$useridarray = mysqli_fetch_array($useridresult); 
-                                                  	$userid2 = $useridarray['userid'];
+                                                    $userid2 = $useridarray['userid'] ?? null;
                                                   	
                                                   		// a little defense for corrupt data
 														if( empty($userid1) || empty($userid2) ){
