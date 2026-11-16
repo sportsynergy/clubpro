@@ -19,6 +19,7 @@ RUN apt-get install -y zip logrotate gnupg cron
 COPY ./config/clubpro.logrotate /etc/logrotate.d/clubpro
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Install AWS CLI to /root/.local/bin/aws
 RUN curl -fsSL https://awscli.amazonaws.com/v2/install.sh | bash
 
  #Latest releases available at https://github.com/aptible/supercronic/releases
