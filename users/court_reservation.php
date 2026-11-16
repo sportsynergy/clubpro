@@ -290,14 +290,17 @@ function validate_form(&$frm, &$errors) {
      * the string is empty, then there are no errors */
     $msg = "";
     $errors = new clubpro_obj;
-    
+    $courtid = $frm['courtid'] ?? null;
+    $time = $frm['time'] ?? null;
+
+
     if (isDebugEnabled(1)) logMessage("court_reservation_validate_form() ");
 
     //First we have to get the reservationid
     $residquery = "SELECT tblReservations.lastmodified
 	                             FROM tblReservations
-	                             WHERE tblReservations.courtid=" . $frm['courtid'] . "
-	                             AND tblReservations.time=" . $frm['time'] . "
+	                             WHERE tblReservations.courtid=" . $courtid . "
+	                             AND tblReservations.time=" . $time . "
 								 AND tblReservations.enddate IS NULL";
 
     //this is just a way to know if this is a new reservation.
@@ -562,7 +565,7 @@ function validate_form(&$frm, &$errors) {
             if (isDebugEnabled(1)) logMessage("court_reservation.validate_form: Validating the addpartners form");
 
 			// Make sure that the skill range policies are ok
-			if(!validateSkillPolicies($frm["userid"], $frm["creator"], $frm['courtid'], $frm['courttype'], $frm['time'])){
+			if(!validateSkillPolicies($frm["userid"], $frm["creator"], $courtid, $frm['courttype'], $time)){
 				$msg = "A skill range policy is preventing you from reserving this court with this opponent.";
 				return $msg;
 			}
