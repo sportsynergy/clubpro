@@ -393,7 +393,7 @@ function printDoublesReservationSinglePlayer($userid, $lock, $matchType, $time, 
 	                      <? } ?>
 	                      
                           <?=gmdate("g:i",$time)?><br>
-	                      <?=printPlayer($userArray[0],  $userArray[1], $playerOne, $creator)?>
+	                      <?=printPlayer($userArray[0],  $userArray[1], $userid, $creator)?>
 	                      
                           <? if( is_logged_in() || isShowPlayerNames()){ ?>
                           <?=$verb?> some players

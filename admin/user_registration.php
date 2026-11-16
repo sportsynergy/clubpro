@@ -115,15 +115,19 @@ function insert_user(&$frm, $availbleSports, $availableSites, $extraParametersRe
 
     $userid = mysqli_insert_id($dbh);
 
+    $msince = $frm['msince'] ?? null;
+    $usertype = $frm['usertype'] ?? null;
+    $memberid = $frm['memberid'] ?? null;   
+
     //Insert the Club User (for the new club)
     $clubUserQuery = "INSERT INTO tblClubUser (
 		                userid, clubid, msince, roleid, memberid
 		                ) VALUES (
 		                          $userid
 								  ," . get_clubid() . "
-		                          ,'$frm[msince]'
-		                          ,'$frm[usertype]'
-		                          ,'$frm[memberid]'
+		                          ,'$msince'
+		                          ,'$usertype'
+		                          ,'$memberid'
 		                          )";
     $clubUserResult = db_query($clubUserQuery);
 
