@@ -28,6 +28,7 @@ services:
       - ./config/nginx.local.conf:/etc/nginx/conf.d/default.conf:ro
       - ./config/localhost.crt:/etc/ssl/localhost.crt:ro
       - ./config/localhost.key:/etc/ssl/localhost.key:ro
+      - ./maintenance.html:/var/www/html/maintenance.html:ro
     depends_on:
       - app
 
