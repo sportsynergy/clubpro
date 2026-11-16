@@ -54,5 +54,26 @@ services:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
+  cron:
+    container_name: clubpro-cron
+    build: .
+    restart: unless-stopped
+    volumes:
+      - .:/var/www/html/clubpro
+    depends_on:
+      - db
+    environment:
+      - CLUBPRO_DB_USER=${CLUBPRO_DB_USER}
+      - CLUBPRO_DB_PASS=${CLUBPRO_DB_PASS}
+      - CLUBPRO_DB_NAME=${CLUBPRO_DB_NAME}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    command: ["supercronic", "-debug", "/var/www/html/clubpro/config/crontab"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 volumes:
   data:
