@@ -1,13 +1,13 @@
 <?php
 
-$name = $_GET['name'];
-$clubid = $_GET['clubid'];
-$courtid = $_GET['courtid'];
-$courttype = $_GET['courttype'];
-$siteid = $_GET['siteid'];
-$userid = $_GET['userid'];
-$ladderid = $_GET['ladderid'];
-$boxid = $_GET['boxid'];
+$name = $_GET['name'] ?? null;
+$clubid = $_GET['clubid'] ?? null;
+$courtid = $_GET['courtid'] ?? null;
+$courttype = $_GET['courttype'] ?? null;
+$siteid = $_GET['siteid'] ?? null;
+$userid = $_GET['userid'] ?? null;
+$ladderid = $_GET['ladderid'] ?? null;
+$boxid = $_GET['boxid'] ?? null;
 
 $limit = 17;
 
