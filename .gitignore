@@ -7,4 +7,5 @@ application.log
 .htaccess
 composer.lock
 phpinfo.php
+.mysql.cnf
 
