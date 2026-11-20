@@ -1,9 +1,9 @@
 0 * * * * /var/www/html/clubpro/cron/send-reminder.sh
 0 3 * * * /var/www/html/clubpro/cron/disable_expired_accounts.sh
 0 1 * * * /var/www/html/clubpro/cron/mysql-backup.sh
-59 23 * * * /var/www/html/clubpro/cron/updateladder.sh
-55 23 * * * /var/www/html/clubpro/cron/updateboxscores.sh
-54 23 * * * /var/www/html/clubpro/cron/updateboxscores-extended.sh
+0 5 * * * /var/www/html/clubpro/cron/updateladder.sh
+0 10 * * * /var/www/html/clubpro/cron/updateboxscores.sh
+0 15 * * * /var/www/html/clubpro/cron/updateboxscores-extended.sh
 56 23 * * * /var/www/html/clubpro/cron/updateteamscores.sh
 50 23 * * 0 /var/www/html/clubpro/cron/createboxschedule.sh 
 51 23 * * 0 /var/www/html/clubpro/cron/send-league-reminders.sh
