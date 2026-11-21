@@ -3,14 +3,6 @@
 # S3 bucket details
 BACKUP_NAME="backup-$(date +%Y-%m-%d-%H-%M-%S).sql.gz"
 
-# Set up authentication (make sure this exists on host like example)
-#
-#[client]
-#user=username
-#password=goodpassword123
-#
-
-docker cp ../config/.mysql.cnf clubpro-db:/tmp/.mysql.cnf
 
 # Backup the MySQL database
 docker exec -i clubpro-db mysqldump --defaults-extra-file=/tmp/.mysql.cnf clubpro_main | gzip > /tmp/${BACKUP_NAME}

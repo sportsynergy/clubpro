@@ -75,6 +75,7 @@ services:
     restart: unless-stopped
     volumes:
       - .:/var/www/html/clubpro
+      - ./config/.mysql.cnf:/tmp/.mysql.cnf  # have to set this up
     depends_on:
       - db
     environment:
