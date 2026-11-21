@@ -8,4 +8,5 @@ application.log
 composer.lock
 phpinfo.php
 .mysql.cnf
+.credentials
 
