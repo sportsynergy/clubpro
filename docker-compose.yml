@@ -51,7 +51,7 @@ services:
     restart: unless-stopped
     volumes:
     - .:/var/www/html/clubpro
-    - ./.credentials:/.aws/credentials:ro # have to set this up
+    - ./config/aws.credentials:/.aws/credentials:ro # have to set this up
     depends_on:
       - db
     environment:

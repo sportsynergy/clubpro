@@ -38,7 +38,7 @@ services:
     restart: unless-stopped
     volumes:
     - .:/var/www/html/clubpro
-    - ./.credentials:/.aws/credentials:ro # have to set this up
+    - ./config/aws.credentials:/.aws/credentials:ro # have to set this up
     depends_on:
       - db
     # Internal port your app listens on (do not expose to the host)
