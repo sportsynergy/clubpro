@@ -1,6 +1,7 @@
 {
     "name": "sportsynergy/clubpro",
     "description": "A squash club management system for everyone",
+    "license": "gpl-3.0",
     "require": {
         "eluceo/ical": "^0.10.1",
         "aws/aws-sdk-php": "^3.368.0"
