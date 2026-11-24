@@ -67,7 +67,6 @@ function get_site_password($siteid){
 function send_clubemail($subject, $to_emails, $content, $category ){
 
 	sendses_clubmail($subject, $to_emails, $content, $category );
-	//sendgrid_clubmail($subject, $to_emails, $content, $category )
 }
 
 /*
@@ -76,12 +75,12 @@ function send_clubemail($subject, $to_emails, $content, $category ){
 function sendses_clubmail($subject, $to_emails, $content, $category ){
 
 	if (isDebugEnabled(1)) {
-    	logMessage("applicationlib.sendgrid_clubmail_ses: sending email with subject $subject with a size " . count($to_emails) );
+    	logMessage("applicationlib.sendses_clubmail: sending email with subject $subject with a size " . count($to_emails) );
     }
 
 	if( count($to_emails) == 0){
         if (isDebugEnabled(1)) {
-            logMessage("applicationlib.sendgrid_clubmail_ses: there is a problem with sending mail for $subject, exiting..." );
+            logMessage("applicationlib.sendses_clubmail: there is a problem with sending mail for $subject, exiting..." );
         }
         return;
     }
@@ -143,68 +142,6 @@ function sendses_clubmail($subject, $to_emails, $content, $category ){
 
 
 
-/*
-    Use send grid to send out emails from the admin, the old way
-*/
-function sendgrid_clubmail($subject, $to_emails, $content, $category ){
-	
-	if (isDebugEnabled(1)) {
-    	logMessage("applicationlib.sendgrid_clubmail: sending email with subject $subject with a size " . count($to_emails) );
-    }
-
-    if( count($to_emails) == 0){
-        if (isDebugEnabled(1)) {
-            logMessage("applicationlib.sendgrid_clubmail: there is a problem with sending mail for $subject, exiting..." );
-        }
-        return;
-    }
-	
-    $apiKey = $_SESSION["CFG"]["sendgrid_api"];
-    $sendgrid = new SendGrid($apiKey);
-
-	$mail = new SendGrid\Mail();
-
-    foreach ($to_emails as $k=>$v){
-    
-        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: sending email to: $k with subject $subject and category $category" );
-    
-        $personalization = new SendGrid\Personalization();
-        $email = new SendGrid\Email($v['name'], $k);
-        $personalization->addTo($email);
-        $personalization->addSubstitution("%firstname%", $v['name']);
-        if ( array_key_exists('url', $v) ){
-            $personalization->addSubstitution("%signupurl%", $v['url']);
-        }
-        else {
-            $personalization->addSubstitution("%signupurl%","");
-        }
-        $mail->addPersonalization($personalization);
-    }
-
-	$file_contents = file_get_contents($_SESSION["CFG"]["templatedir"]."/email/blank.email.html");
-	$template = str_replace("%sitecode%", get_sitecode(), $file_contents);
-	$template = str_replace("%content%", $content->line1, $template);
-	$template = str_replace("%dns%", $_SESSION["CFG"]["dns"], $template);
-	$template = str_replace("%app_root%", $_SESSION["CFG"]["wwwroot"], $template);
-	
-    $html_content = new SendGrid\Content("text/html", $template);
-
-    $from_email = new SendGrid\Email(get_userfullname(), get_email() );
-	
-    $mail->setFrom($from_email);
-    $mail->setSubject($subject);
-    $mail->addCategory("Club Email");
-    $mail->addCategory($content->clubname);
-    $mail->addContent($html_content);
-
-    try {
-        $response = $sendgrid->client->mail()->send()->post($mail);
-    } catch (Exception $e) {
-        if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: Caught exception: " );
-    }
-	
-    if (isDebugEnabled(1)) logMessage("applicationlib.sendgrid_email: mail was sent with status ". $response->statusCode() ." number of emails sent: ". count($personalization->getTos()) );
-}
 
 
 /**
