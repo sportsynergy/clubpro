@@ -40,3 +40,5 @@ jobs:
       with:
         configuration: "test/phpunit_mysql.xml"
         memory_limit: "256M"
+        php-version: '8.3'
+        extensions: mbstring
