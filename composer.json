@@ -1,8 +1,9 @@
 {
+    "name": "sportsynergy/clubpro",
+    "description": "A squash club management system for everyone",
     "require": {
         "eluceo/ical": "^0.10.1",
         "sendgrid/php-http-client": "3.5",
-        "sendgrid/sendgrid": "~5.1",
         "aws/aws-sdk-php": "^3.368.0"
     }
 }

@@ -1,5 +1,4 @@
 
-[![Build Status](https://travis-ci.org/sportsynergy/clubpro.png?branch=master)](https://travis-ci.org/sportsynergy/clubpro)
 
 Clubpro 
 =============
