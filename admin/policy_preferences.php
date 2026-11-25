@@ -196,6 +196,7 @@ function load_general_preferences($siteid) {
         						clubsite.allowselfscore, 
         						clubsite.displayrecentactivity,
         						clubsite.challengerange,
+                                clubsite.jumpladdermaxmove,
         						clubsite.facebookurl,
 								clubsite.reminders,
                                 clubsite.showplayernames,
@@ -481,6 +482,10 @@ function update_general_clubprefs(&$frm) {
     if (isDebugEnabled(1)) logMessage("general_preferneces.update_clubprefs: Updating club preferences.");
 
     $challengerange = isset($frm['challengerange']) ? $frm['challengerange'] : '0';
+    $jumpladdermaxmoveUpdate = '';
+    if (isset($frm['jumpladdermaxmove']) && in_array((int)$frm['jumpladdermaxmove'], array(0, 5, 10), true)) {
+        $jumpladdermaxmoveUpdate = ',jumpladdermaxmove = ' . (int)$frm['jumpladdermaxmove'];
+    }
 
     /* Update the club preferences */
     $query = "Update tblClubSites SET allowselfcancel = '$frm[allowselfcancel]'
@@ -488,6 +493,7 @@ function update_general_clubprefs(&$frm) {
 				,allowselfscore = '$frm[allowselfscore]'
 				,displayrecentactivity = '$frm[displayrecentactivity]'
 				,challengerange = $challengerange
+                $jumpladdermaxmoveUpdate
 				,facebookurl = '$frm[facebookurl]'
 				,reminders = '$frm[reminders]'
                 ,showplayernames = '$frm[showplayernames]'

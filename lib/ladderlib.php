@@ -356,6 +356,17 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
     
     if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  The winners position/going is $winnerposition/$winnergoing and the losers position/going is $loserposition/$losergoing");
 
+    $maxWinnerMove = 0;
+    $sitePreferencesQuery = "SELECT sites.rankingscheme, sites.jumpladdermaxmove
+                                FROM tblClubSiteLadders ladders
+                                INNER JOIN tblClubSites sites ON sites.siteid = ladders.siteid
+                                WHERE ladders.id = $ladderid";
+    $sitePreferencesResult = db_query($sitePreferencesQuery);
+    $sitePreferences = db_fetch_array($sitePreferencesResult);
+    if (($sitePreferences['rankingscheme'] == 'jumpladder' || $sitePreferences['rankingscheme'] == 'jumpladderplus')
+        && in_array((int)$sitePreferences['jumpladdermaxmove'], array(5, 10), true)) {
+        $maxWinnerMove = (int)$sitePreferences['jumpladdermaxmove'];
+    }
 
     //if the winner is already ahead of the loser don't do anything
     
@@ -381,31 +392,37 @@ function adjustClubLadder($winneruserid, $loseruserid, $ladderid) {
 	else {
 
 		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  The winner was ranked below the loser, adjusting...");
-		moveLadderGroup($loserposition, $winnerposition, $ladderid);
+        $winnerNewPosition = $maxWinnerMove > 0
+            ? max($loserposition, $winnerposition - $maxWinnerMove)
+            : $loserposition;
+		moveLadderGroup($winnerNewPosition, $winnerposition, $ladderid);
 		
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  Setting winner ($winneruserid) to position $loserposition and going to up");
+		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder:  Setting winner ($winneruserid) to position $winnerNewPosition and going to up");
 
-		//The winner gets the losers (higher) ladder position
+		//The winner moves to the capped target position.
 		//add new record for the guy that won
 
 		$query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going,lastmatchresult, lastmatchuserid) VALUES (
-							$winneruserid,$ladderid,$loserposition,'up', TRUE, $loseruserid)";
+							$winneruserid,$ladderid,$winnerNewPosition,'up', TRUE, $loseruserid)";
 		db_query($query);
 
 		//end date old one
 		$updateWinnerQuery = "UPDATE tblClubLadder SET enddate = NOW() WHERE id = " . $winnerarray['id'];
 		db_query($updateWinnerQuery);
 
-		// The loser's ladder position goes down one
-		$newloserposition = $loserposition + 1;
-		$var->losernewspot = $newloserposition;
-		$var->winnernewspot = $loserposition;
-		
-		if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  Setting loser ($loseruserid) down one to $newloserposition and going to down");
-
-		//add new record for the guy that lost
-		$query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going, lastmatchresult, lastmatchuserid) VALUES (
-							$loseruserid,$ladderid,$newloserposition,'down', FALSE, $winneruserid)";
+        $var->winnernewspot = $winnerNewPosition;
+        if ($winnerNewPosition == $loserposition) {
+            // The loser moves down one when the winner takes the loser's position.
+            $newloserposition = $loserposition + 1;
+            $var->losernewspot = $newloserposition;
+            if (isDebugEnabled(2)) logMessage("ladderlib: adjustClubLadder.  Setting loser ($loseruserid) down one to $newloserposition and going to down");
+            $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going, lastmatchresult, lastmatchuserid) VALUES (
+                                $loseruserid,$ladderid,$newloserposition,'down', FALSE, $winneruserid)";
+        } else {
+            // The capped winner does not pass or displace the loser.
+            $query = "INSERT INTO tblClubLadder (userid, ladderid, ladderposition, going, lastmatchresult, lastmatchuserid) VALUES (
+                                $loseruserid,$ladderid,$loserposition,'steady', FALSE, $winneruserid)";
+        }
 		db_query($query);
 
 		// end date the old one
