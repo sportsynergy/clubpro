@@ -151,5 +151,16 @@ document.getElementById('rsname2').setAttribute("autocomplete", "off");
 function onSubmitButtonClicked(){
 	submitForm('entryform');
 }
+
+document.onkeypress = function (aEvent)
+{
+    if(!aEvent) aEvent=window.event;
+  	key = aEvent.keyCode ? aEvent.keyCode : aEvent.which ? aEvent.which : aEvent.charCode;
+    if( key == 13 ) // enter key
+    {
+        return false; // this will prevent bubbling ( sending it to children ) the event!
+    }
+  	
+}
 </script> 
 
